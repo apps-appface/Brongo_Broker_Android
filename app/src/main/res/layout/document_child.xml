@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:padding="20dp">
+        <appface.brongo.uiwidget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose from \n Gallery"
+            android:id="@+id/docu_gallery"
+            android:gravity="center"
+      android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/ic_gallery"
+            android:textColor="@color/edit_hint_color"
+            app:customFont="lato_regular.ttf"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+        <appface.brongo.uiwidget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Capture \n Image"
+            android:id="@+id/docu_camera"
+            android:gravity="center"
+            android:layout_marginRight="20dp"
+            android:drawablePadding="5dp"
+            android:layout_alignParentRight="true"
+            android:drawableTop="@drawable/ic_camera"
+            android:textColor="@color/edit_hint_color"
+            app:customFont="lato_regular.ttf"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+
+</RelativeLayout>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="#f5f3f8"
+    android:paddingBottom="30dp"
+    tools:context="appface.brongo.activity.ReminderActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <CalendarView
+            android:id="@+id/reminder_calender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#f5f3f8"></CalendarView>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:background="@drawable/edit_border"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
+          android:padding="20dp">
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+              <appface.brongo.uiwidget.CustomTextView
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:text="Add Notes"
+                  app:customFont="lato_bold.ttf"/>
+          </RelativeLayout>
+
+          <EditText
+              android:id="@+id/reminder_edit_notes"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:background="@color/apploizc_transparent_color"
+              android:hint="Write here..."
+              android:textColorHint="@color/round_empty_gray" />
+      </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_border"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp">
+                <appface.brongo.uiwidget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/reminder_add_time"
+                    android:text="Add time"
+                    android:padding="20dp"
+                    app:customFont="lato_bold.ttf"/>
+                <appface.brongo.uiwidget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_blue_btn"
+                    android:text="12:30 pm"
+                    android:textColor="@color/white"
+                    android:padding="5dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/time_text"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    app:customFont="lato_regular.ttf"/>
+            </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_border"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:padding="20dp">
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Reminder"
+                android:id="@+id/set_reminfer_text"
+                app:customFont="lato_bold.ttf"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/set_reminfer_text"
+                android:layout_marginTop="10dp">
+                <Button
+                    android:layout_width="70dp"
+                    android:layout_height="40dp"
+                    android:textAllCaps="false"
+                    android:text="15 min"
+                    android:textColor="@color/white"
+                    android:background="@drawable/rounded_blue_btn"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/reminder_15_btn"/>
+                <Button
+                    android:layout_width="70dp"
+                    android:layout_height="40dp"
+                    android:textAllCaps="false"
+                    android:text="30 min"
+                    android:textColor="@color/rounded_blue_btn_color"
+                    android:background="@drawable/rounded_blue_empty_btn"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/reminder_30_btn"/>
+                <Button
+                    android:layout_width="70dp"
+                    android:layout_height="40dp"
+                    android:textAllCaps="false"
+                    android:text="1 hour"
+                    android:textColor="@color/rounded_blue_btn_color"
+                    android:background="@drawable/rounded_blue_empty_btn"
+                    android:id="@+id/reminder_60_btn"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical"
+            android:background="@drawable/edit_border"
+            android:layout_marginTop="10dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <appface.brongo.uiwidget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add location"
+                    android:drawableLeft="@drawable/ic_location_icon"
+                    app:customFont="lato_bold.ttf"/>
+            </RelativeLayout>
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Meet at client location"
+                android:id="@+id/reminder_client_location"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/edit_hint_color"
+                app:customFont="lato_regular.ttf"/>
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Meet at property location"
+                android:id="@+id/reminder_property_location"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/edit_hint_color"
+                app:customFont="lato_regular.ttf"/>
+        </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/reminder_save_btn"
+            android:text="Save"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:background="@drawable/dialog_button"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+</ScrollView>

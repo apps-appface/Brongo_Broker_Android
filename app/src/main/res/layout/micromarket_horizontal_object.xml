@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingLeft="4sp"
+    android:paddingRight="4sp">
+    <appface.brongo.uiwidget.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hori_micromarket_name"
+        android:text="Marathahalli"
+        android:shadowColor="#73000000"
+        android:shadowDx="6.123233995736766e-17"
+        android:shadowDy="1"
+        android:shadowRadius="3"
+        android:textSize="16sp"
+        android:textColor="#190357"
+        app:customFont="lato_regular.ttf"/>
+
+</LinearLayout>

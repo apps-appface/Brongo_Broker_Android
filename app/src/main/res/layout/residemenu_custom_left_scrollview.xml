@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/drawer_back"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            android:padding="20dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:src="@drawable/ic_back_white" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/menu_relative"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/drawer_image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"/>
+
+            <appface.brongo.uiwidget.CustomTextView
+                android:id="@+id/drawer_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/drawer_image"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:customFont="lato_bold.ttf"/>
+
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:shadowColor="#73000000"
+                android:shadowDx="6.123233995736766e-17"
+                android:shadowDy="1"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/drawer_username"
+                android:shadowRadius="3"
+                android:textSize="12sp"
+                android:textColor="#000000"
+                android:letterSpacing="0.02"
+                android:gravity="center"
+                android:text="PLAN 1"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp"
+                android:background="#f2d40c"
+                android:id="@+id/drawer_plan_text"
+                app:customFont="lato_bold.ttf"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/drawer_username"
+                android:layout_below="@+id/drawer_username">
+                <LinearLayout
+                    android:id="@+id/drawer_rating_linear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <appface.brongo.uiwidget.CustomTextView
+                        android:id="@+id/drawer_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:shadowColor="#73000000"
+                        android:shadowDx="6.123233995736766e-17"
+                        android:shadowDy="1"
+                        android:gravity="center_vertical"
+                        android:shadowRadius="3"
+                        android:textSize="13sp"
+                        android:textColor="#99ffffff"
+                        android:text="4.1 Rating"
+                        android:padding="5dp"
+                        app:customFont="lato_regular.ttf"/>
+
+                    <RatingBar
+                        android:id="@+id/drawer_ratingBar"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:progressTint="@color/star_yellow"
+                        android:rating="3.0"
+                        android:stepSize="0.5" />
+
+                </LinearLayout>
+
+                <appface.brongo.uiwidget.CustomTextView
+                    android:id="@+id/drawer_uaddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/drawer_rating_linear"
+                    android:textSize="13sp"
+                    android:text="986123344,Hennur"
+                    android:shadowColor="#73000000"
+                    android:shadowDx="6.123233995736766e-17"
+                    android:shadowDy="1"
+                    android:shadowRadius="3"
+                    android:textColor="#b3e6c5e8"
+                    app:customFont="lato_regular.ttf"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/sv_left_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:id="@+id/layout_left_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </ScrollView>
+    </LinearLayout>
+    <appface.brongo.uiwidget.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/version"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentLeft="true"
+        android:shadowColor="#c0ffffff"
+        android:shadowDx="6.123233995736766e-17"
+        android:shadowDy="1"
+        android:textColor="#b3e6c5e8"
+        android:layout_above="@+id/patent_text"
+        app:customFont="lato_regular.ttf"
+        />
+    <appface.brongo.uiwidget.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/patent_pending"
+        android:gravity="center"
+        android:id="@+id/patent_text"
+        android:shadowColor="#c0ffffff"
+        android:shadowDx="6.123233995736766e-17"
+        android:shadowDy="1"
+        android:textColor="#b3e6c5e8"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="60sp"
+        app:customFont="lato_regular.ttf"
+        />
+
+</RelativeLayout>

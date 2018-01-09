@@ -1,0 +1,137 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#ededed"
+    tools:context="appface.brongo.fragment.SettingFragment">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edit_border">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/setting_linear"
+        android:paddingBottom="65dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp">
+
+        <appface.brongo.uiwidget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:shadowColor="#c0ffffff"
+            android:shadowDx="6.123233995736766e-17"
+            android:shadowDy="1"
+            android:text="Notification Settings"
+            android:textColor="#163d70"
+            android:textSize="20sp"
+            app:customFont="lato_bold.ttf"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:weightSum="1">
+
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:lineSpacingExtra="6.7sp"
+                android:shadowColor="#c0ffffff"
+                android:shadowDx="6.123233995736766e-17"
+                android:shadowDy="1"
+                android:text="Offer Notifications"
+                android:textColor="#6e6e6e"
+                android:textSize="16.7sp"
+                app:customFont="lato_regular.ttf"/>
+
+            <com.kyleduo.switchbutton.SwitchButton
+                android:id="@+id/setting_offer_btn"
+                android:layout_width="46dp"
+                android:layout_height="27dp"
+                android:layout_alignParentRight="true"
+                android:checked="true"
+                app:kswThumbColor="@color/appColor"
+                app:kswBackColor="#ededed"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:shadowColor="#c0ffffff"
+                android:shadowDx="6.123233995736766e-17"
+                android:shadowDy="1"
+                android:layout_centerVertical="true"
+                android:textSize="16.7sp"
+                android:textColor="#6e6e6e"
+                android:lineSpacingExtra="6.7sp"
+                android:text="Builder Projects Notifications"
+                app:customFont="lato_regular.ttf"
+                />
+
+            <com.kyleduo.switchbutton.SwitchButton
+                android:id="@+id/setting_builder_btn"
+                android:layout_width="46dp"
+                android:layout_height="27dp"
+                android:layout_alignParentRight="true"
+                android:checked="true"
+                app:kswThumbColor="@color/appColor"
+                app:kswBackColor="#ededed"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:shadowColor="#c0ffffff"
+                android:shadowDx="6.123233995736766e-17"
+                android:shadowDy="1"
+                android:textSize="16.7sp"
+                android:textColor="#6e6e6e"
+                android:layout_centerVertical="true"
+                android:lineSpacingExtra="6.7sp"
+                android:text="Notification Sound"
+                app:customFont="lato_regular.ttf"
+                />
+            <com.kyleduo.switchbutton.SwitchButton
+                android:id="@+id/setting_noti_sound"
+                android:layout_width="46dp"
+                android:layout_height="27dp"
+                android:layout_alignParentRight="true"
+                android:checked="true"
+                app:kswThumbColor="@color/appColor"
+                app:kswBackColor="#ededed" />
+        </RelativeLayout>
+        <SeekBar
+            android:id="@+id/setting_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="100"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
+            android:layout_alignParentTop="true"
+            android:thumb="@drawable/seekbar_thumb"
+            android:theme="@style/SeekBarColor"
+            />
+    </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

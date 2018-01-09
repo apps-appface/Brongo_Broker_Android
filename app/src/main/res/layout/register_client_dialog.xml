@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:background="@drawable/edit_border"
+        android:padding="30dp">
+    <appface.brongo.uiwidget.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Register Client"
+        android:shadowColor="#c0ffffff"
+        android:shadowDx="6.123233995736766e-17"
+        android:shadowDy="1"
+        android:textSize="20sp"
+        android:textColor="#88288f"
+        android:gravity="center"
+        app:customFont="lato_bold.ttf"
+        />
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/inventory_spinner_client1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="SELECT CLIENT"
+        app:met_textColorHint="@color/edit_hint_color"
+        app:met_underlineColor="#000"
+        app:met_textColor="@color/edit_text_color"
+        app:met_floatingLabelTextColor="@color/edit_hint_color"
+        app:met_floatingLabel="normal"
+        android:visibility="gone"/>
+    <appface.brongo.uiwidget.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OR"
+        android:shadowColor="#73000000"
+        android:shadowDx="6.123233995736766e-17"
+        android:shadowDy="1"
+        android:shadowRadius="3"
+        android:textSize="16sp"
+        android:textColor="#8f8f8f"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        app:customFont="lato_regular.ttf"
+        android:visibility="gone"
+        />
+    <appface.brongo.uiwidget.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="+ADD NEW CLIENT"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:shadowColor="#73000000"
+        android:shadowDx="6.123233995736766e-17"
+        android:shadowDy="1"
+        android:shadowRadius="3"
+        android:textSize="16sp"
+        android:textColor="#1d4f91"
+        android:layout_marginTop="20dp"
+        app:customFont="lato_regular.ttf"
+        android:id="@+id/client_register_add"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/manual_register_linear"
+        android:visibility="gone">
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_client_clientname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/edit_hint_color">
+
+        <EditText
+            android:id="@+id/client_name_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="CLIENT NAME"
+            android:textColor="@color/edit_text_color"
+            app:backgroundTint="@color/black" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_client_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/edit_hint_color">
+
+        <EditText
+            android:id="@+id/client_mobile_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="MOBILE NUMBER"
+            android:textColor="@color/edit_text_color"
+            app:backgroundTint="@color/black" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_client_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/edit_hint_color">
+
+        <EditText
+            android:id="@+id/client_email_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="EMAIL ID"
+            android:textColor="@color/edit_text_color"
+            app:backgroundTint="@color/black" />
+    </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/client_register_cancel"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="Cancel"
+            android:background="@drawable/gray_dialog_btn"
+            android:layout_marginRight="10dp"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/client_register_register"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="Register"
+            android:background="@drawable/dialog_button"
+            android:layout_marginRight="10dp"/>
+
+    </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

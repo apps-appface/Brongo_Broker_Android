@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appface.brongo.uiwidget.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/review_text_review"
+        android:background="@drawable/rounded_purple"
+        android:gravity="center"
+        android:textSize="13sp"
+        android:padding="5sp"
+        android:layout_marginLeft="10dp"
+        android:textAllCaps="false"
+        android:textColor="@color/edit_hint_color"
+    >
+</appface.brongo.uiwidget.CustomTextView>

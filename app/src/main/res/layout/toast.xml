@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/toast_layout_root"
+    android:gravity="center">
+    <appface.brongo.uiwidget.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/toast_text"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/toast_back"
+        android:paddingTop="8dp"
+        android:textSize="15sp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:text="This is custom "
+        app:customFont="lato_regular.ttf"/>
+
+</LinearLayout>

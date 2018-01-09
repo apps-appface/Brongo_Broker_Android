@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1027954730023",
+    "firebase_url": "https://fir-brongo.firebaseio.com",
+    "project_id": "firebase-brongo",
+    "storage_bucket": "firebase-brongo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027954730023:android:ef3cc21a4ecfb61e",
+        "android_client_info": {
+          "package_name": "appface.brongo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027954730023-deed6uothsr8917r2qq21u40hsu6djse.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1027954730023-6atn7hribqkp98grrtvdcbpm7l16hi1g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAydpReLqvhcy9RnJu1HsC8RDAsxsrzVDQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/expand_group_child"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="10dp"
+        android:id="@+id/child_linear"
+        >
+    <appface.brongo.uiwidget.CustomTextView
+        android:id="@+id/expandedListItem"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:shadowColor="#c0ffffff"
+        android:shadowDx="6.123233995736766e-17"
+        android:shadowDy="1"
+        android:textSize="15sp"
+        android:gravity="left"
+        android:textColor="#e63f3f3f"
+        app:customFont="lato_regular"/>
+    </LinearLayout>
+</LinearLayout>

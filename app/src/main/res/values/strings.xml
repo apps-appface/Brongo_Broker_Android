@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Brongo Broker</string>
+    <string name="default_media_location_folder">Brongo</string>
+    <string name="sender_id">1027954730023</string>
+    <string name="comp_type">TYPE OF COMPANY</string>
+    <string name="select_date">Select Date</string>
+    <string name="select_time">Select Time</string>
+    <string name="otp_text">SMS verification code has been \n sent to:</string>
+    <string name="inventory_register_tc">See Terms &amp; Conditions</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_pop_message">
+Congratulations! You can now visit the Brongo \n office at the specified time for the original \n verification of all the submitted documents.
+    </string>
+    <string name="office_address">BRONGO \n #203, 4th cross, 3rd Block, above \n Filter Coffee, HRBR  layout, \n Bangalore - 560 043 \n Brongo Support:9590269269</string>
+    <string name="version">Version 1.0 | Turnip Technolgies Pvt Ltd</string>
+    <string name="patent_pending">Patent Pending for 201741031339</string>
+    <string name="about_us_tagline">A product of Turnip Technologies \n Version 1.0</string>
+    <string name="understand_rating">Ratings allow us to ensure a great
+experience with Brongo for both broker and client. Just like you rate client, client can rate broker on scale of 1-5 Stars after each deal closure.</string>
+    <string name="rating_calculation">Your rating is an average of the rating you’ve received from client, and is measure out of 5 stars. Ratings are anonymous, so neither you nor your client will ever see an individual rating you’ve
+received. Very few people have a perfect rating. So don’t despair if your average isn’t 5.0. Things that seem small to you can matter to your Client – it’s easy to accidentally be late for a meeting. Knowing a little more about the things that affect a client’s happiness can help you be a 5-start client.</string>
+    <string name="rating_quality">Clients appreciate those brokers who carry below qualities:
+- Good Local Knowledge.
+- Always on time
+- Great attitude
+- Organised
+- Good negotiator
+- Great advisor
+- Professionalism</string>
+    <string name="rating_matters">Ratings foster mutual respect between brokers and clients. This strengthens our community and helps everyone get the most from Brongo. Just as you expect client to treat you with respect, clients hope to feel the same acknowledgement from broker. A high rating is about more than bragging right among your friends; it’s a sign that people enjoyed their time with you. Keep up the good work.</string>
+    <string name="about_us_content">Indian real estate takes a digital step forward. We bring real estate closer to you with an app dedicated to put you in touch with real estate brokers in the shortest time possible. Now, no more running around to find the right broker, because we give it all to you in your phone. Now find expert help for your real estate needs using the Brongo app.
+</string>
+    <string name="medal_note">Note: Client will see these medals on their screen before picking you, out of three brokers. So the medal tag gives you a higher chance of a client picking you.</string>
+    <string name="broker_tag">Broker Tag</string>
+    <string name="criteria">Criteria</string>
+    <string name="bronze">Bronze</string>
+    <string name="bronze_desc">If a broker receives 20 times 5 Star rating from clients</string>
+    <string name="silver">Silver</string>
+    <string name="silver_desc">If a broker receives 40 times 5 Star rating from clients</string>
+    <string name="gold">Gold</string>
+    <string name="gold_desc">If a broker receives 50 times 5 Star rating from clients</string>
+
+</resources>

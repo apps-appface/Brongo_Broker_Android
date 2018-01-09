@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/drawer_background"
+    android:scrollbars="none"
+    android:padding="20dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <appface.brongo.uiwidget.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reason for Rejection"
+        android:gravity="center"
+        android:id="@+id/reject_text"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        app:customFont="lato_regular.ttf"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit_border"
+            android:gravity="center"
+            android:layout_below="@+id/reject_text"
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/reject_client_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp" />
+
+            <appface.brongo.uiwidget.CustomTextView
+                android:id="@+id/reject_client_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="Katey D'couto"
+                android:shadowColor="#c0ffffff"
+                android:shadowDx="6.123233995736766e-17"
+                android:shadowDy="1"
+                android:textSize="23.3sp"
+                android:textColor="#163d70"
+                app:customFont="lato_bold.ttf"/>
+
+            <appface.brongo.uiwidget.CustomTextView
+                android:id="@+id/reject_client_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Koramangala"
+                android:shadowColor="#c0ffffff"
+                android:shadowDx="6.123233995736766e-17"
+                android:shadowDy="1"
+                android:textSize="16.7sp"
+                android:textColor="#8e8e8e"
+                app:customFont="lato_regular.ttf"/>
+
+            <LinearLayout
+                android:id="@+id/noti_star_linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <RatingBar
+                    android:id="@+id/reject_dialog_ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:attr/ratingBarStyleIndicator"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:layout_gravity="center_horizontal"
+                    android:progressTint="@color/star_yellow"
+                    android:rating="3.0"
+                    android:stepSize="0.5" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/reject_checkbox1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="10dp"
+                android:text="I'm busy working on \n other leads"
+                android:textColor="#c1b9c2"
+                android:textSize="18dp" />
+
+            <CheckBox
+                android:id="@+id/reject_checkbox2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="10dp"
+                android:text="Budget is low"
+                android:textColor="#c1b9c2"
+                android:textSize="18dp" />
+
+            <CheckBox
+                android:id="@+id/reject_checkbox3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="10dp"
+                android:text="Difficult to find property"
+                android:textColor="#c1b9c2"
+                android:textSize="18dp" />
+
+            <Button
+                android:id="@+id/lead_reject_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/dialog_button"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textSize="18dp"
+                android:text="Submit" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    </ScrollView>

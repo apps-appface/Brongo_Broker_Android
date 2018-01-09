@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="30dp"
+        android:background="@drawable/edit_border">
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:padding="4dp"
+        android:src="@drawable/ic_remove"
+        android:id="@+id/client_accept_dialog_close"
+        android:layout_gravity="right"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"/>
+    <appface.brongo.uiwidget.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#c0ffffff"
+        android:shadowDx="6.123233995736766e-17"
+        android:shadowDy="1"
+        android:textSize="23.3sp"
+        android:textColor="#88288f"
+        android:lineSpacingExtra="0sp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Thank You!"
+        app:customFont="lato_bold.ttf"
+        />
+    <appface.brongo.uiwidget.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#c0ffffff"
+        android:shadowDx="6.123233995736766e-17"
+        android:shadowDy="1"
+        android:layout_marginTop="20dp"
+        android:textSize="13.7sp"
+        android:textColor="#6e6e6e"
+        android:lineSpacingExtra="6.7sp"
+        android:gravity="center_horizontal"
+        android:text="Thanks for your bid, you will get a confirmation once client accepts your bid"
+        app:customFont="lato_regular.ttf"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ok Got it!"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:id="@+id/client_accept_dialog_btn"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/dialog_button"
+        />
+
+    </LinearLayout>
+</LinearLayout>

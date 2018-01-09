@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="appColor">#88288f</color>
+    <color name="round_empty_gray">#bfbebe</color>
+    <color name="notification_color">#E6E2E2</color>
+    <color name="round_empty_blue">#1bb1df</color>
+    <color name="edit_hint_color">#1d4f91</color>
+    <color name="edit_text_color">#190357</color>
+    <color name="edit_line">#0f2848</color>
+    <color name="rounded_blue_btn_color">#1e4f91</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="status_green">#2bb442</color>
+    <color name="status_red">#e11b1b</color>
+    <color name="red">#ff0000</color>
+    <color name="logo_blue">#255494</color>
+    <color name="blue">#294b92</color>
+    <color name="seekbar_color">#717171</color>
+    <color name="real_state_color">#cc000000</color>
+    <color name="star_yellow">#f2d40c</color>
+    <color name="half_transparent">#80ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="switch_off">#7e7a7e</color>
+    <color name="refer_gray">#99ffffff</color>
+
+</resources>

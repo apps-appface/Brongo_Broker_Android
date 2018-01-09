@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/drawer_background"
+    tools:context="appface.brongo.fragment.WalkThrough1">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#73000000"
+        android:shadowDx="6.123233995736766e-17"
+        android:shadowDy="1"
+        android:shadowRadius="3"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        android:letterSpacing="0.03"
+        android:lineSpacingExtra="-8.2sp"
+        android:gravity="center_horizontal"
+        android:text="Walkthrough"
+        />
+
+</RelativeLayout>

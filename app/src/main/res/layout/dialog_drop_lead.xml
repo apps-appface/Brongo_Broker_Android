@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="20dp"
+    android:gravity="center"
+    android:background="@drawable/drawer_background">
+    <appface.brongo.uiwidget.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:text="Reason for Drop out"
+        android:gravity="center"
+        app:customFont="lato_regular.ttf"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/edit_border"
+            android:id="@+id/rating_layout"
+            android:paddingTop="20dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:paddingBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/client_image_drop"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center" />
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/edit_text_color"
+                android:gravity="center"
+                android:id="@+id/client_name_drop"
+                app:customFont="lato_bold.ttf"/>
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/round_empty_gray"
+                android:gravity="center"
+                android:text="Koramangala"
+                android:id="@+id/client_address_drop"
+                app:customFont="lato_regular.ttf"/>
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unable to match client requirements"
+                android:id="@+id/drop_check1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/round_empty_gray"
+                />
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Personal Emergency"
+                android:id="@+id/drop_check2"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/round_empty_gray"
+                />
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I dont like the client"
+                android:id="@+id/drop_check3"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/round_empty_gray"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dialog_button"
+                android:layout_gravity="center"
+                android:id="@+id/drop_Submit"
+                android:text="Submit"
+                android:paddingRight="60dp"
+                android:paddingLeft="60dp"
+                android:textAllCaps="false"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+        <appface.brongo.uiwidget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/premium_back"
+            android:layout_alignTop="@+id/rating_layout"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/black"
+            android:layout_marginTop="34dp"
+            android:text="PREMIUM"
+            android:gravity="center"
+            android:id="@+id/drop_plan"
+            android:padding="5dp"
+            android:layout_marginRight="6dp"
+            android:layout_alignParentRight="true"
+            app:customFont="lato_bold.ttf"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

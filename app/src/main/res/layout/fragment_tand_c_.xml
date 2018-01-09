@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="appface.brongo.fragment.AboutUsFragment"
+    android:background="#ededed">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/edit_border"
+        android:layout_margin="20dp"
+        android:padding="20dp">
+
+        <appface.brongo.uiwidget.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="left"
+            android:id="@+id/terms_condition_text"
+            android:shadowColor="#c0ffffff"
+            android:textSize="16sp"
+            android:textColor="#6e6e6e"
+            app:customFont="lato_regular.ttf"/>
+    </RelativeLayout>
+</RelativeLayout>
+

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="80dp"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:id="@+id/client_status_view3"
+            android:layout_weight="1"
+            android:background="@android:color/black"
+            />
+        <ImageView
+            android:id="@+id/client_status_view1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bulletin_dot" />
+
+        <ImageView
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/client_status_view2"
+            android:background="@android:color/black"
+            />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/client_status_title"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:textColor="@color/round_empty_gray"
+        android:text="google"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/client_status_reminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:textColor="@color/appColor"
+        android:text="Set Reminder"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</LinearLayout>

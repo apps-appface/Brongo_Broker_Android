@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="faq_header1">
+        <item> What is Brongo?</item>
+        <item> What procedure do I need to follow to complete my registration process and be a part of brongo?</item>
+        <item>How do I get a lead and connect with a client?</item>
+        <item> Benefits of using Brongo?</item>
+        <item> Is there a lead limit?</item>
+        <item> What will happen if I don’t accept the lead?</item>
+        <item> How does the bidding process work</item>
+        <item> What is B-Chat?</item>
+        <item> How can I refer someone and how does a referral work?</item>
+        <item> What is a medal, categorisation and its usage?</item>
+        <item>What is mode, what happens if I change my mode?</item>
+        <item> How can I add my personal inventory and where can I find it?</item>
+        <item>Where can I find builder inventory?</item>
+        <item> How can I register a client and what are their benefits?</item>
+    </string-array>
+    <string-array name="faq_child1">
+        <item>Brongo is a technical platform which helps people to connect with the best local and curated broker and fulfil their real estate needs.</item>
+        <item>Download the brongo app and register yourself by submitting all the mentioned documents. After submitting the documents, the app will will ask you to select your preferred date and time. Below it the location of your nearest brongo office is shown, where you need to complete the background verification with original documents. At the brongo office, your documents are cross checked and will take 20 days for background verification. Once the background verification is completed, you will be informed to use the app and become a part of Brongo.
+</item>
+        <item>Brongo generates leads using a different marketing strategy and these leads are passed to you and to other brokers based on the micromarket. Once a lead is passed, you will receive an alert on your phone, if you are confident of closing the requirement, you accept it and get connected with the client.\n
+
+*Note: To receive leads, make sure your status is in “Active mode” You can hold a maximum of 3+3 leads.
+</item>
+        <item>
+</item>
+        <item>Yes, there is a lead limit:\n
+Maximum you can hold is 3+3 leads.
+</item>
+        <item>No action will be taken by Brongo until you exceed the time frame. Later you will recieve a call from brongo to resolve the issue of you not accepting the lead. We believe every lead is an opportunity, so capitalize with maximum number of leads or if you think something is wrong with the client’s requirement then reject it and give your feedback. It will help brongo to inform the client about where they are going wrong.
+</item>
+        <item>Brongo generates leads using a different medium of marketing and these leads are categorised based on the micro market. After categorisation, these leads are sent to all the brokers who come under that specific micro market. Every broker will recieve a notification with all necessary requirements and based on the brokers capability they can accept or reject the lead. If you accept the lead then only client\'s personal details will be shared with you. If you reject it then you will see a popup asking for the reason of rejection.
+</item>
+        <item>B-Chat stands for Brongo chat. This is one of the USP of brongo which helps a client to hide their identity while connecting with the broker.
+</item>
+        <item>You can refer someone by clicking on Refer a Brokeron your home screen. It will take you to refer a broker screenunder which you can refer any real estate broker by manually entering their number, selecting contact from phone book or from whatsapp. Once a referral is done, brongo will reach out to your referred broker. After your referred broker is successfully on board then you are rewarded with brongo money.
+</item>
+        <item>Medal is an award given to brokers by brongo. It is done based on the 5-starts rating that a broker receives from clients. Below are the Categories:
+</item>
+        <item>Mode is a functionality to change your work status from Active to Inactive or vice versa.
+Below are the actions which take place when you change your mode:
+Active mode to inactive mode:- You will stop receiving leads from brongo.
+Inactive mode to Active mode:- You will start receiving leads from brongo.
+</item>
+        <item>You can add inventory by clicking the plus sign (+) on your home screen. This will take you to \'add inventory\' screen where you can feed all the information in the inventory and add it. To find your personal inventory, click on 'menu' to the top left side of the screen and then click on \'inventory\'. It will lead you to \'inventory list\' where your personal and builder inventory is listed.
+</item>
+        <item>To find builder inventor, click on \'menu\' to the top left side of the screen and then click on inventory. It will lead you to \'inventory list\' where your personal and builder inventory will be listed. Click on \'builder inventory\' and you will be able to see all the details in the builder inventory.
+</item>
+        <item>You can register a client by going to the \'builder inventory\' under which you will find an option to register client. Click on \'Register Client\' and it will promt you to fill details of the client. Once you fill these details, click on register and your registration process is done. The benefits are, once you register your client, the data of your client will be passed to the builder database. Once you complete this process, no other broker can take your client and hold business deals with that builder.
+</item>
+    </string-array>
+    
+    <string-array name="getlead_item">
+        <item>3 leads for \'rent my property\' and \'sell my property\'</item>
+ <item>3 leads for \'looking for rent\' and \'looking to buy\'
+</item>
+    </string-array>
+    <string-array name="brongo_benefit_list">
+        <item>Resolving Brokers current state and issues they face in every deal.</item>
+        <item>To specify how the on-line players are selling the client data to multiple brokers at once.</item>
+        <item>Real-time connection with direct clients.</item>
+        <item>You will get to work only in markets which you are confident/strong.</item>
+        <item>Confirmed/assured commission on each and every deal even before you take up the deal.</item>
+        <item>Direct tie-up with all the builders and their projects specific to assigned local market.</item>
+        <item>You can add manual inventory to ensure the inventory gets pulled when you get a lead from the client.</item>
+        <item>You get to rate client and write reviews.</item>
+    </string-array>
+    <string-array name="lead_limi_list">
+        <item>3 leads \'for rent my property\' and \'sell my property\'</item>
+        <item>3 leads for \'looking for rent\' and \'looking to buy\'
+</item>
+        <item>To receive more leads after reaching 3 you have to close the respective leads first</item>
+    </string-array>
+    <string-array name="faq_two">
+        <item>How do I update the deal status?
+</item>
+        <item> What should I do if client is not interested in buying?
+</item>
+        <item> How do I get more leads?
+</item>
+        <item> What should I do if a client is inactive on communication mode they have selected?
+</item>
+        <item> What will happen if a client drops me during the deal?
+</item>
+    </string-array>
+    <string-array name="faq_two_child">
+        <item>You can change the deal status by clicking on the clients profile on your home screen. It will lead you to complete the clients details with all different statuses where you can change the status of the particular deal.
+</item>
+        <item>Click on clients profile on your home screen which will lead you to complete clients\' details. At the bottom of this screen click on \'drop out\' ,followed by feedback process you can drop the client.</item>
+        <item>If you have already reached 3 sell/rent your property+ 3 buy/ looking for rent leads then you can\'t get more. The only way to receive more leads is by closing them. Once you close one, you will be eligible to receive one more and likewise.
+</item>
+        <item>You can reach out to brongo support team. They will reach out to client and help you reconnect with the client.
+</item>
+        <item>You will get a notification with a reason, and client details will be out of your deal tracker.</item>
+    </string-array>
+    <string-array name="faq_three">
+        <item> How do I rate the client?
+</item>
+        <item> Who will pays me after the execution of the deal?
+</item>
+        <item> Who pays my rental commission and when?
+</item>
+        <item> What should I do after execution of the deal?
+</item>
+        <item> What are the Legal consequences if a client does'nt pay the brokerage?
+</item>
+    </string-array>
+    <string-array name="faq_three_child">
+        <item>There are 2 places where you need to rate the Client:
+</item>
+        <item>Your commission will be directly paid by seller and buyer. In case of buy/sell, Brongo will not participate in any transaction.</item>
+        <item>Rental commission will be routed through Brongo, so you receive your rental commission through brongo. Once we receive a commission from client and within few working days, your commission will be credited to your account.
+</item>
+        <item>Congratulations! If you have executed the deal, below are the steps involved after the execution:
+</item>
+        <item>You can legally claim the commission based on the T&amp;C agreed by the client.
+</item>
+    </string-array>
+    <string-array name="faq_rate_extra">
+        <item>Lead drop during the transaction: There are 2 scenarios to this:\n
+(1) In case you drop the lead, reason being you don\'t like the clienta feedback form will pop up with 5 star rating, where you can rate the client out of 5 stars and give the feedback on client's behaviour.\n
+(2) Second case where you drop because of your own personal reason. In this case your rating will drop by half a star.
+</item>
+        <item>After deal closure:\n
+Once you close the deal, a feedback form will pop up with 5 star rating where you can rate client out of 5 star and give feedback on client.
+</item>
+    </string-array>
+    <string-array name="faq_after_execution">
+        <item>If it is selling/buying the property: Receive the commission from the client. For renting: commission should be collected from brongo.</item>
+        <item>Next you give genuine feedback and ratin the client so other brokers and Brongo will get to know more about the client and take the right action accordingly.
+</item>
+    </string-array>
+    <string-array name="walkthrough_title">
+        <item>Direct and verified leads from clients at your finger tips
+</item>
+        <item>Confirmed commissions from clients
+</item>
+        <item>Location specific deals
+</item>
+        <item>Your feedback on clients matter
+</item>
+        <item>Get connected to builders in your location without any hassle
+</item>
+        <item>Brongo Support Team
+</item>
+    </string-array>
+    <string-array name="walkthrough_subtitle">
+        <item>We connect brokers directly to high quality, paying customers in real-time!
+</item>
+        <item>Detailed customer requirements and the confirmed commission on each deal - upfront - before you accept any deal.</item>
+        <item>We let you choose 3 micro-markets, or localities where you know the BEST properties and are confident of closing deals.
+</item>
+        <item>Once you close the deal, you get a chance to rate and review clients - just like they get a chance to rate your performance.
+</item>
+        <item>We tie up with builders and populate your feed with info about upcoming projects - with NO channel partner registrations required.
+</item>
+        <item>To support from the start till the closure of the deal.
+</item>
+    </string-array>
+<string-array name="tc_array">
+    <item>
+        Lorem ipsum dolor sit amet, omnis congue prompta vis an, amet meliore pri eu. Eu causae tibique quo, cu mei admodum deterruisset, eam id case atomorum. Prima aliquip interpretaris ut cum, ius ea nostro saperet detraxit. Accusata gloriatur delicatissimi id has. Et mei elit aliquam moderatius, ei graece quidam doctus nam.
+
+Facilis dissentiet vix an, has te facilisi eleifend appellantur. Verear patrioque splendide eos ex, cu vix rebum noster praesent. Quodsi epicuri posidonium in eos, ut sea commodo appareat percipitur. Ei referrentur definitionem vis, putant tacimates definitionem ei has. Putent detracto ne pri. Et aperiam salutandi persecuti sit, sea docendi patrioque eu, graece denique copiosae eu mea.
+    </item>
+    <item>
+Lorem ipsum dolor sit amet, omnis congue prompta vis an, amet meliore pri eu. Eu causae tibique quo, cu mei admodum deterruisset, eam id case atomorum. Prima aliquip interpretaris ut cum, ius ea nostro saperet detraxit. Accusata gloriatur delicatissimi id has. Et mei elit aliquam moderatius, ei graece quidam doctus nam.
+
+Facilis dissentiet vix an, has te facilisi eleifend appellantur. Verear patrioque splendide eos ex, cu vix rebum noster praesent. Quodsi epicuri posidonium in eos, ut sea commodo appareat percipitur. Ei referrentur definitionem vis, putant tacimates definitionem ei has. Putent detracto ne pri. Et aperiam salutandi persecuti sit, sea docendi patrioque eu, graece denique copiosae eu mea.
+    </item>
+    <item>
+        Lorem ipsum dolor sit amet, omnis congue prompta vis an, amet meliore pri eu. Eu causae tibique quo, cu mei admodum deterruisset, eam id case atomorum. Prima aliquip interpretaris ut cum, ius ea nostro saperet detraxit. Accusata gloriatur delicatissimi id has. Et mei elit aliquam moderatius, ei graece quidam doctus nam.
+
+Facilis dissentiet vix an, has te facilisi eleifend appellantur. Verear patrioque splendide eos ex, cu vix rebum noster praesent. Quodsi epicuri posidonium in eos, ut sea commodo appareat percipitur. Ei referrentur definitionem vis, putant tacimates definitionem ei has. Putent detracto ne pri. Et aperiam salutandi persecuti sit, sea docendi patrioque eu, graece denique copiosae eu mea.
+    </item>
+    <item>
+        Lorem ipsum dolor sit amet, omnis congue prompta vis an, amet meliore pri eu. Eu causae tibique quo, cu mei admodum deterruisset, eam id case atomorum. Prima aliquip interpretaris ut cum, ius ea nostro saperet detraxit. Accusata gloriatur delicatissimi id has. Et mei elit aliquam moderatius, ei graece quidam doctus nam.
+
+Facilis dissentiet vix an, has te facilisi eleifend appellantur. Verear patrioque splendide eos ex, cu vix rebum noster praesent. Quodsi epicuri posidonium in eos, ut sea commodo appareat percipitur. Ei referrentur definitionem vis, putant tacimates definitionem ei has. Putent detracto ne pri. Et aperiam salutandi persecuti sit, sea docendi patrioque eu, graece denique copiosae eu mea.
+    </item>
+</string-array>
+
+</resources>

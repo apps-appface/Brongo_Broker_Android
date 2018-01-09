@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+    <appface.brongo.uiwidget.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/require_hearder_one"
+        android:textColor="#64687f"
+        android:textSize="15sp"
+        app:customFont="lato_bold.ttf"/>
+    <appface.brongo.uiwidget.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="13sp"
+        android:id="@+id/require_child_one"
+        android:textColor="#64687f"
+        app:customFont="lato_regular.ttf"/>
+</LinearLayout>

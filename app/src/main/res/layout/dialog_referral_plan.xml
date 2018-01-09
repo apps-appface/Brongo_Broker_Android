@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_margin="30dp"
+        android:padding="20dp"
+        android:background="@drawable/edit_border"
+        >
+        <appface.brongo.uiwidget.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/appColor"
+            android:textSize="20sp"
+            android:text="Brokers referred &amp; INR per \n successful referral"
+            android:gravity="center"
+            app:customFont="lato_bold.ttf"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No of brokers"
+                android:textColor="@color/black"
+           android:layout_alignParentLeft="true"
+                android:textSize="15sp"
+                app:customFont="lato_bold.ttf"/>
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="INR per referral"
+                android:textColor="@color/black"
+                android:layout_alignParentRight="true"
+                android:textSize="15sp"
+                app:customFont="lato_bold.ttf"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/round_empty_gray"/>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/referee_plan_recycle"></android.support.v7.widget.RecyclerView>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:text="Ok,Got it!"
+            android:paddingRight="60dp"
+            android:paddingLeft="60dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/refer_plan_dialog_btn"
+            android:background="@drawable/dialog_button"/>
+    </LinearLayout>
+
+</LinearLayout>
