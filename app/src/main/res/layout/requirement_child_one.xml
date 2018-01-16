@@ -4,8 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:padding="10dp">
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +15,7 @@
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:textSize="13sp"
         android:id="@+id/require_child_one"
         android:textColor="#64687f"

@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +42,9 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
     private Context context;
    private Button his_open_btn,his_close_btn;
    private RecyclerView his_recycle1,his_recycle2;
+    private ImageView edit_icon,delete_icon,add_icon;
+    private TextView toolbar_title;
+    private Toolbar toolbar;
     private ArrayList<ApiModel.HistoricalModel> openList,closeList;
    private HistoricalAdapter adapter1,adapter2;
     private SharedPreferences pref;
@@ -92,6 +98,16 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
         his_close_btn = (Button)view.findViewById(R.id.historical_closed_btn);
         openList = new ArrayList<>();
         closeList = new ArrayList<>();
+        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar_title.setText("Historical Deals");
+        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        delete_icon =(ImageView) getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+        edit_icon.setVisibility(View.GONE);
+        delete_icon.setVisibility(View.GONE);
+        add_icon.setVisibility(View.GONE);
         adapter1 = new HistoricalAdapter(openList,context);
         adapter2 = new HistoricalAdapter(closeList,context);
         his_recycle1.setAdapter(adapter1);
@@ -172,5 +188,10 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
     @Override
     public void onTryReconnect() {
         populateList();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Utils.LoaderUtils.dismissLoader();
     }
 }

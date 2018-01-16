@@ -1,5 +1,7 @@
 package appface.brongo.model;
 
+import android.widget.ArrayAdapter;
+
 import java.util.ArrayList;
 
 /**
@@ -40,18 +42,78 @@ public class BuilderModel {
     public static class BuilderObject{
        String _id;
         String userId;
+        String url;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
         String projectName;
         String projectType;
+        String builderId;
         String landAreaUnits;
         String dimensionsOfBedRoom;
         String projectStatus;
         String availableStatus;
-        String efficiencyRatio;
-        String brochure;
-        String pricingSheet;
-        String floorPlan;
-        String imageFiles;
-        String elevationImage;
+
+        public String getBuilderId() {
+            return builderId;
+        }
+
+        public void setBuilderId(String builderId) {
+            this.builderId = builderId;
+        }
+
+        public String getMicroMarketId() {
+            return microMarketId;
+        }
+
+        public void setMicroMarketId(String microMarketId) {
+            this.microMarketId = microMarketId;
+        }
+
+        public String getCompanyName() {
+            return companyName;
+        }
+
+        public void setCompanyName(String companyName) {
+            this.companyName = companyName;
+        }
+
+        public String getSubLocation() {
+            return subLocation;
+        }
+
+        public void setSubLocation(String subLocation) {
+            this.subLocation = subLocation;
+        }
+
+        public ArrayList<String> getImageFiles() {
+            return imageFiles;
+        }
+
+        public void setImageFiles(ArrayList<String> imageFiles) {
+            this.imageFiles = imageFiles;
+        }
+
+        String microMarketId;
+        String companyName;
+        String subLocation;
+        float commission;
+
+        public float getCommission() {
+            return commission;
+        }
+
+        public void setCommission(float commission) {
+            this.commission = commission;
+        }
+
+        ArrayList<String> imageFiles;
 
         public String get_id() {
             return _id;
@@ -116,55 +178,6 @@ public class BuilderModel {
         public void setAvailableStatus(String availableStatus) {
             this.availableStatus = availableStatus;
         }
-
-        public String getEfficiencyRatio() {
-            return efficiencyRatio;
-        }
-
-        public void setEfficiencyRatio(String efficiencyRatio) {
-            this.efficiencyRatio = efficiencyRatio;
-        }
-
-        public String getBrochure() {
-            return brochure;
-        }
-
-        public void setBrochure(String brochure) {
-            this.brochure = brochure;
-        }
-
-        public String getPricingSheet() {
-            return pricingSheet;
-        }
-
-        public void setPricingSheet(String pricingSheet) {
-            this.pricingSheet = pricingSheet;
-        }
-
-        public String getFloorPlan() {
-            return floorPlan;
-        }
-
-        public void setFloorPlan(String floorPlan) {
-            this.floorPlan = floorPlan;
-        }
-
-        public String getImageFiles() {
-            return imageFiles;
-        }
-
-        public void setImageFiles(String imageFiles) {
-            this.imageFiles = imageFiles;
-        }
-
-        public String getElevationImage() {
-            return elevationImage;
-        }
-
-        public void setElevationImage(String elevationImage) {
-            this.elevationImage = elevationImage;
-        }
-
         public String getStatus() {
             return status;
         }
@@ -181,22 +194,6 @@ public class BuilderModel {
             this.propertyId = propertyId;
         }
 
-        public int getNoOfTowers() {
-            return noOfTowers;
-        }
-
-        public void setNoOfTowers(int noOfTowers) {
-            this.noOfTowers = noOfTowers;
-        }
-
-        public int getNoOfFloors() {
-            return noOfFloors;
-        }
-
-        public void setNoOfFloors(int noOfFloors) {
-            this.noOfFloors = noOfFloors;
-        }
-
         public int getLandArea() {
             return landArea;
         }
@@ -205,13 +202,6 @@ public class BuilderModel {
             this.landArea = landArea;
         }
 
-        public int getNoOfBasements() {
-            return noOfBasements;
-        }
-
-        public void setNoOfBasements(int noOfBasements) {
-            this.noOfBasements = noOfBasements;
-        }
 
         public int getNoOfBedRooms() {
             return noOfBedRooms;
@@ -229,14 +219,6 @@ public class BuilderModel {
             this.pricePerSQFT = pricePerSQFT;
         }
 
-        public int getNoOfCarPark() {
-            return noOfCarPark;
-        }
-
-        public void setNoOfCarPark(int noOfCarPark) {
-            this.noOfCarPark = noOfCarPark;
-        }
-
         public int getTotalBrokers() {
             return totalBrokers;
         }
@@ -244,53 +226,12 @@ public class BuilderModel {
         public void setTotalBrokers(int totalBrokers) {
             this.totalBrokers = totalBrokers;
         }
-
-        public ArrayList<String> getBankLoan() {
-            return bankLoan;
-        }
-
-        public void setBankLoan(ArrayList<String> bankLoan) {
-            this.bankLoan = bankLoan;
-        }
-
-        public ArrayList<String> getAmenities() {
-            return amenities;
-        }
-
-        public void setAmenities(ArrayList<String> amenities) {
-            this.amenities = amenities;
-        }
-
-        public ApiModel.MicroMarketModel getLocation() {
-            return location;
-        }
-
-        public void setLocation(ApiModel.MicroMarketModel location) {
-            this.location = location;
-        }
-
-        public ArrayList<BuilderBroker> getAcceptedBrokers() {
-            return acceptedBrokers;
-        }
-
-        public void setAcceptedBrokers(ArrayList<BuilderBroker> acceptedBrokers) {
-            this.acceptedBrokers = acceptedBrokers;
-        }
-
         String status;
         String propertyId;
-        int noOfTowers;
-        int noOfFloors;
         int landArea;
-        int noOfBasements;
         int noOfBedRooms;
         int pricePerSQFT;
-        int noOfCarPark;
         int totalBrokers;
-        ArrayList<String> bankLoan;
-        ArrayList<String> amenities;
-   ApiModel.MicroMarketModel location;
-   ArrayList<BuilderBroker> acceptedBrokers;
     }
 
     public static class BuilderBroker{

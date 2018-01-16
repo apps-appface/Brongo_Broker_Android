@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -15,10 +16,13 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
@@ -36,7 +40,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.json.JSONException;
@@ -51,6 +57,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 import appface.brongo.R;
 import appface.brongo.activity.AutoFillActivity;
@@ -58,6 +66,7 @@ import appface.brongo.activity.DocumentUploadActivity;
 import appface.brongo.activity.MainActivity;
 import appface.brongo.activity.MapActivity;
 import appface.brongo.activity.Menu_Activity;
+import appface.brongo.model.SignUpModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
@@ -80,21 +89,30 @@ import retrofit2.Response;
  */
 public class AddInventoryFragment extends Fragment implements NoInternetTryConnectListener{
     private Context context;
+    private ArrayAdapter<String> marketAdapter;
+   private ArrayList<String> poc_list;
+    private List<String> listPermissionsNeeded;
+    public static final int REQUEST_CAMERA_AND_WRITABLE_PERMISSIONS = 111;
+    private static final int REQUEST_CAMERA = 200;
+    private static final int SELECT_FILE = 201;
+   private ArrayList<SignUpModel.MarketObject> marketlist;
     private static final String TAG =AddInventoryFragment.class.getName() ;
-    private MaterialBetterSpinner client_spinner,prop_type_spinner,prop_status_spinner,bhk_spinner,sub_property_spinner ;
+    private MaterialBetterSpinner client_spinner,prop_type_spinner,prop_status_spinner,bhk_spinner,sub_property_spinner,marketSpinner ;
     private ArrayAdapter<String> clientAdapter,prop_typeAdpter,bhkAdapter,propStatusAdapter,subprop_typeAdpter;
     private EditText inventory_budget,inventory_client_name,inventory_mobile,inventory_email,inventory_notes;
     public static EditText inventory_location;
+    private Toolbar toolbar;
     private TextView inventory_addImage,inventory_add_more,imageName1,imageSize1,imageName2,imageSize2,imageName3,imageSize3,toolbar_title;
     private LinearLayout linearImage1,linearImage2,linearImage3;
     private Button relativeRemove1,relativeRemove2,relativeRemove3;
     private RelativeLayout relativeUpload;
-    private final int STORAGE_PERMISSION_REQUEST = 100;
     private ArrayList<File> fileList;
-    private ImageView inventory_toolbar_delete,inventory_toolbar_edit;
-    private String[] inventory_clientlist = {"RENT","BUY","SELL","RENT_OUT"};
+
+    private ImageView inventory_toolbar_delete,inventory_toolbar_edit,add_icon;
+    private ArrayList<String> inventory_clientlist;
     private String[] inventory_proplist = {"Residential","Commercial"};
-    private int Gallery_CODE = 30,i=0;
+    private HashMap<String,String> hash;
+    private int i=0;
     private String emailPattern;
     private Button save_inventory,cancel_inventory;
     private String filename,filename1,filename2,filename3,compressedImagePath;
@@ -168,8 +186,16 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
     private void initialise(View view) throws MalformedURLException {
         context = getActivity();
         pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
+        hash = new HashMap();
+        inventory_clientlist = new ArrayList<>();
+        poc_list = new ArrayList<>();
+        client_spinner = (MaterialBetterSpinner)view.findViewById(R.id.inventory_spinner_client);
+        setClientList();
+        fetchMicromarket();
          emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         fileList = new ArrayList<>();
+        marketlist = new ArrayList<>();
+        marketSpinner = (MaterialBetterSpinner)view.findViewById(R.id.inventory_spinner_location);
         invent_email_layout = (TextInputLayout)view.findViewById(R.id.input_layout_inventory_email);
         invent_phone_layout = (TextInputLayout)view.findViewById(R.id.input_layout_inventory_mobile);
         inventory_budget = (EditText)view.findViewById(R.id.inventory_budget);
@@ -182,7 +208,6 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         inventory_notes = (EditText)view.findViewById(R.id.inventory_add_notes);
         inventory_addImage = (TextView)view.findViewById(R.id.inventory_add_image);
         relativeUpload = (RelativeLayout) view.findViewById(R.id.relative_upload);
-        client_spinner = (MaterialBetterSpinner)view.findViewById(R.id.inventory_spinner_client);
         sub_property_spinner = (MaterialBetterSpinner)view.findViewById(R.id.inventory_spinner_subproptype);
         prop_type_spinner = (MaterialBetterSpinner)view.findViewById(R.id.inventory_spinner_proptype);
         bhk_spinner = (MaterialBetterSpinner)view.findViewById(R.id.inventory_spinner_bhk);
@@ -197,10 +222,12 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         imageSize1 = (TextView)view.findViewById(R.id.inventory_image_size1);
         imageSize2 = (TextView)view.findViewById(R.id.inventory_image_size2);
         imageSize3 = (TextView)view.findViewById(R.id.inventory_image_size3);
-        inventory_toolbar_delete = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        inventory_toolbar_delete = (ImageView)(ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
         inventory_toolbar_edit = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
         inventory_toolbar_delete.setVisibility(View.GONE);
         inventory_toolbar_edit.setVisibility(View.GONE);
+        add_icon.setVisibility(View.GONE);
         relativeRemove1 = (Button)view.findViewById(R.id.inventory_remove1);
         relativeRemove2 = (Button)view.findViewById(R.id.inventory_remove2);
         relativeRemove3 = (Button)view.findViewById(R.id.inventory_remove3);
@@ -210,6 +237,8 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         pd.setCancelable(false);
         pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);*/
         toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar.setVisibility(View.VISIBLE);
         toolbar_title.setText("Add Inventory");
         if(edit_inventory != null) {
             if (edit_inventory.equalsIgnoreCase("edit_inventory")) {
@@ -237,26 +266,20 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                 android.R.layout.simple_dropdown_item_1line, inventory_bhklist);
         bhk_spinner.setAdapter(bhkAdapter);
     }
-    private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, "Select File"), Gallery_CODE);
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // do somthing...
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == Gallery_CODE) {
-                onSelectFromGalleryResult(data);
+        try {
+            if (resultCode == Activity.RESULT_OK) {
+                if (requestCode == SELECT_FILE)
+                    onSelectFromGalleryResult(data);
+                else if (requestCode == REQUEST_CAMERA)
+                    onCaptureImageResult();
             }
-
-        } else if (resultCode == Activity.RESULT_CANCELED) {
-            Utils.showToast(context, " Picture selection was canceled");
-        } else {
-            Utils.showToast(context, " Picture was not taken ");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
     private void onSelectFromGalleryResult(Intent data) {
         try {
@@ -320,27 +343,36 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= 23) {
-                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST);
+                    if (checkCameraAndWritablePermission()) {
+                        selectImageAlert();
                     } else {
-                        openGallery();
+                        requestCameraAndWritablePermission();
                     }
-                } else {
-                    openGallery();
+                }else{
+                    selectImageAlert();
                 }
             }
         });
         inventory_add_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= 23) {
+              /*  if (Build.VERSION.SDK_INT >= 23) {
                     if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST);
                     } else {
-                        openGallery();
+                            openGallery();
                     }
-                } else {
+                }else {
                     openGallery();
+                }*/
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (checkCameraAndWritablePermission()) {
+                        selectImageAlert();
+                    } else {
+                        requestCameraAndWritablePermission();
+                    }
+                }else{
+                    selectImageAlert();
                 }
             }
         });
@@ -380,7 +412,8 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         client_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                client1 = parent.getItemAtPosition(position).toString();
+               String key = parent.getItemAtPosition(position).toString();
+                client1 = hash.get(key);
             }
         });
         prop_type_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -408,6 +441,14 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
             @Override
             public void onClick(View v) {
                 autoPlace();
+            }
+        });
+        marketSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 microMarketName1 = marketlist.get(position).getName();
+                 microMarketCity1 = marketlist.get(position).getCity();
+                 microMarketState1 = marketlist.get(position).getState();
             }
         });
     }
@@ -574,6 +615,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         client_spinner.setText(client1);
         prop_type_spinner.setText(prop_type);
         bhk_spinner.setText(bedroomType);
+        marketSpinner.setText(microMarketName1);
         prop_status_spinner.setText(prop_status);
         if(prop_type.equalsIgnoreCase("Residential")){
             subprop_typeAdpter = new ArrayAdapter<String>(context,
@@ -707,17 +749,41 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         });
     }
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == STORAGE_PERMISSION_REQUEST) {
-            if (permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            }else{
-                if (Build.VERSION.SDK_INT >= 23) {
-                    if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                        Utils.permissionDialog(context);
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CAMERA_AND_WRITABLE_PERMISSIONS:
+                if (permissions.length > 1) {
+                    if(grantResults.length>0) {
+                        boolean CameraPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                        boolean WritablePermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                        if (CameraPermission && WritablePermission) {
+                            selectImageAlert();
+                        } else {
+                            if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) || !shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                Utils.permissionDialog(context);
+                            } else {
+                                Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
+                            }
+                        }
                     }
+                } else {
+                    if (permissions.length > 0) {
+                        if(grantResults.length>0) {
+                            boolean permission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                            if (permission) {
+                                selectImageAlert();
+                            } else {
+                                if (!shouldShowRequestPermissionRationale(permissions[0])) {
+                                    Utils.permissionDialog(context);
+                                } else {
+                                    Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }
+
+                    }
+                    break;
                 }
-            }
         }
     }
     @Override
@@ -730,6 +796,168 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
     public void onTryReconnect() {
         setInventory();
     }
+
+    private static Uri getOutputMediaFileUri() {
+        return Uri.fromFile(getOutputMediaFile());
+    }
+
+
+
+    private void fetchMicromarket(){
+        if(Utils.isNetworkAvailable(context)) {
+            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+            String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "signUp");
+            Call<SignUpModel.MarketModel> call = retrofitAPIs.fetchMarketApi(mobileNo);
+            call.enqueue(new Callback<SignUpModel.MarketModel>() {
+                @Override
+                public void onResponse(Call<SignUpModel.MarketModel> call, Response<SignUpModel.MarketModel> response) {
+                    Utils.LoaderUtils.dismissLoader();
+                    if (response != null) {
+                        if (response.isSuccessful()) {
+                            SignUpModel.MarketModel marketModel = new SignUpModel.MarketModel();
+                            marketModel = response.body();
+                            int statusCode = marketModel.getStatusCode();
+                            if (statusCode == 200) {
+                                ArrayList<SignUpModel.MarketObject> arrayList = marketModel.getData();
+                                if(arrayList.size() != 0){
+                                    marketlist.addAll(arrayList);
+                                    for(int i=0;i<marketlist.size();i++){
+                                        poc_list.add(marketlist.get(i).getName());
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        String responseString = null;
+                        try {
+                            responseString = response.errorBody().string();
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            int statusCode = jsonObject.optInt("statusCode");
+                            String message = jsonObject.optString("message");
+                            if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                new AllUtils().getTokenRefresh(context);
+                                fetchMicromarket();
+                            } else {
+                                Utils.showToast(context, message);
+                            }
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    marketAdapter = new ArrayAdapter<String>(context,
+                            R.layout.spinner_text, poc_list);
+                    marketSpinner.setAdapter(marketAdapter);
+                }
+
+                @Override
+                public void onFailure(Call<SignUpModel.MarketModel> call, Throwable t) {
+                    Utils.LoaderUtils.dismissLoader();
+                    Utils.showToast(context, "Some Problem Occured");
+                }
+            });
+        }else{
+            Utils.internetDialog(context,this);
+        }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Utils.LoaderUtils.dismissLoader();
+    }
+    private static File getOutputMediaFile() {
+
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory() + "/Brongo/document");
+
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+
+        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
+        File mediaFile;
+        String mImageName = "BR_" + timeStamp + ".jpg";
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
+
+        System.out.println("Media File Name for New Post : " + mediaFile);
+        return mediaFile;
+    }
+    private void onCaptureImageResult() {
+        try {
+            compressedImagePath = ImageUtils.compressImage(context, uri.getPath());
+            Log.e(TAG, "onSelectFromGalleryResult: " + compressedImagePath);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        prepareFilePart(uri);
+    }
+    private boolean checkCameraAndWritablePermission() {
+        int permissionCamera = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA);
+        int permissionWritableExternal = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        listPermissionsNeeded = new ArrayList<>();
+
+        if (permissionCamera != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (permissionWritableExternal != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        if (!listPermissionsNeeded.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    private void requestCameraAndWritablePermission() {
+        requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_CAMERA_AND_WRITABLE_PERMISSIONS);
+    }
+    private void selectImageAlert() {
+        final CharSequence[] items = {"Camera", "Gallery",
+                "Cancel"};
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+        builder.setTitle("Select from");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals("Camera")) {
+                    startCameraIntent();
+                } else if (items[item].equals("Gallery")) {
+                    startGalleryIntent();
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void startCameraIntent() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        uri =getOutputMediaFileUri();
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(cameraIntent, REQUEST_CAMERA);
+    }
+
+    private void startGalleryIntent() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+    }
+    private void setClientList(){
+        hash.put("BUYER","BUY");
+        hash.put("SELLER","SELL");
+        hash.put("RENTAL","RENT");
+        hash.put("RENTAL_OUT","RENT_OUT");
+        for(String key : hash.keySet() ){
+            inventory_clientlist.add(key.toString());
+        }
+        clientAdapter = new ArrayAdapter<String>(context,
+                android.R.layout.simple_dropdown_item_1line, inventory_clientlist);
+        client_spinner.setAdapter(clientAdapter);
+    }
+
 }
 
 

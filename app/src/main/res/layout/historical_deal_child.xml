@@ -4,19 +4,35 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="10dp"
     android:padding="20dp"
     android:background="@drawable/edit_border">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <appface.brongo.uiwidget.CustomTextView
+            android:id="@+id/his_deal_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#e5eaf0"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text=""
+            android:textColor="@color/edit_hint_color"
+            app:customFont="lato_bold.ttf"/>
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#c0ffffff"
             android:shadowDx="6.123233995736766e-17"
             android:shadowDy="1"
-            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/his_deal_id"
+            android:textSize="15sp"
             android:textColor="#163d70"
             android:id="@+id/his_lead_name"
             app:customFont="lato_bold.ttf"
@@ -79,7 +95,6 @@
             android:textColor="#000000"
             android:id="@+id/his_deal_commission"
             android:gravity="center_horizontal"
-            android:text="₹59,900"
             app:customFont="lato_bold.ttf"
             />
     </LinearLayout>
@@ -88,13 +103,14 @@
         android:layout_height="0.5dp"
         android:background="@color/round_empty_gray"
        android:layout_margin="5dp"/>
-        <com.nex3z.flowlayout.FlowLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:flChildSpacing="10dp"
-            app:flChildSpacingForLastRow="align"
-            app:flRowSpacing="10dp">
+    <appface.brongo.uiwidget.FlowLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/his_flow"
+        android:layout_marginTop="10dp"
+        app:flowDirection="leftToRight"
+        app:elementSpacing="4dp"
+        app:lineSpacing="10dp">
         <appface.brongo.uiwidget.CustomTextView
             android:id="@+id/his_lead_address"
             android:layout_width="wrap_content"
@@ -109,6 +125,7 @@
             android:textColor="#33609b"
             android:gravity="center_horizontal"
             app:customFont="lato_regular.ttf"
+            android:visibility="gone"
             />
         <appface.brongo.uiwidget.CustomTextView
             android:id="@+id/his_lead_bhk"
@@ -119,12 +136,12 @@
             android:shadowDx="6.123233995736766e-17"
             android:shadowDy="1"
             android:padding="5sp"
-            android:layout_marginLeft="5sp"
             android:shadowRadius="3"
             android:textSize="12sp"
             android:textColor="#33609b"
             android:gravity="center_horizontal"
             app:customFont="lato_regular.ttf"
+            android:visibility="gone"
             />
 
         <appface.brongo.uiwidget.CustomTextView
@@ -136,12 +153,12 @@
             android:shadowDx="6.123233995736766e-17"
             android:shadowDy="1"
             android:padding="5sp"
-            android:layout_marginLeft="5sp"
             android:shadowRadius="3"
             android:textSize="12sp"
             android:textColor="#33609b"
             android:gravity="center_horizontal"
             app:customFont="lato_regular.ttf"
+            android:visibility="gone"
             />
         <appface.brongo.uiwidget.CustomTextView
             android:id="@+id/his_lead_prop_status"
@@ -152,12 +169,12 @@
             android:shadowDx="6.123233995736766e-17"
             android:shadowDy="1"
             android:padding="5sp"
-            android:layout_marginLeft="5sp"
             android:shadowRadius="3"
             android:textSize="12sp"
             android:textColor="#33609b"
             android:gravity="center_horizontal"
             app:customFont="lato_regular.ttf"
+            android:visibility="gone"
             />
         <appface.brongo.uiwidget.CustomTextView
             android:id="@+id/his_lead_prop_type"
@@ -168,13 +185,13 @@
             android:shadowDx="6.123233995736766e-17"
             android:shadowDy="1"
             android:padding="5sp"
-            android:layout_marginLeft="5sp"
             android:shadowRadius="3"
             android:textSize="12sp"
             android:textColor="#33609b"
             android:gravity="center_horizontal"
             app:customFont="lato_regular.ttf"
+            android:visibility="gone"
             />
-        </com.nex3z.flowlayout.FlowLayout>
+    </appface.brongo.uiwidget.FlowLayout>
 
 </LinearLayout>

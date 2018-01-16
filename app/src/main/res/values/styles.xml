@@ -14,6 +14,22 @@
         <item name="android:navigationBarColor">@color/black</item>
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
     </style>
+    <style name="MyTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/appColor</item>
+        <item name="colorPrimaryDark">@color/appColor</item>
+        <item name="colorAccent">@color/appColor</item>
+        <item name="android:statusBarColor">@color/appColor</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!--<item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>-->
+        <!-- <item name="android:windowFullscreen">true</item>-->
+    </style>
+    <style name="AppTheme.NoACBar" parent="MyTheme">
+    </style>
     <style name="MyDialogTheme" parent="android:Theme.Holo.Dialog">
         <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>
         <item name="android:windowBackground">@android:color/transparent</item>

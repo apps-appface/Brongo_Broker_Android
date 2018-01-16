@@ -1,10 +1,15 @@
 package appface.brongo.activity;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,12 +20,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +53,7 @@ import appface.brongo.adapter.HorizontalAdapter;
 import appface.brongo.model.ApiModel;
 import appface.brongo.model.DeviceDetailsModel;
 import appface.brongo.model.SignUpModel;
+import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.services.RegistrationIntentService;
 import appface.brongo.util.AppConstants;
@@ -59,11 +68,17 @@ import retrofit2.Response;
 public class SignUpActivity extends AppCompatActivity implements NoInternetTryConnectListener {
     private EditText fname_edit, lname_edit, email_edit, mobile_edit, city_edit, resi_line1_edit, resi_line2_edit, office_line1_edit, office_line2_edit, referredBy, comp_type_edit;
     private ApiModel.MicroMarketModel microMarketModel1, microMarketModel2, microMarketModel3;
+    private String microMarket1,microMarket2,microMarket3;
     private Button register_btn, real_estate_resi_btn, real_estate_commer_btn;
     public static TextView addmore_text, sign_title;
+    private BottomSheetDialog dialog;
     private TextInputLayout phone_signup_layout,email_signup_layout;
+    ArrayList<SignUpModel.MarketObject> marketlist;
+    ArrayList<String> poc_list;
+    private boolean isDialogOpen = false;
     private ImageView signup_back_image;
     private Context context;
+    ArrayList<String> marketIdList;
     public static ImageView micromarket_reset;
     private MaterialBetterSpinner comp_type_spinner;
     private int data_incomplete;
@@ -71,10 +86,11 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     private String mobile,email="";
     public static HorizontalAdapter horizontalAdapter;
     private SharedPreferences pref;
+    private ArrayAdapter<String> adapter;
     private RecyclerView micro_recycle;
     private ArrayList<String> comp_type_list = new ArrayList<>(Arrays.asList("Individual", "Partnership Firm/ LLP", "Pvt Ltd", "Public Ltd Company", "Others (need to specify)"));
     private ArrayList<String> real_estate_type_list;
-    public static ArrayList<ApiModel.MicroMarketModel> micromarketlist;
+    public static ArrayList<String> micromarketlist;
     private SharedPreferences.Editor editor;
 
     @Override
@@ -87,7 +103,15 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     }
 
     private void initialise() {
+        microMarket1 = microMarket2 = microMarket3 ="";
         context = SignUpActivity.this;
+        dialog = new BottomSheetDialog (context);
+        pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
+        poc_list = new ArrayList<>();
+        marketlist = new ArrayList<>();
+        adapter = new ArrayAdapter<String>(this, R.layout.spinner_text,poc_list);
+        fetchMicromarket();
+        marketIdList = new ArrayList<>();
         mobile = "";
         emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         phone_signup_layout = (TextInputLayout) findViewById(R.id.input_layout_sign_phone);
@@ -120,7 +144,6 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         resi_line2_edit = (EditText) findViewById(R.id.sign_residential_line2);
         office_line1_edit = (EditText) findViewById(R.id.sign_office_line1);
         office_line2_edit = (EditText) findViewById(R.id.sign_office_line2);
-        pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
         editor = pref.edit();
         referredBy = (EditText) findViewById(R.id.sign_referredby);
         String refer_code = pref.getString(AppConstants.REFERREDBY, "");
@@ -156,7 +179,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                 if (micromarketlist.size() == 3) {
                     addmore_text.setClickable(false);
                 } else {
-                    startActivity(new Intent(SignUpActivity.this, AutoFillActivity.class));
+                   marketDialog();
                 }
             }
         });
@@ -205,6 +228,18 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         micromarket_reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                switch (micromarketlist.size()){
+                    case 1:
+                        microMarket1="";
+                        city_edit.setText("");
+                        break;
+                    case 2:
+                        microMarket2="";
+                        break;
+                    case 3:
+                        microMarket3="";
+                        break;
+                }
                 micromarketlist.remove(micromarketlist.size()-1);
                // micromarketlist.clear();
                 horizontalAdapter.notifyDataSetChanged();
@@ -221,8 +256,8 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         String lname = lname_edit.getText().toString();
         String city = city_edit.getText().toString();
         String referral_id = referredBy.getText().toString();
-        if (fname.length() == 0 || lname.length() == 0 || city.length() == 0 || mobile.length() == 0 || comp_type.length() == 0 || real_estate_type_list.size() == 0) {
-            Utils.showToast(context, "Data should not be empty");
+        if (fname.length() == 0 || lname.length() == 0 || city.length() == 0 || email.length() == 0 || mobile.length() == 0 || comp_type.length() == 0 || real_estate_type_list.size() == 0) {
+            Toast.makeText(context, "Data should not be empty",Toast.LENGTH_SHORT).show();
         } else {
             editor.putString(AppConstants.FIRST_NAME, fname);
             editor.putString(AppConstants.LAST_NAME, lname);
@@ -243,33 +278,20 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             signUpModel.setRealEstateType(real_estate_type_list);
             signUpModel.setTypeOfCompany(comp_type);
             if (micromarketlist.size() > 0) {
-                microMarketModel1.setMicroMarketCity(micromarketlist.get(0).getMicroMarketCity());
-                microMarketModel1.setMicroMarketName(micromarketlist.get(0).getMicroMarketName());
-                microMarketModel1.setMicroMarketState(micromarketlist.get(0).getMicroMarketState());
                 data_incomplete = 0;
             } else {
-                Utils.showToast(context, "select atleast one micromarket");
+                Toast.makeText(context, "select atleast one micromarket",Toast.LENGTH_SHORT).show();
                 data_incomplete = 1;
             }
-            if (micromarketlist.size() > 1) {
-                microMarketModel2.setMicroMarketCity(micromarketlist.get(1).getMicroMarketCity());
-                microMarketModel2.setMicroMarketName(micromarketlist.get(1).getMicroMarketName());
-                microMarketModel2.setMicroMarketState(micromarketlist.get(1).getMicroMarketState());
-            }
 
-            if (micromarketlist.size() > 2) {
-                microMarketModel3.setMicroMarketCity(micromarketlist.get(2).getMicroMarketCity());
-                microMarketModel3.setMicroMarketName(micromarketlist.get(2).getMicroMarketName());
-                microMarketModel3.setMicroMarketState(micromarketlist.get(2).getMicroMarketState());
-            }
 
                    /* microMarketModel1.setMicroMarketCity("Bengaluru ");
                     microMarketModel1.setMicroMarketName("Marathahalli");
                     microMarketModel1.setMicroMarketState("Karnataka");
                     data_incomplete =0;*/
-            signUpModel.setMicroMarket1(microMarketModel1);
-            signUpModel.setMicroMarket2(microMarketModel2);
-            signUpModel.setMicroMarket3(microMarketModel3);
+            signUpModel.setMicroMarket1(microMarket1);
+            signUpModel.setMicroMarket2(microMarket2);
+            signUpModel.setMicroMarket3(microMarket3);
             SignUpModel.AddressModel resi_address = new SignUpModel.AddressModel();
             resi_address.setLine1(resi_line1_edit.getText().toString());
             resi_address.setLine2(resi_line2_edit.getText().toString());
@@ -428,11 +450,14 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     }
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-        finish();
+            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+            finish();
     }
     @Override
     protected void onPause() {
+        if(isDialogOpen) {
+            dialog.dismiss();
+        }
         super.onPause();
         Utils.LoaderUtils.dismissLoader();
     }
@@ -440,5 +465,148 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     @Override
     public void onTryReconnect() {
         setValue();
+    }
+
+    private void fetchMicromarket(){
+        if(Utils.isNetworkAvailable(context)) {
+            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+            String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "signUp");
+            Call<SignUpModel.MarketModel> call = retrofitAPIs.fetchMarketApi(mobileNo);
+            call.enqueue(new Callback<SignUpModel.MarketModel>() {
+                @Override
+                public void onResponse(Call<SignUpModel.MarketModel> call, Response<SignUpModel.MarketModel> response) {
+                    Utils.LoaderUtils.dismissLoader();
+                    if (response != null) {
+                        if (response.isSuccessful()) {
+                            SignUpModel.MarketModel marketModel = new SignUpModel.MarketModel();
+                            marketModel = response.body();
+                            int statusCode = marketModel.getStatusCode();
+                            if (statusCode == 200) {
+                                ArrayList<SignUpModel.MarketObject> arrayList = marketModel.getData();
+                                if(arrayList.size() != 0){
+                                    marketlist.clear();
+                                    poc_list.clear();
+                                    marketlist.addAll(arrayList);
+                                    for(int i=0;i<marketlist.size();i++){
+                                            poc_list.add(marketlist.get(i).getName());
+                                    }
+                                }
+                                adapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            String responseString = null;
+                            try {
+                                responseString = response.errorBody().string();
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                int statusCode = jsonObject.optInt("statusCode");
+                                String message = jsonObject.optString("message");
+                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                    new AllUtils().getTokenRefresh(context);
+                                   fetchMicromarket();
+                                } else {
+                                    Utils.showToast(context, message);
+                                }
+                            } catch (IOException | JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                @Override
+                public void onFailure(Call<SignUpModel.MarketModel> call, Throwable t) {
+                    Utils.LoaderUtils.dismissLoader();
+                    Utils.showToast(context, "Some Problem Occured");
+                }
+            });
+        }else{
+            Utils.internetDialog(context,this);
+        }
+    }
+    private void marketDialog(){
+        isDialogOpen = true;
+        /*dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+       // dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
+        dialog.setContentView(R.layout.dialog_refer_broker);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.MATCH_PARENT);*/
+        View view = View.inflate(context, R.layout.market_dialog, null);
+        dialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(1500);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+       /* dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.market_dialog);
+        dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        dialog.getWindow().setDimAmount(0.7f);*/
+       dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        ListView listView = (ListView)dialog.findViewById(R.id.market_list_view);
+        EditText search_market = (EditText)dialog.findViewById(R.id.inputSearch);
+        Button cancel_btn = (Button)dialog.findViewById(R.id.market_dialog_cancel);
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.setCancelable(true);
+                dialog.dismiss();
+            }
+        });
+      listView.setAdapter(adapter);
+      listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+              Utils.hideKeyboard(context,view);
+              if(microMarket1.equalsIgnoreCase("")){
+                  microMarket1 = marketlist.get(position).getMicroMarketId();
+                  micromarketlist.add(marketlist.get(position).getName());
+                  horizontalAdapter.notifyDataSetChanged();
+                  addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
+                  addmore_text.setVisibility(View.VISIBLE);
+                  micromarket_reset.setVisibility(View.VISIBLE);
+                  city_edit.setText(marketlist.get(position).getCity());
+              }else if(microMarket2.equalsIgnoreCase("")){
+                  microMarket2 = marketlist.get(position).getMicroMarketId();
+                  micromarketlist.add(marketlist.get(position).getName());
+                  horizontalAdapter.notifyDataSetChanged();
+                  addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
+              }else if(microMarket3.equalsIgnoreCase("")){
+                  microMarket3 = marketlist.get(position).getMicroMarketId();
+                  micromarketlist.add(marketlist.get(position).getName());
+                  horizontalAdapter.notifyDataSetChanged();
+                  addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
+              }
+              if(micromarketlist.size()==3){
+                  addmore_text.setVisibility(View.GONE);
+              }
+              dialog.dismiss();
+          }
+      });
+        search_market.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+                adapter.getFilter().filter(cs);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+        dialog.show();
+
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Utils.LoaderUtils.dismissLoader();
     }
 }

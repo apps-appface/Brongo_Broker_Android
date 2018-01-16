@@ -21,11 +21,11 @@ import appface.brongo.model.ApiModel;
 public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.MyViewHolder> {
 
 
-    List<ApiModel.MicroMarketModel> horizontalList = Collections.emptyList();
+    List<String> horizontalList = Collections.emptyList();
     Context context;
 
 
-    public HorizontalAdapter(List<ApiModel.MicroMarketModel> horizontalList, Context context) {
+    public HorizontalAdapter(List<String> horizontalList, Context context) {
         this.horizontalList = horizontalList;
         this.context = context;
     }
@@ -51,7 +51,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.My
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.micro_marketame.setText(horizontalList.get(position).getMicroMarketName());
+        holder.micro_marketame.setText(horizontalList.get(position));
     }
 
 

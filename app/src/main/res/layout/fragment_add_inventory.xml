@@ -11,7 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="40dp"
+        android:paddingTop="20dp">
     <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
         android:id="@+id/inventory_spinner_client"
         android:layout_width="match_parent"
@@ -27,7 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColorHint="@color/edit_hint_color"
-        app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
+        app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/inventory_location"
@@ -40,6 +43,16 @@
             android:focusableInTouchMode="false"
             android:editable="false"/>
     </android.support.design.widget.TextInputLayout>
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/inventory_spinner_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/Location"
+            app:met_textColorHint="@color/edit_hint_color"
+            app:met_floatingLabelTextColor="@color/edit_hint_color"
+            app:met_underlineColor="@color/edit_line"
+            app:met_textColor="@color/edit_text_color"
+            app:met_floatingLabel="normal" />
     <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
         android:id="@+id/inventory_spinner_proptype"
         android:layout_width="match_parent"
@@ -83,6 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="BUDGET"
+            android:inputType="number"
             android:textColor="@color/edit_text_color"
             app:backgroundTint="@color/edit_line"
             />

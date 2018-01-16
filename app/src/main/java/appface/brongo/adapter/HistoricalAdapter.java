@@ -13,6 +13,7 @@ import java.util.List;
 
 import appface.brongo.R;
 import appface.brongo.model.ApiModel;
+import appface.brongo.uiwidget.FlowLayout;
 import appface.brongo.util.Utils;
 
 /**
@@ -34,9 +35,11 @@ public class HistoricalAdapter extends RecyclerView.Adapter<HistoricalAdapter.My
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView his_name,his_post_type,his_commission,his_address,his_bhk,his_budget,his_prop_status,his_sub_proptype;
+        TextView his_name,his_post_type,his_commission,his_address,his_bhk,his_budget,his_prop_status,his_sub_proptype,his_deal_id;
+        FlowLayout his_flowlayout;
         public MyViewHolder(View view) {
             super(view);
+            his_flowlayout = (FlowLayout)view.findViewById(R.id.his_flow);
             his_name=(TextView) view.findViewById(R.id.his_lead_name);
             his_post_type=(TextView) view.findViewById(R.id.his_lead_post_type);
             his_commission=(TextView) view.findViewById(R.id.his_deal_commission);
@@ -45,6 +48,7 @@ public class HistoricalAdapter extends RecyclerView.Adapter<HistoricalAdapter.My
             his_budget=(TextView) view.findViewById(R.id.his_lead_budget);
             his_prop_status=(TextView) view.findViewById(R.id.his_lead_prop_status);
             his_sub_proptype=(TextView) view.findViewById(R.id.his_lead_prop_type);
+            his_deal_id=(TextView) view.findViewById(R.id.his_deal_id);
         }
     }
 
@@ -59,10 +63,12 @@ public class HistoricalAdapter extends RecyclerView.Adapter<HistoricalAdapter.My
 
     @Override
     public void onBindViewHolder(final HistoricalAdapter.MyViewHolder holder, final int position) {
+        holder.setIsRecyclable(false);
         holder.his_name.setText(arraylist.get(position).getClientName());
-        holder.his_address.setText(arraylist.get(position).getMicroMarketName());
-        holder.his_commission.setText(arraylist.get(position).getCommission() + "");
-        if(arraylist.get(position).getBedRoomType().equalsIgnoreCase("")){
+       //holder.his_address.setText(arraylist.get(position).getMicroMarketName());
+        holder.his_commission.setText(arraylist.get(position).getCommission() + "%");
+        holder.his_deal_id.setText(arraylist.get(position).getPropertyId());
+       /* if(arraylist.get(position).getBedRoomType().equalsIgnoreCase("")){
             holder.his_bhk.setVisibility(View.GONE);
         }else {
             holder.his_bhk.setText(arraylist.get(position).getBedRoomType());
@@ -76,44 +82,31 @@ public class HistoricalAdapter extends RecyclerView.Adapter<HistoricalAdapter.My
             holder.his_sub_proptype.setVisibility(View.GONE);
         }else {
             holder.his_sub_proptype.setText(arraylist.get(position).getSubPropertyType());
-        }
+        }*/
+       addView(arraylist.get(position).getMicroMarketName(),holder.his_flowlayout);
+        addView(arraylist.get(position).getBedRoomType(),holder.his_flowlayout);
+        String budget = arraylist.get(position).getBudget()+"";
+        budget = Utils.stringToInt(budget);
+        addView(budget,holder.his_flowlayout);
         holder.his_post_type.setText(arraylist.get(position).getPostingType().toUpperCase()+"/"+arraylist.get(position).getPropertyType().toUpperCase());
-        if(arraylist.get(position).getPostingType().equalsIgnoreCase("sell")){
-            String budget = arraylist.get(position).getExpectedPrice()+"";
-            budget = Utils.stringToInt(budget);
-            if(budget.equalsIgnoreCase("")){
-                holder.his_budget.setVisibility(View.GONE);
-            }else {
-                holder.his_budget.setText(budget);
+        String back_color = Utils.getPostingColor(arraylist.get(position).getPostingType());
+        holder.his_post_type.setBackgroundColor(Color.parseColor(back_color));
+        addView(arraylist.get(position).getPropertyStatus(),holder.his_flowlayout);
+        addView(arraylist.get(position).getSubPropertyType(),holder.his_flowlayout);
+    }
+    private void addView(String text, FlowLayout flowLayout) {
+        if(text != null) {
+            if (!text.isEmpty()) {
+                try {
+                    View layout2 = LayoutInflater.from(context).inflate(R.layout.deal_child, flowLayout, false);
+                    TextView deal_textview = (TextView) layout2.findViewById(R.id.deal_text);
+                    deal_textview.setBackgroundResource(R.drawable.rounded_purple);
+                    deal_textview.setText(text);
+                    flowLayout.addView(layout2);
+                } catch (Exception e) {
+                    String error = e.toString();
+                }
             }
-            holder.his_post_type.setBackgroundColor(Color.parseColor("#3664cb"));
-        }else if(arraylist.get(position).getPostingType().equalsIgnoreCase("RENT_OUT")){
-            String budget = arraylist.get(position).getExpectedRent()+"";
-            budget = Utils.stringToInt(budget);
-            if(budget.equalsIgnoreCase("")){
-                holder.his_budget.setVisibility(View.GONE);
-            }else {
-                holder.his_budget.setText(budget);
-            }
-            holder.his_post_type.setBackgroundColor(Color.parseColor("#80cb36"));
-        }else if(arraylist.get(position).getPostingType().equalsIgnoreCase("rent")){
-            String budget = arraylist.get(position).getBudget();
-            budget = Utils.stringToInt(budget);
-            if(budget.equalsIgnoreCase("")){
-                holder.his_budget.setVisibility(View.GONE);
-            }else {
-                holder.his_budget.setText(budget);
-            }
-            holder.his_post_type.setBackgroundColor(Color.parseColor("#80cb36"));
-        }else if(arraylist.get(position).getPostingType().equalsIgnoreCase("BUY")){
-            String budget = arraylist.get(position).getBudget();
-            budget = Utils.stringToInt(budget);
-            if(budget.equalsIgnoreCase("")){
-                holder.his_budget.setVisibility(View.GONE);
-            }else {
-                holder.his_budget.setText(budget);
-            }
-            holder.his_post_type.setBackgroundColor(Color.parseColor("#ea8737"));
         }
     }
 

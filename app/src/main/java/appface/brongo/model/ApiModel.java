@@ -552,6 +552,16 @@ public class ApiModel {
     public static class ClientAcceptModel {
         String clientMobileNo;
         String brokerMobileNo;
+        String postedUser;
+
+        public String getPostedUser() {
+            return postedUser;
+        }
+
+        public void setPostedUser(String postedUser) {
+            this.postedUser = postedUser;
+        }
+
         public String getClientMobileNo() {
             return clientMobileNo;
         }
@@ -633,8 +643,18 @@ public class ApiModel {
         String firstName;
         String brokerImage;
         String lastName;
+
+        public String getImageBaseurl() {
+            return imageBaseurl;
+        }
+
+        public void setImageBaseurl(String imageBaseurl) {
+            this.imageBaseurl = imageBaseurl;
+        }
+
         String planType;
         String referralId;
+        String imageBaseurl;
 
         public String getReferralId() {
             return referralId;
@@ -731,7 +751,15 @@ public class ApiModel {
         public void setPotemtialCommission(int potemtialCommission) {
             this.potemtialCommission = potemtialCommission;
         }
+        double cCommission;
 
+        public double getcCommission() {
+            return cCommission;
+        }
+
+        public void setcCommission(double cCommission) {
+            this.cCommission = cCommission;
+        }
         String isActive;
         String microMarketName;
         float rating;
@@ -778,6 +806,15 @@ public class ApiModel {
         ArrayList<HistoricalModel> openDeals;
         ArrayList<HistoricalModel> closedDeals;
 
+
+        public double getpCommission() {
+            return pCommission;
+        }
+
+        public void setpCommission(double pCommission) {
+            this.pCommission = pCommission;
+        }
+
         public ArrayList<BuyAndRentModel> getSellAndRentOut() {
             return sellAndRentOut;
         }
@@ -810,15 +847,8 @@ public class ApiModel {
             this.buyAndRent = buyAndRent;
         }
 
-        public Double getPotentialCommission() {
-            return potentialCommission;
-        }
 
-        public void setPotentialCommission(Double potentialCommission) {
-            this.potentialCommission = potentialCommission;
-        }
-
-        Double potentialCommission;
+        double pCommission;
     }
 
     public static class BuyAndRentModel {
@@ -1588,6 +1618,15 @@ public class ApiModel {
         String clientProfile;
         String userId;
         String builderName;
+        String commission;
+
+        public String getCommission() {
+            return commission;
+        }
+
+        public void setCommission(String commission) {
+            this.commission = commission;
+        }
 
         public String getMobileNo() {
             return mobileNo;
@@ -1601,6 +1640,7 @@ public class ApiModel {
         String projectName;
         String location;
         String mobileNo;
+        String status;
 
         public String getUserId() {
             return userId;
@@ -1638,18 +1678,25 @@ public class ApiModel {
             return location;
         }
 
-        public void setLocation(String location) {
-            this.location = location;
+        public String getStatus() {
+            return status;
         }
 
-        public String getBudgetRange() {
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public long getBudgetRange() {
             return budgetRange;
         }
 
-        public void setBudgetRange(String budgetRange) {
+        public void setBudgetRange(long budgetRange) {
             this.budgetRange = budgetRange;
         }
 
+        public void setLocation(String location) {
+            this.location = location;
+        }
         public String getProjectType() {
             return projectType;
         }
@@ -1690,7 +1737,7 @@ public class ApiModel {
             isRead = read;
         }
 
-        String budgetRange;
+        long budgetRange;
         String projectType;
         String projectStatus;
         String planType;

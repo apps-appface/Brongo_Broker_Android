@@ -5,24 +5,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
     <appface.brongo.uiwidget.CustomTextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/require_hearder_two"
+        android:id="@+id/spinner_header"
         android:textColor="#64687f"
         android:textSize="15sp"
         app:customFont="lato_bold.ttf"/>
     <appface.brongo.uiwidget.CustomTextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:textSize="13sp"
-        android:id="@+id/require_child_two"
-        android:textColor="#ffffff"
+        android:id="@+id/spinner_child"
+        android:textColor="#64687f"
         android:padding="5dp"
         app:customFont="lato_regular.ttf"
-        android:gravity="center"
-        android:includeFontPadding="false"
-        android:background="@drawable/rounded_blue_btn"/>
+        android:includeFontPadding="false"/>
 </LinearLayout>

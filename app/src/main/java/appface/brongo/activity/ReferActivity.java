@@ -1,16 +1,22 @@
 package appface.brongo.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -64,6 +70,7 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
     private ImageView refer_back;
     private Toolbar toolbar;
     private Context context;
+    public static final int REQUEST_CONTACT = 112;
     private String referee_name_text,referee_mobile_text,shorturl,refer_amount="";
     private ReferAdapter referAdapter;
     private ArrayList<String> arrayList1,arrayList2;
@@ -84,7 +91,7 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
         refer_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+               onBackPressed();
             }
         });
     }
@@ -249,16 +256,22 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
         referee_phonebook_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
-                startActivityForResult(intent, 1);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (isContactReadAllowed()) {
+                        openContact();
+                    } else {
+                        requestContactPermission();
+                    }
+                } else {
+                   openContact();
+                }
             }
         });
         referee_whatsapp_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onWhatsappClicked();
-                dialog.dismiss();
+                //dialog.dismiss();
             }
         });
         dialog.show();
@@ -393,7 +406,7 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
     }
     @Override
     public void onBackPressed() {
-        finish();
+      super.onBackPressed();
     }
 
     @Override
@@ -401,4 +414,44 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
         super.onPause();
         Utils.LoaderUtils.dismissLoader();
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Utils.LoaderUtils.dismissLoader();
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestContactPermission() {
+        requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CONTACT);
+    }
+    private boolean isContactReadAllowed() {
+        int result = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS);
+        if (result == PackageManager.PERMISSION_GRANTED)
+            return true;
+        return false;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_CONTACT:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openContact();
+                } else {
+                    if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+                        Utils.permissionDialog(context);
+                    } else {
+                        Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+
+        }
+    }
+    private void openContact(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+        startActivityForResult(intent, 1);
+    }
+
 }

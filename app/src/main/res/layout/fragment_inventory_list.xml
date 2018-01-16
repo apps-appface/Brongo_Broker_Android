@@ -51,14 +51,12 @@
             android:layout_centerVertical="true"
             android:background="@drawable/text_circular"
             android:textColor="@color/white"
-            android:text="0"/>
+            android:visibility="gone"/>
     </RelativeLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
         android:background="#ededed">
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"

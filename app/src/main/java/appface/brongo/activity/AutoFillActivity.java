@@ -66,7 +66,7 @@ public class AutoFillActivity extends AppCompatActivity {
                         microMarketModel.setMicroMarketCity(address2);
                         microMarketModel.setMicroMarketState(address3);
                         microMarketModel.setMicroMarketName(address1);
-                        SignUpActivity.micromarketlist.add(microMarketModel);
+                       // SignUpActivity.micromarketlist.add(microMarketModel);
                         SignUpActivity.horizontalAdapter.notifyDataSetChanged();
                         int length = 3 - SignUpActivity.micromarketlist.size();
                         SignUpActivity.addmore_text.setText("+ADD " + length + " MORE");

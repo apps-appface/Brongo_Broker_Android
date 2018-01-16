@@ -67,10 +67,11 @@
                         android:indeterminateDrawable="@drawable/progress_loader"
                         android:visibility="gone" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <ImageView
                         android:id="@+id/client_deal_pic"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:scaleType="fitXY"
                          />
                 </RelativeLayout>
 
@@ -119,7 +120,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
-                    android:background="#beb9b9" />
+                    android:background="#3388288f" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -192,7 +193,7 @@
                     android:shadowDy="1"
                     android:shadowRadius="3"
                     android:textColor="#264c91"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     app:customFont="lato_bold.ttf" />
             </RelativeLayout>
 
@@ -216,6 +217,7 @@
                         android:layout_height="wrap_content"
                         app:customFont="lato_bold.ttf"
                         android:text="Requirement"
+                        android:textColor="#64687f"
                         android:id="@+id/landing_requirement"
                         />
 
@@ -228,11 +230,7 @@
                     android:layout_toRightOf="@+id/landing_requirement"
                     android:layout_marginLeft="10dp"
                     android:padding="5dp"
-                    android:shadowColor="#73000000"
-                    android:shadowDx="6.123233995736766e-17"
-                    android:shadowDy="1"
-                    android:shadowRadius="3"
-                    android:textColor="#64687f"
+                    android:textColor="@color/white"
                     android:textSize="13sp"
                     app:customFont="lato_bold.ttf" />
                 </RelativeLayout>
@@ -246,20 +244,20 @@
                     android:layout_marginTop="10dp"
                     android:padding="5dp"
                     android:text=""
-                    android:textColor="@color/black"
-                    app:customFont="lato_regular.ttf"/>
+                    android:textColor="@color/edit_hint_color"
+                    app:customFont="lato_bold.ttf"/>
 
-                <com.nex3z.flowlayout.FlowLayout
+                <appface.brongo.uiwidget.FlowLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/main_deal_flowlayout"
+                    android:layout_marginTop="10dp"
+                    app:flowDirection="leftToRight"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    app:flChildSpacing="10dp"
-                    app:flChildSpacingForLastRow="align"
-                    app:flRowSpacing="10dp">
-
-                    <appface.brongo.uiwidget.CustomTextView
+                    app:elementSpacing="4dp"
+                    app:lineSpacing="10dp">
+                    <!--<appface.brongo.uiwidget.CustomTextView
                         android:id="@+id/open_deal_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -336,10 +334,8 @@
                         android:textAllCaps="false"
                         android:textColor="#1d4f91"
                         android:textSize="13sp"
-                        app:customFont="lato_regular.ttf" />
-                </com.nex3z.flowlayout.FlowLayout>
-
-
+                        app:customFont="lato_regular.ttf" />-->
+                </appface.brongo.uiwidget.FlowLayout>
                 <appface.brongo.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

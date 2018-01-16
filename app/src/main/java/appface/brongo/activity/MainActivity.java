@@ -29,6 +29,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -90,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     final long DELAY_MS = 500,PERIOD_MS = 3000;//delay in milliseconds before task is to be executed
     private Button open_deal_buy_btn,referral_btn,open_deal_sell_btn;
     private boolean doubleBackToExitPressedOnce = false;
-    private LinearLayout no_deal_linear,deal_linear,pager_linear,linearLayout2;
+    private LinearLayout no_deal_linear,deal_linear,linearLayout2;
+    private RelativeLayout pager_linear,cutoff_relative;
     private ScrollView main_scrollview;
     private ArrayList<ApiModel.BuyAndRentModel> buyAndRentList,sellAndRentList;
     public final static int LOOPS = 1;
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView tool_navbar_image,noti_message,noti_icon;
     FragmentManager fragmentManager;
     Context context = this;
-    private boolean isLoader = true;
+    private boolean isLoader = false;
     private TextView switch_text,chat_count,home_commission,home_name,home_plan,home_pot_commission,homerating,noti_count;
     private SwitchButton switchButton;
     private FloatingActionButton floatingActionButton;
@@ -150,9 +152,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         linearLayout2 = (LinearLayout)findViewById(R.id.linearLayout2);
        main_ratingbar = (RatingBar)findViewById(R.id.main_ratingBar);
         open_deal_buy_btn = (Button) findViewById(R.id.buy_rent);
+        cutoff_relative = (RelativeLayout)findViewById(R.id.cutoff_relative);
         open_deal_sell_btn = (Button) findViewById(R.id.sell_rentout);
         no_deal_linear = (LinearLayout)findViewById(R.id.no_deal_linear);
-        pager_linear = (LinearLayout)findViewById(R.id.activity_main_layout);
+        pager_linear = (RelativeLayout)findViewById(R.id.activity_main_layout);
         deal_linear = (LinearLayout)findViewById(R.id.deal_linear);
         buyAndRentList = new ArrayList();
         sellAndRentList = new ArrayList();
@@ -184,11 +187,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adapter2 = new MainAdapter(this, getSupportFragmentManager(),sellAndRentList,this,pager1);
         pager1.setAdapter(adapter2);
         pager1.setOffscreenPageLimit(3);
+        setButtonText();
        /* pager.setPageTransformer(true, new ZoomOutPageTransformer());
         pager1.setPageTransformer(true, new ZoomOutPageTransformer());*/
       //generateToken(0);
        generateToken();
-
         setView();
         setListener();
     }
@@ -320,6 +323,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onResponse(Call<ApiModel.HomeProfileModel> call, Response<ApiModel.HomeProfileModel> response) {
                     if (response != null) {
+                        populateArrayList1();
                         if (response.isSuccessful()) {
                             ApiModel.HomeProfileModel homeProfileModel = response.body();
                             int statusCode = homeProfileModel.getStatusCode();
@@ -331,10 +335,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 editor.putFloat(AppConstants.RATING, homeProfileModel.getData().get(0).getRating());
                                 editor.putInt(AppConstants.NO_OF_CLIENT_RATED, homeProfileModel.getData().get(0).getNoOfClientsRated());
                                 editor.putString(AppConstants.PLAN_TYPE, homeProfileModel.getData().get(0).getPlanType());
-                                editor.putInt(AppConstants.COMMISSION, homeProfileModel.getData().get(0).getCommission());
+                                editor.putFloat(AppConstants.COMMISSION, (float) homeProfileModel.getData().get(0).getcCommission());
                                 editor.putString(AppConstants.REFERRAL_ID, homeProfileModel.getData().get(0).getReferralId());
+                                editor.putString(AppConstants.IMAGE_BASE_URL, homeProfileModel.getData().get(0).getImageBaseurl());
                                 editor.putInt(AppConstants.REVIEW_COUNT,homeProfileModel.getData().get(0).getNoOfClientsRated());
-                                editor.putInt(AppConstants.POTENTIAL_COMMISSION, homeProfileModel.getData().get(0).getPotemtialCommission());
+                                //editor.putInt(AppConstants.POTENTIAL_COMMISSION, homeProfileModel.getData().get(0).getPotemtialCommission());
                                 editor.putInt(AppConstants.NOTIFICATION_BADGES, homeProfileModel.getData().get(0).getNotificationsBadge());
                                 editor.putString(AppConstants.USER_STATUS, homeProfileModel.getData().get(0).getIsActive());
                                 editor.putString(AppConstants.MICROMARKET_NAME, homeProfileModel.getData().get(0).getMicroMarketName());
@@ -344,8 +349,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     RegisterWithApplozic();
                                 }
                             }
-                            setView();
-                           populateArrayList1();
                         } else {
                             String responseString = null;
                             try {
@@ -371,6 +374,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onFailure(Call<ApiModel.HomeProfileModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                     Utils.showToast(context, "Some Problem Occured");
                 }
             });
@@ -393,6 +397,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                     if (response != null) {
                         String responseString = null;
                         if (response.isSuccessful()) {
@@ -414,7 +419,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                     editor.putString(AppConstants.USER_STATUS, newStatus);
                                     editor.commit();
-                                    switch_text.setText(newStatus);
+                                    switch_text.setText(newStatus.toUpperCase());
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -446,6 +451,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                     Utils.showToast(context, "Some Problem Occured");
                 }
             });
@@ -470,6 +476,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                     if (response != null) {
                         String responseString = null;
                         if (response.isSuccessful()) {
@@ -519,6 +526,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utils.showToast(context, "Some Problem Occured");
                     Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                 }
             });
         }else{
@@ -533,7 +541,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setView() {
         if(pref.getString(AppConstants.USER_STATUS,"").equalsIgnoreCase("Active")){
             switchButton.setChecked(true);
-            switch_text.setText("Active");
+            switch_text.setText("ACTIVE");
             main_scrollview.setAlpha(1.0f);
         }else{
             switchButton.setChecked(false);
@@ -545,19 +553,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             chat_count.setVisibility(View.VISIBLE);
             chat_count.setText(totalUnreadCount + "");
         }
-        int count1 = pref.getInt(AppConstants.NOTIFICATION_BADGES,0);
-        if (count1 > 0 && count1 <100) {
-            noti_count.setVisibility(View.VISIBLE);
-            noti_count.setText(count1+"");
-        }else if(count1 > 99){
-            noti_count.setVisibility(View.VISIBLE);
-            noti_count.setText("99+");
-        }
+        displayNotification();
         resideMenu.setMenuProfile(pref.getString(AppConstants.FIRST_NAME,"") + " "+pref.getString(AppConstants.LAST_NAME,""),pref.getString(AppConstants.PLAN_TYPE,""),pref.getString(AppConstants.MOBILE_NUMBER,"")+","+pref.getString(AppConstants.MICROMARKET_NAME,""),pref.getString(AppConstants.USER_PIC,""),pref.getFloat(AppConstants.RATING,0.0f));
         this.home_name.setText("Welcome " + this.pref.getString(AppConstants.FIRST_NAME, "") + " !");
         this.home_plan.setText(this.pref.getString(AppConstants.PLAN_TYPE, ""));
-        this.home_commission.setText("₹"+ this.pref.getInt(AppConstants.COMMISSION, 0));
-        this.home_pot_commission.setText("₹" +this.pref.getInt(AppConstants.POTENTIAL_COMMISSION, 0) + "");
+        String commission = AllUtils.changeNumberFormat(pref.getFloat(AppConstants.COMMISSION, 0.0f));
+        String pot_commission = AllUtils.changeNumberFormat(pref.getFloat(AppConstants.POTENTIAL_COMMISSION, 0.0f));
+        this.home_commission.setText(commission);
+        this.home_pot_commission.setText(pot_commission);
         float rating = this.pref.getFloat(AppConstants.RATING, 0.0f);
         String rate = String.format("%.1f",rating);
         homerating.setText(rate+" Ratings & "+ pref.getInt(AppConstants.REVIEW_COUNT,0)+" Reviews");
@@ -591,55 +594,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onResponse(Call<ApiModel.OpenDealModels> call, Response<ApiModel.OpenDealModels> response) {
                     if (response != null) {
-                        Utils.LoaderUtils.dismissLoader();
-                        isLoader = false;
                         if (response.isSuccessful()) {
                             ApiModel.OpenDealModels openDealModels = response.body();
                             int statusCode = openDealModels.getStatusCode();
                             String message = openDealModels.getMessage();
                             if (statusCode == 200 && message.equalsIgnoreCase("")) {
-                                Double pot_commission = openDealModels.getData().get(0).getPotentialCommission();
-                                if (pot_commission != null) {
-                                    int pot_commissions = pot_commission.intValue();
-                                    editor.putInt(AppConstants.POTENTIAL_COMMISSION, pot_commissions);
-                                    editor.commit();
-                                    home_pot_commission.setText(pot_commissions + "");
-                                }
-                                ArrayList<ApiModel.BuyAndRentModel> buyAndRentList1 = openDealModels.getData().get(0).getBuyAndRent();
-                                ArrayList<ApiModel.BuyAndRentModel> sellAndRentList1 = openDealModels.getData().get(0).getSellAndRentOut();
-                                if (buyAndRentList1.size() == 0 && sellAndRentList1.size() == 0) {
-                                    no_deal_linear.setVisibility(View.VISIBLE);
-                                    deal_linear.setVisibility(View.GONE);
-                                } else {
-                                    no_deal_linear.setVisibility(View.GONE);
-                                    deal_linear.setVisibility(View.VISIBLE);
-                                }
-                                if (buyAndRentList1.size() != 0) {
-                                    buyAndRentList.clear();
-                                    for (int i = 0; i < buyAndRentList1.size(); i++) {
-                                        buyAndRentList.add(buyAndRentList1.get(i));
-                                    }
-                                    btn_click = 1;
-                                    adapter1.notifyDataSetChanged();
-                                }
-                                //setViewPager(buyAndRentList);
-                                if (sellAndRentList1.size() != 0) {
-                                    sellAndRentList.clear();
-                                    for (int i = 0; i < sellAndRentList1.size(); i++) {
-                                        sellAndRentList.add(sellAndRentList1.get(i));
-                                    }
-                                    adapter2.notifyDataSetChanged();
-                                }
-                                if (buyAndRentList.size() == 0) {
-                                    open_deal_sell_btn.performClick();
+                                double pot_commission = openDealModels.getData().get(0).getpCommission();
+                                float p_commissions = (float) pot_commission;
+                                editor.putFloat(AppConstants.POTENTIAL_COMMISSION, p_commissions);
+                                editor.commit();
+                                //home_pot_commission.setText(pot_commissions + "");
+                            }
+                            ArrayList<ApiModel.BuyAndRentModel> buyAndRentList1 = openDealModels.getData().get(0).getBuyAndRent();
+                            ArrayList<ApiModel.BuyAndRentModel> sellAndRentList1 = openDealModels.getData().get(0).getSellAndRentOut();
 
+                            if (buyAndRentList1.size() == 0 && sellAndRentList1.size() == 0) {
+                                no_deal_linear.setVisibility(View.VISIBLE);
+                                deal_linear.setVisibility(View.GONE);
+                            } else {
+                                no_deal_linear.setVisibility(View.GONE);
+                                deal_linear.setVisibility(View.VISIBLE);
+                            }
+                            if (buyAndRentList1.size() != 0) {
+                                buyAndRentList.clear();
+                                for (int i = 0; i < buyAndRentList1.size(); i++) {
+                                    buyAndRentList.add(buyAndRentList1.get(i));
                                 }
+                                btn_click = 1;
+                                adapter1.notifyDataSetChanged();
+                            }
+                            //setViewPager(buyAndRentList);
+                            if (sellAndRentList1.size() != 0) {
+                                sellAndRentList.clear();
+                                for (int i = 0; i < sellAndRentList1.size(); i++) {
+                                    sellAndRentList.add(sellAndRentList1.get(i));
+                                }
+                                adapter2.notifyDataSetChanged();
+                            }
+                            if (buyAndRentList.size() == 0) {
+                                open_deal_sell_btn.performClick();
 
+                            }
                            /* if(buyAndRentList1.size()>1){
                                 scaleSecondPage(pager);
                             };*/
-                            }
-                        } else {
+                            setButtonText();
+                            setView();
+                    }else{
                             String responseString = null;
                             try {
                                 responseString = response.errorBody().string();
@@ -648,7 +649,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
-                                    Utils.LoaderUtils.showLoader(context);
+                                    if(!isLoader) {
+                                        Utils.LoaderUtils.showLoader(context);
+                                        isLoader = true;
+                                    }
                                     populateArrayList1();
                                 } else {
                                     Utils.showToast(context, message);
@@ -657,13 +661,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 e.printStackTrace();
                             }
                         }
+                        Utils.LoaderUtils.dismissLoader();
+                        isLoader = false;
                     }
-                }
+                    }
+
 
                 @Override
                 public void onFailure(Call<ApiModel.OpenDealModels> call, Throwable t) {
                     Utils.showToast(context, "Some Problem Occured");
                     Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                 }
             });
         }else{
@@ -678,9 +686,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
        dropDialog(position,bundle1);
 
     }
+    private void setButtonText(){
+        open_deal_buy_btn.setText("Buy/Rent("+buyAndRentList.size()+"of 3)");
+        open_deal_sell_btn.setText("Sell/Rent Out("+sellAndRentList.size()+"of 3)");
+        if(buyAndRentList.size()>= 3 && sellAndRentList.size() >=3){
+            cutoff_relative.setVisibility(View.VISIBLE);
+        }else{
+            cutoff_relative.setVisibility(View.GONE);
+        }
+
+    }
     private void dropLead(final int position, final String drop_reason) {
         if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
+            if(!isLoader) {
+                Utils.LoaderUtils.showLoader(context);
+                isLoader = true;
+            }
             ApiModel.ClientAcceptModel clientAcceptModel = new ApiModel.ClientAcceptModel();
             if (btn_click == 1) {
                 clientAcceptModel.setClientMobileNo(buyAndRentList.get(position).getMobileNo());
@@ -702,6 +723,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                     if (response != null) {
                         String responseString = null;
                         if (response.isSuccessful()) {
@@ -716,22 +738,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         buyAndRentList.remove(position);
                                         // adapter1.deletePage(position);
                                         adapter1.notifyDataSetChanged();
-                                        if (buyAndRentList.size() == 0) {
-                                            pager_linear.setVisibility(View.GONE);
-                                        }
+
                                         //setViewPager(buyAndRentList);
                                     } else if (btn_click == 2) {
                                         //adapter2.deletePage(position);
                                         sellAndRentList.remove(position);
                                         adapter2.notifyDataSetChanged();
-                                        if (sellAndRentList.size() == 0) {
-                                            pager_linear.setVisibility(View.GONE);
-                                        }
                                         //setViewPager1(sellAndRentList);
                                     }
                                /* Intent intent = getIntent();
                                 startActivity(intent);
                                 finish();*/
+                                    if (buyAndRentList.size() == 0 && sellAndRentList.size() == 0) {
+                                        no_deal_linear.setVisibility(View.VISIBLE);
+                                        deal_linear.setVisibility(View.GONE);
+                                    } else {
+                                        no_deal_linear.setVisibility(View.GONE);
+                                        deal_linear.setVisibility(View.VISIBLE);
+                                    }
+                               setButtonText();
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -758,6 +783,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                     Utils.showToast(context, "Some Problem Occured");
                 }
             });
@@ -803,7 +829,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView drop_client_name = (TextView)dialog.findViewById(R.id.client_name_drop);
         TextView drop_client_address = (TextView)dialog.findViewById(R.id.client_address_drop);
         TextView drop_client_plan = (TextView)dialog.findViewById(R.id.drop_plan);
-        CircleImageView drop_client_image = (CircleImageView)dialog.findViewById(R.id.client_image_drop);
+        ImageView drop_client_image = (ImageView)dialog.findViewById(R.id.client_image_drop);
         drop_client_name.setText(bundle1.getString("lead_name"));
         drop_client_plan.setText(bundle1.getString("lead_plan"));
         drop_client_address.setText(bundle1.getString("lead_address"));
@@ -893,6 +919,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }else{
                                 Utils.showToast(context,message);
                                 Utils.LoaderUtils.dismissLoader();
+                                isLoader = false;
                             }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -908,6 +935,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onFailure(Call<ApiModel.InventoryModel> call, Throwable t) {
                 Utils.LoaderUtils.dismissLoader();
+                isLoader = false;
                 Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
             }
         });
@@ -935,34 +963,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (noti_type != null) {
                     if (noti_type.equalsIgnoreCase("CLIENT_ACCEPT")) {
                         Utils.bidAcceptedDialog(message1, context);
-                        Utils.LoaderUtils.showLoader(context);
+                        if(!isLoader) {
+                            Utils.LoaderUtils.showLoader(context);
+                            isLoader = true;
+                        }
                         populateArrayList1();
                     }else if (noti_type.equalsIgnoreCase("LEADS_UPDATE")) {
-                        Utils.LoaderUtils.showLoader(context);
+                        if(!isLoader) {
+                            Utils.LoaderUtils.showLoader(context);
+                            isLoader = true;
+                        }
                         populateArrayList1();
                     }else if (noti_type.equalsIgnoreCase("DROP_DEAL")) {
-                        Utils.LoaderUtils.showLoader(context);
+                        if(!isLoader) {
+                            Utils.LoaderUtils.showLoader(context);
+                            isLoader = true;
+                        }
                         populateArrayList1();
                     }
-                }else {
-
                 }
                 // Extract data included in the Intent
 
-
                 //do other stuff here
             }
-           /* int count1 = pref.getInt(AppConstants.NOTIFICATION_BADGES,0);
-            if (count1 > 0) {
-                noti_count.setVisibility(View.VISIBLE);
-                noti_count.setText(count1+"");
-            }*/
+            displayNotification();
+
         }
     };
+     private void displayNotification(){
+         int count1 = pref.getInt(AppConstants.NOTIFICATION_BADGES,0);
+         if(noti_count != null) {
+             if (count1 > 0 && count1 < 100) {
+                 noti_count.setVisibility(View.VISIBLE);
+                 noti_count.setText(count1 + "");
+             } else if (count1 > 99) {
+                 noti_count.setVisibility(View.VISIBLE);
+                 noti_count.setText("99+");
+             }
+         }
+     }
     @Override
     protected void onPause() {
         super.onPause();
         Utils.LoaderUtils.dismissLoader();
+        isLoader = false;
         LocalBroadcastManager.getInstance(this).unregisterReceiver(unreadCountBroadcastReceiver);
         context.unregisterReceiver(mMessageReceiver);
     }
@@ -970,9 +1014,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.open_deal_buy_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                open_deal_buy_btn.setBackgroundResource(R.drawable.rounded_btn);
-                open_deal_sell_btn.setBackgroundResource(R.drawable.rounded_purple_empty);
-                open_deal_sell_btn.setTextColor(context.getResources().getColor(R.color.appColor));
+                open_deal_buy_btn.setBackgroundResource(R.drawable.rounded_blue_btn);
+                open_deal_sell_btn.setBackgroundResource(R.drawable.rounded_blue_empty_btn);
+                open_deal_sell_btn.setTextColor(context.getResources().getColor(R.color.edit_hint_color));
                 open_deal_buy_btn.setTextColor(context.getResources().getColor(R.color.white));
                 //changeListValue(0);
                     btn_click = 1;
@@ -984,9 +1028,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.open_deal_sell_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                open_deal_buy_btn.setBackgroundResource(R.drawable.rounded_purple_empty);
-                open_deal_buy_btn.setTextColor(context.getResources().getColor(R.color.appColor));
-                open_deal_sell_btn.setBackgroundResource(R.drawable.rounded_btn);
+                open_deal_buy_btn.setBackgroundResource(R.drawable.rounded_blue_empty_btn);
+                open_deal_buy_btn.setTextColor(context.getResources().getColor(R.color.edit_hint_color));
+                open_deal_sell_btn.setBackgroundResource(R.drawable.rounded_blue_btn);
                 open_deal_sell_btn.setTextColor(context.getResources().getColor(R.color.white));
                     pager.setVisibility(View.GONE);
                     pager1.setVisibility(View.VISIBLE);
@@ -1007,11 +1051,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(isChecked){
                     if(!isLoader) {
                         Utils.LoaderUtils.showLoader(context);
+                        isLoader = true;
                     }
                         callActiveApi("Active");
                 }else{
                     if(!isLoader) {
                         Utils.LoaderUtils.showLoader(context);
+                        isLoader = true;
                     }
                         callActiveApi("INActive");
                 }
@@ -1072,11 +1118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Utils.clientAcceptDialog(context);
             }
         }
-       /* int count1 = pref.getInt(AppConstants.NOTIFICATION_BADGES,0);
-        if (count1 > 0) {
-            noti_count.setVisibility(View.VISIBLE);
-            noti_count.setText(count1+"");
-        }*/
+       displayNotification();
     }
 
     private void RegisterWithApplozic() {
@@ -1132,6 +1174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onFailure(Exception exception) {
                 Utils.showToast(context,exception.getMessage().toString());
                 Utils.LoaderUtils.dismissLoader();
+                isLoader = false;
                 //Logout failure
             }
         };
@@ -1140,7 +1183,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void generateToken(){
         if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
+            if(!isLoader) {
+                Utils.LoaderUtils.showLoader(context);
+                isLoader = true;
+            }
             final String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
             final SharedPreferences pref = context.getSharedPreferences(AppConstants.PREF_NAME, 0);
             final SharedPreferences.Editor editor = pref.edit();
@@ -1172,6 +1218,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         } else {
                             Utils.LoaderUtils.dismissLoader();
+                            isLoader = false;
                             String responseString = null;
                             try {
                                 responseString = response.errorBody().string();
@@ -1195,6 +1242,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onFailure(Call<TokenModel> call, Throwable t) {
                     String message = t.getMessage();
                     Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                     Utils.showToast(context, message);
                 }
             });
@@ -1213,11 +1261,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onClick(DialogInterface dialog, int which) {
                         boolean isChatLogin = pref.getBoolean(AppConstants.CHAT_LOGIN,false);
                         if(isChatLogin){
-                            Utils.LoaderUtils.showLoader(context);
+                            if(!isLoader) {
+                                Utils.LoaderUtils.showLoader(context);
+                                isLoader = true;
+                            }
                             applozicLogout();
                         }
                       else{
-                            Utils.LoaderUtils.showLoader(context);
+                            if(!isLoader) {
+                                Utils.LoaderUtils.showLoader(context);
+                                isLoader = true;
+                            }
                             logOut();
                         }
                     }
@@ -1236,11 +1290,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onTryReconnect() {
         switch (taskcompleted){
             case 100:
-                Utils.LoaderUtils.showLoader(context);
+                if(!isLoader) {
+                    Utils.LoaderUtils.showLoader(context);
+                    isLoader = true;
+                }
                 callHomeProfileApi();
                 break;
             case 200:
-                Utils.LoaderUtils.showLoader(context);
+                if(!isLoader) {
+                    Utils.LoaderUtils.showLoader(context);
+                    isLoader = true;
+                }
                 populateArrayList1();
                 break;
             case 400:
@@ -1250,5 +1310,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 generateToken();
                 break;
         }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Utils.LoaderUtils.dismissLoader();
+        isLoader = false;
+    }
+    private void setVisibility(){
+
     }
 }

@@ -43,9 +43,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import appface.brongo.R;
+import appface.brongo.activity.MainActivity;
+import appface.brongo.activity.PushAlertActivity;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.uiwidget.FlowLayout;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.CircleTransform;
 import appface.brongo.util.CustomApplicationClass;
@@ -70,7 +73,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private RecyclerView recyclerView;
     private int lastVisibleItem, totalItemCount;
     private int visibleThreshold = 15;
-    private boolean loading;
+    private boolean loading,isVisible;
     private RelativeLayout parentLinear;
     private CallListener callListener;
     private SharedPreferences pref;
@@ -132,48 +135,53 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             parentLinear.setBackgroundResource(R.color.notification_color);
         }
         if (arrayList.get(position).getAlertType().equalsIgnoreCase("BUILDER_POSTING")) {
-            holder.builder_know_btn.setVisibility(View.VISIBLE);
-        } else {
-            if (arrayList.get(position).getAlertType().equalsIgnoreCase("CALL_BACK")) {
-                holder.call_back_btn.setVisibility(View.VISIBLE);
-            } else {
-                holder.call_back_btn.setVisibility(View.GONE);
+            String budget = String.valueOf(arrayList.get(position).getBudgetRange());
+            budget = Utils.stringToInt(budget);
+            addView(arrayList.get(position).getProjectName(),holder.notification_flowlayout);
+            addView(arrayList.get(position).getLocation(),holder.notification_flowlayout);
+            addView(arrayList.get(position).getProjectType(),holder.notification_flowlayout);
+            addView(arrayList.get(position).getProjectStatus(),holder.notification_flowlayout);
+            addView((arrayList.get(position).getCommission()+"% Commission"),holder.notification_flowlayout);
+            addView(budget,holder.notification_flowlayout);
+            if(arrayList.get(position).getStatus().isEmpty()) {
+                holder.noti_view_linear.setVisibility(View.VISIBLE);
+            }else{
+                holder.noti_view_linear.setVisibility(View.GONE);
             }
-            holder.builder_know_btn.setVisibility(View.GONE);
+        } else {
+            holder.noti_view_linear.setVisibility(View.GONE);
+            holder.notification_flowlayout.setVisibility(View.GONE);
         }
         String string1 = arrayList.get(position).getClientName() + ":" + arrayList.get(position).getMessage();
         SpannableStringBuilder str = Utils.convertToSpannableString(string1, 0, arrayList.get(position).getClientName().length(), "black");
         holder.content_text.setText(str);
         holder.noti_time.setText(arrayList.get(position).getDays());
-       /* Glide.with(context).load(arrayList.get(position).getClientProfile().toString()).placeholder(R.drawable.placeholder1)
-                .diskCacheStrategy(DiskCacheStrategy.ALL).transform(new CircleTransform(context)).dontAnimate().listener(new RequestListener<String, GlideDrawable>() {
-            @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                holder.progressBar.setVisibility(View.GONE);
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                holder.progressBar.setVisibility(View.GONE);
-                return false;
-            }
-        }).into(holder.noti_image);*/
         Glide.with(context)
                 .load(arrayList.get(position).getClientProfile().toString())
                 .apply(CustomApplicationClass.getRequestOption(true))
                 .into(holder.noti_image);
-        holder.builder_know_btn.setOnClickListener(new View.OnClickListener() {
+      /*  holder.builder_know_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 View view = (View)parentLinear;
                 projectDialog(view,position);
             }
-        });
-        holder.call_back_btn.setOnClickListener(new View.OnClickListener() {
+        });*/
+        holder.view_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callListener.callBtnClick(arrayList.get(position).getMobileNo(),arrayList.get(position).getPropertyId());
+                parentLinear.performClick();
+                    holder.notification_flowlayout.setVisibility(View.VISIBLE);
+                holder.view_btn.setVisibility(View.GONE);
+                holder.proceed_btn.setVisibility(View.VISIBLE);
+
+            }
+        });
+        holder.proceed_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parentLinear.performClick();
+                tc_dialog(position);
             }
         });
         parentLinear.setOnClickListener(new View.OnClickListener() {
@@ -184,10 +192,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 }
             }
         });
+        holder.reject_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parentLinear.performClick();
+                builderRejectApi(position);
+            }
+        });
     }
 
-    public void setLoaded() {
-        loading = false;
+    public void setLoaded(boolean loaded) {
+        loading = loaded;
     }
 
     public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
@@ -206,19 +221,25 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public class EmployeeViewHolder extends RecyclerView.ViewHolder {
         TextView content_text, noti_time, noti_id,builder_know_btn;
-        Button call_back_btn;
-        CircleImageView noti_image;
+        Button view_btn,proceed_btn,reject_btn;
+        ImageView noti_image;
+        FlowLayout notification_flowlayout;
+        LinearLayout noti_view_linear;
         ProgressBar progressBar;
 
         public EmployeeViewHolder(View itemView) {
             super(itemView);
             content_text = (TextView) itemView.findViewById(R.id.notification_content);
             noti_time = (TextView) itemView.findViewById(R.id.notification_time);
-            noti_image = (CircleImageView) itemView.findViewById(R.id.notification_image);
+            noti_image = (ImageView) itemView.findViewById(R.id.notification_image);
             progressBar = (ProgressBar) itemView.findViewById(R.id.noti_progress);
+            notification_flowlayout = (FlowLayout)itemView.findViewById(R.id.noti_flowlayout);
             parentLinear = (RelativeLayout) itemView.findViewById(R.id.notification_parent_linear);
             builder_know_btn = (TextView) itemView.findViewById(R.id.know_more);
-            call_back_btn = (Button) itemView.findViewById(R.id.call_back_btn);
+            view_btn = (Button) itemView.findViewById(R.id.notification_view);
+            proceed_btn = (Button) itemView.findViewById(R.id.notification_proceed);
+            reject_btn = (Button) itemView.findViewById(R.id.notification_reject);
+            noti_view_linear = (LinearLayout) itemView.findViewById(R.id.builder_view_linear);
         }
     }
 
@@ -226,49 +247,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         void onLoadMore();
     }
 
-    private void projectDialog(final View view, final int position) {
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().setDimAmount(0.5f);
-        dialog.setContentView(R.layout.builder_noti_dialog);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        //dialog.setCanceledOnTouchOutside(false);
-        // dialog.setCancelable(false);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        TextView project_name = (TextView) dialog.findViewById(R.id.dialog_project_name);
-        TextView project_address = (TextView) dialog.findViewById(R.id.dialog_project_address);
-        TextView project_budget = (TextView) dialog.findViewById(R.id.dialog_project_budget);
-        TextView project_type = (TextView) dialog.findViewById(R.id.dialog_project_type);
-        TextView project_status = (TextView) dialog.findViewById(R.id.dialog_project_status);
-        project_name.setText(arrayList.get(position).getProjectName());
-        project_address.setText(arrayList.get(position).getLocation());
-        project_type.setText(arrayList.get(position).getProjectType());
-        project_status.setText(arrayList.get(position).getProjectStatus());
-        if(arrayList.get(position).getBudgetRange().equalsIgnoreCase("")){
-            project_budget.setVisibility(View.GONE);
-        }else{
-            String budget = Utils.stringToInt(arrayList.get(position).getBudgetRange());
-            project_budget.setText(budget);
-        }
-        project_budget.setText(arrayList.get(position).getProjectName());
-        Button accept_btn = (Button) dialog.findViewById(R.id.builder_accept_btn);
-        Button reject_btn = (Button) dialog.findViewById(R.id.builder_reject_btn);
-        dialog.show();
-        accept_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                readNotification(position,view);
-                dialog.dismiss();
-            }
-        });
-        reject_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-    }
 
     private void readNotification(final int position, final View view) {
         if(Utils.isNetworkAvailable(context)) {
@@ -298,10 +276,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             if (statusCode == 200 && message.equalsIgnoreCase("Updated Successfully")) {
                                 arrayList.get(position).setRead(true);
                                 view.setBackgroundResource(R.color.white);
-                                notifyDataSetChanged();
-                                if (arrayList.get(position).getAlertType().equalsIgnoreCase("BUILDER_POSTING")) {
-                                    accept_builder(position);
+                                if(!(arrayList.get(position).getAlertType().equalsIgnoreCase("BUILDER_POSTING"))){
+                                    notifyDataSetChanged();
                                 }
+
                             }
                             // referAdapter.notifyDataSetChanged();
                         } else {
@@ -365,6 +343,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             int statusCode = responseModel.getStatusCode();
                             String message = responseModel.getMessage();
                             if (statusCode == 200 && message.equalsIgnoreCase("Builder And Broker Connection Is Established")) {
+                                arrayList.get(position).setStatus("accept");
+                                notifyDataSetChanged();
                                 Utils.showToast(context, message);
                             }
                         } else {
@@ -376,6 +356,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
                                     accept_builder(position);
+                                }else{
+                                    Utils.showToast(context, message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -394,5 +376,112 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             Utils.internetDialog(context,this);
         }
     }
+    private void builderRejectApi(final int position){
+        if (Utils.isNetworkAvailable(context)) {
+            Utils.LoaderUtils.showLoader(context);
+            ApiModel.ClientAcceptModel clientAcceptModel = new ApiModel.ClientAcceptModel();
+            clientAcceptModel.setClientMobileNo(arrayList.get(position).getUserId());
+            clientAcceptModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
+            clientAcceptModel.setPostingType("");
+            clientAcceptModel.setPropertyId(arrayList.get(position).getPropertyId());
+            clientAcceptModel.setReason("");
+            clientAcceptModel.setPostedUser("builder");
+            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+            Call<ResponseBody> call = retrofitAPIs.rejectLeadApi(tokenaccess, "android", deviceId, clientAcceptModel);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response != null) {
+                        Utils.LoaderUtils.dismissLoader();
+                        String responseString = null;
+                        if (response.isSuccessful()) {
+                            try {
+                                responseString = response.body().string();
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                String message = jsonObject.optString("message");
+                                int statusCode = jsonObject.optInt("statusCode");
+                                if (statusCode == 200 ) {
+                                    arrayList.remove(position);
+                                    notifyDataSetChanged();
+                                }
+                            } catch (IOException | JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            try {
+                                responseString = response.errorBody().string();
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                String message = jsonObject.optString("message");
+                                int statusCode = jsonObject.optInt("statusCode");
+                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                    new AllUtils().getTokenRefresh(context);
+                                    builderRejectApi(position);
+                                } else {
+                                    Utils.showToast(context, message);
+                                }
+                            } catch (IOException | JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utils.LoaderUtils.dismissLoader();
+                    Utils.showToast(context, "Some Problem Occured");
+                }
+            });
+        }else{
+            Utils.internetDialog(context,this);
+        }
+    }
+
+    private void tc_dialog(final int position){
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.setContentView(R.layout.dialog_tc);
+            //dialog.setCanceledOnTouchOutside(false);
+            // dialog.setCancelable(false);
+            final ImageView cross_btn = (ImageView) dialog.findViewById(R.id.tc_close_btn);
+            final Button accept_btn = (Button)dialog.findViewById(R.id.tcDialog_accept);
+        TextView commission_text = (TextView)dialog.findViewById(R.id.tcDialog_commission);
+        if(arrayList.get(position).getCommission() != null) {
+            commission_text.setText(arrayList.get(position).getCommission() + "% Commission");
+        }
+            cross_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+        accept_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    accept_builder(position);
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        dialog.show();
+    }
+    private void addView(String text, FlowLayout flowLayout) {
+        if(text != null) {
+            if (!text.isEmpty()) {
+                try {
+                    View layout2 = LayoutInflater.from(context).inflate(R.layout.deal_child, flowLayout, false);
+                    TextView deal_textview = (TextView) layout2.findViewById(R.id.deal_text);
+                    deal_textview.setText(text);
+                    flowLayout.addView(layout2);
+                } catch (Exception e) {
+                    String error = e.toString();
+                }
+            }
+        }
+    }
+
 
 }

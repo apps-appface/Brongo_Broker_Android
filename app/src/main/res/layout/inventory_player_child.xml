@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/edit_border"
-    android:layout_margin="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="10dp"
     >
     <RelativeLayout
         android:layout_width="match_parent"
@@ -98,14 +101,14 @@
          android:layout_below="@+id/invent_pesonal_postingtype"
             android:layout_alignLeft="@+id/invent_pesonal_postingtype"/>
     </RelativeLayout>
-        <com.nex3z.flowlayout.FlowLayout
+        <appface.brongo.uiwidget.FlowLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/invent_personal_flowlayout"
             android:layout_marginTop="10dp"
-            app:flChildSpacing="10dp"
-            app:flChildSpacingForLastRow="align"
-            app:flRowSpacing="10dp">
-
+            app:flowDirection="leftToRight"
+            app:elementSpacing="4dp"
+            app:lineSpacing="10dp">
         <appface.brongo.uiwidget.CustomTextView
             android:id="@+id/invent_personal_address"
             android:layout_width="wrap_content"
@@ -120,6 +123,7 @@
             android:shadowRadius="3"
             android:textSize="13sp"
             android:textColor="#33609b"
+            android:visibility="gone"
             app:customFont="lato_regular.ttf"/>
 
         <appface.brongo.uiwidget.CustomTextView
@@ -135,6 +139,7 @@
             android:shadowRadius="3"
             android:textSize="13sp"
             android:textColor="#33609b"
+            android:visibility="gone"
             app:customFont="lato_regular.ttf"/>
 
         <appface.brongo.uiwidget.CustomTextView
@@ -151,6 +156,7 @@
             android:shadowRadius="3"
             android:textSize="13sp"
             android:textColor="#33609b"
+            android:visibility="gone"
             app:customFont="lato_regular.ttf"/>
             <appface.brongo.uiwidget.CustomTextView
                 android:id="@+id/invent_personal_prop_status"
@@ -166,6 +172,7 @@
                 android:shadowRadius="3"
                 android:textSize="13sp"
                 android:textColor="#33609b"
+                android:visibility="gone"
                 app:customFont="lato_regular.ttf"/>
 
             <appface.brongo.uiwidget.CustomTextView
@@ -182,8 +189,9 @@
                 android:shadowRadius="3"
                 android:textSize="13sp"
                 android:textColor="#33609b"
+                android:visibility="gone"
                 app:customFont="lato_regular.ttf"/>
-        </com.nex3z.flowlayout.FlowLayout>
+        </appface.brongo.uiwidget.FlowLayout>
     </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

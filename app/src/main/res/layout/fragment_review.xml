@@ -19,10 +19,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/review_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:scaleType="fitXY"
                 android:layout_centerVertical="true"
                 />
             <appface.brongo.uiwidget.CustomTextView

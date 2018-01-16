@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ import appface.brongo.adapter.SubmenuAdapter;
 import appface.brongo.util.RecyclerItemClickListener;
 import appface.brongo.util.Utils;
 
+import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.CONTACT;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -29,6 +32,7 @@ public class SupportFragment extends Fragment {
     private Context context;
     private ArrayList<String> arrayList;
     private Toolbar toolbar;
+    private ImageView edit_icon,delete_icon,add_icon;
     private TextView toolbar_title;
 
     public SupportFragment() {
@@ -44,8 +48,16 @@ public class SupportFragment extends Fragment {
         context = getActivity();
         arrayList = new ArrayList<String>(Arrays.asList("Take me to the app walkthrough", "Contact Brongo Customer Support", "I want to unsubscribe"));
         RecyclerView support_recycle = (RecyclerView)view.findViewById(R.id.support_recycle);
+        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+        edit_icon.setVisibility(View.GONE);
+        delete_icon.setVisibility(View.GONE);
+        add_icon.setVisibility(View.GONE);
+        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
         toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
-        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar_title);
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar_title.setText("Support");
         LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
         verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
         support_recycle.setLayoutManager(verticalmanager);
@@ -65,12 +77,10 @@ public class SupportFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), WalkThroughActivity.class);
                 intent.putExtra("from_activity","menu");
                 context.startActivity(intent);
-                getActivity().finish();
                 break;
             case 1:
                 ContactFragment contactFragment = new ContactFragment();
-                Utils.replaceFragment(getFragmentManager(),contactFragment,R.id.inventory_frag_container,true);
-                toolbar_title.setText("Contact Us");
+                Utils.replaceFragment(getFragmentManager(),contactFragment,R.id.inventory_frag_container,CONTACT);
                 break;
         }
     }

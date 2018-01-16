@@ -44,6 +44,8 @@ import com.applozic.mobicomkit.api.account.user.MobiComUserPreference;
 import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
 import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,6 +60,7 @@ import appface.brongo.model.ApiModel;
 import appface.brongo.model.ClientDetailsModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.uiwidget.FlowLayout;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.CircleTransform;
 import appface.brongo.util.CustomApplicationClass;
@@ -91,6 +94,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
     private LinearLayout mLinearLayout;
     private RatingBar ratingBar;
     private Bundle bundle;
+    private FlowLayout flowLayout;
     private ProgressDialog pd;
     private Context context;
 
@@ -178,6 +182,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         RelativeLayout relativeLayout = (RelativeLayout)linearLayout.findViewById(R.id.open_relative1);*/
         ScrollView linearLayout = (ScrollView) inflater.inflate(R.layout.fragment_item1, container, false);
         relativeLayout = (RelativeLayout)linearLayout.findViewById(R.id.open_relative1);
+        flowLayout = (FlowLayout)linearLayout.findViewById(R.id.main_deal_flowlayout);
         //relativeLayout.setLayoutParams(layoutParams);
         mLinearLayout = (LinearLayout)linearLayout.findViewById(R.id.lead_status_linear);
         addLayout(arrayList);
@@ -192,17 +197,17 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         TextView open_deal_commission = (TextView) linearLayout.findViewById(R.id.open_deal_commission);
         TextView open_deal_clienttype = (TextView) linearLayout.findViewById(R.id.open_deal_client_type);
         TextView view_all = (TextView)linearLayout.findViewById(R.id.landing_viewall);
-        foo(view_all);
+        foo(view_all,bundle);
         //TextView open_deal_sitevisit = (TextView) linearLayout.findViewById(R.id.open_deal_visit);
-        TextView open_deal_address = (TextView) linearLayout.findViewById(R.id.open_deal_address);
+        //TextView open_deal_address = (TextView) linearLayout.findViewById(R.id.open_deal_address);
         TextView open_deal_id = (TextView) linearLayout.findViewById(R.id.deal_id);
-        TextView open_deal_bhk = (TextView) linearLayout.findViewById(R.id.open_deal_bhk);
-        TextView open_deal_budget = (TextView) linearLayout.findViewById(R.id.open_deal_budget);
-        TextView open_deal_propstatus = (TextView) linearLayout.findViewById(R.id.open_deal_prop_status);
-        TextView open_deal_proptype = (TextView) linearLayout.findViewById(R.id.open_deal_prop_type);
+        //TextView open_deal_bhk = (TextView) linearLayout.findViewById(R.id.open_deal_bhk);
+        //TextView open_deal_budget = (TextView) linearLayout.findViewById(R.id.open_deal_budget);
+        //TextView open_deal_propstatus = (TextView) linearLayout.findViewById(R.id.open_deal_prop_status);
+        //TextView open_deal_proptype = (TextView) linearLayout.findViewById(R.id.open_deal_prop_type);
         Button open_deal_del_btn = (Button) linearLayout.findViewById(R.id.client_drop);
         Button open_deal_chat_btn = (Button) linearLayout.findViewById(R.id.client_chat);
-        CircleImageView open_deal_client_image = (CircleImageView) linearLayout.findViewById(R.id.client_deal_pic);
+        ImageView open_deal_client_image = (ImageView) linearLayout.findViewById(R.id.client_deal_pic);
         LinearLayout noti_star_linear = (LinearLayout)linearLayout.findViewById(R.id.noti_star_linear);
         ratingBar = (RatingBar)linearLayout.findViewById(R.id.opendeal_ratingBar);
         Button clientCall = (Button)linearLayout.findViewById(R.id.client_call);
@@ -229,21 +234,13 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         matching_properties.setText(lead_matched + " matching properties");
         open_deal_id.setText("DEAL ID : "+propertyId);
         open_deal_name.setText(lead_name);
-        open_deal_commission.setText(lead_commission + "");
+        open_deal_commission.setText(lead_commission + "%");
         open_deal_clienttype.setText(lead_posting_type.toUpperCase()+"/"+lead_prop_type.toUpperCase());
-        if(lead_posting_type.equalsIgnoreCase("sell")){
-            lead_budget =Utils.stringToInt(lead_budget);
-            open_deal_clienttype.setBackgroundColor(Color.parseColor("#3664cb"));
-        }else if(lead_posting_type.equalsIgnoreCase("rent_out")){
-            open_deal_clienttype.setBackgroundColor(Color.parseColor("#80cb36"));
-        }else if(lead_posting_type.equalsIgnoreCase("rent")){
-            open_deal_clienttype.setBackgroundColor(Color.parseColor("#80cb36"));
-        }else if(lead_posting_type.equalsIgnoreCase("BUY")){
-            open_deal_clienttype.setBackgroundColor(Color.parseColor("#ea8737"));
-        }
+       String color_back = Utils.getPostingColor(lead_posting_type);
+            open_deal_clienttype.setBackgroundColor(Color.parseColor(color_back));
         //open_deal_sitevisit.setText(lead_site);
-        open_deal_address.setText(lead_address);
-        if(lead_bhk.equalsIgnoreCase("")){
+        //open_deal_address.setText(lead_address);
+      /*  if(lead_bhk.equalsIgnoreCase("")){
             open_deal_bhk.setVisibility(View.GONE);
         }else {
             open_deal_bhk.setText(lead_bhk);
@@ -262,7 +259,17 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
             open_deal_proptype.setVisibility(View.GONE);
         }else {
             open_deal_proptype.setText(lead_sub_prop_type);
-        }
+        }*/
+        String budget = "";
+      if(lead_budget != null && !lead_budget.isEmpty()) {
+          budget = Utils.stringToInt(lead_budget);
+      }
+      addview(lead_address);
+        addview(budget);
+        addview(lead_bhk);
+        addview(lead_prop_status);
+        addview(lead_sub_prop_type);
+
         ratingBar.setRating(lead_rating);
        //setRating(rating);
         clientCall.setOnClickListener(new View.OnClickListener() {
@@ -385,6 +392,22 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                 mLinearLayout.addView(layout2);
             } catch (Exception e) {
                 String error = e.toString();
+            }
+        }
+    }
+    private void addview(String text) {
+        if(text != null) {
+            if (!text.isEmpty()) {
+                try {
+                    View layout2 = LayoutInflater.from(getActivity()).inflate(R.layout.deal_child, flowLayout, false);
+                    TextView deal_textview = (TextView) layout2.findViewById(R.id.deal_text);
+                    deal_textview.setBackgroundResource(R.drawable.rounded_blue_btn);
+                    deal_textview.setTextColor(context.getResources().getColor(R.color.white));
+                    deal_textview.setText(text);
+                    flowLayout.addView(layout2);
+                } catch (Exception e) {
+                    String error = e.toString();
+                }
             }
         }
     }
@@ -564,7 +587,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);*/
         dialog.setContentView(R.layout.dialog_client_rating);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        CircleImageView rating_client_image = (CircleImageView) dialog.findViewById(R.id.client_image_rating);
+        ImageView rating_client_image = (ImageView) dialog.findViewById(R.id.client_image_rating);
         RatingBar dialog_ratingbar = (RatingBar)dialog.findViewById(R.id.rating_dialog_ratingBar);
         TextView ratimg_client_name = (TextView)dialog.findViewById(R.id.client_name_rating);
         TextView ratimg_client_address = (TextView)dialog.findViewById(R.id.client_address_rating);
@@ -881,11 +904,17 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         }
         return count;
     }
-    private void foo(TextView landing_viewall) {
+    private void foo(TextView landing_viewall, final Bundle bundle) {
         SpannableString link = makeLinkSpan("View all requirement", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.showToast(context,"View all requirement");
+                Intent intent = new Intent(getActivity(),Menu_Activity.class);
+                intent.putExtra("dealId",bundle.getString("propertyId"));
+                intent.putExtra("postingType",bundle.getString("lead_posting_type"));
+                intent.putExtra("propertyType",bundle.getString("lead_prop_type"));
+                intent.putExtra("clientMobile",bundle.getString("lead_mobile"));
+                intent.putExtra("frgToLoad",("requirement_page"));
+                startActivity(intent);
             }
         });
         // Set the TextView's text
@@ -928,6 +957,11 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         public void onClick(View v) {
             mListener.onClick(v);
         }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Utils.LoaderUtils.dismissLoader();
     }
 
 }

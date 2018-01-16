@@ -16,7 +16,7 @@
         android:background="@color/white"
         android:orientation="horizontal">
             <Button
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:padding="10dp"
@@ -29,7 +29,7 @@
 
             <Button
                 android:id="@+id/historical_closed_btn"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
@@ -42,8 +42,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         >
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"

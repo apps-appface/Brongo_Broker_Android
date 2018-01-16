@@ -160,7 +160,7 @@ public class ResideMenu extends FrameLayout {
     public void setMenuProfile(String uname, String plan, String contact, String imageResources,float rating){
         TextView menu_uaddress = (TextView)scrollViewMenu.findViewById(R.id.drawer_uaddress);
         TextView menu_uplan = (TextView)scrollViewMenu.findViewById(R.id.drawer_plan_text);
-        CircleImageView menu_uimage = (CircleImageView) scrollViewLeftMenu.findViewById(R.id.drawer_image);
+        ImageView menu_uimage = (ImageView) scrollViewLeftMenu.findViewById(R.id.drawer_image);
         RatingBar menu_ratingbar = (RatingBar)scrollViewLeftMenu.findViewById(R.id.drawer_ratingBar);
         menu_uname.setText(uname);
         menu_uaddress.setText(contact);

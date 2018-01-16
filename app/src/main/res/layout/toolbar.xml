@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolBar1"
@@ -275,7 +281,8 @@
                                 android:shadowDx="6.123233995736766e-17"
                                 android:shadowDy="1"
                                 android:shadowRadius="3"
-                                android:textSize="20sp"
+                                android:textSize="18sp"
+                                android:maxLines="1"
                                 android:textColor="#ffffff"
                                 app:customFont="lato_regular.ttf"
                                 />
@@ -300,7 +307,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/commission_linear"
                         android:orientation="vertical"
-                        android:layout_marginLeft="63dp">
+                        android:layout_marginLeft="40dp">
 
                         <appface.brongo.uiwidget.CustomTextView
                             android:id="@+id/opened_commission_text"
@@ -310,7 +317,8 @@
                             android:shadowDx="6.123233995736766e-17"
                             android:shadowDy="1"
                             android:shadowRadius="3"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
+                            android:maxLines="1"
                             android:textColor="#ffffff"
                             app:customFont="lato_regular.ttf"/>
 
@@ -379,22 +387,29 @@
                         android:text="Open Deals"
                         app:customFont="lato_bold.ttf"
                         />
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:id="@+id/cutoff_relative"
+                            android:visibility="gone">
                         <View
-                            android:layout_width="1dp"
+                            android:layout_width="2dp"
                             android:layout_height="match_parent"
                             android:background="#64687f"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:visibility="gone"/>
+                            android:id="@+id/cutoff_view" />
                         <appface.brongo.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="13sp"
+                            android:layout_centerInParent="true"
+                            android:layout_toRightOf="@+id/cutoff_view"
                             android:textColor="#e3011e"
                             android:text="Maximum limit of  leads reached"
                             app:customFont="lato_bold.ttf"
-                            android:visibility="gone"
                             />
+                        </RelativeLayout>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -410,7 +425,7 @@
                             android:textAllCaps="false"
                             android:id="@+id/buy_rent"
                             android:textColor="@color/white"
-                            android:background="@drawable/rounded_btn"/>
+                            android:background="@drawable/rounded_blue_btn"/>
 
                         <Button
                             android:id="@+id/sell_rentout"
@@ -418,19 +433,25 @@
                             android:layout_height="match_parent"
                             android:layout_marginLeft="5dp"
                             android:layout_weight="1"
-                            android:background="@drawable/rounded_purple_empty"
+                            android:background="@drawable/rounded_blue_empty_btn"
                             android:text="Sell/Rent out"
                             android:textAllCaps="false"
-                            android:textColor="@color/appColor" />
+                            android:textColor="@color/edit_hint_color" />
                     </LinearLayout>
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/activity_main_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="1100dp"
+                        android:layout_height="1150dp"
                         android:orientation="vertical"
-                        android:layout_marginBottom="50dp"
                         android:gravity="center"
+                        android:layout_gravity="bottom"
                         >
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/ic_landing_back"
+                            />
                         <android.support.v4.view.ViewPager
                             android:id="@+id/myviewpager"
                             android:layout_width="match_parent"
@@ -443,7 +464,7 @@
                             android:layout_gravity="center"
                             android:visibility="gone"/>
 
-                    </LinearLayout>
+                    </RelativeLayout>
                 </LinearLayout>
 
             </LinearLayout>
@@ -457,12 +478,26 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
 
 </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/action_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/floating_add_btn1"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:layout_alignParentRight="true" />
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="46dp"
+        android:layout_height="45dp"
         android:orientation="horizontal"
         android:id="@+id/linear2"
         android:gravity="center"
+        android:layout_gravity="bottom"
         android:background="@color/appColor"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
@@ -501,17 +536,5 @@
             android:id="@+id/active_btn"
             app:kswBackColor="@color/white"/>
     </LinearLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/action_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="60dp"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/floating_add_btn1"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:layout_alignParentRight="true" />
 
-</RelativeLayout>
+</LinearLayout>

@@ -351,4 +351,249 @@ public class ClientDetailsModel {
         double commission;
         int status;
     }
+    public static class NotificatioModel{
+        String clientMobileNo;
+        String brokerMobileNo;
+
+        public String getClientMobileNo() {
+            return clientMobileNo;
+        }
+
+        public void setClientMobileNo(String clientMobileNo) {
+            this.clientMobileNo = clientMobileNo;
+        }
+
+        public String getBrokerMobileNo() {
+            return brokerMobileNo;
+        }
+
+        public void setBrokerMobileNo(String brokerMobileNo) {
+            this.brokerMobileNo = brokerMobileNo;
+        }
+
+        public String getPropertyId() {
+            return propertyId;
+        }
+
+        public void setPropertyId(String propertyId) {
+            this.propertyId = propertyId;
+        }
+
+        public String getPostingType() {
+            return postingType;
+        }
+
+        public void setPostingType(String postingType) {
+            this.postingType = postingType;
+        }
+
+        String propertyId;
+        String postingType;
+    }
+    public static class ConnectedClientModel{
+        int statusCode;
+
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        public void setStatusCode(int statusCode) {
+            this.statusCode = statusCode;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public ArrayList<ConnectedClientObject> getData() {
+            return data;
+        }
+
+        public void setData(ArrayList<ConnectedClientObject> data) {
+            this.data = data;
+        }
+
+        String message;
+        ArrayList<ConnectedClientObject> data;
+    }
+    public static class ConnectedClientObject{
+        String mobileNo;
+        String emailId;
+
+        public String getMobileNo() {
+            return mobileNo;
+        }
+
+        public void setMobileNo(String mobileNo) {
+            this.mobileNo = mobileNo;
+        }
+
+        public String getEmailId() {
+            return emailId;
+        }
+
+        public void setEmailId(String emailId) {
+            this.emailId = emailId;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        String firstName;
+    }
+    public static class DealModel{
+        String message;
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        public void setStatusCode(int statusCode) {
+            this.statusCode = statusCode;
+        }
+
+        public ArrayList<DealContent> getData() {
+            return data;
+        }
+
+        public void setData(ArrayList<DealContent> data) {
+            this.data = data;
+        }
+
+        int statusCode;
+        ArrayList<DealContent> data;
+    }
+    public static class DealContent{
+        ArrayList<DealObject> content;
+        ArrayList<String> images;
+        String propertyId;
+
+        public ArrayList<DealObject> getContent() {
+            return content;
+        }
+
+        public void setContent(ArrayList<DealObject> content) {
+            this.content = content;
+        }
+
+        public ArrayList<String> getImages() {
+            return images;
+        }
+
+        public void setImages(ArrayList<String> images) {
+            this.images = images;
+        }
+
+        public String getPropertyId() {
+            return propertyId;
+        }
+
+        public void setPropertyId(String propertyId) {
+            this.propertyId = propertyId;
+        }
+
+        public String getPostingType() {
+            return postingType;
+        }
+
+        public void setPostingType(String postingType) {
+            this.postingType = postingType;
+        }
+
+        public String getPropertyType() {
+            return propertyType;
+        }
+
+        public void setPropertyType(String propertyType) {
+            this.propertyType = propertyType;
+        }
+
+        String postingType;
+        String propertyType;
+    }
+    public static class DealObject{
+        String content;
+        String title;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+    }
+    public static class PropertyModel{
+        String brokerMobileNo;
+        String clientMobileNo;
+        String propertyId;
+
+        public String getBrokerMobileNo() {
+            return brokerMobileNo;
+        }
+
+        public void setBrokerMobileNo(String brokerMobileNo) {
+            this.brokerMobileNo = brokerMobileNo;
+        }
+
+        public String getClientMobileNo() {
+            return clientMobileNo;
+        }
+
+        public void setClientMobileNo(String clientMobileNo) {
+            this.clientMobileNo = clientMobileNo;
+        }
+
+        public String getPropertyId() {
+            return propertyId;
+        }
+
+        public void setPropertyId(String propertyId) {
+            this.propertyId = propertyId;
+        }
+
+        public String getPostingType() {
+            return postingType;
+        }
+
+        public void setPostingType(String postingType) {
+            this.postingType = postingType;
+        }
+
+        public String getPropertyType() {
+            return propertyType;
+        }
+
+        public void setPropertyType(String propertyType) {
+            this.propertyType = propertyType;
+        }
+
+        String postingType;
+        String propertyType;
+    }
 }

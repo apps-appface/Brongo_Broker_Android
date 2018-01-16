@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.util.Util;
 
 
@@ -40,6 +41,7 @@ import appface.brongo.fragment.IndividualInventoryFragment;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.uiwidget.FlowLayout;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.CustomApplicationClass;
 import appface.brongo.util.RefreshTokenCall;
@@ -50,6 +52,9 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.ADD_INVENTORY;
+import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.INDIVIDUAL_INVENTORY;
 
 /**
  * Created by Rohit Kumar on 9/20/2017.
@@ -80,6 +85,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
 
     @Override
     public void onBindViewHolder(final InventoryPersonalAdapter.EmployeeViewHolder holder, final int position) {
+        holder.setIsRecyclable(false);
         ApiModel.InventoryPersoanlList object1 = arrayList.get(position);
         String budget = arrayList.get(position).getBudget()+"";
         budget = Utils.stringToInt(budget);
@@ -89,14 +95,18 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
        // Glide.with(context).load(arrayList.get(position).getPropertyImage1()).into(holder.prop_image);
        /* Glide.with(context).load(arrayList.get(position).getPropertyImage1()).skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.prop_image);*/
-        Glide.with(context)
-                .load(arrayList.get(position).getPropertyImage1())
-                .apply(CustomApplicationClass.getRequestOptionProperty(false))
-                .into(holder.prop_image);
+        String image = arrayList.get(position).getPropertyImage1();
+           /* Glide.with(context)
+                    .load(arrayList.get(position).getPropertyImage1())
+                    .into(holder.prop_image);*/
+            Glide.with(context)
+                    .load(arrayList.get(position).getPropertyImage1())
+                    .apply(CustomApplicationClass.getPropertyImage(true))
+                    .into(holder.prop_image);
         holder.invent_child_clientName.setText(arrayList.get(position).getClientName());
         holder.invent_child_client.setText(arrayList.get(position).getPostingType().toUpperCase()+"/"+arrayList.get(position).getPropertyType().toUpperCase());
         holder.invent_child_mobile.setText(arrayList.get(position).getClientMobileNo());
-        holder.invent_child_location.setText(arrayList.get(position).getMicroMarketName());
+       /* holder.invent_child_location.setText(arrayList.get(position).getMicroMarketName());
         if(arrayList.get(position).getBedRoomType().equalsIgnoreCase("")){
             holder.invent_child_bhk.setVisibility(View.GONE);
         }else {
@@ -119,17 +129,14 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
             } else {
                 holder.invent_child_prop_type.setText(arrayList.get(position).getSubPropertyType());
             }
-        }
-        if(arrayList.get(position).getPostingType().equalsIgnoreCase("sell")){
-            holder.invent_child_client.setBackgroundColor(Color.parseColor("#3664cb"));
-        }else if(arrayList.get(position).getPostingType().equalsIgnoreCase("rent_Out")){
-            holder.invent_child_client.setBackgroundColor(Color.parseColor("#80cb36"));
-        }else if(arrayList.get(position).getPostingType().equalsIgnoreCase("rent")){
-            holder.invent_child_client.setBackgroundColor(Color.parseColor("#80cb36"));
-        }else{
-            holder.invent_child_client.setBackgroundColor(Color.parseColor("#ea8737"));
-        }
-
+        }*/
+       addView(arrayList.get(position).getMicroMarketName(),holder.flowLayout);
+        addView(arrayList.get(position).getBedRoomType(),holder.flowLayout);
+        addView(arrayList.get(position).getPropertyStatus(),holder.flowLayout);
+        addView(budget,holder.flowLayout);
+        addView(arrayList.get(position).getSubPropertyType(),holder.flowLayout);
+        String backColor = Utils.getPostingColor(arrayList.get(position).getPostingType());
+            holder.invent_child_client.setBackgroundColor(Color.parseColor(backColor));
         holder.invent_child_editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,6 +159,21 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
         });
     }
 
+    private void addView(String text, FlowLayout flowLayout) {
+        if(text != null) {
+            if (!text.isEmpty()) {
+                try {
+                    View layout2 = LayoutInflater.from(context).inflate(R.layout.deal_child, flowLayout, false);
+                    TextView deal_textview = (TextView) layout2.findViewById(R.id.deal_text);
+                    deal_textview.setText(text);
+                    flowLayout.addView(layout2);
+                } catch (Exception e) {
+                    String error = e.toString();
+                }
+            }
+        }
+    }
+
     @Override
     public int getItemCount() {
         return arrayList.size();
@@ -161,15 +183,16 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
     public void onTryReconnect() {
 
     }
-
     public class EmployeeViewHolder extends RecyclerView.ViewHolder {
         TextView invent_child_client,invent_child_clientName,invent_child_bhk,invent_child_mobile,invent_child_prop_status,invent_child_location,invent_child_budget,invent_child_prop_type;
         ImageView prop_image;
+        FlowLayout flowLayout;
         LinearLayout recycle_item_linear;
         Button invent_child_editBtn,invent_child_deleteBtn;
 
         public EmployeeViewHolder(View itemView) {
             super(itemView);
+            flowLayout = (FlowLayout)itemView.findViewById(R.id.invent_personal_flowlayout);
             invent_child_clientName = (TextView) itemView.findViewById(R.id.invent_personal_name);
             invent_child_client = (TextView) itemView.findViewById(R.id.invent_pesonal_postingtype);
             invent_child_bhk = (TextView) itemView.findViewById(R.id.invent_personal_bhk);
@@ -295,7 +318,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
         bundle.putString("subPropertyType",arrayList.get(position).getSubPropertyType());
         AddInventoryFragment addInventoryFragment = new AddInventoryFragment();
         addInventoryFragment.setArguments(bundle);
-        Utils.replaceFragment(fragmentManager,addInventoryFragment,R.id.inventory_frag_container,false);
+        Utils.replaceFragment(fragmentManager,addInventoryFragment,R.id.inventory_frag_container,ADD_INVENTORY);
     }
     private void changeFragment(int position){
         Bundle bundle = new Bundle();
@@ -319,7 +342,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
         bundle.putString("subPropertyType",arrayList.get(position).getSubPropertyType());
         IndividualInventoryFragment individualInventoryFragment = new IndividualInventoryFragment();
         individualInventoryFragment.setArguments(bundle);
-        Utils.replaceFragment(fragmentManager,individualInventoryFragment,R.id.inventory_frag_container,true);
+        Utils.replaceFragment(fragmentManager,individualInventoryFragment,R.id.inventory_frag_container,INDIVIDUAL_INVENTORY);
     }
 
 }

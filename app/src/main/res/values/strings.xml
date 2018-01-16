@@ -7,6 +7,7 @@
     <string name="select_time">Select Time</string>
     <string name="otp_text">SMS verification code has been \n sent to:</string>
     <string name="inventory_register_tc">See Terms &amp; Conditions</string>
+    <string name="contact_us">Get in touch with us if you \n need any help</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -42,5 +43,9 @@ received. Very few people have a perfect rating. So don’t despair if your aver
     <string name="silver_desc">If a broker receives 40 times 5 Star rating from clients</string>
     <string name="gold">Gold</string>
     <string name="gold_desc">If a broker receives 50 times 5 Star rating from clients</string>
+    <string name="builder_tc">Brongo – General Terms and Conditions of Use for Brokers \n
+I. ACCEPTANCE OF TERMS OF USE AND OTHER POLICIES  \n
+a. All references to “you” or “your” as applicable, means the person that accesses, uses, and/or participates in the Platform (as defined below) by offering services in the capacity of a broker (“Broker”).  If you use the Platform on behalf of a business, you represent and warrant that you have the authority to bind that business. Your acceptance of the Terms of Use will be deemed an acceptance by the business you represent and “you” and “your” herein shall refer to the business.  \n
+b. Terms of Use. These terms of use (the “Terms of Use”) govern your use of our website www.brongo.in (the “Website”) and our Brongo application for mobile and handheld devices (the “App”). The Website and the App are jointly referred to as the “Platform”. The Platform is currently owned and operated by Turnip Technologies Private Limited (“Turnip”), a company incorporated under the Companies Act, 2013 and having its registered office at No. 203, 4th Cross, 3rd Block, HRBR Layout, Bangalore – 560 043, Karnataka, India. </string>
 
 </resources>

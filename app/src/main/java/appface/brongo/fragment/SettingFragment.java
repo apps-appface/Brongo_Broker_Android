@@ -6,14 +6,17 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kyleduo.switchbutton.SwitchButton;
@@ -47,7 +50,10 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
     private SwitchButton offer_noti_switch,builder_noti_switch,noti_sound_switch;
     private static SeekBar sound_seekbar;
     private int i=0;
+    private TextView toolbar_title;
+    private Toolbar toolbar;
     private Context context;
+    private ImageView edit_icon,delete_icon,add_icon;
     private int taskcompleted = 0;
     private static AudioManager audio;
     private LinearLayout setting_parent;
@@ -75,6 +81,16 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
         offer_noti_switch = (SwitchButton)view.findViewById(R.id.setting_offer_btn);
         setting_parent = (LinearLayout)view.findViewById(R.id.setting_linear);
         builder_noti_switch = (SwitchButton)view.findViewById(R.id.setting_builder_btn);
+        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+        edit_icon.setVisibility(View.GONE);
+        delete_icon.setVisibility(View.GONE);
+        add_icon.setVisibility(View.GONE);
+        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar_title.setText("Settings");
         setting_parent.setVisibility(View.INVISIBLE);
         noti_sound_switch = (SwitchButton)view.findViewById(R.id.setting_noti_sound);
         sound_seekbar = (SeekBar)view.findViewById(R.id.setting_seekbar);
@@ -206,28 +222,28 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                                 editor.commit();
                             }
                             // referAdapter.notifyDataSetChanged();
-                        }
-                    } else {
-                        String responseString = null;
-                        try {
-                            responseString = response.errorBody().string();
-                            JSONObject jsonObject = new JSONObject(responseString);
-                            int statusCode = jsonObject.optInt("statusCode");
-                            String message = jsonObject.optString("message");
-                            if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                new AllUtils().getTokenRefresh(context);
-                                fetchSettings();
-                            } else {
-                                Utils.showToast(context, message);
-                            }
+                        } else {
+                            String responseString = null;
+                            try {
+                                responseString = response.errorBody().string();
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                int statusCode = jsonObject.optInt("statusCode");
+                                String message = jsonObject.optString("message");
+                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                    new AllUtils().getTokenRefresh(context);
+                                    fetchSettings();
+                                } else {
+                                    Utils.showToast(context, message);
+                                }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
                             }*/
-                        } catch (IOException | JSONException e) {
-                            e.printStackTrace();
+                            } catch (IOException | JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
+                        setView();
                     }
-                    setView();
                 }
 
                 @Override
@@ -260,7 +276,6 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
             call.enqueue(new Callback<ApiModel.SettingPlanModel>() {
                 @Override
                 public void onResponse(Call<ApiModel.SettingPlanModel> call, Response<ApiModel.SettingPlanModel> response) {
-                    Utils.LoaderUtils.dismissLoader();
                     if (response != null) {
                         String responseString = null;
                         if (response.isSuccessful()) {
@@ -294,6 +309,7 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                             }
                         }
                     }
+                    Utils.LoaderUtils.dismissLoader();
                 }
 
                 @Override
@@ -324,9 +340,9 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
         sound_seekbar.setProgress(currentVolume);
         if (currentVolume > 0) {
             noti_sound_switch.setVisibility(View.VISIBLE);
-            noti_sound_switch.setChecked(true);
+            //noti_sound_switch.setChecked(true);
         }else{
-            noti_sound_switch.setChecked(false);
+            //noti_sound_switch.setChecked(false);
             noti_sound_switch.setVisibility(View.VISIBLE);
         }
     }
@@ -345,5 +361,10 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
     }
     private static void setKeyValue(){
 
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Utils.LoaderUtils.dismissLoader();
     }
 }

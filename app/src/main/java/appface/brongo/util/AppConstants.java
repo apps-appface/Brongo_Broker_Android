@@ -15,6 +15,7 @@ public class AppConstants {
     public static final String MOBILE_NUMBER="MOBILE_NUMBER";
     public static final String APP_VERSION = "APP_VERSION";
     public static final String OS_VERSION = "OS_VERSION";
+    public static final String IMAGE_BASE_URL = "IMAGE_BASE_URL";
     public static final String USER_ID = "USER_ID";
     public static final String DEVICE_TOKEN_UPDATED = "DEVICE_TOKEN_UPDATED";
     public static final String MODEL_NAME = "MODEL_NAME";
@@ -38,5 +39,28 @@ public class AppConstants {
     public static final String REFERREDBY = "REFERREDBY";
     public static final String CHAT_LOGIN ="CHATLOGIN";
     public static final String ISWALKTHROUGH = "ISWALKTHROUGH";
+
+    public static class FRAGMENT_TAGS {
+        public static final String ABOUTUS = "ABOUTUS";
+        public static final String ADD_INVENTORY = "ADD_INVENTORY";
+        public static final String CONTACT = "CONTACT";
+        public static final String FAQ = "FAQ";
+        public static final String HELP_FAQ = "HELP_FAQ";
+        public static final String HISTORICAL = "HISTORICAL";
+        public static final String INDIVIDUAL_INVENTORY = "INDIVIDUAL_INVENTORY";
+        public static final String INVENTORY_LIST = "INVENTORY_LIST";
+        public static final String LEGAL = "LEGAL";
+        public static final String MATCHING_PROPERTY = "MATCHING_PROPERTY";
+        public static final String NOTIFICATION = "NOTIFICATION";
+        public static final String PREMIUM = "PREMIUM";
+        public static final String RATING = "RATING";
+        public static final String REVIEW = "REVIEW";
+        public static final String REFER_MORE = "REFER_MORE";
+        public static final String REQUIREMENT = "REQUIREMENT";
+        public static final String SETTING = "SETTING";
+        public static final String SUBSCRIPTION = "SUBSCRIPTION";
+        public static final String SUPPORT = "SUPPORT";
+        public static final String T_C = "T_C";
+    }
 
 }

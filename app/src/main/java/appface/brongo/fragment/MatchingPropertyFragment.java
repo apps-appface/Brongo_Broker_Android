@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,9 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
     private Context context;
     private RecyclerView matching_recycle;
     private MatchingAdapter matchingAdapter;
+    private ImageView edit_icon,delete_icon,add_icon;
+    private TextView toolbar_title;
+    private Toolbar toolbar;
     private ArrayList<ApiModel.MatchingModel> arraylist = new ArrayList<>();;
     private SharedPreferences pref;
     ProgressDialog pd;
@@ -79,6 +83,16 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
         matching_recycle.setLayoutManager(layoutManager);
         matchingAdapter = new MatchingAdapter(context,arraylist,getFragmentManager());
         matching_recycle.setAdapter(matchingAdapter);
+        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+        edit_icon.setVisibility(View.GONE);
+        delete_icon.setVisibility(View.GONE);
+        add_icon.setVisibility(View.GONE);
+        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar_title.setText("Matching Properties");
         pref =context.getSharedPreferences(AppConstants.PREF_NAME,0);
         fetchList();
         pd = new ProgressDialog(context, R.style.MyDialogTheme);
@@ -181,5 +195,10 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
     @Override
     public void onTryReconnect() {
 
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Utils.LoaderUtils.dismissLoader();
     }
 }

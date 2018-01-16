@@ -32,10 +32,11 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/drawer_image"
                 android:layout_width="60dp"
-                android:layout_height="60dp"/>
+                android:layout_height="60dp"
+                android:scaleType="fitXY"/>
 
             <appface.brongo.uiwidget.CustomTextView
                 android:id="@+id/drawer_username"
@@ -170,7 +171,7 @@
         android:textColor="#b3e6c5e8"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="60sp"
+        android:layout_marginBottom="20dp"
         app:customFont="lato_regular.ttf"
         />
 

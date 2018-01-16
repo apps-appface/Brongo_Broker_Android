@@ -68,9 +68,9 @@ public class MyNotificationListener extends FirebaseMessagingService {
         }else{
             pref = getApplication().getSharedPreferences(AppConstants.PREF_NAME, 0);
             editor = pref.edit();
-            int i = pref.getInt(AppConstants.NOTIFICATION_COUNT,0);
+            int i = pref.getInt(AppConstants.NOTIFICATION_BADGES,0);
             i = i+1;
-            editor.putInt(AppConstants.NOTIFICATION_COUNT,i).commit();
+            editor.putInt(AppConstants.NOTIFICATION_BADGES,i).commit();
                 String noti_type = remoteMessage.getData().get("NotiType");
                 Intent intent;
                 if(noti_type != null) {
@@ -151,101 +151,23 @@ public class MyNotificationListener extends FirebaseMessagingService {
                             //createNotification();
                             break;
                         case "BUILDER_POSTING":
+                            if (!isAppIsInBackground(context)) {
+                                backgroundNotification(remoteMessage);
+                            }
                             defaultNotification(remoteMessage);
                             //createNotification();
                             break;
                         default:
+                            if (!isAppIsInBackground(context)) {
+                                backgroundNotification(remoteMessage);
+                            }
                             defaultNotification(remoteMessage);
                     }
                 }
             }
         }
 
-       /*
-            }
-        }
-    }
 
-
-    class ForegroundCheckTask extends AsyncTask<Context, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Context... params) {
-            final Context context = params[0].getApplicationContext();
-            return isAppIsInForeground(context);
-        }
-
-        @Override
-        protected void onPostExecute(Boolean isInForeground) {
-            if (isInForeground)
-                createNotificationForeground(data, context);
-            else
-                createNotificationBackground(data, context);
-        }
-
-        private boolean isAppIsInForeground(Context context) {
-            boolean isInForeground = false;
-            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-                List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
-                for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
-                    if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                        for (String activeProcess : processInfo.pkgList) {
-                            if (activeProcess.equals(context.getPackageName())) {
-                                isInForeground = true;
-                            }
-                        }
-                    }
-                }
-            } else {
-                List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-                ComponentName componentInfo = taskInfo.get(0).topActivity;
-                if (componentInfo.getPackageName().equals(context.getPackageName())) {
-                    isInForeground = true;
-                }
-            }
-
-            return isInForeground;
-        }
-
-
-    }
-
-
-    // Creates notification based on title and body received
-    private void createNotificationBackground(Bundle extras, Context context) {
-        String noti_type = data.getString("NotiType");
-        if(noti_type != null) {
-            if (noti_type.equalsIgnoreCase("APP")) {
-                Intent intent = new Intent(MyNotificationListener.this, PushAlertActivity.class);
-                intent.putExtras(data);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            } else {
-                Intent intent = new Intent(MyNotificationListener.this, MainActivity.class);
-                intent.putExtras(data);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
-        }
-    }
-
-    private void createNotificationForeground(final Bundle extras, Context context) {
-        String noti_type = data.getString("NotiType");
-        if (noti_type != null) {
-            if (noti_type.equalsIgnoreCase("APP")) {
-                Intent intent = new Intent(MyNotificationListener.this, PushAlertActivity.class);
-                intent.putExtras(data);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }else {
-            Intent intent = new Intent(MyNotificationListener.this, MainActivity.class);
-            intent.putExtras(data);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-        }
-    }
-    }*/
        private void foregroundNotification(RemoteMessage remoteMessage){
            Uri soundUri1 = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
            String message = remoteMessage.getData().get("message");
@@ -351,6 +273,7 @@ public class MyNotificationListener extends FirebaseMessagingService {
                    intent = new Intent(context, MainActivity.class);
                } else {
                    intent = new Intent(context, Menu_Activity.class);
+                   intent.putExtra("frgToLoad","NotificationFragment");
                }
            }catch (Exception e){
 

@@ -4,6 +4,7 @@ package appface.brongo.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,6 +28,9 @@ import appface.brongo.adapter.CustomExpandableListAdapter;
  */
 public class FaqFragment extends Fragment {
     private Context context;
+    private ImageView edit_icon,delete_icon,add_icon;
+    private TextView toolbar_title;
+    private Toolbar toolbar;
    private ExpandableListView expandableListView,expandableListView2,expandableListView3;
     private ExpandableListAdapter expandableListAdapter,expandableListAdapter2,expandableListAdapter3;
     private List<String> expandableListTitle,expandableListTitle2,expandableListTitle3;
@@ -80,6 +85,16 @@ public class FaqFragment extends Fragment {
         expandableListView.setGroupIndicator(null);
         expandableListView2.setGroupIndicator(null);
         expandableListView3.setGroupIndicator(null);
+        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        delete_icon =(ImageView) getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+        edit_icon.setVisibility(View.GONE);
+        delete_icon.setVisibility(View.GONE);
+        add_icon.setVisibility(View.GONE);
+        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar_title.setText("FAQ's");
         expandableListAdapter = new CustomExpandableListAdapter(context, expandableListTitle, expandableListDetail,1);
         expandableListView.setAdapter(expandableListAdapter);
         expandableListAdapter3 = new CustomExpandableListAdapter(context, expandableListTitle3, expandableListDetail3,3);

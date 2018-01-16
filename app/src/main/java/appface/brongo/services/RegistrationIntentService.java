@@ -144,9 +144,6 @@ public class RegistrationIntentService extends IntentService {
                             JSONObject jsonObject = new JSONObject(responseString);
                             int statusCode = jsonObject.optInt("statusCode");
                             String message = jsonObject.optString("message");
-                            if (statusCode == 417) {
-                                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
-                            }
                         }  catch (IOException e) {
                             e.printStackTrace();
                         }catch (JSONException e) {

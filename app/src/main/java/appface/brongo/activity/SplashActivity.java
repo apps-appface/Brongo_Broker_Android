@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -40,10 +41,9 @@ import io.branch.referral.util.LinkProperties;
 public class SplashActivity extends AppCompatActivity {
     private ImageView login_image;
     private TextView appname;
-    private Animation slideLeft, slideRight;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private int PHONE_PERMISSION_REQUEST = 100;
+    public static final int REQUEST_DEVICE_ID_PERMISSIONS = 112;
     private static final long ANIMATION_TIME = 1500;
     private Context context;
     private static int SPLASH_TIME_OUT = 2700;
@@ -92,10 +92,10 @@ public class SplashActivity extends AppCompatActivity {
 
     private void startSplashScreen1() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (ContextCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, PHONE_PERMISSION_REQUEST);
+            if (isDeviceAllowed()) {
+               startHomeActivity();
             } else {
-                startHomeActivity();
+               requestDeviceIdPermission();
             }
         } else{
             startHomeActivity();
@@ -123,29 +123,26 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 }
             }
-        /*Intent intent = new Intent(SplashActivity.this,SignUpActivity.class);
+       /*Intent intent = new Intent(SplashActivity.this,DocumentUploadActivity.class);
         intent.putExtra("frgToLoad","AddInventoryFragment");
         startActivity(intent);*/
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case 100:
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                   startHomeActivity();
+            case REQUEST_DEVICE_ID_PERMISSIONS:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startHomeActivity();
                 } else {
-                    if (Build.VERSION.SDK_INT >= 23) {
-                        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) {
-                            permissionDialog();
-                        }else{
-                            finish();
-                        }
-                    }  // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) {
+                     permissionDialog();
+                    } else {
+                        Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
                 }
                 break;
         }
@@ -207,5 +204,15 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finishAffinity();
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestDeviceIdPermission() {
+        requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_DEVICE_ID_PERMISSIONS);
+    }
+    private boolean isDeviceAllowed() {
+        int result = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE);
+        if (result == PackageManager.PERMISSION_GRANTED)
+            return true;
+        return false;
     }
 }

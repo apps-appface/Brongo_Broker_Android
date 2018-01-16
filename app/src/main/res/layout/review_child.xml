@@ -65,14 +65,14 @@
             android:id="@+id/review_child_time"
             app:customFont="lato_regular.ttf"/>
     </RelativeLayout>
-    <com.nex3z.flowlayout.FlowLayout
+    <appface.brongo.uiwidget.FlowLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        app:flChildSpacing="10dp"
-        android:id="@+id/review_flowlayout"
-        app:flChildSpacingForLastRow="align"
-        app:flRowSpacing="10dp"/>
+        app:flowDirection="leftToRight"
+        app:elementSpacing="4dp"
+        app:lineSpacing="5dp"
+        android:id="@+id/review_flowlayout"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

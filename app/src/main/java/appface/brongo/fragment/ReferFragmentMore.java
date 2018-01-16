@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -21,7 +22,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,10 +50,12 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class ReferFragmentMore extends Fragment implements NoInternetTryConnectListener {
-    private TextView refer_credit,refer_count,refer_viewall;
+    private TextView refer_credit,refer_count,refer_viewall,no_referee_text;
     private RecyclerView refer_recycle;
+    private TextView toolbar_title;
+    private Toolbar toolbar;
     private Button refer_more_btn;
-    private ImageView referback2;
+    private ImageView edit_icon,delete_icon,add_icon,referback2;
     private ReferMoreAdapter referMoreAdapter;
     private SharedPreferences pref;
     private ArrayList<ApiModel.referredBrokerObject> arrayList;
@@ -98,11 +100,22 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
         refer_count = (TextView)view.findViewById(R.id.referee_count_text);
         refer_credit = (TextView)view.findViewById(R.id.refer_credit_value);
         refer_viewall = (TextView)view.findViewById(R.id.refer_viewall);
+        no_referee_text = (TextView)view.findViewById(R.id.no_referee_text);
         refer_recycle = (RecyclerView)view.findViewById(R.id.referee_recycle);
         LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
         verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
         refer_recycle.setLayoutManager(verticalmanager);
         refer_recycle.setAdapter(referMoreAdapter);
+        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+        toolbar.setVisibility(View.GONE);
+        edit_icon.setVisibility(View.GONE);
+        delete_icon.setVisibility(View.GONE);
+        add_icon.setVisibility(View.GONE);
+        toolbar_title.setText("Refer More");
         refer_more_btn = (Button)view.findViewById(R.id.refer_more_broker_btn);
         referback2 = (ImageView)view.findViewById(R.id.refer_back2);
         referApi();
@@ -195,6 +208,9 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
                             if (statusCode == 200 && message.equalsIgnoreCase("")) {
                                 ArrayList<ApiModel.referredBrokerObject> referred_broker_list = referralData.getData().getReferredBroker();
                                 if (referred_broker_list.size() != 0) {
+                                    refer_viewall.setVisibility(View.VISIBLE);
+                                    refer_recycle.setVisibility(View.VISIBLE);
+                                    no_referee_text.setVisibility(View.GONE);
                                     arrayList_full.addAll(referred_broker_list);
                                     if (referred_broker_list.size() > 2) {
                                         arrayList.add(referred_broker_list.get(0));
@@ -205,6 +221,7 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
                                             arrayList.add(referred_broker_list.get(i));
                                         }
                                     }
+                                }else{
                                 }
                                 referMoreAdapter.notifyDataSetChanged();
                             /*if(pd.isShowing()) {
@@ -212,6 +229,9 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
                             }*/
                             }
                         } else {
+                            refer_viewall.setVisibility(View.INVISIBLE);
+                            refer_recycle.setVisibility(View.INVISIBLE);
+                            no_referee_text.setVisibility(View.VISIBLE);
                             String responseString = null;
                             try {
                                 responseString = response.errorBody().string();
@@ -251,6 +271,11 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
     @Override
     public void onPause() {
         super.onPause();
+        Utils.LoaderUtils.dismissLoader();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
     }
 }

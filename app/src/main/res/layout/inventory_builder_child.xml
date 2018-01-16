@@ -5,9 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/edit_border"
-    android:layout_margin="10dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     android:padding="15dp"
     android:paddingBottom="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/builder_web_linear">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -15,7 +23,6 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:id="@+id/invent_builder_image"
-            android:src="@drawable/no_image"
             android:scaleType="fitXY"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -67,101 +74,57 @@
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
             android:background="@color/round_empty_gray"
-            android:layout_below="@+id/invent_builder_image"
-            android:layout_alignLeft="@+id/invent_builder_addresss"/>
+            android:layout_below="@+id/invent_builder_commission"
+            android:layout_alignLeft="@+id/invent_builder_commission"/>
     </RelativeLayout>
-        <com.nex3z.flowlayout.FlowLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:flChildSpacing="10dp"
-            app:flChildSpacingForLastRow="align"
-            app:flRowSpacing="10dp"
-            android:layout_marginTop="10dp">
+    <appface.brongo.uiwidget.FlowLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:flowDirection="leftToRight"
+        android:id="@+id/builder_flowLayout"
+        app:elementSpacing="4dp"
+        app:lineSpacing="10dp">
 
-        <appface.brongo.uiwidget.CustomTextView
-            android:id="@+id/invent_builder_budget"
-            android:layout_width="wrap_content"
+    </appface.brongo.uiwidget.FlowLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:id="@+id/invent_builder_linear">
+        <Button
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_purple"
-            android:gravity="center"
-            android:padding="3sp"
+            android:text="reject"
+            android:layout_weight="1"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:id="@+id/invent_builder_reject"
+            android:textColor="@color/white"
             android:textAllCaps="false"
-            android:shadowColor="#73000000"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:shadowRadius="3"
-            android:textSize="13sp"
-            android:textColor="#33609b"
-            app:customFont="lato_regular.ttf"/>
-
-        <appface.brongo.uiwidget.CustomTextView
-            android:id="@+id/invent_builder_bhk"
-            android:layout_width="wrap_content"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/gray_dialog_btn"/>
+        <Button
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_purple"
-            android:padding="3sp"
-            android:gravity="center"
-            android:shadowColor="#73000000"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:shadowRadius="3"
-            android:textSize="13sp"
-            android:textColor="#33609b"
-            app:customFont="lato_regular.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
-            android:id="@+id/invent_builder_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_purple"
-            android:padding="3sp"
-            android:gravity="center"
+            android:text="proceed"
+            android:layout_weight="1"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:id="@+id/invent_builder_proceed"
+            android:textColor="@color/white"
             android:textAllCaps="false"
-            android:textColor="#33609b"
-            android:shadowColor="#73000000"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:shadowRadius="3"
-            android:textSize="13sp"
-            app:customFont="lato_regular.ttf"/>
-
-        <appface.brongo.uiwidget.CustomTextView
-            android:id="@+id/invent_builder_prop_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_purple"
-            android:padding="3sp"
-            android:textAllCaps="false"
-            android:gravity="center"
-            android:shadowColor="#73000000"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:shadowRadius="3"
-            android:textSize="13sp"
-            android:textColor="#33609b"
-            app:customFont="lato_regular.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
-            android:id="@+id/invent_builder_prop_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_purple"
-            android:padding="3sp"
-            android:gravity="center"
-            android:textAllCaps="false"
-            android:shadowColor="#73000000"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:shadowRadius="3"
-            android:textSize="13sp"
-            android:textColor="#33609b"
-            app:customFont="lato_regular.ttf"/>
-        </com.nex3z.flowlayout.FlowLayout>
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/dialog_button"/>
+    </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/invent_TC_relative"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="3dp"
             android:layout_marginTop="10dp"
            >
             <Button
@@ -172,7 +135,7 @@
                 android:textSize="13sp"
                 android:textColor="#103c76"
                 android:gravity="center"
-                android:drawableLeft="@drawable/terms_icon"
+                android:drawableLeft="@drawable/ic_terms_icon"
                 android:drawablePadding="5dp"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"/>
@@ -186,7 +149,7 @@
                 android:text="Register Client"
                 android:textSize="13sp"
                 android:textColor="#103c76"
-                android:drawableLeft="@drawable/register_icon"
+                android:drawableLeft="@drawable/ic_register_icon"
                 android:drawablePadding="5dp"
                 android:gravity="center"
                 android:background="?attr/selectableItemBackground"

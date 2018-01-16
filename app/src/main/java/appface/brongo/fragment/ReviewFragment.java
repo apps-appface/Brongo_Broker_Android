@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +46,11 @@ import retrofit2.Response;
  */
 public class ReviewFragment extends Fragment implements ReviewAdapter.FooterListener,NoInternetTryConnectListener {
     private TextView review_broker_name,review_count,review_rating_value;
-    private CircleImageView review_image;
+    private ImageView review_image;
     private ImageView review_broker_badge;
+    private ImageView edit_icon,delete_icon,add_icon;
+    private TextView toolbar_title;
+    private Toolbar toolbar;
     private RatingBar review_ratingbar;
     private RecyclerView review_list;
     private ReviewAdapter reviewAdapter;
@@ -77,10 +81,20 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
         review_list = (RecyclerView)view.findViewById(R.id.review_recycle);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         review_list.setLayoutManager(layoutManager);
+        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+        edit_icon.setVisibility(View.GONE);
+        delete_icon.setVisibility(View.GONE);
+        add_icon.setVisibility(View.GONE);
+        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar_title.setText("Ratings & Reviews");
         review_broker_name = (TextView)view.findViewById(R.id.review_broker_name);
         review_count = (TextView)view.findViewById(R.id.review_count1);
         review_rating_value = (TextView)view.findViewById(R.id.review_rating_value);
-        review_image = (CircleImageView)view.findViewById(R.id.review_image);
+        review_image = (ImageView)view.findViewById(R.id.review_image);
         review_broker_badge = (ImageView)view.findViewById(R.id.review_broker_badge);
         review_ratingbar = (RatingBar)view.findViewById(R.id.review_ratingBar);
         reviewAdapter = new ReviewAdapter(context,arrayList,ratingCountList,this);
@@ -139,6 +153,7 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
                                 }
                                 if (arrayList1.size() < size) {
                                     isemptyData = true;
+                                    reviewAdapter.setButton(false);
                                 }
                             }
                             reviewAdapter.notifyDataSetChanged();
@@ -182,6 +197,11 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
     @Override
     public void onPause() {
         super.onPause();
+        Utils.LoaderUtils.dismissLoader();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
     }
 

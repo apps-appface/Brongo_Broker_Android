@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,9 @@ import appface.brongo.util.Utils;
  * A simple {@link Fragment} subclass.
  */
 public class ContactFragment extends Fragment {
-    private Button contact_call,contact_email;
+    private ImageView contact_call,contact_email,edit_icon,delete_icon,add_icon;
     private TextView menu_title,email_text,phone_text;
-    ImageView menu_toolbar_edit,menu_toolbar_delete;
+    private Toolbar toolbar;
     private Context context;
 
     public ContactFragment() {
@@ -37,12 +38,12 @@ public class ContactFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_contact, container, false);
+        View view = inflater.inflate(R.layout.fragment_contact_us, container, false);
         initialise(view);
         contact_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mobile = phone_text.getText().toString();
+                String mobile = phone_text.getText().toString().replaceAll("\\s","");
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 callIntent.setData(Uri.parse("tel:"+mobile));
 
@@ -76,15 +77,19 @@ public class ContactFragment extends Fragment {
     }
     private void initialise(View view){
         context = getActivity();
-        contact_call = (Button)view.findViewById(R.id.contact_call_btn);
-        contact_email = (Button)view.findViewById(R.id.contact_email_btn);
+        contact_call = (ImageView) view.findViewById(R.id.contact_call_btn);
+        contact_email = (ImageView) view.findViewById(R.id.contact_email_btn);
         menu_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
-        menu_toolbar_edit = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
-        menu_toolbar_delete = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
-        email_text = (TextView)view.findViewById(R.id.contact_email);
-        phone_text = (TextView)view.findViewById(R.id.contact_phone);
-        menu_toolbar_edit.setVisibility(View.GONE);
-        menu_toolbar_delete.setVisibility(View.GONE);
+        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+        edit_icon.setVisibility(View.GONE);
+        delete_icon.setVisibility(View.GONE);
+        add_icon.setVisibility(View.GONE);
+        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+        email_text = (TextView)view.findViewById(R.id.email_text);
+        phone_text = (TextView)view.findViewById(R.id.phone_text);
         menu_title.setText("Contact Us");
     }
 

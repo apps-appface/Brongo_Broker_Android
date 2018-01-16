@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
 import com.applozic.mobicomkit.api.account.user.MobiComUserPreference;
@@ -42,12 +43,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import appface.brongo.R;
 import appface.brongo.model.SignInModel;
 import appface.brongo.model.SignUpModel;
 import appface.brongo.other.NoInternetTryConnectListener;
-import appface.brongo.services.RegistrationIntentService;
 import appface.brongo.services.TokenServices;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RefreshTokenCall;
@@ -67,6 +69,10 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
     private int SMS_BROADCAST_REQUEST = 2000;
     private int PHONE_PERMISSION_REQUEST = 100;
     private UserLoginTask.TaskListener listener;
+    public static final int REQUEST_CAMERA_AND_WRITABLE_PERMISSIONS = 111;
+    public static final int REQUEST_DEVICE_ID_PERMISSIONS = 112;
+    private static final int REQUEST_CAMERA = 200;
+    private List<String> listPermissionsNeeded;
     int currentTime;
     private ImageView otp_back;
     private BroadcastReceiver broadcastReceiver;
@@ -257,7 +263,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                 String otp3 = otp_edit3.getText().toString();
                 String otp4 = otp_edit4.getText().toString();
                 if (otp1.length() == 0 || otp2.length() == 0 || otp3.length() == 0 || otp4.length() == 0) {
-                    Utils.showToast(context,"Otp can not be empty");
+                    Toast.makeText(context, "Otp can not be empty",Toast.LENGTH_SHORT).show();
                 } else {
                     otpValue = otp1 + otp2 + otp3 + otp4;
                     verifyOtp(otpValue);
@@ -649,5 +655,11 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                 break;
         }
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Utils.LoaderUtils.dismissLoader();
+    }
+
 }
 

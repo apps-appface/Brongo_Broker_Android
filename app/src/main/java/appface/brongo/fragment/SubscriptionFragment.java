@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -56,6 +57,8 @@ import retrofit2.Response;
 public class SubscriptionFragment extends Fragment implements NoInternetTryConnectListener{
     private Context context;
     private SharedPreferences pref;
+    private TextView toolbar_title;
+    private Toolbar toolbar;
     private int trial_position=100,basic_position=100,premium_position=100;
     private String trial_tc,basic_tc,premium_tc;
     private ArrayList<ApiModel.SubscriptionObject> arrayList;
@@ -64,7 +67,7 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
     private RecyclerView trial_recycle,basic_recycle,premium_recycle;
     private TextView sub_username,subscription_plan,subscription_tc,subscription_expiry,subscription_plan2,subscription_tc2,sub_cur_expiry2,subscription_basic,subscription_basic_plan
             ,subscription_basic_tc,sub_upgrade_premium,subscription_premium_plan,sub_premium_price,sub_premium_expiry,subscription_premium_tc,sub_see_more;
-    private CircleImageView sub_user_image;
+    private ImageView sub_user_image,edit_icon,delete_icon,add_icon;;
     private LinearLayout sub_linear_current,basic_linear_parent,sub_linear_basic,linear_premium_parent,sub_linear_premium,trial_linear_parent;
     private boolean isBasicVisible;
     public SubscriptionFragment() {
@@ -92,9 +95,19 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
         trial_condition_list = new ArrayList<>();
         basic_condition_list = new ArrayList<>();
         premium_condition_list = new ArrayList<>();
+        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        delete_icon =(ImageView) getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+        edit_icon.setVisibility(View.GONE);
+        delete_icon.setVisibility(View.GONE);
+        add_icon.setVisibility(View.GONE);
+        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar_title.setText("Subscriptions");
         trial_recycle = (RecyclerView) view.findViewById(R.id.subs_trial_listview);
         basic_recycle = (RecyclerView) view.findViewById(R.id.subs_basic_listview);
-        sub_user_image = (CircleImageView)view.findViewById(R.id.subscription_image);
+        sub_user_image = (ImageView)view.findViewById(R.id.subscription_image);
         sub_username = (TextView)view.findViewById(R.id.subscription_username);
         subscription_plan = (TextView)view.findViewById(R.id.subscription_plan);
         subscription_tc = (TextView)view.findViewById(R.id.subscription_tc);
@@ -338,6 +351,11 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
     @Override
     public void onPause() {
         super.onPause();
+        Utils.LoaderUtils.dismissLoader();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
     }
 }

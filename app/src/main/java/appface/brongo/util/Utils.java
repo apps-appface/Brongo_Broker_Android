@@ -85,8 +85,8 @@ public class Utils {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    public static void replaceFragment(FragmentManager fragmentManager, Fragment fragment, int view_id,Boolean back) {
-        if (!fragment.isAdded()) {
+    public static void replaceFragment(FragmentManager fm, Fragment fragment, int containerId,String tag) {
+       /* if (!fragment.isAdded()) {
             if(back) {
                 fragmentManager.beginTransaction()
                         .replace(view_id, fragment)
@@ -99,7 +99,11 @@ public class Utils {
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
             }
-        }
+        }*/
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(containerId, fragment, tag);
+        ft.addToBackStack(tag);
+        ft.commit();
     }
 
     public static boolean isAppIsInBackground(Context context) {
@@ -174,7 +178,7 @@ public class Utils {
                 (ViewGroup)activity.findViewById(R.id.toast_layout_root));
         TextView text = (TextView) layout.findViewById(R.id.toast_text);
         text.setText(message);*/
-      Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+      //Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
     }
 
     public static String numToWord(int number){
@@ -253,7 +257,7 @@ public class Utils {
 
         String word="";
         String budget1="",budget2 ="";
-        if(lead_budget != null || (!lead_budget.equalsIgnoreCase(""))) {
+        if(lead_budget != null && (!lead_budget.isEmpty())) {
             if (lead_budget.contains("-")) {
                 int index = lead_budget.indexOf("-");
                 if (lead_budget.contains(".")) {
@@ -299,6 +303,22 @@ public class Utils {
             }
         }
         return word;
+    }
+    public static String getPostingColor(String post_type){
+        String back_color = "#00000000";
+        try {
+            if (post_type.equalsIgnoreCase("sell")) {
+                back_color = "#3664cb";
+            } else if (post_type.equalsIgnoreCase("rent_out")) {
+                back_color = "#60cb36";
+            } else if (post_type.equalsIgnoreCase("rent")) {
+                back_color = "#60cb36";
+            } else if (post_type.equalsIgnoreCase("BUY")) {
+                back_color = "#ea8737";
+            }
+        }catch (Exception e){
+        }
+        return back_color;
     }
     public static SpannableStringBuilder convertToSpannableString(String str1,int initial,int length,String color){
         SpannableStringBuilder str = new SpannableStringBuilder(str1);
@@ -368,33 +388,7 @@ public class Utils {
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         context.registerReceiver((BroadcastReceiver) br, intentFilter);
     }
-    public static void try_again_dialog(final Context context){
-        if(!isDialog){
-            isDialog = true;
-            final Activity  activity = (Activity)context;
-            final Dialog dialog = new Dialog(context);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            dialog.setContentView(R.layout.try_again_dialog);
-            dialog.setCanceledOnTouchOutside(false);
-            final Button try_again_btn = (Button)dialog.findViewById(R.id.try_again_dialog_btn);
-            try_again_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Utils.setAlphaAnimation(try_again_btn,context);
-                    dialog.dismiss();
-                    isDialog = false;
-                   /* Intent intent = activity.getIntent();
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    activity.startActivity(intent);*/
-                    activity.recreate();
-                    // activity.finish();
 
-                }
-            });
-            dialog.show();
-        }
-    }
     public static void bidAcceptedDialog(String message,Context context){
          final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -420,6 +414,7 @@ public class Utils {
         });
         dialog.show();
     }
+
     public static void clientAcceptDialog(Context context){
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -533,19 +528,25 @@ public class Utils {
     }
     public static class LoaderUtils {
         public static void showLoader(Context context) {
-            dialog = new Dialog(context, R.style.CustomProgressDialog);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.progress_layout);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
-            GifView check_mark_GV = (GifView) dialog.findViewById(R.id.check_mark_GV);
-            check_mark_GV.setGifResource(R.drawable.loader);
-            check_mark_GV.play();
+            try {
+                dialog = new Dialog(context, R.style.CustomProgressDialog);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.progress_layout);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+                GifView check_mark_GV = (GifView) dialog.findViewById(R.id.check_mark_GV);
+                check_mark_GV.setGifResource(R.drawable.loader);
+                check_mark_GV.play();
+            }catch (Exception e){
+            }
         }
 
         public static void dismissLoader() {
-            if (dialog != null && dialog.isShowing()) {
-                dialog.dismiss();
+            try {
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+            }catch (Exception e){
             }
         }
     }

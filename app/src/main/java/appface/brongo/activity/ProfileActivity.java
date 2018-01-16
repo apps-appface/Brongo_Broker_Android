@@ -54,12 +54,12 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
     private ArrayList<ApiModel.ProfileObject> mSelectedList;
     private ArrayList<ApiModel.SubscriptionObject> arrayList;
     private ImageView  prof_rera_certificate, prof_id_proof, prof_address_proof,profile_back;
-    private CircleImageView prof_image;
+    private ImageView prof_image;
     private Button prof_refer, prof_upgrade_now;
     private RatingBar profile_ratingbar;
     private TextView prof_name, prof_address, prof_rating, prof_close_deal, prof_open_deal, prof_total_deal, prof_close_deal_count, prof_open_deal_count, prof_inventory_count,
             prof_email, prof_comp_type, prof_real_estate, prof_micromarket, prof_office_address, prof_credits, prof_see_plans,prof_refer_text,prof_subscrip_plan,
-            prof_plan_expiry,toolbar_title,prof_plan_tc;
+            prof_plan_expiry,toolbar_title,prof_plan_tc,profile_plan_upgrade_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +107,16 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
             public void onClick(View v) {
                 Intent i = new Intent(ProfileActivity.this, Menu_Activity.class);
                 i.putExtra("frgToLoad", "SubscriptionFragment");
+                i.putExtra("activity_name","profile");
+                startActivity(i);
+            }
+        });
+        prof_upgrade_now.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ProfileActivity.this, Menu_Activity.class);
+                i.putExtra("frgToLoad", "premiumFragment");
+                i.putExtra("activity_name","profile");
                 startActivity(i);
             }
         });
@@ -127,6 +137,7 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
         prof_close_deal_count = (TextView) findViewById(R.id.profile_closed_deal);
         prof_open_deal_count = (TextView) findViewById(R.id.profile_open_deal);
         prof_inventory_count = (TextView) findViewById(R.id.profile_inventory);
+        profile_plan_upgrade_text = (TextView)findViewById(R.id.profile_plan_upgrade_text);
         prof_email = (TextView) findViewById(R.id.profile_email);
         prof_comp_type = (TextView) findViewById(R.id.profile_comp_type);
         prof_real_estate = (TextView) findViewById(R.id.profile_real_estate);
@@ -139,7 +150,7 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
         prof_plan_expiry = (TextView) findViewById(R.id.profile_plan_expiry);
         prof_refer = (Button) findViewById(R.id.profile_refer);
         prof_upgrade_now = (Button)findViewById(R.id.profile_upgrade_now);
-        prof_image = (CircleImageView) findViewById(R.id.profile_image);
+        prof_image = (ImageView) findViewById(R.id.profile_image);
         prof_rera_certificate = (ImageView)findViewById(R.id.profile_rera_certificate);
         prof_id_proof = (ImageView) findViewById(R.id.profile_id_proof);
         prof_address_proof = (ImageView)findViewById(R.id.profile_address_proof);
@@ -161,6 +172,10 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
                 .apply(CustomApplicationClass.getRequestOption(true))
                 .into(prof_image);
         prof_subscrip_plan.setText(pref.getString(AppConstants.PLAN_TYPE,""));
+        if(pref.getString(AppConstants.PLAN_TYPE,"").contains("premium")){
+            prof_upgrade_now.setVisibility(View.GONE);
+            profile_plan_upgrade_text.setVisibility(View.GONE);
+        }
         float rating = pref.getFloat(AppConstants.RATING, 0f);
         String rating_string = String.format("%.1f",rating);
         profile_ratingbar.setRating(rating);
@@ -170,7 +185,15 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
                 }.getType());*/
         if(mSelectedList != null) {
             prof_email.setText(mSelectedList.get(0).getEmailId());
-            prof_micromarket.setText(mSelectedList.get(0).getMicro1MarketName() + "," + mSelectedList.get(0).getMicro2MarketName() + "," + mSelectedList.get(0).getMicro3MarketName());
+            prof_micromarket.setText(mSelectedList.get(0).getMicro1MarketName());
+            String market2 = mSelectedList.get(0).getMicro2MarketName();
+            String market3 = mSelectedList.get(0).getMicro3MarketName();
+            if(market2 != null && !market2.isEmpty()){
+                prof_micromarket.append(","+market2);
+            }
+            if(market3 != null && !market3.isEmpty()){
+                prof_micromarket.append(","+market3);
+            }
             String real_estate = "";
             for (int i = 0; i < mSelectedList.get(0).getRealEstateType().size(); i++) {
                 if (i == 0) {
@@ -187,8 +210,10 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
             prof_open_deal_count.setText(mSelectedList.get(0).getOpenDeals() + "");
             prof_total_deal.setText(mSelectedList.get(0).getTotalDeals() + "");
             prof_comp_type.setText(mSelectedList.get(0).getTypeOfCompany());
-            prof_close_deal.setText("₹" + pref.getInt(AppConstants.COMMISSION, 0) + "");
-            prof_open_deal.setText("₹" + pref.getInt(AppConstants.COMMISSION, 0) + "");
+            String commission = AllUtils.changeNumberFormat(pref.getFloat(AppConstants.COMMISSION, 0.0f));
+            String pot_commission = AllUtils.changeNumberFormat(pref.getFloat(AppConstants.POTENTIAL_COMMISSION, 0.0f));
+            prof_close_deal.setText(commission);
+            prof_open_deal.setText(pot_commission);
             String office_address = mSelectedList.get(0).getOfficeAddress().getLine1();
            if(!mSelectedList.get(0).getOfficeAddress().getLine2().equalsIgnoreCase("")){
                office_address = office_address+"," + mSelectedList.get(0).getOfficeAddress().getLine2();
@@ -208,19 +233,15 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
       }else if (!this.isFinishing ()) {
 
           Glide.with(context).load(mSelectedList.get(0).getReraCertificate().toString())
-                  .into(prof_rera_certificate);
+                  .apply(CustomApplicationClass.getPropertyImage(true)).into(prof_rera_certificate);
+          Glide.with(context).load(mSelectedList.get(0).getAddressProof().toString())
+                  .apply(CustomApplicationClass.getPropertyImage(true)).into(prof_address_proof);
+          Glide.with(context).load(mSelectedList.get(0).getiDProof().toString())
+                  .apply(CustomApplicationClass.getPropertyImage(true)).into(prof_id_proof);
       }
-            if(mSelectedList.get(0).getiDProof().equalsIgnoreCase("")){
-                prof_id_proof.setBackgroundResource(R.drawable.no_image);
-            }else if (!this.isFinishing ()) {
-                Glide.with(context).load(mSelectedList.get(0).getiDProof().toString()).into(prof_id_proof);
-            } if(mSelectedList.get(0).getAddressProof().equalsIgnoreCase("")){
-                prof_address_proof.setBackgroundResource(R.drawable.no_image);
-            }else if (!this.isFinishing ()) {
-            Glide.with(context).load(mSelectedList.get(0).getAddressProof().toString()).into(prof_address_proof);
-            }
             prof_plan_expiry.setText(mSelectedList.get(0).getPlanExpiredTime());
-            prof_credits.setText("₹" + mSelectedList.get(0).getCredits() + "");
+     // String credits = AllUtils.changeNumberFormat(mSelectedList.get(0).getCredits());
+            prof_credits.setText(mSelectedList.get(0).getCredits()+"");
             prof_rating.setText(rating_string + " Ratings & " + mSelectedList.get(0).getReviewsCount() + " Reviews");
             prof_refer_text.setText("You have referred " + mSelectedList.get(0).getReferredNo() + " brokers");
         }
@@ -315,6 +336,11 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
     @Override
     public void onTryReconnect() {
         callProfileApi();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Utils.LoaderUtils.dismissLoader();
     }
 
 }

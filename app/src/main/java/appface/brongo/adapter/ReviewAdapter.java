@@ -13,12 +13,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nex3z.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
 
 import appface.brongo.R;
 import appface.brongo.model.ApiModel;
+import appface.brongo.uiwidget.FlowLayout;
 
 /**
  * Created by Rohit Kumar on 12/7/2017.
@@ -34,6 +34,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private FooterListener footerListener;
     private ArrayList<ApiModel.ReviewChild> reviewChildArrayList;
     private Context context;
+    private boolean isVisible = true;
     private ArrayList<Integer> starCountList;
 
     public ReviewAdapter(Context context, ArrayList<ApiModel.ReviewChild> reviewChildArrayList,ArrayList<Integer> starCountList,FooterListener footerListener) {
@@ -62,6 +63,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        holder.setIsRecyclable(false);
         if (holder instanceof HeaderViewHolder) {
             if(starCountList.size()  > 0){
                 for(int i =0;i<starCountList.size();i++){
@@ -89,6 +91,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerHolder = (FooterViewHolder) holder;
+            if(!isVisible){
+                footerHolder.footerText.setVisibility(View.GONE);
+            }else{
+                footerHolder.footerText.setVisibility(View.VISIBLE);
+            }
             footerHolder.footerText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -224,6 +231,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
     public interface FooterListener{
         void btnClick();
+    }
+    public void setButton(boolean isVisible){
+        this.isVisible = isVisible;
     }
     private void addReview(ArrayList<String> arrayList,FlowLayout flowlayout){
         for (int i = 1; i < arrayList.size(); i++) {

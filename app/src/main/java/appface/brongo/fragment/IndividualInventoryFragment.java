@@ -2,35 +2,32 @@ package appface.brongo.fragment;
 
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+import com.github.chrisbanes.photoview.PhotoView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,13 +37,11 @@ import java.util.ArrayList;
 
 import appface.brongo.R;
 import appface.brongo.activity.MainActivity;
-import appface.brongo.activity.PushAlertActivity;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.uiwidget.FlowLayout;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.CircleTransform;
 import appface.brongo.util.CustomApplicationClass;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
@@ -55,20 +50,26 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.ADD_INVENTORY;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class IndividualInventoryFragment extends Fragment implements NoInternetTryConnectListener{
+public class IndividualInventoryFragment extends Fragment implements NoInternetTryConnectListener,View.OnTouchListener{
    private ApiModel.InventoryPersoanlList inventoryPersoanlList = new ApiModel.InventoryPersoanlList();
     private TextView inven_individual_name,inven_individual_mobile,inven_individual_client_type,toolbar_title,inven_individual_email,inven_individual_address,inven_individual_bhk,inven_individual_budget,inven_individual_prop_status,inven_individual_prop_type,inven_individual_notes;
-    private ImageView inven_individual_image,toolbar_delete,toolbar_edit,toolbarAdd;
+    private ImageView inven_individual_image,toolbar_delete,toolbar_edit,toolbarAdd,imageView1;
     private String propertyImage2,propertyImage3,propertyId,postingType,microMarketName,microMarketCity,microMarketState,propertyType,propertyStatus,clientName,clientMobileNo,emailId,note,propertyImage1,bedRoomType,subPropertyType;
     private long budget;
+    private Toolbar toolbar;
+    private FlowLayout flowLayout;
     private LinearLayout pager_indicator;
     private ViewPager viewPager;
     private View email_view;
     private ImageView[] dots;
     private int dotsCount;
+    private ScaleGestureDetector scaleGestureDetector;
+    private Matrix matrix = new Matrix();
     private MyCustomPagerAdapter customPagerAdapter;
     private SharedPreferences pref;
     private Context context;
@@ -143,6 +144,7 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
     }
     private void initialise(View view){
         context = getActivity();
+        flowLayout = (FlowLayout)view.findViewById(R.id.individual_inven_flowlayout);
   ArrayList<String> images = new ArrayList<>();
         if(!propertyImage1.equalsIgnoreCase("")){
           images.add(propertyImage1);
@@ -175,9 +177,18 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
         toolbar_edit.setVisibility(View.VISIBLE);
         toolbar_delete.setVisibility(View.VISIBLE);
         toolbarAdd.setVisibility(View.GONE);
+        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar.setVisibility(View.VISIBLE);
         toolbar_title.setText("Inventory Details");
         customPagerAdapter = new MyCustomPagerAdapter(context, images);
         viewPager.setAdapter(customPagerAdapter);
+        if(images.size()>0){
+            inven_individual_image.setVisibility(View.GONE);
+            viewPager.setVisibility(View.VISIBLE);
+        }else{
+            inven_individual_image.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.GONE);
+        }
       /*  pd = new ProgressDialog(context, R.style.CustomProgressDialog);
         pd.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.progress_loader));
         pd.setCancelable(true);
@@ -195,7 +206,7 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
             inven_individual_email.setVisibility(View.GONE);
             email_view.setVisibility(View.GONE);
         }
-        inven_individual_address.setText(microMarketName);
+       /* inven_individual_address.setText(microMarketName);
         if(bedRoomType.equalsIgnoreCase("")){
             inven_individual_bhk.setVisibility(View.GONE);
         }else {
@@ -215,14 +226,19 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
             inven_individual_prop_status.setVisibility(View.GONE);
         }else {
             inven_individual_prop_status.setText(propertyStatus);
-        }
+        }*/
+        addview(microMarketName);
+        addview(bedRoomType);
+        addview(budget1);
+        addview(subPropertyType);
+        addview(propertyStatus);
         inven_individual_notes.setText(note);
       //  Glide.with(context).load(propertyImage1).fitCenter().into(inven_individual_image);
         /*Glide.with(context).load(propertyImage1).placeholder(R.drawable.no_image).skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE).fitCenter().into(inven_individual_image);*/
         Glide.with(context)
                 .load(propertyImage1)
-                .apply(CustomApplicationClass.getRequestOptionProperty(true))
+                .apply(CustomApplicationClass.getPropertyImage(true))
                 .into(inven_individual_image);
         if(postingType.equalsIgnoreCase("sell")){
             inven_individual_client_type.setBackgroundColor(Color.parseColor("#3664cb"));
@@ -348,12 +364,18 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
         bundle.putString("subPropertyType",subPropertyType);
         AddInventoryFragment addInventoryFragment = new AddInventoryFragment();
         addInventoryFragment.setArguments(bundle);
-        Utils.replaceFragment(getFragmentManager(),addInventoryFragment,R.id.inventory_frag_container,false);
+        Utils.replaceFragment(getFragmentManager(),addInventoryFragment,R.id.inventory_frag_container,ADD_INVENTORY);
     }
 
     @Override
     public void onTryReconnect() {
         deleteInventory();
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        scaleGestureDetector.onTouchEvent(event);
+        return true;
     }
 
     public class MyCustomPagerAdapter extends PagerAdapter {
@@ -381,9 +403,11 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             View itemView = layoutInflater.inflate(R.layout.item1, container, false);
-            final ProgressBar progressBar = (ProgressBar)itemView.findViewById(R.id.progress_inventory);
+            PhotoView photoView = (PhotoView)itemView.findViewById(R.id.photo_view);
             ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-           /* Glide.with(context).load(images.get(position)).placeholder(R.drawable.no_image).skipMemoryCache(true)
+            imageView.setVisibility(View.VISIBLE);
+            photoView.setVisibility(View.GONE);
+           /* Glide.with(context).load(i.setVisibility(View.VISIBLE);mages.get(position)).placeholder(R.drawable.no_image).skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE).dontAnimate().listener(new RequestListener<String, GlideDrawable>() {
                 @Override
                 public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -398,9 +422,10 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
                 }
             }).into(imageView);
 */
+
             Glide.with(context)
                     .load(images.get(position))
-                    .apply(CustomApplicationClass.getRequestOptionProperty(false))
+                    .apply(CustomApplicationClass.getPropertyImage(true))
                     .into(imageView);
             container.addView(itemView);
 
@@ -438,8 +463,9 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
 
             pager_indicator.addView(dots[i], params);
         }
-
-        dots[0].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem_dot));
+        if(dotsCount > 0) {
+            dots[0].setImageDrawable(getResources().getDrawable(R.drawable.selecteditem_dot));
+        }
     }
     private void fullImageDialog(String imageUrl){
         final Dialog dialog = new Dialog(context);
@@ -450,8 +476,10 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        final ProgressBar progressBar = (ProgressBar)dialog.findViewById(R.id.progress_inventory);
-        ImageView imageView = (ImageView) dialog.findViewById(R.id.imageView);
+        PhotoView photoView = (PhotoView)dialog.findViewById(R.id.photo_view);
+        imageView1 = (ImageView) dialog.findViewById(R.id.imageView);
+        imageView1.setVisibility(View.GONE);
+        photoView.setVisibility(View.VISIBLE);
        /* Glide.with(context).load(imageUrl).placeholder(R.drawable.no_image).skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE).dontAnimate().listener(new RequestListener<String, GlideDrawable>() {
             @Override
@@ -468,9 +496,28 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
         }).into(imageView);*/
         Glide.with(context)
                 .load(imageUrl)
-                .apply(CustomApplicationClass.getRequestOptionProperty(false))
-                .into(imageView);
+                .apply(CustomApplicationClass.getPropertyImage(true))
+                .into(photoView);
         dialog.show();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Utils.LoaderUtils.dismissLoader();
+    }
+    private void addview(String text) {
+        if(text != null) {
+            if (!text.isEmpty()) {
+                try {
+                    View layout2 = LayoutInflater.from(getActivity()).inflate(R.layout.deal_child, flowLayout, false);
+                    TextView deal_textview = (TextView) layout2.findViewById(R.id.deal_text);
+                    deal_textview.setText(text);
+                    flowLayout.addView(layout2);
+                } catch (Exception e) {
+                    String error = e.toString();
+                }
+            }
+        }
     }
 
 }

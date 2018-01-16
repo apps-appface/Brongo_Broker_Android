@@ -11,7 +11,12 @@
         android:orientation="vertical"
         android:layout_centerInParent="true"
         android:background="@drawable/edit_border"
-        android:padding="30dp">
+        android:padding="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/client_register_linear">
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +24,7 @@
         android:shadowColor="#c0ffffff"
         android:shadowDx="6.123233995736766e-17"
         android:shadowDy="1"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textColor="#88288f"
         android:gravity="center"
         app:customFont="lato_bold.ttf"
@@ -34,11 +39,12 @@
         app:met_textColor="@color/edit_text_color"
         app:met_floatingLabelTextColor="@color/edit_hint_color"
         app:met_floatingLabel="normal"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="OR"
+        android:layout_marginBottom="10dp"
         android:shadowColor="#73000000"
         android:shadowDx="6.123233995736766e-17"
         android:shadowDy="1"
@@ -48,25 +54,29 @@
         android:gravity="center"
         android:layout_marginTop="20dp"
         app:customFont="lato_regular.ttf"
-        android:visibility="gone"
+        android:visibility="visible"
         />
+        </LinearLayout>
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="+ADD NEW CLIENT"
         android:gravity="center"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:shadowColor="#73000000"
         android:shadowDx="6.123233995736766e-17"
         android:shadowDy="1"
         android:shadowRadius="3"
         android:textSize="16sp"
         android:textColor="#1d4f91"
-        android:layout_marginTop="20dp"
         app:customFont="lato_regular.ttf"
         android:id="@+id/client_register_add"
+        android:visibility="visible"
         />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,6 +87,7 @@
         android:id="@+id/input_layout_client_clientname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:textColorHint="@color/edit_hint_color">
 
         <EditText
@@ -91,6 +102,7 @@
         android:id="@+id/input_layout_client_mobile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:textColorHint="@color/edit_hint_color">
 
         <EditText
@@ -105,6 +117,7 @@
         android:id="@+id/input_layout_client_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:textColorHint="@color/edit_hint_color">
 
         <EditText
@@ -116,34 +129,35 @@
             app:backgroundTint="@color/black" />
     </android.support.design.widget.TextInputLayout>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
-        <Button
-            android:layout_width="0dp"
+        </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/client_register_cancel"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:textAllCaps="false"
-            android:text="Cancel"
-            android:background="@drawable/gray_dialog_btn"
-            android:layout_marginRight="10dp"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/client_register_register"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:textAllCaps="false"
-            android:text="Register"
-            android:background="@drawable/dialog_button"
-            android:layout_marginRight="10dp"/>
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/client_register_cancel"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:text="Cancel"
+                android:background="@drawable/gray_dialog_btn"
+                android:layout_marginRight="10dp"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/client_register_register"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:textAllCaps="false"
+                android:text="Register"
+                android:background="@drawable/dialog_button"
+                android:layout_marginRight="10dp"/>
 
-    </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

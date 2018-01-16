@@ -19,7 +19,6 @@ import appface.brongo.activity.MainActivity;
 import appface.brongo.activity.PushAlertActivity;
 import appface.brongo.model.DeviceDetailsModel;
 import appface.brongo.model.TokenModel;
-import appface.brongo.services.RegistrationIntentService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

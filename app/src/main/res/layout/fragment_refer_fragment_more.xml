@@ -99,10 +99,25 @@
                 android:textSize="18sp"
                 android:textColor="#88288f"
                 app:customFont="lato_bold.ttf"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:id="@+id/referee_recycle"></android.support.v7.widget.RecyclerView>
+                android:layout_height="match_parent"
+                android:id="@+id/referee_recycle"
+                android:visibility="invisible"></android.support.v7.widget.RecyclerView>
+                <appface.brongo.uiwidget.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                   android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    android:id="@+id/no_referee_text"
+                    android:text="No referee yet"
+                    android:textColor="@color/appColor"
+                    android:textSize="18sp"/>
+            </RelativeLayout>
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,7 +129,8 @@
                 android:textSize="16.7sp"
                 android:textColor="#88288f"
                 android:id="@+id/refer_viewall"
-                app:customFont="lato_regular.ttf"/>
+                app:customFont="lato_regular.ttf"
+                android:visibility="invisible"/>
 
             <Button
                 android:id="@+id/refer_more_broker_btn"

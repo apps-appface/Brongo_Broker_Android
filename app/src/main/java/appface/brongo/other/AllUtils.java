@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import appface.brongo.R;
 import appface.brongo.model.DeviceDetailsModel;
@@ -76,10 +78,10 @@ public class AllUtils implements NoInternetTryConnectListener{
                             Log.w("POSTMAN", " getTokenRefresh: newToken : " + newToken);
 
                         } else {
-                            Toast.makeText(context, responseModel.getMessage(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(context, responseModel.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(context, "Please Try Again After Sometime", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(context, "Please Try Again After Sometime", Toast.LENGTH_SHORT).show();
                         try {
                             Log.e("error", response.errorBody().string());
                         } catch (IOException e) {
@@ -90,7 +92,7 @@ public class AllUtils implements NoInternetTryConnectListener{
 
                 @Override
                 public void onFailure(Call<TokenModel> call, Throwable t) {
-                    Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -177,6 +179,13 @@ public class AllUtils implements NoInternetTryConnectListener{
         });
 
         dialogBlock.show();
+    }
+
+    public static String changeNumberFormat(float amount){
+        String moneyString = "";
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
+        moneyString = formatter.format(amount);
+        return moneyString;
     }
 }
 

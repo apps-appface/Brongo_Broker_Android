@@ -11,11 +11,14 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -44,7 +47,10 @@ import retrofit2.Response;
  */
 public class NotificationFragment extends Fragment implements NotificationAdapter.CallListener,NoInternetTryConnectListener {
     private ArrayList<ApiModel.NotificationChildModel> arrayList;
+    private ImageView edit_icon,delete_icon,add_icon;
     private SharedPreferences pref;
+    private TextView toolbar_title;
+    private Toolbar toolbar;
     private LinearLayout no_noti_linear;
     private Context context;
     private NotificationAdapter notificationAdapter;
@@ -78,6 +84,16 @@ public class NotificationFragment extends Fragment implements NotificationAdapte
         RecyclerView noti_recycle = (RecyclerView)view.findViewById(R.id.notification_recycle);
         no_noti_linear = (LinearLayout)view.findViewById(R.id.no_notification_linear);
         no_noti_linear.setVisibility(View.GONE);
+        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        delete_icon =(ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+        edit_icon.setVisibility(View.GONE);
+        delete_icon.setVisibility(View.GONE);
+        add_icon.setVisibility(View.GONE);
+        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+        toolbar_title.setText("Notifications");
         LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
         verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
         noti_recycle.setLayoutManager(verticalmanager);
@@ -125,7 +141,11 @@ public class NotificationFragment extends Fragment implements NotificationAdapte
                                         arrayList.add(noti_list.get(j));
                                     }
                                     notificationAdapter.notifyDataSetChanged();
-                                    notificationAdapter.setLoaded();
+                                    if(noti_list.size()==size){
+                                        notificationAdapter.setLoaded(false);
+                                    }else{
+                                        notificationAdapter.setLoaded(true);
+                                    }
                                 }else if(i == 0 && noti_list.size()==0){
                                     no_noti_linear.setVisibility(View.VISIBLE);
                                 }
@@ -232,6 +252,11 @@ public class NotificationFragment extends Fragment implements NotificationAdapte
     @Override
     public void onPause() {
         super.onPause();
+        Utils.LoaderUtils.dismissLoader();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
     }
 

@@ -5,27 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
+    android:background="#ededed"
     tools:context="appface.brongo.activity.MapActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_success"/>
+        android:src="@drawable/success"/>
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign up Successful"
         android:textColor="@color/appColor"
         android:textSize="20dp"
+        android:paddingBottom="5dp"
         android:gravity="center"
         android:layout_marginTop="10dp"
         app:customFont="lato_bold.ttf"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,14 +41,31 @@
         android:gravity="center"
         android:layout_marginTop="20dp"
         app:customFont="lato_regular.ttf"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="160dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp">
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/map"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="160dp"/>
+            android:layout_height="match_parent"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/map_btn"
+                   android:paddingRight="20dp"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="open in google map"
+                    android:textAllCaps="false"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"/>
+            </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,96 +77,77 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Venue Details"
+            android:textSize="18sp"
             android:textColor="@color/appColor"
             android:gravity="center"
             app:customFont="lato_bold.ttf"/>
-        <LinearLayout
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/venue_calendar_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_calender"/>
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/spinner_doc_veri_date"></Spinner>
-    </LinearLayout>
-        <View
+            android:drawableLeft="@drawable/ic_calender"
+            android:hint="ENTER DATE"
+            app:met_textColorHint="#c7000000"
+            app:met_underlineColor="#0f2848"
+            android:drawablePadding="10dp"
+            app:met_textColor="@color/edit_text_color"
+            app:met_floatingLabelTextColor="@color/edit_hint_color"
+            app:met_floatingLabel="normal"
+            />
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/venue_time_spinner"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/edit_line"
-            android:layout_marginTop="10dp"/>
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_time"
+            android:hint="ENTER TIME"
+            android:drawablePadding="10dp"
+            app:met_textColorHint="#c7000000"
+            app:met_underlineColor="#0f2848"
+            app:met_textColor="@color/edit_text_color"
+            app:met_floatingLabelTextColor="@color/edit_hint_color"
+            app:met_floatingLabel="normal" />
+
+        <appface.brongo.uiwidget.CustomTextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/office_address"
+            android:textSize="16sp"
+            app:customFont="lato_regular.ttf" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="10dp">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_time"/>
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/spinner_doc_veri_time"
-                android:prompt="@string/select_date"></Spinner>
-        </LinearLayout>
-  <View
-      android:layout_width="match_parent"
-      android:layout_height="1dp"
-      android:background="@color/edit_line"
-      android:layout_marginTop="10dp"/>
-        <appface.brongo.uiwidget.CustomTextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="@string/office_address"
-            android:textSize="16sp"
-            app:customFont="lato_regular.ttf"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:visibility="gone">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:background="@drawable/calendar" />
-
-            <appface.brongo.uiwidget.CustomTextView
-                android:id="@+id/reminder_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Set Reminder"
-                android:layout_marginLeft="5sp"
-                android:gravity="center"
-                android:textColor="@color/edit_hint_color"
-                app:customFont="lato_regular.ttf"/>
-        </LinearLayout>
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/dialog_button"
             android:text="Submit"
-            android:layout_marginTop="10dp"
             android:textAllCaps="false"
-            android:paddingLeft="60dp"
-            android:paddingRight="60dp"
-            android:layout_marginBottom="40dp"
             android:layout_gravity="center"
             android:textColor="@color/white"
+            android:layout_marginRight="5dp"
             android:id="@+id/venue_submit"/>
-</LinearLayout>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/gray_dialog_btn"
+                android:text="Cancel"
+                android:layout_marginLeft="5dp"
+                android:textAllCaps="false"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:id="@+id/venue_cancel"/>
+        </LinearLayout>
+
+    </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -30,6 +31,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -42,6 +44,7 @@ import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import appface.brongo.R;
 import appface.brongo.other.NoInternetTryConnectListener;
@@ -63,6 +66,7 @@ import retrofit2.Response;
 public class DocumentUploadActivity extends AppCompatActivity implements View.OnClickListener,NoInternetTryConnectListener {
     private final String TAG = DocumentUploadActivity.class.getName();
     Context context;
+    private boolean doubleBackToExitPressedOnce = false;
     private LinearLayout docu_linear1,docu_linear2,docu_linear3,docu_linear4,docu_linear22,docu_linear33,docu_linear44;
     private TextView docu_btn1,docu_btn2,docu_btn3,docu_btn4,round_text1,round_text2,round_text3,round_text4,docu_title;
     private EditText rera_edit,pan_edit;
@@ -75,13 +79,14 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private int Camera_CODE = 50;
     private int fileNumber = -1;
     private final int STORAGE_PERMISSION_REQUEST = 100;
-    private final int CAMERA_PERMISSION_REQUEST = 200;
     private String filename,filename1,filename2,filename3;
    private Uri uri;
    private MultipartBody.Part reraCertificate,IDProof,addressProof;
     private SharedPreferences pref ;
    private SharedPreferences.Editor editor;
     private String compressedImagePath;
+    private List<String> listPermissionsNeeded;
+    public static final int REQUEST_CAMERA_AND_WRITABLE_PERMISSIONS = 111;
 
 
     @Override
@@ -184,35 +189,39 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // do somthing...
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == Gallery_CODE) {
-                onSelectFromGalleryResult(data);
+        try {
+            if (resultCode == Activity.RESULT_OK) {
+                if (requestCode == Gallery_CODE) {
+                    onSelectFromGalleryResult(data);
 
-            } else if (requestCode == Camera_CODE) {
-                onCaptureImageResult();
-            }
-            switch(i){
-                case 2:
-                    docu_linear22.setVisibility(View.VISIBLE);
-                    docu_linear2.setVisibility(View.GONE);
-                    image_code2=1;
-                    break;
-                case 3:
-                    docu_linear33.setVisibility(View.VISIBLE);
-                    docu_linear3.setVisibility(View.GONE);
-                    image_code3=1;
-                    break;
-                case 4:
-                    docu_linear44.setVisibility(View.VISIBLE);
-                    docu_linear4.setVisibility(View.GONE);
-                    image_code4=1;
-                    break;
-            }
+                } else if (requestCode == Camera_CODE) {
+                    onCaptureImageResult();
+                }
+                switch (i) {
+                    case 2:
+                        docu_linear22.setVisibility(View.VISIBLE);
+                        docu_linear2.setVisibility(View.GONE);
+                        image_code2 = 1;
+                        break;
+                    case 3:
+                        docu_linear33.setVisibility(View.VISIBLE);
+                        docu_linear3.setVisibility(View.GONE);
+                        image_code3 = 1;
+                        break;
+                    case 4:
+                        docu_linear44.setVisibility(View.VISIBLE);
+                        docu_linear4.setVisibility(View.GONE);
+                        image_code4 = 1;
+                        break;
+                }
 
-        } else if (resultCode == RESULT_CANCELED) {
-            Utils.showToast(context," Picture selection was canceled");
-        } else {
-            Utils.showToast(this, " Picture was not taken ");
+            } else if (resultCode == RESULT_CANCELED) {
+                Utils.showToast(context, " Picture selection was canceled");
+            } else {
+                Utils.showToast(this, " Picture was not taken ");
+            }
+        }catch (Exception e){
+
         }
 
     }
@@ -328,7 +337,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                recapture_text.setOnClickListener(this);
                break;
            case R.id.docu_gallery:
-               if (Build.VERSION.SDK_INT >=23) {
+               if (Build.VERSION.SDK_INT >=Build.VERSION_CODES.M) {
                    if (ContextCompat.checkSelfPermission(DocumentUploadActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                        ActivityCompat.requestPermissions(DocumentUploadActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST);
                    } else {
@@ -340,13 +349,13 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                //Toast.makeText(context,"you clicked gallery button : "+i,Toast.LENGTH_SHORT).show();
                break;
            case R.id.docu_camera:
-               if (Build.VERSION.SDK_INT >=23) {
-                   if (ContextCompat.checkSelfPermission(DocumentUploadActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                       ActivityCompat.requestPermissions(DocumentUploadActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
-                   } else {
+               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                   if (checkCameraAndWritablePermission()) {
                        openCamera();
+                   } else {
+                       requestCameraAndWritablePermission();
                    }
-               }else{
+               } else {
                    openCamera();
                }
                //Toast.makeText(context,"you clicked camera button : "+i,Toast.LENGTH_SHORT).show();
@@ -571,6 +580,9 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         docu_heading.setText("");
         switch(i){
             case 1:
+                open_view2 = 0;
+                open_view3 = 0;
+                open_view4 = 0;
                 if(open_view1 == 0) {
                     docu_linear1.setVisibility(View.VISIBLE);
                     docu_heading.setText("Step "+i+" of 4");
@@ -584,6 +596,9 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 }
                 break;
             case 2:
+                open_view1 = 0;
+                open_view3 = 0;
+                open_view4 = 0;
                 if(open_view2 == 0) {
                     if(image_code2 == 0) {
                         docu_linear2.setVisibility(View.VISIBLE);
@@ -600,7 +615,11 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                     open_view2=0;
                 }
                 break;
-            case 3: if(open_view3 == 0) {
+            case 3:
+                open_view2 = 0;
+                open_view1 = 0;
+                open_view4 = 0;
+                if(open_view3 == 0) {
                 if(image_code3 == 0) {
                     docu_linear3.setVisibility(View.VISIBLE);
                 }else if(image_code3==1){
@@ -617,6 +636,9 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             }
                 break;
             case 4:
+                open_view2 = 0;
+                open_view3 = 0;
+                open_view1 = 0;
                 if(open_view4 == 0) {
                     if(image_code4 == 0) {
                         docu_linear4.setVisibility(View.VISIBLE);
@@ -635,46 +657,112 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 break;
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case 100:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openGallery();
-                }else{
-                    if (Build.VERSION.SDK_INT >= 23) {
+                } else {
                         if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                             Utils.permissionDialog(context);
+                    } else {
+                            Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
                         }
+                }
+                break;
+            case REQUEST_CAMERA_AND_WRITABLE_PERMISSIONS:
+                if (permissions.length > 1) {
+                    if (grantResults.length > 0) {
+                        boolean CameraPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                        boolean WritablePermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                        if (CameraPermission && WritablePermission) {
+                            openCamera();
+                        } else {
+                            if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) && !shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                Utils.permissionDialog(context);
+                            } else {
+                                Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                } else {
+                    if (permissions.length > 0) {
+                        if (grantResults.length > 0) {
+                            boolean permission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                            if (permission) {
+                                openCamera();
+                            } else {
+                                if (!shouldShowRequestPermissionRationale(permissions[0])) {
+                                    Utils.permissionDialog(context);
+                                } else {
+                                    Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }
+
                     }
                 }
                 break;
-            case 200:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    openCamera();
-                }else{
-                    if (Build.VERSION.SDK_INT >= 23) {
-                        if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                            Utils.permissionDialog(context);
-                        }
-                    }
-                }
         }
 
         }
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(DocumentUploadActivity.this,SignUpActivity.class));
-        finish();
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            Intent intent = new Intent(context, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+            finish();
+        }else{
+            Utils.showToast(this, "click again to back");
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
     @Override
     protected void onPause() {
         super.onPause();
         Utils.LoaderUtils.dismissLoader();
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Utils.LoaderUtils.dismissLoader();
+    }
 
     @Override
     public void onTryReconnect() {
         uploadAll();
+    }
+    private boolean checkCameraAndWritablePermission() {
+        int permissionCamera = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA);
+        int permissionWritableExternal = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        listPermissionsNeeded = new ArrayList<>();
+
+        if (permissionCamera != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (permissionWritableExternal != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        if (!listPermissionsNeeded.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestCameraAndWritablePermission() {
+        requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_CAMERA_AND_WRITABLE_PERMISSIONS);
     }
 }

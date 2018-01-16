@@ -35,9 +35,10 @@
             android:paddingRight="10dp"
          >
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:scaleType="fitXY"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
@@ -152,7 +153,6 @@
                     android:layout_centerHorizontal="true"
                     android:lineSpacingExtra="7.3sp"
                     android:gravity="center_horizontal"
-                    android:text="Trial Plan"
                     android:padding="10dp"
                     android:background="@color/appColor"
                     android:id="@+id/subscription_plan2"
@@ -171,7 +171,6 @@
                     android:background="#7a2380"
                     android:padding="5dp"
                     android:gravity="center_horizontal"
-                    android:text="All (Rent/Buy/Sell) leads are free"
                     android:id="@+id/subscription_tc2"
                     app:customFont="lato_regular.ttf"
                     />
@@ -327,7 +326,6 @@
                     android:textColor="#ebee10"
                     android:lineSpacingExtra="10.7sp"
                     android:gravity="center_horizontal"
-                    android:text=" ₹2,999 "
                     android:id="@+id/sub_premium_price"
                     app:customFont="lato_regular.ttf"
                     />
@@ -342,7 +340,6 @@
                     android:textColor="#ffffff"
                     android:lineSpacingExtra="10.7sp"
                     android:gravity="center_horizontal"
-                    android:text="| 1 month"
                     android:id="@+id/sub_premium_expiry"
                     app:customFont="lato_regular.ttf"
                     />

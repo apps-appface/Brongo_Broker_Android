@@ -48,9 +48,9 @@ public class WalkThroughActivity extends AppCompatActivity implements ViewPager.
             activity_name = getIntent().getExtras().getString("from_activity");
         }
         // To make activity full screen.
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        /*requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walk_through);
@@ -60,10 +60,7 @@ public class WalkThroughActivity extends AppCompatActivity implements ViewPager.
             @Override
             public void onClick(View v) {
                 if(pref.getBoolean(AppConstants.LOGIN_STATUS,false)) {
-                    Intent intent = new Intent(WalkThroughActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(intent);
-                    finish();
+                  onBackPressed();
                 }else{
                     startActivity(new Intent(WalkThroughActivity.this, LoginActivity.class));
                 }
@@ -137,13 +134,13 @@ public class WalkThroughActivity extends AppCompatActivity implements ViewPager.
             if(counterPageScroll != 0){
                 isLastPageSwiped=true;
                 if(pref.getBoolean(AppConstants.LOGIN_STATUS,false)) {
-                    intent = new Intent(WalkThroughActivity.this, MainActivity.class);
+                   onBackPressed();
                 }else{
                      intent = new Intent(WalkThroughActivity.this,LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
+                    finish();
                 }
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                finish();
             }
             counterPageScroll++;
         }else{
@@ -172,10 +169,10 @@ public class WalkThroughActivity extends AppCompatActivity implements ViewPager.
                     finishAffinity();
                     break;
                 case "menu":
-                    Intent intent = new Intent(WalkThroughActivity.this, MainActivity.class);
+                   /* Intent intent = new Intent(WalkThroughActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(intent);
-                    finish();
+                    startActivity(intent);*/
+                    super.onBackPressed();
                     break;
             }
         }catch (Exception e){
