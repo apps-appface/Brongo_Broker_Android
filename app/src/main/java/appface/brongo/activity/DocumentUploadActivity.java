@@ -409,7 +409,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             if (reraCertificate != null && IDProof != null && addressProof != null) {
                 String panNo = pan_edit.getText().toString();
                 String reraRegistration = rera_edit.getText().toString();
-                if (panNo != null && reraRegistration != null) {
+                if (panNo != null && reraRegistration != null && !panNo.equalsIgnoreCase("") && !reraRegistration.equalsIgnoreCase("")) {
                     RequestBody panCardNumber = RequestBody.create(MediaType.parse("multipart/form-data"), panNo);
                     RequestBody reraRegistrationNumber = RequestBody.create(MediaType.parse("multipart/form-data"), reraRegistration);
                     RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());

@@ -40,7 +40,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp">
+            android:id="@+id/contact_call_relative"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true">
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,6 +52,7 @@
                 android:text="Call Us"
                 android:id="@+id/callus_text"
                 app:customFont="lato_regular.ttf"
+                android:layout_marginTop="10dp"
                 />
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
@@ -84,11 +87,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp">
+            android:id="@+id/contact_email_relative"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true">
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 android:textSize="13sp"
                 android:textColor="#58595b"
                 android:text="Email Us"

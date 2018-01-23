@@ -95,7 +95,7 @@
                     android:textColor="@color/white"
                     android:background="@drawable/gray_dialog_btn"
                     android:layout_marginRight="10dp"
-                    android:text="reject" />
+                    android:text="Reject" />
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                     android:textColor="@color/white"
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/dialog_button"
-                    android:text="proceed"
+                    android:text="Proceed"
                     android:visibility="gone"/>
                 <Button
                     android:layout_width="0dp"
@@ -114,9 +114,23 @@
                     android:textColor="@color/white"
                     android:background="@drawable/dialog_button"
                     android:layout_marginLeft="10dp"
-                    android:text="view"/>
+                    android:text="View"/>
 
             </LinearLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:id="@+id/notification_call"
+                android:textColor="@color/white"
+                android:background="@drawable/dialog_button"
+             android:layout_marginTop="10dp"
+                android:layout_alignLeft="@+id/builder_view_linear"
+                android:text="Call"
+                android:visibility="gone"
+                android:layout_below="@+id/builder_view_linear"/>
+
 
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
@@ -124,8 +138,8 @@
                 android:layout_marginTop="5dp"
                 android:textSize="12sp"
                 android:textColor="#b3434343"
-                android:layout_alignLeft="@+id/builder_view_linear"
-                android:layout_below="@+id/builder_view_linear"
+                android:layout_alignLeft="@+id/notification_call"
+                android:layout_below="@+id/notification_call"
                 android:id="@+id/notification_time"
                 app:customFont="lato_regular.ttf"
                 />

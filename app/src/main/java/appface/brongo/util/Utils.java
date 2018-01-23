@@ -178,7 +178,7 @@ public class Utils {
                 (ViewGroup)activity.findViewById(R.id.toast_layout_root));
         TextView text = (TextView) layout.findViewById(R.id.toast_text);
         text.setText(message);*/
-      //Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+      Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
     }
 
     public static String numToWord(int number){
@@ -549,6 +549,14 @@ public class Utils {
             }catch (Exception e){
             }
         }
+    }
+    public static String getImageUrl(String stringurl,SharedPreferences pref){
+        String url = "";
+        if (!stringurl.contains("http")) {
+            String baseurl = pref.getString(AppConstants.IMAGE_BASE_URL, "");
+            stringurl = baseurl.concat(stringurl);
+        }
+        return url;
     }
 
 

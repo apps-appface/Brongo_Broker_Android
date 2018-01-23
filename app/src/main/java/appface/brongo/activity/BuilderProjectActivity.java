@@ -1,13 +1,17 @@
 package appface.brongo.activity;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -37,7 +41,7 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
     private WebView project_webview;
     Bundle bundle;
     private TextView project_title;
-    /*private String Url="";*/
+    private String Url="";
     private SharedPreferences pref;
     private boolean isLoading = false;
     private Context context;
@@ -57,7 +61,7 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
             weburl = getIntent().getExtras().getString("url");
         }
         setContentView(R.layout.activity_builder_project);
-   /*     Url = "https://www.tutorialspoint.com/android/android_webview_layout.htm";*/
+       // Url = "https://www.androidtutorialpoint.com/basics/android-webview-example-using-android-studio/";
         initialise();
 
     }
@@ -68,6 +72,7 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
         project_back = (ImageView)findViewById(R.id.toolbar_project_back);
         three_dot_btn = (ImageView)findViewById(R.id.project_three_dot);
         project_webview = (WebView)findViewById(R.id.project_webview);
+    //    project_webview.setWebChromeClient(new MyWebChromeClient(this));
         project_webview.setWebViewClient(new MyBrowser());
         project_title.setText(title);
         setListener();
@@ -122,13 +127,14 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
     }
 
     private void retrieveUrl(){
-        if(weburl != null && !weburl.isEmpty()){
+       /* if(weburl != null && !weburl.isEmpty()){
             if(!weburl.contains("http")) {
                 String baseImageurl = pref.getString(AppConstants.IMAGE_BASE_URL,"");
                 baseImageurl =  baseImageurl.concat(weburl);
                 weburl = baseImageurl;
             }
-        }
+
+        }*/
         setWebUrl();
     }
 
@@ -138,9 +144,17 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
     }
 
     private class MyBrowser extends WebViewClient {
+        @SuppressWarnings("deprecation")
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
+            return true;
+        }
+
+        @TargetApi(Build.VERSION_CODES.N)
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            view.loadUrl(request.getUrl().toString());
             return true;
         }
         public void onLoadResource (WebView view, String url) {
@@ -222,6 +236,13 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
             });
         }else{
             Utils.internetDialog(context,this);
+        }
+    }
+    private class MyWebChromeClient extends WebChromeClient {
+        Context context;
+        public MyWebChromeClient(Context context) {
+            super();
+            this.context = context;
         }
     }
 

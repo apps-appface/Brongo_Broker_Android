@@ -240,6 +240,16 @@ public class Menu_Activity extends AppCompatActivity {
         }
         return super.onKeyUp(keyCode, event);
     }
+
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+if(keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)  {
+            SettingFragment.myOnKeyDown(keyCode);
+            //and so on..
+        }
+        return super.onKeyLongPress(keyCode, event);
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

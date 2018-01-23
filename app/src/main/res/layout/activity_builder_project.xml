@@ -44,14 +44,13 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="60dp"
-            android:padding="15dp"
-            android:layout_centerVertical="true"
             android:src="@drawable/ic_back"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/toolbar_project_back"
-            android:background="?attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:visibility="visible"/>
+            android:layout_marginLeft="10dp"
+            android:padding="20dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/toolbar_project_back"/>
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,8 +1,10 @@
 package appface.brongo.fragment;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -83,6 +87,29 @@ public class SupportFragment extends Fragment {
                 Utils.replaceFragment(getFragmentManager(),contactFragment,R.id.inventory_frag_container,CONTACT);
                 break;
         }
+    }
+    public static void unsubscribeDialog(Context context){
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.unsubscribe_dialog);
+        //dialog.setCanceledOnTouchOutside(false);
+        // dialog.setCancelable(false);
+        final ImageView cross_btn = (ImageView) dialog.findViewById(R.id.unsubscribe_dialog_close);
+        final Button got_it_btn = (Button)dialog.findViewById(R.id.unsubscribe_dialog_btn);
+        cross_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        got_it_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
 }

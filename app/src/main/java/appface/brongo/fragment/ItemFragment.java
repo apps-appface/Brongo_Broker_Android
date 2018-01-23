@@ -205,7 +205,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         //TextView open_deal_budget = (TextView) linearLayout.findViewById(R.id.open_deal_budget);
         //TextView open_deal_propstatus = (TextView) linearLayout.findViewById(R.id.open_deal_prop_status);
         //TextView open_deal_proptype = (TextView) linearLayout.findViewById(R.id.open_deal_prop_type);
-        Button open_deal_del_btn = (Button) linearLayout.findViewById(R.id.client_drop);
+        LinearLayout open_deal_del_btn = (LinearLayout) linearLayout.findViewById(R.id.client_drop);
         Button open_deal_chat_btn = (Button) linearLayout.findViewById(R.id.client_chat);
         ImageView open_deal_client_image = (ImageView) linearLayout.findViewById(R.id.client_deal_pic);
         LinearLayout noti_star_linear = (LinearLayout)linearLayout.findViewById(R.id.noti_star_linear);

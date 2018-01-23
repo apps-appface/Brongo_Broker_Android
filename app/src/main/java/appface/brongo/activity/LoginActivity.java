@@ -235,7 +235,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                 phone = login_phone_edit.getText().toString();
                 if (phone.length() == 0) {
                     Utils.showToast(context,"Mobile can not be empty");
-                } else if ((phone.startsWith("7") || phone.startsWith("8") || phone.startsWith("9")) && (phone.length() == 10)) {
+                } else if ((phone.startsWith("6") ||phone.startsWith("7") || phone.startsWith("8") || phone.startsWith("9")) && (phone.length() == 10)) {
                            callLogin(phone);
                 } else {
                     Utils.showToast(context,"Invalid Mobile Number");

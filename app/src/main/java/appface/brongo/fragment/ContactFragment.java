@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import appface.brongo.R;
@@ -24,8 +25,9 @@ import appface.brongo.util.Utils;
  * A simple {@link Fragment} subclass.
  */
 public class ContactFragment extends Fragment {
-    private ImageView contact_call,contact_email,edit_icon,delete_icon,add_icon;
+    private ImageView edit_icon,delete_icon,add_icon;
     private TextView menu_title,email_text,phone_text;
+    private RelativeLayout call_relative,email_relative;
     private Toolbar toolbar;
     private Context context;
 
@@ -40,21 +42,24 @@ public class ContactFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contact_us, container, false);
         initialise(view);
-        contact_call.setOnClickListener(new View.OnClickListener() {
+        call_relative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String mobile = phone_text.getText().toString().replaceAll("\\s","");
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 callIntent.setData(Uri.parse("tel:"+mobile));
+                try {
+                    if (ActivityCompat.checkSelfPermission(context,
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    startActivity(callIntent);
+                }catch (Exception e){
 
-                if (ActivityCompat.checkSelfPermission(context,
-                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    return;
                 }
-                startActivity(callIntent);
             }
         });
-        contact_email.setOnClickListener(new View.OnClickListener() {
+        email_relative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String recipient = email_text.getText().toString();
@@ -77,8 +82,8 @@ public class ContactFragment extends Fragment {
     }
     private void initialise(View view){
         context = getActivity();
-        contact_call = (ImageView) view.findViewById(R.id.contact_call_btn);
-        contact_email = (ImageView) view.findViewById(R.id.contact_email_btn);
+        call_relative = (RelativeLayout)view.findViewById(R.id.contact_call_relative);
+        email_relative = (RelativeLayout)view.findViewById(R.id.contact_email_relative);
         menu_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
         edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
         delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);

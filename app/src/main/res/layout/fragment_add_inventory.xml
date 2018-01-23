@@ -112,6 +112,9 @@
             app:met_textColor="@color/edit_text_color"
             app:met_textColorHint="@color/edit_hint_color"
             app:met_underlineColor="@color/edit_line" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_inventory_client_name"
@@ -129,6 +132,15 @@
             android:textColor="@color/edit_text_color"
             app:backgroundTint="@color/edit_line" />
     </android.support.design.widget.TextInputLayout>
+        <appface.brongo.uiwidget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(Optional)"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            app:customFont="lato_regular.ttf"/>
+    </RelativeLayout>
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_inventory_mobile"
         android:layout_width="match_parent"
@@ -145,6 +157,10 @@
             android:textColor="@color/edit_text_color"
             app:backgroundTint="@color/edit_line" />
     </android.support.design.widget.TextInputLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_inventory_email"
         android:layout_width="match_parent"
@@ -160,6 +176,14 @@
             android:textColor="@color/edit_text_color"
             app:backgroundTint="@color/edit_line" />
     </android.support.design.widget.TextInputLayout>
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(Optional)"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:customFont="lato_regular.ttf"/>
+        </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -188,7 +212,9 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/inventory_image_relative"
+            android:visibility="gone">
     <appface.brongo.uiwidget.CustomTextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"

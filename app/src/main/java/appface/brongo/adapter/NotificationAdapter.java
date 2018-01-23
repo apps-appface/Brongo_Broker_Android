@@ -152,6 +152,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.noti_view_linear.setVisibility(View.GONE);
             holder.notification_flowlayout.setVisibility(View.GONE);
         }
+        if(arrayList.get(position).getAlertType().equalsIgnoreCase("CALL_BACK")){
+            holder.call_btn.setVisibility(View.VISIBLE);
+        }else{
+            holder.call_btn.setVisibility(View.GONE);
+        }
         String string1 = arrayList.get(position).getClientName() + ":" + arrayList.get(position).getMessage();
         SpannableStringBuilder str = Utils.convertToSpannableString(string1, 0, arrayList.get(position).getClientName().length(), "black");
         holder.content_text.setText(str);
@@ -160,13 +165,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 .load(arrayList.get(position).getClientProfile().toString())
                 .apply(CustomApplicationClass.getRequestOption(true))
                 .into(holder.noti_image);
-      /*  holder.builder_know_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                View view = (View)parentLinear;
-                projectDialog(view,position);
-            }
-        });*/
         holder.view_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,7 +178,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.proceed_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                parentLinear.performClick();
                 tc_dialog(position);
             }
         });
@@ -197,6 +194,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             public void onClick(View v) {
                 parentLinear.performClick();
                 builderRejectApi(position);
+            }
+        });
+        holder.call_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callListener.callBtnClick(arrayList.get(position).getMobileNo().toString(),arrayList.get(position).getPropertyId());
             }
         });
     }
@@ -221,7 +224,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public class EmployeeViewHolder extends RecyclerView.ViewHolder {
         TextView content_text, noti_time, noti_id,builder_know_btn;
-        Button view_btn,proceed_btn,reject_btn;
+        Button view_btn,proceed_btn,reject_btn,call_btn;
         ImageView noti_image;
         FlowLayout notification_flowlayout;
         LinearLayout noti_view_linear;
@@ -239,6 +242,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             view_btn = (Button) itemView.findViewById(R.id.notification_view);
             proceed_btn = (Button) itemView.findViewById(R.id.notification_proceed);
             reject_btn = (Button) itemView.findViewById(R.id.notification_reject);
+            call_btn = (Button) itemView.findViewById(R.id.notification_call);
             noti_view_linear = (LinearLayout) itemView.findViewById(R.id.builder_view_linear);
         }
     }
@@ -403,7 +407,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 String message = jsonObject.optString("message");
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 200 ) {
-                                    arrayList.remove(position);
+                                    arrayList.get(position).setStatus("reject");
                                     notifyDataSetChanged();
                                 }
                             } catch (IOException | JSONException e) {

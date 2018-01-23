@@ -189,10 +189,6 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
             inven_individual_image.setVisibility(View.VISIBLE);
             viewPager.setVisibility(View.GONE);
         }
-      /*  pd = new ProgressDialog(context, R.style.CustomProgressDialog);
-        pd.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.progress_loader));
-        pd.setCancelable(true);
-        pd.setCanceledOnTouchOutside(false);*/
         setUiPageViewController();
     }
     private void setView(){
@@ -233,9 +229,7 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
         addview(subPropertyType);
         addview(propertyStatus);
         inven_individual_notes.setText(note);
-      //  Glide.with(context).load(propertyImage1).fitCenter().into(inven_individual_image);
-        /*Glide.with(context).load(propertyImage1).placeholder(R.drawable.no_image).skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE).fitCenter().into(inven_individual_image);*/
+
         Glide.with(context)
                 .load(propertyImage1)
                 .apply(CustomApplicationClass.getPropertyImage(true))
@@ -257,8 +251,6 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialog_delete_inventory);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        //dialog.setCanceledOnTouchOutside(false);
-        // dialog.setCancelable(false);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
        TextView delete_client_message = (TextView)dialog.findViewById(R.id.delete_inventory_client_name);
         Button delete_client_cancel = (Button)dialog.findViewById(R.id.inventory_delete_cancel);
@@ -407,21 +399,7 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
             ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
             imageView.setVisibility(View.VISIBLE);
             photoView.setVisibility(View.GONE);
-           /* Glide.with(context).load(i.setVisibility(View.VISIBLE);mages.get(position)).placeholder(R.drawable.no_image).skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE).dontAnimate().listener(new RequestListener<String, GlideDrawable>() {
-                @Override
-                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                    progressBar.setVisibility(View.GONE);
-                    return false;
-                }
 
-                @Override
-                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                    progressBar.setVisibility(View.GONE);
-                    return false;
-                }
-            }).into(imageView);
-*/
 
             Glide.with(context)
                     .load(images.get(position))
@@ -480,20 +458,7 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
         imageView1 = (ImageView) dialog.findViewById(R.id.imageView);
         imageView1.setVisibility(View.GONE);
         photoView.setVisibility(View.VISIBLE);
-       /* Glide.with(context).load(imageUrl).placeholder(R.drawable.no_image).skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE).dontAnimate().listener(new RequestListener<String, GlideDrawable>() {
-            @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                progressBar.setVisibility(View.GONE);
-                return false;
-            }
 
-            @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                progressBar.setVisibility(View.GONE);
-                return false;
-            }
-        }).into(imageView);*/
         Glide.with(context)
                 .load(imageUrl)
                 .apply(CustomApplicationClass.getPropertyImage(true))

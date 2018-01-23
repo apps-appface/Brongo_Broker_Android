@@ -20,6 +20,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="60dp"
+            android:paddingBottom="20dp"
             android:orientation="vertical"
             android:padding="5dp">
 
@@ -125,7 +126,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingLeft="30dp"
                     android:paddingRight="30dp">
@@ -155,8 +155,10 @@
                         android:clickable="true"
                         android:drawableTop="@drawable/call_client_icon"
                         android:paddingTop="10dp"
+                        android:textColor="@color/appColor"
                         android:text="CALL"
-                        android:textColor="@color/appColor" />
+                       />
+
 
 
                 </LinearLayout>
@@ -374,20 +376,32 @@
 
                 </LinearLayout>
             </LinearLayout>
-            <Button
+
+            <LinearLayout
                 android:id="@+id/client_drop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_gravity="center"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:drawableTop="@drawable/dropicon_new"
-                android:paddingTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:gravity="center"
                 android:layout_marginTop="10dp"
-                android:text="DROP OUT"
-                android:textColor="#E80E0E" />
+                android:layout_marginBottom="20dp">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/drop_stroke"
+                    android:padding="8dp"
+                    android:src="@drawable/drop_deal_icon" />
+
+                <appface.brongo.uiwidget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="DROP OUT"
+                    android:textColor="@color/appColor"
+                    android:textSize="13sp"
+                    android:textStyle="normal" />
+            </LinearLayout>
         </LinearLayout>
 
         <appface.brongo.uiwidget.CustomTextView

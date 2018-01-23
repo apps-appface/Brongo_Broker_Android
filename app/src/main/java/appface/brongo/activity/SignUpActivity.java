@@ -81,7 +81,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     ArrayList<String> marketIdList;
     public static ImageView micromarket_reset;
     private MaterialBetterSpinner comp_type_spinner;
-    private int data_incomplete;
+    private int data_incomplete=1;
     private String emailPattern,comp_type = "";
     private String mobile,email="";
     public static HorizontalAdapter horizontalAdapter;
@@ -256,7 +256,9 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         String lname = lname_edit.getText().toString();
         String city = city_edit.getText().toString();
         String referral_id = referredBy.getText().toString();
-        if (fname.length() == 0 || lname.length() == 0 || city.length() == 0 || email.length() == 0 || mobile.length() == 0 || comp_type.length() == 0 || real_estate_type_list.size() == 0) {
+        String res_line_one = resi_line1_edit.getText().toString();
+        String res_line_two = resi_line2_edit.getText().toString();
+        if (fname.length() == 0 || lname.length() == 0 || city.length() == 0 || email.length() == 0 || mobile.length() == 0 || comp_type.length() == 0 || real_estate_type_list.size() == 0 || res_line_one.length() == 0 || res_line_two.length() == 0 ) {
             Toast.makeText(context, "Data should not be empty",Toast.LENGTH_SHORT).show();
         } else {
             editor.putString(AppConstants.FIRST_NAME, fname);
@@ -279,9 +281,6 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             signUpModel.setTypeOfCompany(comp_type);
             if (micromarketlist.size() > 0) {
                 data_incomplete = 0;
-            } else {
-                Toast.makeText(context, "select atleast one micromarket",Toast.LENGTH_SHORT).show();
-                data_incomplete = 1;
             }
 
 
@@ -293,8 +292,8 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             signUpModel.setMicroMarket2(microMarket2);
             signUpModel.setMicroMarket3(microMarket3);
             SignUpModel.AddressModel resi_address = new SignUpModel.AddressModel();
-            resi_address.setLine1(resi_line1_edit.getText().toString());
-            resi_address.setLine2(resi_line2_edit.getText().toString());
+            resi_address.setLine1(res_line_one);
+            resi_address.setLine2(res_line_two);
             signUpModel.setResidentialAddress(resi_address);
             SignUpModel.AddressModel office_address = new SignUpModel.AddressModel();
             office_address.setLine1(office_line1_edit.getText().toString());
@@ -325,7 +324,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             @Override
             public void afterTextChanged(Editable s) {
                 String phone = mobile_edit.getText().toString().trim();
-                if ((phone.startsWith("7") || phone.startsWith("8") || phone.startsWith("9")) && (phone.length() == 10)){
+                if ((phone.startsWith("6") || phone.startsWith("7") || phone.startsWith("8") || phone.startsWith("9")) && (phone.length() == 10)){
                     phone_signup_layout.setError("");
                     phone_signup_layout.setErrorEnabled(false);
                     mobile = phone;
@@ -608,5 +607,28 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     public void onDestroy() {
         super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
+    }
+    public static void nonPocDialog(Context context){
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.poc_live_dialog);
+        //dialog.setCanceledOnTouchOutside(false);
+        // dialog.setCancelable(false);
+        final ImageView cross_btn = (ImageView) dialog.findViewById(R.id.poc_dialog_close);
+        final Button got_it_btn = (Button)dialog.findViewById(R.id.poc_dialog_btn);
+        cross_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        got_it_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

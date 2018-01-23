@@ -97,11 +97,7 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
         String imageUrl = "";
         if(arrayList.get(position).getImageFiles().size()>0){
             imageUrl = arrayList.get(position).getImageFiles().get(0);
-            if(!imageUrl.contains("http")) {
-              String baseImageurl = pref.getString(AppConstants.IMAGE_BASE_URL,"");
-             baseImageurl =  baseImageurl.concat(imageUrl);
-              imageUrl = baseImageurl;
-            }
+           imageUrl = Utils.getImageUrl(imageUrl,pref);
             }
        /* Glide.with(context).load(arrayList.get(position).getImageFiles()).placeholder(R.drawable.no_image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.invent_builder_image);*/

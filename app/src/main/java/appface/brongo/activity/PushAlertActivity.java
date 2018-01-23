@@ -2,6 +2,7 @@ package appface.brongo.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,11 +15,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.Vibrator;
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -49,6 +53,8 @@ import appface.brongo.model.SignUpModel;
 import appface.brongo.model.TokenModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.services.MusicService;
+import appface.brongo.services.RegistrationIntentService;
 import appface.brongo.uiwidget.FlowLayout;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.CircleTransform;
@@ -91,16 +97,12 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
     private BroadcastReceiver broadcastReceiver;
     IntentFilter intentFilter1;
     private Vibrator v;
+    Intent serviceIntent;
     private Context context;
-    Handler handler;
-    Runnable runnable;
-    private boolean isdialog = false;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        unlockScreen();
         data = intent.getExtras();
         if (data != null) {
             prop_address = data.getString("microMarketName");
@@ -127,6 +129,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
             prop_address=prop_bhk=prop_status=prop_type=budget=prop_client_name=prop_client_type=client_image=prop_id=posting_type=sub_property_type=commission1=plantype="";
         }
         setContentView(R.layout.popup_new_notification);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initialise();
         intentFilter1 = new IntentFilter();
         intentFilter1.addAction("3_broker_done");
@@ -153,12 +156,12 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         slideView.setOnSlideCompleteListener(new SlideView.OnSlideCompleteListener() {
             @Override
             public void onSlideComplete(SlideView slideView) {
+                stopService();
                 // vibrate the device
-                    clientAccept();
+
                 countDownTimer.cancel();
-                if(mediaPlayer.isPlaying()) {
-                    mediaPlayer.stop();
-                }
+                //stopMedia();
+                clientAccept();
                 v.cancel();
                 slideView.setVisibility(View.GONE);
                 // go to a new activity
@@ -167,10 +170,9 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         noti_reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                stopService();
+                //stopMedia();
                 rejectDialog();
-                if(mediaPlayer.isPlaying()) {
-                    mediaPlayer.stop();
-                }
                 v.cancel();
               /*  startActivity(new Intent(PushAlertActivity.this,MainActivity.class));
                 finish();*/
@@ -179,11 +181,14 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
     }
     private void initialise() {
         context = this;
-        //mediaPlayer = MediaPlayer.create(context,R.raw.ios7_radiate);
         mediaPlayer = new MediaPlayer();
-        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if(isDeviceLocked(context)) {
+            unlockScreen();
+        }
+        serviceIntent = new Intent(context, MusicService.class);
         pref = getSharedPreferences(AppConstants.PREF_NAME,0);
-        callNotificationApi();
+        //mediaPlayer = MediaPlayer.create(context,R.raw.ios7_radiate);
+        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         editor = pref.edit();
         noti_address = (TextView)findViewById(R.id.noti_address);
         noti_bhk = (TextView)findViewById(R.id.noti_bhk);
@@ -203,8 +208,19 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         slideView = (SlideView)findViewById(R.id.slideView);
         progressBar = (ProgressBar) findViewById(R.id.noti_progressBar);
         progress_container = (RelativeLayout)findViewById(R.id.container);
-        showTimer();
-        setValue();
+        slideView.setVisibility(View.GONE);
+        noti_reject.setVisibility(View.GONE);
+        if(pref.getString(AppConstants.NOTI_TYPE,"").equalsIgnoreCase("call")) {
+            editor.remove(AppConstants.NOTI_TYPE).commit();
+            callNotificationApi();
+            slideView.setVisibility(View.VISIBLE);
+            noti_reject.setVisibility(View.VISIBLE);
+            startService(serviceIntent);
+            showTimer();
+            setValue();
+        }else{
+
+        }
     }
     private void addview(String text) {
         if(text != null) {
@@ -285,12 +301,10 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    makeScreenOff();
                     Utils.LoaderUtils.dismissLoader();
                     Utils.showToast(context, "Some Problem Occured");
-                    Intent intent = new Intent(PushAlertActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(intent);
-                    finish();
+                    goToMainPage();
                 }
             });
         }else{
@@ -304,7 +318,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         progressBar.setMax(120);
         long[] pattern = { 0, 200, 0 };
         v.vibrate(pattern,0);
-        playMedia();
+        //playMedia();
 /*        handler = new Handler();
         runnable = new Runnable() {
             @Override
@@ -347,7 +361,10 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
 
             @Override
             public void onFinish() {
+                slideView.setVisibility(View.GONE);
+                noti_reject.setVisibility(View.GONE);
                 currentTime++;
+                stopService();
                 progressBar.setProgress(currentTime);
                 if(currentTime > 50){
                     noti_progress.setText("00:0" + (60 - currentTime));
@@ -358,14 +375,9 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                 progressBar.setVisibility(View.INVISIBLE);
                 noti_progress.setVisibility(View.INVISIBLE);
                 countDownTimer.cancel();
-                if(mediaPlayer.isPlaying()) {
-                    mediaPlayer.stop();
-                    mediaPlayer.release();
-                }
+                //stopMedia();
                 v.cancel();
-                if(!isdialog) {
-                    clientMissedDialog(prop_client_name, posting_type);
-                }
+                    missedTask();
             }
         };
         countDownTimer.start();
@@ -379,31 +391,6 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
     private void setValue(){
         if(data != null) {
             budget = Utils.stringToInt(budget);
-            /*if(prop_address != null && !prop_address.isEmpty()) {
-                noti_address.setText(prop_address);
-            }else{
-                noti_address.setVisibility(View.GONE);
-            }
-            if(prop_status != null && !prop_status.isEmpty()) {
-                noti_status.setText(prop_status);
-            }else{
-                noti_status.setVisibility(View.GONE);
-            }
-            if(prop_bhk != null && !prop_bhk.isEmpty()) {
-                noti_bhk.setText(prop_bhk);
-            }else {
-                noti_bhk.setVisibility(View.GONE);
-            }
-            if(budget != null && !budget.isEmpty()) {
-                noti_budget.setText(budget);
-            }else {
-                noti_budget.setVisibility(View.GONE);
-            }
-            if(sub_property_type != null && !sub_property_type.isEmpty()) {
-                noti_prop_type.setText(sub_property_type);
-            }else {
-                noti_prop_type.setVisibility(View.GONE);
-            }*/
             addview(prop_address);
             addview(prop_status);
             addview(prop_bhk);
@@ -422,11 +409,6 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                 noti_commission.setVisibility(View.GONE);
             }
             noti_client_name.setText(prop_client_name);
-            // Glide.with(context).load(client_image).into(noti_client_pic);
-           /* if (!this.isFinishing ()) {
-                Glide.with(this).load(client_image).placeholder(R.drawable.placeholder1)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL).transform(new CircleTransform(this)).dontAnimate().into(noti_client_pic);
-            }*/
             Glide.with(context)
                     .load(client_image)
                     .apply(CustomApplicationClass.getRequestOption(true))
@@ -448,6 +430,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                     90, 0);*/
             mediaPlayer.setDataSource(context,Uri.parse(audioUri));
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);
+            mediaPlayer.setScreenOnWhilePlaying(true);
             //mediaPlayer.setVolume(0.9f,0.9f);
             mediaPlayer.prepare();
           /*  mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -472,20 +455,19 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
 
     @Override
     public void onBackPressed() {
-        v.cancel();
-        isdialog =true;
-        if(mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-        }
-        rejectDialog();
     }
 
     @Override
     protected void onPause() {
         Utils.LoaderUtils.dismissLoader();
         super.onPause();
-        isdialog =true;
+        Log.i("pushActiviry","pause");
         v.cancel();
+        if(!isDeviceLocked(context)){
+            stopService();
+        }
+        //stopMedia();
+       //stopService();
     }
 
     private void rejectDialog(){
@@ -493,6 +475,10 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
         dialog.setContentView(R.layout.reject_popup);
+        Window window = dialog.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         //dialog.setCanceledOnTouchOutside(false);
         // dialog.setCancelable(false);
@@ -585,10 +571,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                                     slideView.setVisibility(View.GONE);
                                     progress_container.setVisibility(View.GONE);
                                     Utils.showToast(context, message);
-                                    Intent intent = new Intent(PushAlertActivity.this, MainActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                                    startActivity(intent);
-                                    finish();
+                                    goToMainPage();
                                     int noti_count = pref.getInt(AppConstants.NOTIFICATION_COUNT, 0);
                                     if (noti_count > 0) {
                                         editor.putInt(AppConstants.NOTIFICATION_COUNT, noti_count - 1);
@@ -607,6 +590,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                                     new AllUtils().getTokenRefresh(context);
                                     leadRejectApi();
                                 } else {
+                                    goToMainPage();
                                     Utils.showToast(context, message);
                                 }
                             } catch (IOException | JSONException e) {
@@ -620,6 +604,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
                     Utils.showToast(context, "Some Problem Occured");
+                    goToMainPage();
                 }
             });
         }else{
@@ -630,47 +615,22 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
 
     @Override
     protected void onStop() {
+        Log.i("pushActiviry","stop");
         super.onStop();
-        isdialog = true;
-        unregisterReceiver(broadcastReceiver);
         v.cancel();
+        if(!isDeviceLocked(context)){
+            stopService();
+        }
+        //stopService();
+        unregisterReceiver(broadcastReceiver);
     }
     @Override
     protected void onResume() {
         super.onResume();
-        isdialog = false;
+        Log.i("pushActiviry","resume");
         registerReceiver(broadcastReceiver,intentFilter1);
     }
-    private void clientMissedDialog(String client_name,String posting_type){
-        SpannableStringBuilder name = Utils.convertToSpannableString(client_name,0,client_name.length(),"black");
-        SpannableStringBuilder posting = Utils.convertToSpannableString(posting_type,0,posting_type.length(),"black");
-        String message = "You just missed a new deal from '" ;
-            message = message + name;
-        message = message.concat("'request for ‘");
-        message = message + posting;
-        message = message.concat(" property’. Please check your internet connection and ensure your Brongo App is open at all times to accept the next deal!");
-        final Dialog dialog = new Dialog(PushAlertActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_missed_deal);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        final Button got_it_btn = (Button)dialog.findViewById(R.id.missed_deal_dialog_btn);
-        TextView message_textview = (TextView)dialog.findViewById(R.id.missed_dialog_message);
-        message_textview.setText(message);
-        got_it_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.setAlphaAnimation(got_it_btn,context);
-                dialog.dismiss();
-                Intent intent = new Intent(PushAlertActivity.this,MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                finish();
-            }
-        });
-        dialog.show();
-    }
+
     private int matchCount(String posting_type,String property_type){
         int count = 0;
         DatabaseHandler db = new DatabaseHandler(this);
@@ -770,7 +730,11 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
     }
     @Override
     public void onDestroy() {
-        super.onDestroy();
+       super.onDestroy();
+       stopService();
+        //stopMedia();
+        makeScreenOff();
+        Log.i("pushActiviry","destroy");
         Utils.LoaderUtils.dismissLoader();
     }
     private void callNotificationApi() {
@@ -797,5 +761,57 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
             taskcompleted = 1000;
             Utils.internetDialog(context,this);
         }
+    }
+    public static boolean isDeviceLocked(Context context) {
+        boolean isLocked = false;
+
+        // First we check the locked state
+        KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        boolean inKeyguardRestrictedInputMode = keyguardManager.inKeyguardRestrictedInputMode();
+
+        if (inKeyguardRestrictedInputMode) {
+            isLocked = true;
+
+        } else {
+            // If password is not set in the settings, the inKeyguardRestrictedInputMode() returns false,
+            // so we need to check if screen on for this case
+
+            PowerManager powerManager = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+                isLocked = !powerManager.isInteractive();
+            } else {
+                //noinspection deprecation
+                isLocked = !powerManager.isScreenOn();
+            }
+        }
+        return isLocked;
+    }
+    private void missedTask(){
+        Intent intent = new Intent(PushAlertActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.putExtra("missedDialog", true);
+        intent.putExtra("clientName",prop_client_name);
+        intent.putExtra("postType",posting_type);
+        startActivity(intent);
+        makeScreenOff();
+        finish();
+    }
+    private void stopService(){
+        stopService(new Intent(context,MusicService.class));
+    }
+    private void makeScreenOff(){
+        getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+    private void stopMedia(){
+        if(mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
+    }
+    private void goToMainPage(){
+        Intent intent = new Intent(PushAlertActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+        finish();
     }
 }

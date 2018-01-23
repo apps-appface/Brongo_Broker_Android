@@ -334,6 +334,9 @@
                 android:hint="RESIDENTIAL ADDRESS(Line 2)"
                 app:backgroundTint="@color/edit_line"/>
         </android.support.design.widget.TextInputLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent "
+                    android:layout_height="wrap_content">
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_referredby"
             android:layout_width="match_parent"
@@ -349,6 +352,14 @@
                 android:textColor="@color/edit_text_color"
                 app:backgroundTint="@color/edit_line"/>
         </android.support.design.widget.TextInputLayout>
+                <appface.brongo.uiwidget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(Optional)"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:customFont="lato_regular.ttf"/>
+                </RelativeLayout>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

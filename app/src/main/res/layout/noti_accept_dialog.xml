@@ -17,9 +17,9 @@
         android:paddingBottom="30dp"
         android:background="@drawable/edit_border">
     <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:padding="4dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="20dp"
         android:src="@drawable/ic_remove"
         android:id="@+id/client_accept_dialog_close"
         android:layout_gravity="right"
@@ -46,9 +46,8 @@
         android:shadowDx="6.123233995736766e-17"
         android:shadowDy="1"
         android:layout_marginTop="20dp"
-        android:textSize="13.7sp"
+        android:textSize="15sp"
         android:textColor="#6e6e6e"
-        android:lineSpacingExtra="6.7sp"
         android:gravity="center_horizontal"
         android:text="Thanks for your bid, you will get a confirmation once client accepts your bid"
         app:customFont="lato_regular.ttf"

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -58,6 +59,7 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
     private static AudioManager audio;
     private LinearLayout setting_parent;
     private SharedPreferences pref;
+    private boolean isLoader = false;
     private boolean offerNoti,builderNoti,notiSound;
     private SharedPreferences.Editor editor;
     public SettingFragment() {
@@ -186,18 +188,22 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
             }
         });
     }
-    private void setView(){
+    private void
+    setView(){
         builder_noti_switch.setChecked(pref.getBoolean(AppConstants.BUILDER_NOTI,true));
         offer_noti_switch.setChecked(pref.getBoolean(AppConstants.OFFER_NOTI,true));
         noti_sound_switch.setChecked(pref.getBoolean(AppConstants.NOTI_SOUND,true));
         i =1;
         setting_parent.setVisibility(View.VISIBLE);
         Utils.LoaderUtils.dismissLoader();
+        isLoader = false;
     }
 
     private void fetchSettings(){
         if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
+            if(!isLoader) {
+                Utils.LoaderUtils.showLoader(context);
+            }
             RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
             String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
             String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
@@ -207,6 +213,7 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                 @Override
                 public void onResponse(Call<ApiModel.SettingPlanModel> call, Response<ApiModel.SettingPlanModel> response) {
                     Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                     if (response != null) {
                         if (response.isSuccessful()) {
                             ApiModel.SettingPlanModel settingPlanModel = response.body();
@@ -249,6 +256,7 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                 @Override
                 public void onFailure(Call<ApiModel.SettingPlanModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                     Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
                 /*if(pd.isShowing()) {
                     pd.dismiss();
@@ -263,7 +271,9 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
 
     private void updateSetings(final boolean offerNoti, final boolean builderNoti, final boolean notiSound){
         if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
+            if(!isLoader) {
+                Utils.LoaderUtils.showLoader(context);
+            }
             ApiModel.SettingPlanObject settingPlanObject = new ApiModel.SettingPlanObject();
             settingPlanObject.setMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
             settingPlanObject.setOffers(offerNoti);
@@ -310,12 +320,14 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                         }
                     }
                     Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                 }
 
                 @Override
                 public void onFailure(Call<ApiModel.SettingPlanModel> call, Throwable t) {
                     Utils.showToast(context, "Some Problem Occured");
                     Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                 }
             });
         }{
@@ -327,6 +339,7 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
     public void onPause() {
         super.onPause();
         Utils.LoaderUtils.dismissLoader();
+        isLoader = false;
     }
     private void setVolume(int progress){
         int maxVolume = audio.getStreamMaxVolume(AudioManager.STREAM_RING);
@@ -353,7 +366,13 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
     }
     public static void myOnKeyDown(int key_code){
         if(key_code == KeyEvent.KEYCODE_VOLUME_DOWN || key_code == KeyEvent.KEYCODE_VOLUME_UP) {
-            int maxVolume = audio.getStreamMaxVolume(AudioManager.STREAM_RING);
+            Handler handler = new Handler();
+          handler.postDelayed(new Runnable() {
+               @Override
+               public void run() {
+                   //Do something after 100ms
+               }
+           }, 200);
             int currentVolume = audio.getStreamVolume(AudioManager.STREAM_RING);
             sound_seekbar.setProgress(currentVolume);
         }
@@ -366,5 +385,6 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
     public void onDestroy() {
         super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
+        isLoader = false;
     }
 }

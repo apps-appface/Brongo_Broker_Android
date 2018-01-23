@@ -3,6 +3,11 @@
     <item>
         <shape android:shape="oval">
             <gradient android:startColor="#88288f" android:endColor="#620a68" android:angle="90" />
+            <padding android:top="5dp"
+                android:bottom="5dp"
+                android:left="5dp"
+                android:right="5dp"/>
         </shape>
+
     </item>
 </selector>

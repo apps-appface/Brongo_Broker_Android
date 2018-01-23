@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
 import android.text.style.ClickableSpan;
@@ -60,7 +61,7 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
     private TextView toolbar_title;
     private Toolbar toolbar;
     private int trial_position=100,basic_position=100,premium_position=100;
-    private String trial_tc,basic_tc,premium_tc;
+    private String trial_tc,basic_tc,premium_tc,plan_tc;
     private ArrayList<ApiModel.SubscriptionObject> arrayList;
     private ArrayList<String> trial_condition_list,basic_condition_list,premium_condition_list;
     private CustomAdapter trial_adapter,basic_adapter,premium_adapter;
@@ -90,6 +91,7 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
     }
     private void initialiseView(View view){
         context = getActivity();
+        trial_tc = basic_tc =premium_tc = plan_tc="";
         pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
         arrayList = new ArrayList<>();
         trial_condition_list = new ArrayList<>();
@@ -104,7 +106,7 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
         toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
         toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
         toolbar.setVisibility(View.VISIBLE);
-        toolbar_title.setText("Subscriptions");
+        toolbar_title.setText("Subscription");
         trial_recycle = (RecyclerView) view.findViewById(R.id.subs_trial_listview);
         basic_recycle = (RecyclerView) view.findViewById(R.id.subs_basic_listview);
         sub_user_image = (ImageView)view.findViewById(R.id.subscription_image);
@@ -208,12 +210,6 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
     }
     private void setView(){
         String currentPlan = pref.getString(AppConstants.PLAN_TYPE,"");
-        trial_tc = getTc(arrayList.get(trial_position).getServices());
-        basic_tc = getTc(arrayList.get(basic_position).getServices());
-        trial_condition_list.addAll(arrayList.get(trial_position).getConditions());
-        basic_condition_list.addAll(arrayList.get(basic_position).getConditions());
-        trial_adapter.notifyDataSetChanged();
-        basic_adapter.notifyDataSetChanged();
         //premium_tc = getTc(arrayList.get(2).getServices());
         sub_username.setText("Hi, "+pref.getString(AppConstants.FIRST_NAME,"")+" "+pref.getString(AppConstants.LAST_NAME,""));
        /* Glide.with(getActivity()).load(pref.getString(AppConstants.USER_PIC,""))
@@ -225,15 +221,11 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
         subscription_plan.setText(pref.getString(AppConstants.PLAN_TYPE,""));
         subscription_tc2.setText(trial_tc);
         subscription_basic_tc.setText(basic_tc);
-      //  subscription_premium_plan.setText(arrayList.get(2).getName());
-        //subscription_premium_tc.setText(premium_tc);
-        if(currentPlan.equalsIgnoreCase("TRIAL PLAN")){
-            subscription_tc.setText(trial_tc);
-        }else if(currentPlan.equalsIgnoreCase("BASIC PLAN")){
-            subscription_tc.setText(basic_tc);
-        }else if(currentPlan.equalsIgnoreCase("PREMIUM PLAN")){
-            subscription_tc.setText(premium_tc);
-        }
+        subscription_premium_tc.setText(premium_tc);
+        subscription_tc.setText(plan_tc);
+        String  text1 = "FREE";
+        SpannableStringBuilder str = Utils.convertToSpannableString(text1,0,text1.length(),"green");
+        subscription_tc.append(str);
 
     }
     private String getTc(ArrayList<String> list){
@@ -245,17 +237,32 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
                 text = text + list.get(i).toUpperCase()+ "/";
             }
         }
-        text = "All ("+ text+ ")leads are free";
+       // text = "All ("+ text+ ")leads are free";
         return text;
     }
     private void getPlanPosition(ArrayList<ApiModel.SubscriptionObject> list){
         for(int i=0; i<list.size();i++){
             if(list.get(i).getName().equalsIgnoreCase("TRIAL_PLAN")){
                 trial_position = i;
+                String trial_tc1 = getTc(arrayList.get(trial_position).getServices());
+                trial_tc = "All ("+ trial_tc1 + ") leads are free";
+                trial_condition_list.addAll(arrayList.get(trial_position).getConditions());
+                trial_adapter.notifyDataSetChanged();
+                plan_tc = "All ("+ trial_tc1 + ") \n are ";
             }else if(list.get(i).getName().equalsIgnoreCase("BASIC_PLAN")){
                 basic_position=i;
+                String basic_tc1 = getTc(arrayList.get(basic_position).getServices());
+                basic_tc = "All ("+ basic_tc1 +") leads are free";
+                basic_condition_list.addAll(arrayList.get(basic_position).getConditions());
+                basic_adapter.notifyDataSetChanged();
+                plan_tc = "All ("+ basic_tc1 + ") \n are ";
             }else if(list.get(i).getName().equalsIgnoreCase("PREMIUM_PLAN")){
                 premium_position=i;
+                String premium_tc1 = getTc(arrayList.get(basic_position).getServices());
+                basic_tc = "All ("+ premium_tc1 +") leads are free";
+                premium_condition_list.addAll(arrayList.get(basic_position).getConditions());
+                premium_adapter.notifyDataSetChanged();
+                plan_tc = "All ("+ premium_tc1 + ") \n are ";
             }
         }
         setView();
@@ -335,16 +342,16 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
     }
     private void setLayoutVisibility(){
         String currentPlan = pref.getString(AppConstants.PLAN_TYPE,"");
-        if(currentPlan.equalsIgnoreCase("TRIAL PLAN")){
+        if(currentPlan.equalsIgnoreCase("TRIAL")){
             isBasicVisible = false;
             subscription_basic.setVisibility(View.VISIBLE);
             basic_linear_parent.setVisibility(View.GONE);
-        }else if(currentPlan.equalsIgnoreCase("BASIC PLAN")){
+        }else if(currentPlan.equalsIgnoreCase("BASIC")){
             isBasicVisible = true;
             basic_linear_parent.setVisibility(View.VISIBLE);
             trial_linear_parent.setVisibility(View.GONE);
             subscription_basic.setVisibility(View.GONE);
-        }else if(currentPlan.equalsIgnoreCase("PREMIUM PLAN")){
+        }else if(currentPlan.equalsIgnoreCase("PREMIUM")){
             trial_linear_parent.setVisibility(View.GONE);
         }
     }

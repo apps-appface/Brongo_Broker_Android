@@ -2,13 +2,13 @@ package appface.brongo.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +31,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +45,6 @@ import com.applozic.mobicomkit.api.conversation.database.MessageDatabaseService;
 import com.applozic.mobicomkit.uiwidgets.ApplozicSetting;
 import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kyleduo.switchbutton.SwitchButton;
 
 import org.json.JSONArray;
@@ -68,16 +67,13 @@ import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.services.RegistrationIntentService;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.CircleTransform;
 import appface.brongo.util.CustomApplicationClass;
 import appface.brongo.util.DatabaseHandler;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.ResideMenu;
 import appface.brongo.util.ResideMenuItem;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
-import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -91,9 +87,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     final long DELAY_MS = 500,PERIOD_MS = 3000;//delay in milliseconds before task is to be executed
     private Button open_deal_buy_btn,referral_btn,open_deal_sell_btn;
     private boolean doubleBackToExitPressedOnce = false;
-    private LinearLayout no_deal_linear,deal_linear,linearLayout2;
+    private LinearLayout no_deal_linear,deal_linear,linearLayout2,switch_linear;
     private RelativeLayout pager_linear,cutoff_relative;
-    private ScrollView main_scrollview;
     private ArrayList<ApiModel.BuyAndRentModel> buyAndRentList,sellAndRentList;
     public final static int LOOPS = 1;
     public CarouselPagerAdapter adapter1;
@@ -131,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             serviceIntent.putExtra("key",100);
             startService(serviceIntent);
         }
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
         /*if(MobiComUserPreference.getInstance(this).isLoggedIn()){
             int i=100;
         }*/
@@ -142,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initialise() {
         fragmentManager = getSupportFragmentManager();
-        main_scrollview = (ScrollView) findViewById(R.id.main_scrollview);
         home_name = (TextView) findViewById(R.id.main_user_name);
         home_plan = (TextView) findViewById(R.id.main_plan);
         home_commission = (TextView) findViewById(R.id.closed_commission_text);
@@ -150,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         homerating = (TextView) findViewById(R.id.main_rating);
         home_pot_commission = (TextView) findViewById(R.id.opened_commission_text);
         linearLayout2 = (LinearLayout)findViewById(R.id.linearLayout2);
+        switch_linear = (LinearLayout)findViewById(R.id.linear2);
        main_ratingbar = (RatingBar)findViewById(R.id.main_ratingBar);
         open_deal_buy_btn = (Button) findViewById(R.id.buy_rent);
         cutoff_relative = (RelativeLayout)findViewById(R.id.cutoff_relative);
@@ -187,11 +182,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adapter2 = new MainAdapter(this, getSupportFragmentManager(),sellAndRentList,this,pager1);
         pager1.setAdapter(adapter2);
         pager1.setOffscreenPageLimit(3);
-        setButtonText();
+        //setButtonText();
        /* pager.setPageTransformer(true, new ZoomOutPageTransformer());
         pager1.setPageTransformer(true, new ZoomOutPageTransformer());*/
       //generateToken(0);
-       generateToken();
+    callHomeProfileApi();
         setView();
         setListener();
     }
@@ -314,6 +309,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public void callHomeProfileApi(){
         if(Utils.isNetworkAvailable(context)) {
+            if(!isLoader) {
+                Utils.LoaderUtils.showLoader(context);
+                isLoader = true;
+            }
             RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
             String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
             String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
@@ -322,8 +321,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             call.enqueue(new Callback<ApiModel.HomeProfileModel>() {
                 @Override
                 public void onResponse(Call<ApiModel.HomeProfileModel> call, Response<ApiModel.HomeProfileModel> response) {
+                    populateArrayList1();
                     if (response != null) {
-                        populateArrayList1();
                         if (response.isSuccessful()) {
                             ApiModel.HomeProfileModel homeProfileModel = response.body();
                             int statusCode = homeProfileModel.getStatusCode();
@@ -385,6 +384,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void callActiveApi(final String status){
         if(Utils.isNetworkAvailable(context)) {
+            if(!isLoader) {
+                Utils.LoaderUtils.showLoader(context);
+                isLoader = true;
+            }
             ApiModel.UpdateStatusModel updateStatusModel = new ApiModel.UpdateStatusModel();
             updateStatusModel.setUserId("");
             updateStatusModel.setMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
@@ -412,10 +415,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 if (statusCode == 200 && message.equalsIgnoreCase("Status Updated Successfully")) {
                                     if (newStatus.equalsIgnoreCase("ACTIVE")) {
                                         switchButton.setThumbColorRes(R.color.appColor);
-                                        main_scrollview.setAlpha(1.0f);
+                                        switch_linear.setAlpha(1.0f);
                                     } else {
                                         switchButton.setThumbColorRes(R.color.round_empty_gray);
-                                        main_scrollview.setAlpha(0.3f);
+                                        switch_linear.setAlpha(0.3f);
                                     }
                                     editor.putString(AppConstants.USER_STATUS, newStatus);
                                     editor.commit();
@@ -539,14 +542,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
     private void setView() {
-        if(pref.getString(AppConstants.USER_STATUS,"").equalsIgnoreCase("Active")){
+        String isActive = pref.getString(AppConstants.USER_STATUS,"");
+        if(isActive.equalsIgnoreCase("Active") || isActive.equalsIgnoreCase("")){
             switchButton.setChecked(true);
             switch_text.setText("ACTIVE");
-            main_scrollview.setAlpha(1.0f);
+            switch_linear.setAlpha(1.0f);
         }else{
             switchButton.setChecked(false);
             switch_text.setText("INACTIVE");
-            main_scrollview.setAlpha(0.3f);
+            switch_linear.setAlpha(0.3f);
         }
         int totalUnreadCount = new MessageDatabaseService(context).getTotalUnreadCount();
         if(totalUnreadCount>0) {
@@ -687,8 +691,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
     private void setButtonText(){
-        open_deal_buy_btn.setText("Buy/Rent("+buyAndRentList.size()+"of 3)");
-        open_deal_sell_btn.setText("Sell/Rent Out("+sellAndRentList.size()+"of 3)");
+        open_deal_buy_btn.setText("Buy/Rent("+buyAndRentList.size()+" of 3)");
+        open_deal_sell_btn.setText("Sell/Rent Out("+sellAndRentList.size()+" of 3)");
         if(buyAndRentList.size()>= 3 && sellAndRentList.size() >=3){
             cutoff_relative.setVisibility(View.VISIBLE);
         }else{
@@ -1049,16 +1053,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    if(!isLoader) {
-                        Utils.LoaderUtils.showLoader(context);
-                        isLoader = true;
-                    }
                         callActiveApi("Active");
                 }else{
-                    if(!isLoader) {
-                        Utils.LoaderUtils.showLoader(context);
-                        isLoader = true;
-                    }
                         callActiveApi("INActive");
                 }
             }
@@ -1116,6 +1112,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             if (intent.getBooleanExtra("shouldShowDialog", false)) {
                 Utils.clientAcceptDialog(context);
+            }else if(intent.getBooleanExtra("missedDialog", false)){
+                String client_name = intent.getStringExtra("clientName");
+                String post_type = intent.getStringExtra("postType");
+                if(client_name != null && post_type != null) {
+                    clientMissedDialog(client_name, post_type);
+                }
             }
         }
        displayNotification();
@@ -1317,7 +1319,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Utils.LoaderUtils.dismissLoader();
         isLoader = false;
     }
-    private void setVisibility(){
-
+    private void clientMissedDialog(String client_name,String posting_type){
+        SpannableStringBuilder name = Utils.convertToSpannableString(client_name,0,client_name.length(),"black");
+        SpannableStringBuilder posting = Utils.convertToSpannableString(posting_type,0,posting_type.length(),"black");
+        String message = "You just missed a new deal from '" ;
+        message = message + name;
+        message = message.concat("'request for ‘");
+        message = message + posting;
+        message = message.concat(" property’. Please check your internet connection and ensure your Brongo App is open at all times to accept the next deal!");
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_missed_deal);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        final Button got_it_btn = (Button)dialog.findViewById(R.id.missed_deal_dialog_btn);
+        TextView message_textview = (TextView)dialog.findViewById(R.id.missed_dialog_message);
+        message_textview.setText(message);
+        got_it_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

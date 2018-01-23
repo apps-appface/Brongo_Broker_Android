@@ -13,6 +13,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,6 +135,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
     }
     private void initialise(View view){
         context = getActivity();
+        client = mobile = email ="";
         client_list = new ArrayList<>();
         clientDetails_list = new ArrayList<>();
         inventory_personal_recycle = (RecyclerView)view.findViewById(R.id.inventory_personal_recycle);
@@ -262,6 +265,8 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                         builder_count.setVisibility(View.VISIBLE);
                                     }else{
                                         builder_count.setVisibility(View.GONE);
+                                        builder_btn.setBackgroundResource(R.drawable.button_change);
+                                        builder_btn.setTextColor(context.getResources().getColor(R.color.appColor));
                                     }
                                 }
                             /*if(pd.isShowing()) {
@@ -487,7 +492,6 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
     }
     private void builder_registerDialog(final BuilderModel.BuilderObject builderObject){
         isVisible = false;
-        client = mobile = email ="";
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -497,7 +501,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
         //dialog.setCanceledOnTouchOutside(false);
         // dialog.setCancelable(false);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        TextView clientAdd = (TextView)dialog.findViewById(R.id.client_register_add);
+        final TextView clientAdd = (TextView)dialog.findViewById(R.id.client_register_add);
         final LinearLayout manual_register = (LinearLayout)dialog.findViewById(R.id.manual_register_linear);
         final LinearLayout client_register_linear = (LinearLayout)dialog.findViewById(R.id.client_register_linear);
         final EditText client_name = (EditText)dialog.findViewById(R.id.client_name_register);
@@ -510,23 +514,23 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
         client_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                client = parent.getItemAtPosition(position).toString();
                 mobile = clientDetails_list.get(position).getMobileNo();
                 client = clientDetails_list.get(position).getFirstName();
                 email = clientDetails_list.get(position).getEmailId();
             }
         });
+
         clientAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!isVisible){
                     isVisible=true;
+                    mobile = client = email="";
                     client_register_linear.setVisibility(View.GONE);
                     manual_register.setVisibility(View.VISIBLE);
+                    clientAdd.setVisibility(View.GONE);
                 }else{
                     isVisible = false;
-                    client_register_linear.setVisibility(View.VISIBLE);
-                    manual_register.setVisibility(View.GONE);
                 }
             }
         });
@@ -534,26 +538,21 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
             @Override
             public void onClick(View v) {
                 if(!mobile.equalsIgnoreCase("")){
-                    if(mobile.length() == 10 && mobile.startsWith("7") || mobile.startsWith("8") || mobile.startsWith("9")){
+                    if(mobile.length() == 10 && mobile.startsWith("6") || mobile.startsWith("7") || mobile.startsWith("8") || mobile.startsWith("9")){
                         callRegisterApi(builderObject,mobile,client,email);
                     }else{
                         Utils.showToast(context,"Invalid mobile Number");
                     }
                 }else {
-                    mobile = client_mobile.getText().toString();
-                    client = client_name.getText().toString();
-                    email = client_email.getText().toString();
-                    if(!mobile.equalsIgnoreCase("")){
-                        callRegisterApi(builderObject,mobile,client,email);
-                    }else {
-                        Utils.showToast(context, "Mobile should not be empty");
-                    }
+                        Utils.showToast(context, "data should not be empty");
                 }
+                dialog.dismiss();
             }
         });
         register_cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mobile = client = email="";
                 dialog.dismiss();
             }
         });
@@ -708,4 +707,5 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
         }
 
     }
+
 }

@@ -204,10 +204,7 @@ public class RequirementFragment extends Fragment implements NoInternetTryConnec
             for(int i=0;i<imagelist.size();i++) {
                 String stringurl = imagelist.get(i);
                 if(stringurl != null && !stringurl.isEmpty()) {
-                    if (!stringurl.contains("http")) {
-                        String baseurl = pref.getString(AppConstants.IMAGE_BASE_URL, "");
-                        stringurl = baseurl.concat(stringurl);
-                    }
+                        stringurl = Utils.getImageUrl(stringurl,pref);
                     View layout2 = LayoutInflater.from(getActivity()).inflate(R.layout.deal_image_item, req_image_linear, false);
                     ImageView imageview = (ImageView) layout2.findViewById(R.id.deal_image);
                     Glide.with(context).load(stringurl).apply(CustomApplicationClass.getPropertyImage(true)).into(imageview);

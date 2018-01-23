@@ -105,14 +105,12 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
     private TextView inventory_addImage,inventory_add_more,imageName1,imageSize1,imageName2,imageSize2,imageName3,imageSize3,toolbar_title;
     private LinearLayout linearImage1,linearImage2,linearImage3;
     private Button relativeRemove1,relativeRemove2,relativeRemove3;
-    private RelativeLayout relativeUpload;
+    private RelativeLayout relativeUpload,image_relative;
     private ArrayList<File> fileList;
-
     private ImageView inventory_toolbar_delete,inventory_toolbar_edit,add_icon;
-    private ArrayList<String> inventory_clientlist;
+    private String[] inventory_clientlist = {"RENT","BUY","SELL","RENT_OUT"};
     private String[] inventory_proplist = {"Residential","Commercial"};
-    private HashMap<String,String> hash;
-    private int i=0;
+    private int taskCompleted,i=0;
     private String emailPattern;
     private Button save_inventory,cancel_inventory;
     private String filename,filename1,filename2,filename3,compressedImagePath;
@@ -186,16 +184,13 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
     private void initialise(View view) throws MalformedURLException {
         context = getActivity();
         pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
-        hash = new HashMap();
-        inventory_clientlist = new ArrayList<>();
         poc_list = new ArrayList<>();
+        marketSpinner = (MaterialBetterSpinner)view.findViewById(R.id.inventory_spinner_location);
         client_spinner = (MaterialBetterSpinner)view.findViewById(R.id.inventory_spinner_client);
-        setClientList();
         fetchMicromarket();
          emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         fileList = new ArrayList<>();
         marketlist = new ArrayList<>();
-        marketSpinner = (MaterialBetterSpinner)view.findViewById(R.id.inventory_spinner_location);
         invent_email_layout = (TextInputLayout)view.findViewById(R.id.input_layout_inventory_email);
         invent_phone_layout = (TextInputLayout)view.findViewById(R.id.input_layout_inventory_mobile);
         inventory_budget = (EditText)view.findViewById(R.id.inventory_budget);
@@ -222,6 +217,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         imageSize1 = (TextView)view.findViewById(R.id.inventory_image_size1);
         imageSize2 = (TextView)view.findViewById(R.id.inventory_image_size2);
         imageSize3 = (TextView)view.findViewById(R.id.inventory_image_size3);
+        image_relative = (RelativeLayout)view.findViewById(R.id.inventory_image_relative);
         inventory_toolbar_delete = (ImageView)(ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
         inventory_toolbar_edit = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
         add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
@@ -257,7 +253,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                 android.R.layout.simple_dropdown_item_1line, inventory_proplist);
         prop_type_spinner.setAdapter(prop_typeAdpter);
         subprop_typeAdpter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_dropdown_item_1line, subpropList);
+                android.R.layout.simple_dropdown_item_1line, resi_prop_type_list);
         sub_property_spinner.setAdapter(subprop_typeAdpter);
         propStatusAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_dropdown_item_1line, inventory_propstatuslist);
@@ -317,13 +313,6 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
             File imageFile = new File(compressedImagePath);
             fileList.add(imageFile);
             setFile();
-
-            // create RequestBody instance from file
-           /* RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
-            filename = imageFile.getName();
-            long length = imageFile.length();
-            length = length/1024;*/
-            // MultipartBody.Part is used to send also the actual file name
         }
     }
     private void setListener(){
@@ -356,15 +345,6 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         inventory_add_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /*  if (Build.VERSION.SDK_INT >= 23) {
-                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST);
-                    } else {
-                            openGallery();
-                    }
-                }else {
-                    openGallery();
-                }*/
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (checkCameraAndWritablePermission()) {
                         selectImageAlert();
@@ -412,8 +392,12 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         client_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               String key = parent.getItemAtPosition(position).toString();
-                client1 = hash.get(key);
+                client1 = parent.getItemAtPosition(position).toString();
+                if(client1.equalsIgnoreCase("BUY") || client1.equalsIgnoreCase("RENT")){
+                    image_relative.setVisibility(View.GONE);
+                }else{
+                    image_relative.setVisibility(View.VISIBLE);
+                }
             }
         });
         prop_type_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -421,10 +405,12 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 prop_type = parent.getItemAtPosition(position).toString();
                 if(prop_type.equalsIgnoreCase("Residential")){
+                    sub_property_spinner.setText("");
                     subprop_typeAdpter = new ArrayAdapter<String>(context,
                             android.R.layout.simple_dropdown_item_1line, resi_prop_type_list);
                     sub_property_spinner.setAdapter(subprop_typeAdpter);
                 }else if(prop_type.equalsIgnoreCase("Commercial")){
+                    sub_property_spinner.setText("");
                     subprop_typeAdpter = new ArrayAdapter<String>(context,
                             android.R.layout.simple_dropdown_item_1line, comm_prop_type_list);
                     sub_property_spinner.setAdapter(subprop_typeAdpter);
@@ -521,8 +507,6 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         }
     }
     private void setInventory(){
-        if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
             switch (fileList.size()) {
                 case 1:
                     propertyImage1 = MultipartBody.Part.createFormData("propertyImage1", filename1, requestFile1);
@@ -536,6 +520,9 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                     propertyImage2 = MultipartBody.Part.createFormData("propertyImage2", filename2, requestFile2);
                     propertyImage3 = MultipartBody.Part.createFormData("propertyImage3", filename3, requestFile3);
                     break;
+            }
+            if(invent_budget.equalsIgnoreCase("")){
+                invent_budget = "0";
             }
             String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
             String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
@@ -553,57 +540,63 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
             RequestBody microMarketName = RequestBody.create(MediaType.parse("multipart/form-data"), microMarketName1);
             RequestBody microMarketCity = RequestBody.create(MediaType.parse("multipart/form-data"), microMarketCity1);
             RequestBody microMarketState = RequestBody.create(MediaType.parse("multipart/form-data"), microMarketState1);
-            RequestBody commission = RequestBody.create(MediaType.parse("multipart/form-data"), "5000");
+            RequestBody commission = RequestBody.create(MediaType.parse("multipart/form-data"), "0");
             RequestBody subPropertyType = RequestBody.create(MediaType.parse("multipart/form-data"), sub_prop_type);
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            Call call = retrofitAPIs.AddInventApi(tokenaccess, "android", deviceId, propertyId, brokerMobileNo, client, propertyType, bedRoomType, budget, propertyStatus, clientName, clientMobileNo, emailId, note, propertyImage1, propertyImage2, propertyImage3, microMarketName, microMarketCity, microMarketState, commission, subPropertyType);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        if (response.isSuccessful()) {
-                            String responseString = null;
-                            try {
-                                responseString = response.body().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                int statusCode = jsonObject.optInt("statusCode");
-                                String message = jsonObject.optString("message");
-                                if (statusCode == 200) {
-                                    Utils.showToast(context, message);
-                                    startActivity(new Intent(context, MainActivity.class));
-                                }
-                            } catch (JSONException | IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            String responseString = null;
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    setInventory();
+            if(client1.length() !=0 && prop_type.length() !=0 && prop_status.length() !=0 && clientMobileNo1.length() !=0 && sub_prop_type.length() !=0 && microMarketName1.length() != 0) {
+                if (Utils.isNetworkAvailable(context)) {
+                    Utils.LoaderUtils.showLoader(context);
+                    RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                    Call call = retrofitAPIs.AddInventApi(tokenaccess, "android", deviceId, propertyId, brokerMobileNo, client, propertyType, bedRoomType, budget, propertyStatus, clientName, clientMobileNo, emailId, note, propertyImage1, propertyImage2, propertyImage3, microMarketName, microMarketCity, microMarketState, commission, subPropertyType);
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            Utils.LoaderUtils.dismissLoader();
+                            if (response != null) {
+                                if (response.isSuccessful()) {
+                                    String responseString = null;
+                                    try {
+                                        responseString = response.body().string();
+                                        JSONObject jsonObject = new JSONObject(responseString);
+                                        int statusCode = jsonObject.optInt("statusCode");
+                                        String message = jsonObject.optString("message");
+                                        if (statusCode == 200) {
+                                            Utils.showToast(context, message);
+                                        }
+                                    } catch (JSONException | IOException e) {
+                                        e.printStackTrace();
+                                    }
                                 } else {
-                                    Utils.showToast(context, message);
+                                    String responseString = null;
+                                    try {
+                                        responseString = response.errorBody().string();
+                                        JSONObject jsonObject = new JSONObject(responseString);
+                                        String message = jsonObject.optString("message");
+                                        int statusCode = jsonObject.optInt("statusCode");
+                                        if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                            new AllUtils().getTokenRefresh(context);
+                                            setInventory();
+                                        } else {
+                                            Utils.showToast(context, message);
+                                        }
+                                    } catch (JSONException | IOException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            } catch (JSONException | IOException e) {
-                                e.printStackTrace();
                             }
                         }
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Utils.LoaderUtils.dismissLoader();
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Utils.LoaderUtils.dismissLoader();
+                        }
+                    });
+                } else {
+                    taskCompleted = 200;
+                    Utils.internetDialog(context, this);
                 }
-            });
-        }else{
-            Utils.internetDialog(context,this);
-        }
+            }else{
+                Utils.showToast(context,"Data can not be empty");
+            }
     }
     private void enterValue(){
         inventory_budget.setText(invent_budget);
@@ -618,10 +611,12 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         marketSpinner.setText(microMarketName1);
         prop_status_spinner.setText(prop_status);
         if(prop_type.equalsIgnoreCase("Residential")){
+            sub_property_spinner.setText("");
             subprop_typeAdpter = new ArrayAdapter<String>(context,
                     android.R.layout.simple_dropdown_item_1line, resi_prop_type_list);
             sub_property_spinner.setAdapter(subprop_typeAdpter);
         }else if(prop_type.equalsIgnoreCase("Commercial")){
+            sub_property_spinner.setText("");
             subprop_typeAdpter = new ArrayAdapter<String>(context,
                     android.R.layout.simple_dropdown_item_1line, comm_prop_type_list);
             sub_property_spinner.setAdapter(subprop_typeAdpter);
@@ -690,7 +685,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
             @Override
             public void afterTextChanged(Editable s) {
                 String phone = inventory_mobile.getText().toString().trim();
-                if ((phone.startsWith("7") || phone.startsWith("8") || phone.startsWith("9")) && (phone.length() == 10)){
+                if ((phone.startsWith("6") || phone.startsWith("7") || phone.startsWith("8") || phone.startsWith("9")) && (phone.length() == 10)){
                     invent_phone_layout.setError("");
                     invent_phone_layout.setErrorEnabled(false);
                     clientMobileNo1 = phone;
@@ -794,7 +789,13 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
 
     @Override
     public void onTryReconnect() {
-        setInventory();
+      switch (taskCompleted){
+          case 100:
+              fetchMicromarket();
+              break;
+          case 200:
+              setInventory();
+      }
     }
 
     private static Uri getOutputMediaFileUri() {
@@ -844,9 +845,6 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                             e.printStackTrace();
                         }
                     }
-                    marketAdapter = new ArrayAdapter<String>(context,
-                            R.layout.spinner_text, poc_list);
-                    marketSpinner.setAdapter(marketAdapter);
                 }
 
                 @Override
@@ -856,8 +854,12 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                 }
             });
         }else{
+            taskCompleted = 100;
             Utils.internetDialog(context,this);
         }
+        marketAdapter = new ArrayAdapter<String>(context,
+                R.layout.spinner_text, poc_list);
+        marketSpinner.setAdapter(marketAdapter);
     }
     @Override
     public void onDestroy() {
@@ -917,13 +919,13 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         final CharSequence[] items = {"Camera", "Gallery",
                 "Cancel"};
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
-        builder.setTitle("Select from");
+        builder.setTitle("Select Image");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Camera")) {
+                if (items[item].equals("From Camera")) {
                     startCameraIntent();
-                } else if (items[item].equals("Gallery")) {
+                } else if (items[item].equals("From Gallery")) {
                     startGalleryIntent();
                 } else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
@@ -945,19 +947,6 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
     }
-    private void setClientList(){
-        hash.put("BUYER","BUY");
-        hash.put("SELLER","SELL");
-        hash.put("RENTAL","RENT");
-        hash.put("RENTAL_OUT","RENT_OUT");
-        for(String key : hash.keySet() ){
-            inventory_clientlist.add(key.toString());
-        }
-        clientAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_dropdown_item_1line, inventory_clientlist);
-        client_spinner.setAdapter(clientAdapter);
-    }
-
 }
 
 

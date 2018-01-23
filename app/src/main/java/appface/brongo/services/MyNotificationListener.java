@@ -76,6 +76,7 @@ public class MyNotificationListener extends FirebaseMessagingService {
                 if(noti_type != null) {
                     switch (noti_type) {
                         case "APP":
+                            editor.putString(AppConstants.NOTI_TYPE,"call").commit();
                             callNotification(remoteMessage);
                         /*Intent intent1 = new Intent();
                         intent1.setAction("Lead_Notification");

@@ -450,7 +450,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="200dp"
                             android:layout_alignParentBottom="true"
-                            android:background="@drawable/ic_landing_back"
+                            ba="@drawable/ic_landing_back"
                             />
                         <android.support.v4.view.ViewPager
                             android:id="@+id/myviewpager"
