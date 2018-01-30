@@ -105,27 +105,33 @@ public class SplashActivity extends AppCompatActivity {
     private void startHomeActivity() {
         Boolean login_status = pref.getBoolean(AppConstants.LOGIN_STATUS, false);
         Boolean isWalkthrough = pref.getBoolean(AppConstants.ISWALKTHROUGH,true);
+        Boolean isTermAccepted = pref.getBoolean(AppConstants.IS_TERMS_ACCEPTED,false);
+        if(isTermAccepted) {
             if (login_status) {
                 //new RefreshTokenCall(this,0);
-                startActivity(new Intent(context,MainActivity.class));
-               finish();
+                startActivity(new Intent(context, MainActivity.class));
+                finish();
             } else {
-                if(isWalkthrough) {
-                    Intent intent = new Intent(getApplicationContext(), WalkThroughActivity.class);
+                if (isWalkthrough) {
+                    Intent intent = new Intent(context, WalkThroughActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("from_activity","splash");
+                    intent.putExtra("from_activity", "splash");
                     startActivity(intent);
                     finish();
-                }else{
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                } else {
+                    Intent intent = new Intent(context, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
                 }
             }
-       /*Intent intent = new Intent(SplashActivity.this,DocumentUploadActivity.class);
-        intent.putExtra("frgToLoad","AddInventoryFragment");
-        startActivity(intent);*/
+        }else{
+            Intent intent = new Intent(context, TermsConditionActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

@@ -441,7 +441,8 @@
                     <RelativeLayout
                         android:id="@+id/activity_main_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="1150dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:orientation="vertical"
                         android:gravity="center"
                         android:layout_gravity="bottom"
@@ -450,14 +451,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="200dp"
                             android:layout_alignParentBottom="true"
-                            ba="@drawable/ic_landing_back"
+                            android:background="@drawable/ic_landing_back"
                             />
-                        <android.support.v4.view.ViewPager
+                        <appface.brongo.uiwidget.WrapContentViewPager
                             android:id="@+id/myviewpager"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center" />
-                        <android.support.v4.view.ViewPager
+                        <appface.brongo.uiwidget.WrapContentViewPager
                             android:id="@+id/myviewpager1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

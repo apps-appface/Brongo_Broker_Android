@@ -235,7 +235,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColorHint="@color/edit_hint_color"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
 
                     <EditText
@@ -244,6 +244,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:hint="CITY"
+                        android:inputType="textCapWords"
                         android:textColor="@color/edit_text_color"
                         app:backgroundTint="@color/edit_line" />
                 </android.support.design.widget.TextInputLayout>
@@ -262,6 +263,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+               android:inputType="text"
                 android:hint="OFFICE ADDRESS(Line 1)"
                 android:textColor="@color/edit_text_color"
                 app:backgroundTint="@color/edit_line" />
@@ -288,6 +290,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/sign_office_line2"
                 android:layout_marginTop="20dp"
+                android:inputType="text"
                 android:hint="OFFICE ADDRESS(Line 2)"
                 android:textColor="@color/edit_text_color"
                 app:backgroundTint="@color/edit_line" />
@@ -315,6 +318,7 @@
                 android:id="@+id/sign_residential_line1"
                 android:hint="RESIDENTIAL ADDRESS(Line 1)"
                 android:layout_marginTop="20dp"
+                android:inputType="text"
                 android:textColor="@color/edit_text_color"
                 app:backgroundTint="@color/edit_line" />
         </android.support.design.widget.TextInputLayout>
@@ -330,12 +334,13 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/sign_residential_line2"
                 android:layout_marginTop="20dp"
+                android:inputType="text"
                 android:textColor="@color/edit_text_color"
                 android:hint="RESIDENTIAL ADDRESS(Line 2)"
                 app:backgroundTint="@color/edit_line"/>
         </android.support.design.widget.TextInputLayout>
                 <RelativeLayout
-                    android:layout_width="match_parent "
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_referredby"
@@ -349,6 +354,7 @@
                 android:id="@+id/sign_referredby"
                 android:layout_marginTop="20dp"
                 android:hint="REFERRAL"
+                android:inputType="text"
                 android:textColor="@color/edit_text_color"
                 app:backgroundTint="@color/edit_line"/>
         </android.support.design.widget.TextInputLayout>
@@ -360,6 +366,14 @@
                     android:layout_centerVertical="true"
                     app:customFont="lato_regular.ttf"/>
                 </RelativeLayout>
+
+         <appface.brongo.uiwidget.CustomTextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_horizontal"
+             android:id="@+id/signup_tc"
+             android:gravity="center"
+             app:customFont="lato_regular.ttf"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

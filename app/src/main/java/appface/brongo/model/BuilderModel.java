@@ -194,14 +194,6 @@ public class BuilderModel {
             this.propertyId = propertyId;
         }
 
-        public int getLandArea() {
-            return landArea;
-        }
-
-        public void setLandArea(int landArea) {
-            this.landArea = landArea;
-        }
-
 
         public int getNoOfBedRooms() {
             return noOfBedRooms;
@@ -211,9 +203,6 @@ public class BuilderModel {
             this.noOfBedRooms = noOfBedRooms;
         }
 
-        public int getPricePerSQFT() {
-            return pricePerSQFT;
-        }
 
         public void setPricePerSQFT(int pricePerSQFT) {
             this.pricePerSQFT = pricePerSQFT;
@@ -228,9 +217,26 @@ public class BuilderModel {
         }
         String status;
         String propertyId;
-        int landArea;
+
+        public float getLandArea() {
+            return landArea;
+        }
+
+        public void setLandArea(float landArea) {
+            this.landArea = landArea;
+        }
+
+        public float getPricePerSQFT() {
+            return pricePerSQFT;
+        }
+
+        public void setPricePerSQFT(float pricePerSQFT) {
+            this.pricePerSQFT = pricePerSQFT;
+        }
+
+        float landArea;
         int noOfBedRooms;
-        int pricePerSQFT;
+        float pricePerSQFT;
         int totalBrokers;
     }
 

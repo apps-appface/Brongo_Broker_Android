@@ -128,7 +128,7 @@ public class RegistrationIntentService extends IntentService {
                             int statusCode = jsonObject.optInt("statusCode");
                             String message = jsonObject.optString("message");
                             if(statusCode == 200 && message.equalsIgnoreCase("Device Information Successfully Uploaded")){
-                                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
                                 if(key == 100) {
                                     editor.putBoolean(AppConstants.DEVICE_TOKEN_UPDATED, true);
                                     editor.commit();

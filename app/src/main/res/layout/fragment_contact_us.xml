@@ -71,7 +71,7 @@
                 android:layout_height="45dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:id="@+id/contact_call_btn"
+                android:id="@+id/contact_us_call_btn"
                 android:src="@drawable/call_icon"
                 android:padding="5dp"
                 android:background="@drawable/circle_purple"
@@ -118,7 +118,7 @@
                 android:layout_height="45dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:id="@+id/contact_email_btn"
+                android:id="@+id/contact_us_email_btn"
                 android:background="@drawable/email"
                 android:clickable="true"/>
             <View android:layout_width="match_parent"

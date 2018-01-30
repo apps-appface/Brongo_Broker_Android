@@ -259,84 +259,6 @@
                     android:layout_marginRight="10dp"
                     app:elementSpacing="4dp"
                     app:lineSpacing="10dp">
-                    <!--<appface.brongo.uiwidget.CustomTextView
-                        android:id="@+id/open_deal_address"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_purple"
-                        android:gravity="center"
-                        android:padding="5sp"
-                        android:shadowColor="#73000000"
-                        android:shadowDx="6.123233995736766e-17"
-                        android:shadowDy="1"
-                        android:shadowRadius="3"
-                        android:textAllCaps="false"
-                        android:textColor="#1d4f91"
-                        android:textSize="13sp"
-                        app:customFont="lato_regular.ttf" />
-
-                    <appface.brongo.uiwidget.CustomTextView
-                        android:id="@+id/open_deal_bhk"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_purple"
-                        android:gravity="center"
-                        android:padding="5sp"
-                        android:shadowColor="#73000000"
-                        android:shadowDx="6.123233995736766e-17"
-                        android:shadowDy="1"
-                        android:shadowRadius="3"
-                        android:textAllCaps="false"
-                        android:textColor="#1d4f91"
-                        android:textSize="13sp"
-                        app:customFont="lato_regular.ttf" />
-
-                    <appface.brongo.uiwidget.CustomTextView
-                        android:id="@+id/open_deal_budget"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_purple"
-                        android:gravity="center"
-                        android:padding="5sp"
-                        android:shadowColor="#73000000"
-                        android:shadowDx="6.123233995736766e-17"
-                        android:shadowDy="1"
-                        android:shadowRadius="3"
-                        android:textAllCaps="false"
-                        android:textColor="#1d4f91"
-                        android:textSize="13sp"
-                        app:customFont="lato_regular.ttf" />
-                    <appface.brongo.uiwidget.CustomTextView
-                        android:id="@+id/open_deal_prop_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_purple"
-                        android:gravity="center"
-                        android:padding="5sp"
-                        android:shadowColor="#73000000"
-                        android:shadowDx="6.123233995736766e-17"
-                        android:shadowDy="1"
-                        android:shadowRadius="3"
-                        android:textAllCaps="false"
-                        android:textColor="#1d4f91"
-                        android:textSize="13sp"
-                        app:customFont="lato_regular.ttf" />
-
-                    <appface.brongo.uiwidget.CustomTextView
-                        android:id="@+id/open_deal_prop_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_purple"
-                        android:gravity="center"
-                        android:padding="5sp"
-                        android:shadowColor="#73000000"
-                        android:shadowDx="6.123233995736766e-17"
-                        android:shadowDy="1"
-                        android:shadowRadius="3"
-                        android:textAllCaps="false"
-                        android:textColor="#1d4f91"
-                        android:textSize="13sp"
-                        app:customFont="lato_regular.ttf" />-->
                 </appface.brongo.uiwidget.FlowLayout>
                 <appface.brongo.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
@@ -373,14 +295,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
                 </LinearLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dialog_button"
+                    android:layout_marginTop="10dp"
+                    android:paddingRight="60dp"
+                    android:paddingLeft="60dp"
+                 android:textColor="@color/white"
+                    android:text="Give Feedback"
+                    android:layout_gravity="center"
+                    android:id="@+id/feedBack_btn"
+                    android:visibility="gone"/>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/client_drop"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_marginTop="10dp"

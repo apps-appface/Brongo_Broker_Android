@@ -298,11 +298,13 @@
                 android:id="@+id/subscription_premium_plan"
                 app:customFont="lato_regular.ttf"
                 />
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-               android:gravity="center_horizontal"
+               android:gravity="center"
+                android:paddingTop="5dp"
+                android:id="@+id/premium_linear_rate"
                 android:layout_below="@+id/subscription_premium_plan">
                 <appface.brongo.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
@@ -312,10 +314,23 @@
                     android:shadowDy="1"
                     android:textSize="13sp"
                     android:textColor="#ebee10"
-                    android:gravity="center_horizontal"
                     android:id="@+id/sub_premium_price"
+                    android:text="asda"
+                    android:includeFontPadding="false"
+                    android:layout_centerInParent="true"
                     app:customFont="lato_regular.ttf"
                     />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/sub_premium_price"
+                    android:layout_marginLeft="5dp"
+                    android:layout_alignBottom="@+id/sub_premium_price"
+                    android:layout_alignTop="@+id/sub_premium_price"
+                    android:id="@+id/premium_rate_view"
+                    android:background="@color/white"
+                    android:includeFontPadding="false"
+                    android:layout_centerInParent="true"/>
 
                 <appface.brongo.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
@@ -323,13 +338,17 @@
                     android:shadowColor="#c0ffffff"
                     android:shadowDx="6.123233995736766e-17"
                     android:shadowDy="1"
+                    android:text="asda"
+                    android:layout_marginLeft="5dp"
+                    android:includeFontPadding="false"
                     android:textSize="13sp"
                     android:textColor="#ffffff"
-                    android:gravity="center_horizontal"
+                    android:layout_toRightOf="@+id/premium_rate_view"
                     android:id="@+id/sub_premium_expiry"
                     app:customFont="lato_regular.ttf"
+                    android:layout_centerInParent="true"
                     />
-            </LinearLayout>
+            </RelativeLayout>
             </RelativeLayout>
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="match_parent"
@@ -351,7 +370,13 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/expand_group_child"
                 android:id="@+id/sub_linear_premium"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical"
+                android:visibility="gone">
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:id="@+id/subs_premium_listview"></android.support.v7.widget.RecyclerView>
+            </LinearLayout>
         </LinearLayout>
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"

@@ -237,12 +237,12 @@ public class MyNotificationListener extends FirebaseMessagingService {
                data.putString("planType",remoteMessage.getData().get("planType"));
                data.putString("subPropertyType",remoteMessage.getData().get("subPropertyType"));
                data.putString("matchedProperties",remoteMessage.getData().get("matchedProperties"));
+               data.putString("impFields",remoteMessage.getData().get("impFields"));
                Intent intent1 = new Intent(MyNotificationListener.this, PushAlertActivity.class);
                intent1.putExtras(data);
                //intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                startActivity(intent1);
-
            }
        }
     protected android.support.v4.app.NotificationCompat.Builder buildNotification(String message,String page) {

@@ -135,87 +135,91 @@ public class NotiAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         holder.setIsRecyclable(false);
-        if (holder instanceof NotificationViewHolder) {
-            if (arrayList.get(position).isRead()) {
-                parentLinear.setBackgroundResource(R.color.white);
-            } else {
-                parentLinear.setBackgroundResource(R.color.notification_color);
-            }
-            if (arrayList.get(position).getAlertType().equalsIgnoreCase("BUILDER_POSTING")) {
-                String budget = String.valueOf(arrayList.get(position).getBudgetRange());
-                budget = Utils.stringToInt(budget);
-                addView(arrayList.get(position).getProjectName(),((NotificationViewHolder)holder).notification_flowlayout);
-                addView(arrayList.get(position).getLocation(),((NotificationViewHolder)holder).notification_flowlayout);
-                addView(arrayList.get(position).getProjectType(),((NotificationViewHolder)holder).notification_flowlayout);
-                addView(arrayList.get(position).getProjectStatus(),((NotificationViewHolder)holder).notification_flowlayout);
-                addView((arrayList.get(position).getCommission()+"% Commission"),((NotificationViewHolder)holder).notification_flowlayout);
-                addView(budget,((NotificationViewHolder)holder).notification_flowlayout);
-                if(arrayList.get(position).getStatus().isEmpty()) {
-                    ((NotificationViewHolder)holder).noti_view_linear.setVisibility(View.VISIBLE);
-                }else{
-                    ((NotificationViewHolder)holder).noti_view_linear.setVisibility(View.GONE);
+        try {
+            if (holder instanceof NotificationViewHolder) {
+                if (arrayList.get(position).isRead()) {
+                    parentLinear.setBackgroundResource(R.color.white);
+                } else {
+                    parentLinear.setBackgroundResource(R.color.notification_color);
                 }
-            } else {
-                ((NotificationViewHolder)holder).noti_view_linear.setVisibility(View.GONE);
-                ((NotificationViewHolder)holder).notification_flowlayout.setVisibility(View.GONE);
-            }
-            if(arrayList.get(position).getAlertType().equalsIgnoreCase("CALL_BACK")){
-                ((NotificationViewHolder)holder).call_btn.setVisibility(View.VISIBLE);
-            }else{
-                ((NotificationViewHolder)holder).call_btn.setVisibility(View.GONE);
-            }
-            String string1 = arrayList.get(position).getClientName() + ":" + arrayList.get(position).getMessage();
-            SpannableStringBuilder str = Utils.convertToSpannableString(string1, 0, arrayList.get(position).getClientName().length(), "black");
-            ((NotificationViewHolder)holder).content_text.setText(str);
-            ((NotificationViewHolder)holder).noti_time.setText(arrayList.get(position).getDays());
-            Glide.with(context)
-                    .load(arrayList.get(position).getClientProfile().toString())
-                    .apply(CustomApplicationClass.getRequestOption(true))
-                    .into(((NotificationViewHolder)holder).noti_image);
-            ((NotificationViewHolder)holder).view_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!arrayList.get(position).isRead()) {
-                        callListener.readBtnClick(arrayList.get(position), position, false);
+                if (arrayList.get(position).getAlertType().equalsIgnoreCase("BUILDER_POSTING")) {
+                    String budget = String.valueOf(arrayList.get(position).getBudgetRange());
+                    budget = Utils.stringToInt(budget);
+                    addView(arrayList.get(position).getProjectName(), ((NotificationViewHolder) holder).notification_flowlayout);
+                    addView(arrayList.get(position).getLocation(), ((NotificationViewHolder) holder).notification_flowlayout);
+                    addView(arrayList.get(position).getProjectType(), ((NotificationViewHolder) holder).notification_flowlayout);
+                    addView(arrayList.get(position).getProjectStatus(), ((NotificationViewHolder) holder).notification_flowlayout);
+                    addView((arrayList.get(position).getCommission() + "% Commission"), ((NotificationViewHolder) holder).notification_flowlayout);
+                    addView(budget, ((NotificationViewHolder) holder).notification_flowlayout);
+                    if (arrayList.get(position).getStatus().isEmpty()) {
+                        ((NotificationViewHolder) holder).noti_view_linear.setVisibility(View.VISIBLE);
+                    } else {
+                        ((NotificationViewHolder) holder).noti_view_linear.setVisibility(View.GONE);
                     }
-                    ((NotificationViewHolder)holder).notification_flowlayout.setVisibility(View.VISIBLE);
-                    ((NotificationViewHolder)holder).view_btn.setVisibility(View.GONE);
-                    ((NotificationViewHolder)holder).proceed_btn.setVisibility(View.VISIBLE);
+                } else {
+                    ((NotificationViewHolder) holder).noti_view_linear.setVisibility(View.GONE);
+                    ((NotificationViewHolder) holder).notification_flowlayout.setVisibility(View.GONE);
+                }
+                if (arrayList.get(position).getAlertType().equalsIgnoreCase("CALL_BACK")) {
+                    ((NotificationViewHolder) holder).call_btn.setVisibility(View.VISIBLE);
+                } else {
+                    ((NotificationViewHolder) holder).call_btn.setVisibility(View.GONE);
+                }
+                String string1 = arrayList.get(position).getClientName() + ":" + arrayList.get(position).getMessage();
+                SpannableStringBuilder str = Utils.convertToSpannableString(string1, 0, arrayList.get(position).getClientName().length(), "black");
+                ((NotificationViewHolder) holder).content_text.setText(str);
+                ((NotificationViewHolder) holder).noti_time.setText(arrayList.get(position).getDays());
+                Glide.with(context)
+                        .load(arrayList.get(position).getClientProfile().toString())
+                        .apply(CustomApplicationClass.getRequestOption(true))
+                        .into(((NotificationViewHolder) holder).noti_image);
+                ((NotificationViewHolder) holder).view_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!arrayList.get(position).isRead()) {
+                            callListener.readBtnClick(arrayList.get(position), position, false);
+                        }
+                        ((NotificationViewHolder) holder).notification_flowlayout.setVisibility(View.VISIBLE);
+                        ((NotificationViewHolder) holder).view_btn.setVisibility(View.GONE);
+                        ((NotificationViewHolder) holder).proceed_btn.setVisibility(View.VISIBLE);
 
-                }
-            });
-            ((NotificationViewHolder)holder).proceed_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callListener.proceedBtnClick(arrayList.get(position),position);
-                }
-            });
-            parentLinear.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!arrayList.get(position).isRead()) {
-                        if(!(arrayList.get(position).getAlertType().equalsIgnoreCase("BUILDER_POSTING") && arrayList.get(position).getStatus().equalsIgnoreCase(""))) {
-                            callListener.readBtnClick(arrayList.get(position), position, true);
+                    }
+                });
+                ((NotificationViewHolder) holder).proceed_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        callListener.proceedBtnClick(arrayList.get(position), position);
+                    }
+                });
+                parentLinear.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!arrayList.get(position).isRead()) {
+                            if (!(arrayList.get(position).getAlertType().equalsIgnoreCase("BUILDER_POSTING") && arrayList.get(position).getStatus().equalsIgnoreCase(""))) {
+                                callListener.readBtnClick(arrayList.get(position), position, true);
+                            }
                         }
                     }
-                }
-            });
-            ((NotificationViewHolder)holder).reject_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callListener.rejectBtnClick(arrayList.get(position),position);
-                }
-            });
-            ((NotificationViewHolder)holder).call_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callListener.callBtnClick(arrayList.get(position).getMobileNo().toString(),arrayList.get(position).getPropertyId());
-                }
-            });
+                });
+                ((NotificationViewHolder) holder).reject_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        callListener.rejectBtnClick(arrayList.get(position), position);
+                    }
+                });
+                ((NotificationViewHolder) holder).call_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        callListener.callBtnClick(arrayList.get(position).getMobileNo().toString(), arrayList.get(position).getPropertyId());
+                    }
+                });
 
 
-        } else {
-            ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
+            } else {
+                ((ProgressViewHolder) holder).progressBar.setIndeterminate(true);
+            }
+        }catch (Exception e){
+
         }
     }
 

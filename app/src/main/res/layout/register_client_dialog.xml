@@ -95,6 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="CLIENT NAME"
+            android:inputType="textCapWords"
             android:textColor="@color/edit_text_color"
             app:backgroundTint="@color/black" />
     </android.support.design.widget.TextInputLayout>
@@ -110,6 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="MOBILE NUMBER"
+            android:inputType="phone"
             android:textColor="@color/edit_text_color"
             app:backgroundTint="@color/black" />
     </android.support.design.widget.TextInputLayout>
@@ -125,6 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="EMAIL ID"
+            android:inputType="textEmailAddress"
             android:textColor="@color/edit_text_color"
             app:backgroundTint="@color/black" />
     </android.support.design.widget.TextInputLayout>

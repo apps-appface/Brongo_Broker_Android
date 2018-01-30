@@ -12,8 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import appface.brongo.R;
-import appface.brongo.activity.MapActivity;
-import appface.brongo.model.SignUpModel;
+import appface.brongo.activity.VenueActivity;
 
 /**
  * Created by Rohit Kumar on 1/15/2018.
@@ -29,7 +28,7 @@ import appface.brongo.model.SignUpModel;
 
         /*************  CustomAdapter Constructor *****************/
         public CustomSpinnerAdapter(
-                MapActivity activitySpinner,
+                VenueActivity activitySpinner,
                 int textViewResourceId,
                 ArrayList objects,ArrayList<Integer> countList
         )

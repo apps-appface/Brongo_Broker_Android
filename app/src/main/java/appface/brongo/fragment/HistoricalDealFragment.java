@@ -45,7 +45,7 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
     private ImageView edit_icon,delete_icon,add_icon;
     private TextView toolbar_title;
     private Toolbar toolbar;
-    private ArrayList<ApiModel.HistoricalModel> openList,closeList;
+    private ArrayList<ApiModel.BuyAndRentModel> openList,closeList;
    private HistoricalAdapter adapter1,adapter2;
     private SharedPreferences pref;
     public HistoricalDealFragment() {
@@ -121,7 +121,7 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
             String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
             String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
             String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
-            Call<ApiModel.OpenDealModels> call = retrofitAPIs.getHistoricalDeal(tokenaccess, "android", deviceId, mobileNo);
+            Call<ApiModel.OpenDealModels> call = retrofitAPIs.getActiveDeals(tokenaccess, "android", deviceId, mobileNo,false);
             call.enqueue(new Callback<ApiModel.OpenDealModels>() {
                 @Override
                 public void onResponse(Call<ApiModel.OpenDealModels> call, Response<ApiModel.OpenDealModels> response) {
@@ -132,19 +132,15 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
                             int statusCode = openDealModels.getStatusCode();
                             String message = openDealModels.getMessage();
                             if (statusCode == 200 && message.equalsIgnoreCase("")) {
-                                ArrayList<ApiModel.HistoricalModel> openlist1 = openDealModels.getData().get(0).getOpenDeals();
-                                ArrayList<ApiModel.HistoricalModel> closelist1 = openDealModels.getData().get(0).getClosedDeals();
-                                if (openlist1 != null) {
+                                ArrayList<ApiModel.BuyAndRentModel> openlist1 = openDealModels.getData().get(0).getOpenDeals();
+                                ArrayList<ApiModel.BuyAndRentModel> closelist1 = openDealModels.getData().get(0).getClosedDeals();
+                                if (openlist1.size() != 0) {
                                     openList.clear();
-                                    for (int i = 0; i < openlist1.size(); i++) {
-                                        openList.add(openlist1.get(i));
-                                    }
+                                    openList.addAll(openlist1);
                                 }
-                                if (closelist1 != null) {
+                                if (closelist1.size() != 0) {
                                     closeList.clear();
-                                    for (int i = 0; i < closelist1.size(); i++) {
-                                        closeList.add(closelist1.get(i));
-                                    }
+                                   closeList.addAll(closelist1);
                                 }
                                 adapter1.notifyDataSetChanged();
                                 adapter2.notifyDataSetChanged();

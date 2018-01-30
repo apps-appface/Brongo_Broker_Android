@@ -40,6 +40,8 @@ public class AppConstants {
     public static final String CHAT_LOGIN ="CHATLOGIN";
     public static final String ISWALKTHROUGH = "ISWALKTHROUGH";
     public static final String NOTI_TYPE="NOTI_TYPE";
+    public static final String PREMIUM_ID="PREMIUM_ID";
+    public static final String IS_TERMS_ACCEPTED = "IS_TERMS_ACCEPTED";
 
     public static class FRAGMENT_TAGS {
         public static final String ABOUTUS = "ABOUTUS";

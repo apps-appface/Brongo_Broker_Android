@@ -173,6 +173,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="EMAIL ID"
+            android:inputType="textEmailAddress"
             android:textColor="@color/edit_text_color"
             app:backgroundTint="@color/edit_line" />
     </android.support.design.widget.TextInputLayout>
@@ -198,7 +199,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="ADD NOTES"
-            android:inputType="textMultiLine"
+           android:inputType="text"
             android:textColor="@color/edit_text_color"
             app:backgroundTint="@color/edit_line" />
     </android.support.design.widget.TextInputLayout>

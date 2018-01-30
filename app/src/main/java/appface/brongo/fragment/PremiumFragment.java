@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
@@ -25,11 +29,13 @@ import com.payu.payuui.Activity.PayUBaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import appface.brongo.R;
 import appface.brongo.activity.ReminderActivity;
+import appface.brongo.adapter.CustomAdapter;
 import appface.brongo.model.PaymentHashModel;
 import appface.brongo.model.PaymentHashResponseModel;
 import appface.brongo.other.AllUtils;
@@ -47,12 +53,16 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class PremiumFragment extends Fragment implements NoInternetTryConnectListener,RetryPaymentListener {
-    ArrayList<String> arrayList;
+    ArrayList<PaymentHashModel.SubPlanObject> arrayList;
     LinearLayout plans_linear;
     private ImageView edit_icon,delete_icon,add_icon;
     private TextView toolbar_title;
     private Toolbar toolbar;
     private Context context;
+    private int Task_completed = 10000;
+    private RecyclerView premium_condition_recycle;
+   private CustomAdapter premiumAdapter;
+   private ArrayList<String> premium_conditionlist;
     private SharedPreferences pref;
 
     public PremiumFragment() {
@@ -78,26 +88,50 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
         edit_icon.setVisibility(View.GONE);
         delete_icon.setVisibility(View.GONE);
         add_icon.setVisibility(View.GONE);
+        premium_condition_recycle = (RecyclerView)view.findViewById(R.id.premium_list);
         toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
         toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
         toolbar.setVisibility(View.VISIBLE);
         toolbar_title.setText("Upgrade to premium");
+        LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
+        verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
+        premium_condition_recycle.setLayoutManager(verticalmanager);
         arrayList = new ArrayList<>();
-        arrayList.add("plan1");
-        arrayList.add("plan2");
-        addPlans(arrayList);
+        premium_conditionlist = new ArrayList<>();
+        premiumAdapter = new CustomAdapter(premium_conditionlist,context);
+        premium_condition_recycle.setAdapter(premiumAdapter);
+        fetchCurrentPlan();
     }
-    private void addPlans(ArrayList<String> arrayList){
+    private void addPlans(ArrayList<PaymentHashModel.SubPlanObject> arrayList){
         for (int i = 0; i < arrayList.size(); i++) {
             try {
+                String actualRate = AllUtils.changeNumberFormat(arrayList.get(i).getAmountToSub());
+                String dis_rate = AllUtils.changeNumberFormat(arrayList.get(i).getPayed());
+                String perMonth_rate = AllUtils.changeNumberFormat(arrayList.get(i).getAmountFMonth());
                 final int position = i;
                 View layout2 = LayoutInflater.from(getActivity()).inflate(R.layout.premium_subplan_child, plans_linear, false);
                 Button pay_btn = (Button)layout2.findViewById(R.id.pay_btn);
                 TextView plan_type = (TextView)layout2.findViewById(R.id.premium_plan_type);
-                plan_type.setText(arrayList.get(i));
+                TextView plan_actual_rate = (TextView)layout2.findViewById(R.id.premium_actual_rate);
+                TextView plan_paying_rate = (TextView)layout2.findViewById(R.id.premium_paying_rate);
+                TextView plan_offer = (TextView)layout2.findViewById(R.id.premium_save);
+                TextView plan_net_worth = (TextView)layout2.findViewById(R.id.premium_net_worth);
+                plan_type.setText(arrayList.get(i).getName());
+                plan_actual_rate.setText(actualRate);
+                if(!(arrayList.get(i).getOffers() == 0.0f)) {
+                    plan_paying_rate.setText(dis_rate);
+                    plan_offer.setText(arrayList.get(i).getOffers()+"%");
+                    if(arrayList.get(i).getAmountToSub() != arrayList.get(i).getPayed()) {
+                        plan_actual_rate.setPaintFlags(plan_actual_rate.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    }
+                }
+                plan_net_worth.setText(perMonth_rate);
+                final int finalI = i;
+                pay_btn.setEnabled(false);
                 pay_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //Toast.makeText(context,"plan "+ finalI,Toast.LENGTH_SHORT).show();
                        // MakePayment(position);
                     }
                 });
@@ -196,7 +230,11 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
 
     @Override
     public void onTryReconnect() {
-
+        switch (Task_completed){
+            case 200:
+                fetchCurrentPlan();
+                break;
+        }
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -243,5 +281,78 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
     public void onDestroy() {
         super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
+    }
+    private void fetchCurrentPlan(){
+        if(Utils.isNetworkAvailable(context)) {
+            Utils.LoaderUtils.showLoader(context);
+            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+            String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
+            String premium_id = pref.getString(AppConstants.PREMIUM_ID,"");
+            Call<PaymentHashModel.CurrentPlanModel> call = retrofitAPIs.getCurrentPlanApi(tokenaccess, "android", deviceId, mobileNo,premium_id);
+            call.enqueue(new Callback<PaymentHashModel.CurrentPlanModel>() {
+                @Override
+                public void onResponse(Call<PaymentHashModel.CurrentPlanModel> call, Response<PaymentHashModel.CurrentPlanModel> response) {
+                    Utils.LoaderUtils.dismissLoader();
+                    if (response != null) {
+                        if (response.isSuccessful()) {
+                            PaymentHashModel.CurrentPlanModel currentPlanModel = response.body();
+                            int statusCode = currentPlanModel.getStatusCode();
+                            String message = currentPlanModel.getMessage();
+                            if (statusCode == 200 && message.equalsIgnoreCase("")) {
+                                ArrayList<PaymentHashModel.CurrentPlanObject> subscription_list = currentPlanModel.getData();
+                                if (subscription_list.size() != 0) {
+                                    ArrayList<String> conditionList = currentPlanModel.getData().get(0).getConditions();
+                                    if(conditionList.size() != 0){
+                                        premium_conditionlist.clear();
+                                        premium_conditionlist.addAll(conditionList);
+                                        premiumAdapter.notifyDataSetChanged();
+                                    }
+                                   ArrayList<PaymentHashModel.SubPlanObject> subplanList = subscription_list.get(0).getSubPlans();
+                                   if(subplanList.size() != 0){
+                                     arrayList.clear();
+                                     arrayList.addAll(subplanList);
+                                     addPlans(arrayList);
+                                   }
+                                }
+                            }
+                            // referAdapter.notifyDataSetChanged();
+                        } else {
+                            String responseString = null;
+                            try {
+                                responseString = response.errorBody().string();
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                int statusCode = jsonObject.optInt("statusCode");
+                                String message = jsonObject.optString("message");
+                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                    new AllUtils().getTokenRefresh(context);
+
+                                } else {
+                                    Utils.showToast(context, message);
+                                }
+                           /* if(pd.isShowing()) {
+                                pd.dismiss();
+                            }*/
+                            } catch (IOException | JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<PaymentHashModel.CurrentPlanModel> call, Throwable t) {
+                    Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
+                    Utils.LoaderUtils.dismissLoader();
+                /*if(pd.isShowing()) {
+                    pd.dismiss();
+                }*/
+                }
+            });
+        }else{
+            Task_completed = 200;
+            Utils.internetDialog(context,this);
+        }
     }
 }

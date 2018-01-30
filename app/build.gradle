@@ -68,6 +68,7 @@ dependencies {
     }
     annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
     compile 'io.branch.sdk.android:library:2.+'
+    compile 'com.github.barteksc:android-pdf-viewer:1.0.0'
     compile project(':sdkui')
     testCompile 'junit:junit:4.12'
 }

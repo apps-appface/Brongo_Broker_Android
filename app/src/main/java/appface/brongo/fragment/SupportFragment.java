@@ -4,6 +4,7 @@ package appface.brongo.fragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,27 +18,42 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import appface.brongo.R;
 import appface.brongo.activity.WalkThroughActivity;
 import appface.brongo.adapter.SubmenuAdapter;
+import appface.brongo.model.ApiModel;
+import appface.brongo.model.ClientDetailsModel;
+import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.util.AppConstants;
 import appface.brongo.util.RecyclerItemClickListener;
+import appface.brongo.util.RetrofitAPIs;
+import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.CONTACT;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SupportFragment extends Fragment {
+public class SupportFragment extends Fragment implements NoInternetTryConnectListener {
     private Context context;
     private ArrayList<String> arrayList;
     private Toolbar toolbar;
     private ImageView edit_icon,delete_icon,add_icon;
     private TextView toolbar_title;
+    private SharedPreferences pref;
 
     public SupportFragment() {
         // Required empty public constructor
@@ -51,6 +67,7 @@ public class SupportFragment extends Fragment {
         View view =inflater.inflate(R.layout.fragment_support, container, false);
         context = getActivity();
         arrayList = new ArrayList<String>(Arrays.asList("Take me to the app walkthrough", "Contact Brongo Customer Support", "I want to unsubscribe"));
+        pref = context.getSharedPreferences(AppConstants.PREF_NAME,0);
         RecyclerView support_recycle = (RecyclerView)view.findViewById(R.id.support_recycle);
         edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
         delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
@@ -86,6 +103,9 @@ public class SupportFragment extends Fragment {
                 ContactFragment contactFragment = new ContactFragment();
                 Utils.replaceFragment(getFragmentManager(),contactFragment,R.id.inventory_frag_container,CONTACT);
                 break;
+            case 2:
+                unSubscribe();
+                break;
         }
     }
     public static void unsubscribeDialog(Context context){
@@ -111,5 +131,57 @@ public class SupportFragment extends Fragment {
         });
         dialog.show();
     }
+    private void unSubscribe() {
+            if (Utils.isNetworkAvailable(context)) {
+                Utils.LoaderUtils.showLoader(context);
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                ApiModel.UnsubscribeModel unsubscribeModel = new  ApiModel.UnsubscribeModel();
+                String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
+                String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+                String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+                unsubscribeModel.setMobileNo(mobileNo);
+                unsubscribeModel.setMsg("");
+                unsubscribeModel.setPlanType(pref.getString(AppConstants.PLAN_TYPE,""));
+                Call<ApiModel.ResponseModel> call = retrofitAPIs.unSubscribeApi(tokenaccess, "android", deviceId, unsubscribeModel);
+                call.enqueue(new Callback<ApiModel.ResponseModel>() {
+                    @Override
+                    public void onResponse(Call<ApiModel.ResponseModel> call, Response<ApiModel.ResponseModel> response) {
+                        Utils.LoaderUtils.dismissLoader();
+                        if (response != null) {
+                            if (response.isSuccessful()) {
+                                ApiModel.ResponseModel responseModel = response.body();
+                                int statusCode = responseModel.getStatusCode();
+                                String message = responseModel.getMessage();
+                                if (statusCode == 200) {
+                                  unsubscribeDialog(context);
+                                }
+                            } else {
+                                String responseString = null;
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    String message = jsonObject.optString("message");
+                                    Utils.showToast(context, message);
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
+                        Utils.LoaderUtils.dismissLoader();
+                        Utils.showToast(context, "Some Problem Occured");
+                    }
+                });
+            } else {
+                Utils.internetDialog(context, this);
+            }
+    }
+
+    @Override
+    public void onTryReconnect() {
+        unSubscribe();
+    }
 }

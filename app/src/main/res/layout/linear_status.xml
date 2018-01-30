@@ -67,10 +67,9 @@
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 android:includeFontPadding="false"
                 android:layout_toRightOf="@+id/tick_view"
-                android:text="google"
                 android:id="@+id/status_text1"
                 app:customFont="lato_regular.ttf"
                 />
@@ -86,28 +85,31 @@
                 />
         </RelativeLayout>
     </LinearLayout>
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="16dp"
+            android:background="@drawable/reminder_icon"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/status_reminder"
+            android:id="@+id/status_reminder_imageview"
+            android:visibility="visible"/>
+
+        <appface.brongo.uiwidget.CustomTextView
+            android:id="@+id/status_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:shadowColor="#c0ffffff"
+            android:shadowDx="6.123233995736766e-17"
+            android:shadowDy="1"
+            android:layout_marginRight="10dp"
+            android:text="Schedule \n Meeting"
+            android:textColor="#88288f"
+            android:textSize="10sp"
+            android:visibility="visible"
+            app:customFont="lato_regular.ttf" />
     </RelativeLayout>
-    <ImageView
-        android:layout_width="18dp"
-        android:layout_height="16dp"
-        android:background="@drawable/reminder_icon"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-        android:id="@+id/status_reminder_imageview"
-        android:visibility="gone"/>
-    <appface.brongo.uiwidget.CustomTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:shadowColor="#c0ffffff"
-        android:shadowDx="6.123233995736766e-17"
-        android:shadowDy="1"
-        android:textSize="13.3sp"
-        android:padding="5dp"
-        android:layout_gravity="center_vertical"
-        android:textColor="#88288f"
-        android:lineSpacingExtra="6.9sp"
-        android:text="Set Reminder"
-        android:id="@+id/status_reminder"
-        android:visibility="gone"
-        app:customFont="lato_regular.ttf"/>
 </LinearLayout>

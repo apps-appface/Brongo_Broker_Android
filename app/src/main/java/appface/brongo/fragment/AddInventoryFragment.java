@@ -3,31 +3,25 @@ package appface.brongo.fragment;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.text.style.CharacterStyle;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +36,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.applozic.mobicommons.file.FileUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.json.JSONException;
@@ -51,28 +45,21 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import appface.brongo.R;
 import appface.brongo.activity.AutoFillActivity;
-import appface.brongo.activity.DocumentUploadActivity;
 import appface.brongo.activity.MainActivity;
-import appface.brongo.activity.MapActivity;
-import appface.brongo.activity.Menu_Activity;
 import appface.brongo.model.SignUpModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.ImageFilePath;
 import appface.brongo.util.ImageUtils;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
@@ -91,6 +78,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
     private Context context;
     private ArrayAdapter<String> marketAdapter;
    private ArrayList<String> poc_list;
+   private File image_file;
     private List<String> listPermissionsNeeded;
     public static final int REQUEST_CAMERA_AND_WRITABLE_PERMISSIONS = 111;
     private static final int REQUEST_CAMERA = 200;
@@ -271,7 +259,14 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                 if (requestCode == SELECT_FILE)
                     onSelectFromGalleryResult(data);
                 else if (requestCode == REQUEST_CAMERA)
-                    onCaptureImageResult();
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                        onCaptureImageResult(uri);
+                    }else{
+                   uri = Uri.fromFile(image_file);
+                    onCaptureImageResult(uri);
+                    /*fileList.add(image_file);
+                    setFile();*/
+                    }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -303,6 +298,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
             compressedImagePath = ImageUtils.compressImage(context, uri.getPath());
             Log.e(TAG, "onSelectFromGalleryResult: " + compressedImagePath);
         }
+        //File file = FileUtils.getFile(context,uri);
         prepareFilePart(uri);
     }
     private void prepareFilePart(Uri fileUri) {
@@ -312,8 +308,9 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         if (fileUri != null && fileUri.getPath().length() > 0 && compressedImagePath != null && compressedImagePath.length() > 0) {
             File imageFile = new File(compressedImagePath);
             fileList.add(imageFile);
-            setFile();
         }
+            //File file =  FileUtils.getFile(context, fileUri);
+        setFile();
     }
     private void setListener(){
         save_inventory.setOnClickListener(new View.OnClickListener() {
@@ -561,6 +558,10 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                                         String message = jsonObject.optString("message");
                                         if (statusCode == 200) {
                                             Utils.showToast(context, message);
+                                            Intent intent = new Intent(context, MainActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                                            startActivity(intent);
+                                            getActivity().finish();
                                         }
                                     } catch (JSONException | IOException e) {
                                         e.printStackTrace();
@@ -884,7 +885,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         System.out.println("Media File Name for New Post : " + mediaFile);
         return mediaFile;
     }
-    private void onCaptureImageResult() {
+    private void onCaptureImageResult(Uri uri) {
         try {
             compressedImagePath = ImageUtils.compressImage(context, uri.getPath());
             Log.e(TAG, "onSelectFromGalleryResult: " + compressedImagePath);
@@ -892,6 +893,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         } catch (Exception e) {
             e.printStackTrace();
         }
+            //File file = FileUtils.getFile(context,uri);
         prepareFilePart(uri);
     }
     private boolean checkCameraAndWritablePermission() {
@@ -923,9 +925,9 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("From Camera")) {
+                if (items[item].equals("Camera")) {
                     startCameraIntent();
-                } else if (items[item].equals("From Gallery")) {
+                } else if (items[item].equals("Gallery")) {
                     startGalleryIntent();
                 } else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
@@ -936,16 +938,45 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
     }
 
     private void startCameraIntent() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        uri =getOutputMediaFileUri();
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        startActivityForResult(cameraIntent, REQUEST_CAMERA);
+        /*try {
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+          *//*  uri = getOutputMediaFileUri();
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);*//*
+            startActivityForResult(cameraIntent, REQUEST_CAMERA);
+        }catch (Exception e){
+
+        }*/
+
+           Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            uri = getOutputMediaFileUri();
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        } else {
+           image_file = ImageUtils.CreateNewFileForPicture();
+           uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", image_file);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        }
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_CAMERA);
+        }
     }
 
     private void startGalleryIntent() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+    }
+    private void onCaptureImageResult(Intent data) {
+        try {
+            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+            File file = ImageUtils.CreateNewFileForPicture();
+          uri = ImageUtils.getImageUri(context, thumbnail);
+            prepareFilePart(uri);
+            //addToList(tempUri, thumbnail);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }
 

@@ -118,7 +118,7 @@ public interface RetrofitAPIs {
     @GET("broker/getSubPlans")
     Call<ApiModel.SubscriptionModel> getSubscriptionPlanApi(@Header("accessToken") String accessToken, @Header("platform") String platform, @Header("deviceId") String deviceId, @Query("mobileNo") String mobileNo);
     @GET("broker/fetchSubPlan")
-    Call<ApiModel.SubscriptionModel> getCurrentPlanApi(@Header("accessToken") String accessToken, @Header("platform") String platform, @Header("deviceId") String deviceId, @Query("mobileNo") String mobileNo,@Query("subscriptionId") String subscriptionId);
+    Call<PaymentHashModel.CurrentPlanModel> getCurrentPlanApi(@Header("accessToken") String accessToken, @Header("platform") String platform, @Header("deviceId") String deviceId, @Query("mobileNo") String mobileNo, @Query("subscriptionId") String subscriptionId);
 
     @POST("broker/getMyReviews")
     Call<ApiModel.ReviewModel> getReviewApi(@Header("accessToken") String accessToken,@Header("platform") String platform,@Header("deviceId") String deviceId,@Body ApiModel.ReviewApiModel reviewApiModel);
@@ -157,4 +157,13 @@ public interface RetrofitAPIs {
 
     @POST("broker/bookSlot")
     Call<ApiModel.ResponseModel>bookslotApi(@Body SignUpModel.BookedSlotModel bookedSlotModel);
+
+    @POST("broker/scheduleMeeting")
+    Call<ApiModel.ResponseModel> meetingApi(@Header("accessToken") String accessToken, @Header("platform") String platform, @Header("deviceId") String deviceId, @Body ClientDetailsModel.MeetingModel meetingModel);
+
+    @POST("broker/unSubscribe")
+    Call<ApiModel.ResponseModel> unSubscribeApi(@Header("accessToken") String accessToken, @Header("platform") String platform, @Header("deviceId") String deviceId, @Body ApiModel.UnsubscribeModel unsubscribeModel);
+
+    @GET("broker/activeLeads")
+    Call<ApiModel.OpenDealModels> getActiveDeals(@Header("accessToken") String accessToken,@Header("platform") String platform,@Header("deviceId") String deviceId,@Query("mobileNo") String mobileNo,@Query("onlyConnected") boolean onlyConnected);
 }

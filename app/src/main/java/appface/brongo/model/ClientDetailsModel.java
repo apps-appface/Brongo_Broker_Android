@@ -552,6 +552,15 @@ public class ClientDetailsModel {
         String brokerMobileNo;
         String clientMobileNo;
         String propertyId;
+        String subPropertyType;
+
+        public String getSubPropertyType() {
+            return subPropertyType;
+        }
+
+        public void setSubPropertyType(String subPropertyType) {
+            this.subPropertyType = subPropertyType;
+        }
 
         public String getBrokerMobileNo() {
             return brokerMobileNo;
@@ -595,5 +604,71 @@ public class ClientDetailsModel {
 
         String postingType;
         String propertyType;
+    }
+    public static class MeetingModel{
+        public String note;
+        public String dateOfVisit;
+
+        public String getNote() {
+            return note;
+        }
+
+        public void setNote(String note) {
+            this.note = note;
+        }
+
+        public String getDateOfVisit() {
+            return dateOfVisit;
+        }
+
+        public void setDateOfVisit(String dateOfVisit) {
+            this.dateOfVisit = dateOfVisit;
+        }
+
+        public String getTimeOfVisit() {
+            return timeOfVisit;
+        }
+
+        public void setTimeOfVisit(String timeOfVisit) {
+            this.timeOfVisit = timeOfVisit;
+        }
+
+        public String getPropertyId() {
+            return propertyId;
+        }
+
+        public void setPropertyId(String propertyId) {
+            this.propertyId = propertyId;
+        }
+
+        public String getClientMobileNo() {
+            return clientMobileNo;
+        }
+
+        public void setClientMobileNo(String clientMobileNo) {
+            this.clientMobileNo = clientMobileNo;
+        }
+
+        public String getBrokerMobileNo() {
+            return brokerMobileNo;
+        }
+
+        public void setBrokerMobileNo(String brokerMobileNo) {
+            this.brokerMobileNo = brokerMobileNo;
+        }
+
+        public ArrayList<Double> getLatLong() {
+            return latLong;
+        }
+
+        public void setLatLong(ArrayList<Double> latLong) {
+            this.latLong = latLong;
+        }
+
+        public String timeOfVisit;
+        public String propertyId;
+        public String clientMobileNo;
+        public String brokerMobileNo;
+        public ArrayList<Double> latLong;
     }
 }

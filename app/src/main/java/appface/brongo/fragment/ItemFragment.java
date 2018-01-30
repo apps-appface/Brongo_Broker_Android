@@ -56,6 +56,7 @@ import java.util.Arrays;
 import appface.brongo.R;
 import appface.brongo.activity.Menu_Activity;
 import appface.brongo.activity.ReferActivity;
+import appface.brongo.activity.ReminderActivity;
 import appface.brongo.model.ApiModel;
 import appface.brongo.model.ClientDetailsModel;
 import appface.brongo.other.AllUtils;
@@ -81,21 +82,19 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
 
     private static final String POSITON = "position";
     private static final String SCALE = "scale";
-    private int status = 5;
+    private int status = 50;
     private static ArrayList<ApiModel.BuyAndRentModel> itemList = new ArrayList<>();
     private static ViewListener viewListener1;
-    private int screenWidth;
-    private int screenHeight;
-    private float rating1;
+    private int screenWidth,screenHeight;
     private RelativeLayout relativeLayout;
-    private ArrayList<String> arrayList;
-    private ArrayList<String> timeList;
+    private ArrayList<String> arrayList,timeList,remaininglist;
     private SharedPreferences pref;
     private LinearLayout mLinearLayout;
     private RatingBar ratingBar;
     private Bundle bundle;
+    private Button feedBackBtn;
+    private boolean isClientRated = false;
     private FlowLayout flowLayout;
-    private ProgressDialog pd;
     private Context context;
 
 
@@ -105,25 +104,31 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         b.putInt(POSITON, position);
         b.putFloat(SCALE, scale);
         b.putString("propertyId",arrayList.get(position).getPropertyId());
-        b.putInt("lead_matched",arrayList.get(position).getMatchedProperty());
+        //b.putInt("lead_matched",arrayList.get(position).getMatchedProperty());
         b.putString("lead_name",arrayList.get(position).getClientName());
         b.putFloat("lead_rating",arrayList.get(position).getRating());
         b.putString("lead_plan",arrayList.get(position).getPlanType());
         b.putDouble("lead_commission",arrayList.get(position).getCommission());
-        b.putString("lead_mobile",arrayList.get(position).getMobileNo());
-        b.putString("lead_address",arrayList.get(position).getMicroMarketName());
-        b.putString("lead_site",arrayList.get(position).getSiteVisit());
-        b.putString("lead_bhk",arrayList.get(position).getBedRoomType());
-        b.putString("lead_budget",arrayList.get(position).getBudget());
-        b.putString("lead_prop_status",arrayList.get(position).getPropertyStatus());
+        b.putString("lead_mobile",arrayList.get(position).getClientMobileNo());
         b.putString("lead_image",arrayList.get(position).getClientImage());
         b.putString("lead_prop_type",arrayList.get(position).getPropertyType());
         b.putString("lead_posting_type",arrayList.get(position).getPostingType());
+        b.putString("lead_address",arrayList.get(position).getMicroMarketName());
         b.putString("lead_sub_prop_type",arrayList.get(position).getSubPropertyType());
-        b.putStringArrayList("remainglist",arrayList.get(position).getDealStatus().getRemainingstatus());
-        b.putStringArrayList("completedlist",arrayList.get(position).getDealStatus().getCompletedstatus());
-        b.putStringArrayList("timelist",arrayList.get(position).getDealStatus().getStatusUpdatedTimes());
-        b.putStringArrayList("sitevisitlist",arrayList.get(position).getDealStatus().getRemainingstatus());
+        b.putStringArrayList("remainglist",arrayList.get(position).getRemainingStatus());
+        b.putStringArrayList("completedlist",arrayList.get(position).getCompletedStatus());
+        b.putStringArrayList("timelist",arrayList.get(position).getStatusUpdatedTimes());
+        b.putStringArrayList("property_list",arrayList.get(position).getProperty());
+        b.putString("meeting_date",arrayList.get(position).getDateOfVisit());
+        b.putString("meeting_time",arrayList.get(position).getTimeOfVisit());
+        b.putString("meeting_notes",arrayList.get(position).getNote());
+        b.putBoolean("isClientRated",arrayList.get(position).isClientRated());
+        if(arrayList.get(position).getLatLong().size()>1) {
+            b.putDouble("meeting_lat", arrayList.get(position).getLatLong().get(0));
+            b.putDouble("meeting_long", arrayList.get(position).getLatLong().get(1));
+        }
+
+        //b.putStringArrayList("sitevisitlist",arrayList.get(position).getRemainingstatus());
         viewListener1 = viewListener;
         itemFragment.setArguments(b);
         return itemFragment;
@@ -145,34 +150,36 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         }
         context = getActivity();
         bundle = this.getArguments();
-        pd = new ProgressDialog(context, R.style.CustomProgressDialog);
-        pd.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.progress_loader));
-        pd.setCancelable(true);
-        pd.setCanceledOnTouchOutside(false);
         arrayList = new ArrayList<>();
         timeList = getArguments().getStringArrayList("timelist");
         ArrayList<String> completedlist = getArguments().getStringArrayList("completedlist");
-        ArrayList<String> remaininglist = getArguments().getStringArrayList("remainglist");
-        arrayList.addAll(completedlist);
-        arrayList.addAll(remaininglist);
-        status = completedlist.size()-1;
+       remaininglist = getArguments().getStringArrayList("remainglist");
+        ArrayList<String> keylist = getArguments().getStringArrayList("property_list");
+        isClientRated = getArguments().getBoolean("isClientRated",false);
+        if(completedlist.size() != 0) {
+            arrayList.addAll(completedlist);
+        }if(remaininglist.size() != 0) {
+            arrayList.addAll(remaininglist);
+        }
+        if(completedlist.size()==0){
+            status = 0;
+        }else if(remaininglist.size() == 0){
+            status = completedlist.size()-1;
+        }else if(completedlist.size()>0 && remaininglist.size()>0){
+            status = completedlist.size();
+        }
         final int position = this.getArguments().getInt(POSITON);
         float scale = this.getArguments().getFloat(SCALE);
        final String propertyId = getArguments().getString("propertyId");
         final String lead_name = getArguments().getString("lead_name");
         String lead_plan = getArguments().getString("lead_plan");
-        String lead_address = getArguments().getString("lead_address");
-        String lead_bhk = getArguments().getString("lead_bhk");
         String lead_image = getArguments().getString("lead_image");
-        String lead_budget = getArguments().getString("lead_budget");
        // int lead_matched = getArguments().getInt("lead_matched");
         final String  lead_prop_type = getArguments().getString("lead_prop_type");
         final String lead_posting_type = getArguments().getString("lead_posting_type");
         int lead_matched =matchList(lead_posting_type,lead_prop_type);
-        String lead_site = getArguments().getString("lead_site");
-        String lead_prop_status = getArguments().getString("lead_prop_status");
+        //String lead_site = getArguments().getString("lead_site");
         final String lead_mobile = getArguments().getString("lead_mobile");
-        String lead_sub_prop_type = getArguments().getString("lead_sub_prop_type");
       float lead_rating = getArguments().getFloat("lead_rating");
         double lead_commission = getArguments().getDouble("lead_commission");
         //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((screenWidth), (screenHeight*2));
@@ -183,28 +190,18 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         ScrollView linearLayout = (ScrollView) inflater.inflate(R.layout.fragment_item1, container, false);
         relativeLayout = (RelativeLayout)linearLayout.findViewById(R.id.open_relative1);
         flowLayout = (FlowLayout)linearLayout.findViewById(R.id.main_deal_flowlayout);
+        feedBackBtn = (Button)linearLayout.findViewById(R.id.feedBack_btn);
         //relativeLayout.setLayoutParams(layoutParams);
         mLinearLayout = (LinearLayout)linearLayout.findViewById(R.id.lead_status_linear);
         addLayout(arrayList);
-        /*if(Utils.isNetworkAvailable(context)) {
-            getLead();
-        }else{
-            Utils.internetDialog(context);
-        }*/
-
         TextView matching_properties = (TextView) linearLayout.findViewById(R.id.text_matching_properties);
         TextView open_deal_name = (TextView) linearLayout.findViewById(R.id.opendeal_client_name);
         TextView open_deal_commission = (TextView) linearLayout.findViewById(R.id.open_deal_commission);
         TextView open_deal_clienttype = (TextView) linearLayout.findViewById(R.id.open_deal_client_type);
         TextView view_all = (TextView)linearLayout.findViewById(R.id.landing_viewall);
         foo(view_all,bundle);
-        //TextView open_deal_sitevisit = (TextView) linearLayout.findViewById(R.id.open_deal_visit);
-        //TextView open_deal_address = (TextView) linearLayout.findViewById(R.id.open_deal_address);
+        //feedBackBtn.setVisibility(View.GONE);
         TextView open_deal_id = (TextView) linearLayout.findViewById(R.id.deal_id);
-        //TextView open_deal_bhk = (TextView) linearLayout.findViewById(R.id.open_deal_bhk);
-        //TextView open_deal_budget = (TextView) linearLayout.findViewById(R.id.open_deal_budget);
-        //TextView open_deal_propstatus = (TextView) linearLayout.findViewById(R.id.open_deal_prop_status);
-        //TextView open_deal_proptype = (TextView) linearLayout.findViewById(R.id.open_deal_prop_type);
         LinearLayout open_deal_del_btn = (LinearLayout) linearLayout.findViewById(R.id.client_drop);
         Button open_deal_chat_btn = (Button) linearLayout.findViewById(R.id.client_chat);
         ImageView open_deal_client_image = (ImageView) linearLayout.findViewById(R.id.client_deal_pic);
@@ -212,20 +209,6 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         ratingBar = (RatingBar)linearLayout.findViewById(R.id.opendeal_ratingBar);
         Button clientCall = (Button)linearLayout.findViewById(R.id.client_call);
         final ProgressBar progressBar = (ProgressBar)linearLayout.findViewById(R.id.progress);
-       /* Glide.with(context).load(lead_image).placeholder(R.drawable.placeholder1)
-                .diskCacheStrategy(DiskCacheStrategy.ALL).transform(new CircleTransform(getActivity())).dontAnimate().listener(new RequestListener<String, GlideDrawable>() {
-            @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                progressBar.setVisibility(View.GONE);
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                progressBar.setVisibility(View.GONE);
-                return false;
-            }
-        }).into(open_deal_client_image);*/
         Glide.with(context)
                 .load(lead_image)
                 .apply(CustomApplicationClass.getRequestOption(true))
@@ -238,37 +221,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         open_deal_clienttype.setText(lead_posting_type.toUpperCase()+"/"+lead_prop_type.toUpperCase());
        String color_back = Utils.getPostingColor(lead_posting_type);
             open_deal_clienttype.setBackgroundColor(Color.parseColor(color_back));
-        //open_deal_sitevisit.setText(lead_site);
-        //open_deal_address.setText(lead_address);
-      /*  if(lead_bhk.equalsIgnoreCase("")){
-            open_deal_bhk.setVisibility(View.GONE);
-        }else {
-            open_deal_bhk.setText(lead_bhk);
-        }
-        if(lead_budget.equalsIgnoreCase("")){
-            open_deal_budget.setVisibility(View.GONE);
-        }else {
-            open_deal_budget.setText(lead_budget);
-        }
-        if(lead_prop_status.equalsIgnoreCase("")){
-            open_deal_propstatus.setVisibility(View.GONE);
-        }else {
-            open_deal_propstatus.setText(lead_prop_status);
-        }
-        if(lead_sub_prop_type.equalsIgnoreCase("")){
-            open_deal_proptype.setVisibility(View.GONE);
-        }else {
-            open_deal_proptype.setText(lead_sub_prop_type);
-        }*/
-        String budget = "";
-      if(lead_budget != null && !lead_budget.isEmpty()) {
-          budget = Utils.stringToInt(lead_budget);
-      }
-      addview(lead_address);
-        addview(budget);
-        addview(lead_bhk);
-        addview(lead_prop_status);
-        addview(lead_sub_prop_type);
+       addview(keylist);
 
         ratingBar.setRating(lead_rating);
        //setRating(rating);
@@ -278,12 +231,6 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                     callClient(lead_mobile,propertyId);
             }
         });
-        noti_star_linear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rating_dialog();
-            }
-        });
       open_deal_del_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -291,6 +238,12 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                 viewListener1.clickBtn(position,bundle);
             }
         });
+      feedBackBtn.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              viewListener1.feedBackClick(position,bundle);
+          }
+      });
         matching_properties.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -317,13 +270,21 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         return linearLayout;
     }
     private void addLayout(final ArrayList<String> arrayList) {
+        if(!isClientRated) {
+            if (remaininglist.size() < 3) {
+                feedBackBtn.setVisibility(View.VISIBLE);
+            } else {
+                feedBackBtn.setVisibility(View.GONE);
+            }
+        }
         for (int i = 0; i < arrayList.size(); i++) {
           try {
                 View layout2 = LayoutInflater.from(getActivity()).inflate(R.layout.linear_status, mLinearLayout, false);
                 TextView textView = (TextView) layout2.findViewById(R.id.status_text1);
                 LinearLayout status_text_linear = (LinearLayout) layout2.findViewById(R.id.status_text_linear);
                 TextView time_textview = (TextView) layout2.findViewById(R.id.status_time_text);
-                //TextView reminder_text = (TextView) layout2.findViewById(R.id.status_reminder);
+                TextView meeting_text = (TextView) layout2.findViewById(R.id.status_reminder);
+              ImageView meeting_image= (ImageView) layout2.findViewById(R.id.status_reminder_imageview);
                 View view1 = (View) layout2.findViewById(R.id.status_view1);
                 View view2 = (View) layout2.findViewById(R.id.status_view2);
                 View view3 = (View) layout2.findViewById(R.id.status_view3);
@@ -364,53 +325,72 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                     tick_view.setVisibility(View.VISIBLE);
                     circle_view.setVisibility(View.VISIBLE);
                 }
-           /*if(position1 == 1){
-                reminder_text.setVisibility(View.VISIBLE);
-               reminder_image.setVisibility(View.VISIBLE);
+           if(position1 == 1 && status ==1){
+               meeting_text.setVisibility(View.VISIBLE);
+               meeting_image.setVisibility(View.VISIBLE);
             }else{
-                reminder_text.setVisibility(View.GONE);
-               reminder_image.setVisibility(View.GONE);
-            }*/
+               meeting_text.setVisibility(View.GONE);
+               meeting_image.setVisibility(View.GONE);
+            }
                 status_text_linear.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (position1 <= status) {
                         } else if (position1 == status + 1) {
-                            statusChangedDialog(position1, arrayList.get(status), arrayList.get(status + 1));
+                            if(position1 == arrayList.size()-1){
+                                if (!isClientRated) {
+                                    //Utils.showAlert("","Please give feedback first !",context);
+                                    viewListener1.alert("Please give feedback first !");
+                                } else {
+                                    feedBackBtn.setVisibility(View.GONE);
+                                    statusChangedDialog(position1, arrayList.get(status), arrayList.get(status + 1));
+                                }
+                            }else{
+                                statusChangedDialog(position1, arrayList.get(status), arrayList.get(status + 1));
+                            }
                         } else {
                             Utils.showToast(context, "First select status '" + arrayList.get(status + 1) + "'");
                         }
                     }
                 });
-               /* reminder_text.setOnClickListener(new View.OnClickListener() {
+              meeting_text.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), ReminderActivity.class);
+                        intent.putExtra("prop_id",bundle.getString("propertyId"));
+                        intent.putExtra("client_mobile",bundle.getString("lead_mobile"));
+                        intent.putExtra("meeting_date",bundle.getString("meeting_date"));
+                        intent.putExtra("meeting_time",bundle.getString("meeting_time"));
+                        intent.putExtra("meeting_notes",bundle.getString("meeting_notes"));
+                        intent.putExtra("meeting_lat",bundle.getDouble("meeting_lat"));
+                        intent.putExtra("meeting_long",bundle.getDouble("meeting_long"));
                         startActivity(intent);
                     }
-                });*/
+                });
                 mLinearLayout.addView(layout2);
             } catch (Exception e) {
                 String error = e.toString();
             }
         }
     }
-    private void addview(String text) {
-        if(text != null) {
-            if (!text.isEmpty()) {
+    private void addview(ArrayList<String> keyList) {
+        if(keyList != null && keyList.size()> 0 ) {
+            for (int j = 0; j < keyList.size(); j++) {
                 try {
-                    View layout2 = LayoutInflater.from(getActivity()).inflate(R.layout.deal_child, flowLayout, false);
-                    TextView deal_textview = (TextView) layout2.findViewById(R.id.deal_text);
-                    deal_textview.setBackgroundResource(R.drawable.rounded_blue_btn);
-                    deal_textview.setTextColor(context.getResources().getColor(R.color.white));
-                    deal_textview.setText(text);
-                    flowLayout.addView(layout2);
+                    if(!keyList.get(j).isEmpty()) {
+                        View layout2 = LayoutInflater.from(getActivity()).inflate(R.layout.deal_child, flowLayout, false);
+                        TextView deal_textview = (TextView) layout2.findViewById(R.id.deal_text);
+                        deal_textview.setBackgroundResource(R.drawable.rounded_blue_btn);
+                        deal_textview.setTextColor(context.getResources().getColor(R.color.white));
+                        deal_textview.setText(keyList.get(j));
+                        flowLayout.addView(layout2);
+                    }
                 } catch (Exception e) {
                     String error = e.toString();
                 }
             }
         }
-    }
+        }
     /**
      * Get device screen width and height
      */
@@ -492,6 +472,8 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
 
     public interface ViewListener{
         void clickBtn(int position,Bundle bundle);
+        void feedBackClick(int position,Bundle bundle);
+        void alert(String message);
     }
 
     private void updateLeadStatus(final int position1){
@@ -571,283 +553,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
             Utils.internetDialog(context,this);
         }
     }
-    private void rating_dialog(){
-        rating1 = bundle.getFloat("lead_rating");
-        final String posting = bundle.getString("lead_posting_type");
-        final ArrayList<String> arrayList = new ArrayList<>();
-        final ArrayList<String> buy_sell_list1 = new ArrayList<String>(Arrays.asList("Delayed Commission", "Didn't pay my commission", "Difficult to reach Client","Always late for meeting","Takes time to make decision"));
-        final ArrayList<String> buy_sell_list2 = new ArrayList<String>(Arrays.asList("Treated me profession","clear about Requirement","Always on time","Always reachable","paid commission on time"));
-        final ArrayList<String> buy_sell_list3 = new ArrayList<String>(Arrays.asList("6 Star service", "Open for suggestions","Great Attitude","Organised","Clear about Requirements"));
-        final ArrayList<String> rent_list1 = new ArrayList<String>(Arrays.asList("unorganised", "Not clear about the requirement", "Difficult to reach Client","Always late for meeting","Takes time to make decision"));
-        final ArrayList<String> rent_list2 = new ArrayList<String>(Arrays.asList("Treated me profession","clear about Requirement","Always on time","Always reachable","organised"));
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
-/*        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);*/
-        dialog.setContentView(R.layout.dialog_client_rating);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        ImageView rating_client_image = (ImageView) dialog.findViewById(R.id.client_image_rating);
-        RatingBar dialog_ratingbar = (RatingBar)dialog.findViewById(R.id.rating_dialog_ratingBar);
-        TextView ratimg_client_name = (TextView)dialog.findViewById(R.id.client_name_rating);
-        TextView ratimg_client_address = (TextView)dialog.findViewById(R.id.client_address_rating);
-      //  TextView rating_client_plan = (TextView)dialog.findViewById(R.id.client_rating_plan);
-        Button dialog_submit = (Button)dialog.findViewById(R.id.client_rating_btn);
-        final CheckBox rating_check1 = (CheckBox)dialog.findViewById(R.id.rating_check1);
-        final CheckBox rating_check2 = (CheckBox)dialog.findViewById(R.id.rating_check2);
-        final CheckBox rating_check3 = (CheckBox)dialog.findViewById(R.id.rating_check3);
-        final CheckBox rating_check4 = (CheckBox)dialog.findViewById(R.id.rating_check4);
-        final CheckBox rating_check5 = (CheckBox)dialog.findViewById(R.id.rating_check5);
-        if(rating1 < 1.0f){
-            dialog_ratingbar.setRating(1.0f);
-        }else{
-            dialog_ratingbar.setRating(rating1);
-        }
-        dialog_ratingbar.setRating(rating1);
-        ratimg_client_name.setText(bundle.getString("lead_name"));
-        //rating_client_plan.setText(bundle.getString("lead_plan"));
-        ratimg_client_address.setText(bundle.getString("lead_address"));
-       /* Glide.with(context).load(bundle.getString("lead_image")).placeholder(R.drawable.placeholder1)
-                .diskCacheStrategy(DiskCacheStrategy.ALL).transform(new CircleTransform(getActivity())).dontAnimate().into(rating_client_image);*/
-        Glide.with(context)
-                .load(bundle.getString("lead_image"))
-                .apply(CustomApplicationClass.getRequestOption(true))
-                .into(rating_client_image);
-        if(posting.equalsIgnoreCase("Sell") || posting.equalsIgnoreCase("Buy")){
-            if(rating1<3.0f){
-                rating_check1.setText(buy_sell_list1.get(0));
-                rating_check2.setText(buy_sell_list1.get(1));
-                rating_check3.setText(buy_sell_list1.get(2));
-                rating_check4.setText(buy_sell_list1.get(3));
-                rating_check5.setText(buy_sell_list1.get(4));
-            }else if(rating1 >= 3.0f && rating1 <5.0f){
-                rating_check1.setText(buy_sell_list2.get(0));
-                rating_check2.setText(buy_sell_list2.get(1));
-                rating_check3.setText(buy_sell_list2.get(2));
-                rating_check4.setText(buy_sell_list2.get(3));
-                rating_check5.setText(buy_sell_list2.get(4));
-            } else if(rating1 == 5.0f){
-                rating_check1.setText(buy_sell_list3.get(0));
-                rating_check2.setText(buy_sell_list3.get(1));
-                rating_check3.setText(buy_sell_list3.get(2));
-                rating_check4.setText(buy_sell_list3.get(3));
-                rating_check5.setText(buy_sell_list3.get(4));
-            }
-        }else if(posting.equalsIgnoreCase("rent") || posting.equalsIgnoreCase("rent_out")){
-            if(rating1<3.0f){
-                rating_check1.setText(rent_list1.get(0));
-                rating_check2.setText(rent_list1.get(1));
-                rating_check3.setText(rent_list1.get(2));
-                rating_check4.setText(rent_list1.get(3));
-                rating_check5.setText(rent_list1.get(4));
-            }else if(rating1 >= 3.0f && rating1 <5.0f){
-                rating_check1.setText(rent_list2.get(0));
-                rating_check2.setText(rent_list2.get(1));
-                rating_check3.setText(rent_list2.get(2));
-                rating_check4.setText(rent_list2.get(3));
-                rating_check5.setText(rent_list2.get(4));
-            } else if(rating1 == 5.0f){
-                rating_check1.setText(buy_sell_list3.get(0));
-                rating_check2.setText(buy_sell_list3.get(1));
-                rating_check3.setText(buy_sell_list3.get(2));
-                rating_check4.setText(buy_sell_list3.get(3));
-                rating_check5.setText(buy_sell_list3.get(4));
-            }
-        }
-        dialog_ratingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                if(rating<1.0f){
-                    ratingBar.setRating(1.0f);
-            }
-                arrayList.clear();
-                rating1 = rating;
-                if(posting.equalsIgnoreCase("Sell") || posting.equalsIgnoreCase("Buy")){
-                    if(rating1<3.0){
-                        rating_check1.setText(buy_sell_list1.get(0));
-                        rating_check2.setText(buy_sell_list1.get(1));
-                        rating_check3.setText(buy_sell_list1.get(2));
-                        rating_check4.setText(buy_sell_list1.get(3));
-                        rating_check5.setText(buy_sell_list1.get(4));
-                    }else if(rating1 >= 3.0 && rating1 <5.0){
-                        rating_check1.setText(buy_sell_list2.get(0));
-                        rating_check2.setText(buy_sell_list2.get(1));
-                        rating_check3.setText(buy_sell_list2.get(2));
-                        rating_check4.setText(buy_sell_list2.get(3));
-                        rating_check5.setText(buy_sell_list2.get(4));
-                    } else if(rating1 == 5.0){
-                        rating_check1.setText(buy_sell_list3.get(0));
-                        rating_check2.setText(buy_sell_list3.get(1));
-                        rating_check3.setText(buy_sell_list3.get(2));
-                        rating_check4.setText(buy_sell_list3.get(3));
-                        rating_check5.setText(buy_sell_list3.get(4));
-                    }
-                }else if(posting.equalsIgnoreCase("rent") || posting.equalsIgnoreCase("rent_out")){
-                    if(rating1 == 1.0 || rating1 == 2.0){
-                        rating_check1.setText(rent_list1.get(0));
-                        rating_check2.setText(rent_list1.get(1));
-                        rating_check3.setText(rent_list1.get(2));
-                        rating_check4.setText(rent_list1.get(3));
-                        rating_check5.setText(rent_list1.get(4));
-                    }else if(rating1 == 3.0 || rating1 == 4.0){
-                        rating_check1.setText(rent_list2.get(0));
-                        rating_check2.setText(rent_list2.get(1));
-                        rating_check3.setText(rent_list2.get(2));
-                        rating_check4.setText(rent_list2.get(3));
-                        rating_check5.setText(rent_list2.get(4));
-                    } else if(rating1 == 5.0){
-                        rating_check1.setText(buy_sell_list3.get(0));
-                        rating_check2.setText(buy_sell_list3.get(1));
-                        rating_check3.setText(buy_sell_list3.get(2));
-                        rating_check4.setText(buy_sell_list3.get(3));
-                        rating_check5.setText(buy_sell_list3.get(4));
-                    }
-                }
-            }
-        });
-        dialog_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(arrayList.size()>0) {
-                        updateRating(rating1, arrayList, dialog);
-                }else{
-                    Utils.showToast(context,"Select atleast 1 comment");
-                }
 
-            }
-        });
-
-        rating_check4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    arrayList.add(rating_check4.getText().toString());
-                }else{
-                    if(arrayList.contains(rating_check4.getText().toString())){
-                        arrayList.remove(rating_check4.getText().toString());
-                    }
-                }
-            }
-        });
-        rating_check1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    arrayList.add(rating_check1.getText().toString());
-                }else{
-                    if(arrayList.contains(rating_check1.getText().toString())){
-                        arrayList.remove(rating_check1.getText().toString());
-                    }
-                }
-            }
-        });
-        rating_check2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    arrayList.add(rating_check2.getText().toString());
-                }else{
-                    if(arrayList.contains(rating_check2.getText().toString())){
-                        arrayList.remove(rating_check2.getText().toString());
-                    }
-                }
-            }
-        });
-        rating_check3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    arrayList.add(rating_check3.getText().toString());
-                }else{
-                    if(arrayList.contains(rating_check3.getText().toString())){
-                        arrayList.remove(rating_check3.getText().toString());
-                    }
-                }
-            }
-        });
-        rating_check5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    arrayList.add(rating_check5.getText().toString());
-                }else{
-                    if(arrayList.contains(rating_check5.getText().toString())){
-                        arrayList.remove(rating_check5.getText().toString());
-                    }
-                }
-            }
-        });
-
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        dialog.show();
-    }
-    private void updateRating(final float rating, final ArrayList<String> arrayList, final Dialog dialog){
-        if (Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
-            ApiModel.RatingModel ratingModel = new ApiModel.RatingModel();
-            ratingModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
-            ratingModel.setClientMobileNo(bundle.getString("lead_mobile"));
-            ratingModel.setRating(rating);
-            ratingModel.setReview(arrayList);
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            Call<ResponseBody> call = retrofitAPIs.updateRatingApi(tokenaccess, "android", deviceId, ratingModel);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        String responseString = null;
-                        if (response.isSuccessful()) {
-                            try {
-                                responseString = response.body().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                int statusCode = jsonObject.optInt("statusCode");
-                                String message = jsonObject.optString("message");
-                                if (statusCode == 200 && message.equalsIgnoreCase("Thanks For Your Valuable Feedback")) {
-                                    ratingBar.setRating(rating);
-                                    dialog.dismiss();
-                                    Utils.showToast(context, message);
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        } else {
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                int statusCode = jsonObject.optInt("statusCode");
-                                String message = jsonObject.optString("message");
-                                pd.dismiss();
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    updateRating(rating, arrayList, dialog);
-                                } else {
-                                    Utils.showToast(context, message);
-                                }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
-                }
-            });
-        }else{
-            Utils.internetDialog(context,this);
-            }
-    }
 
     private void statusChangedDialog(final int position1, String status1, String status2){
         SpannableStringBuilder span_status1 = Utils.convertToSpannableString(status1,0,status1.length(),"black");
@@ -913,6 +619,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                 intent.putExtra("postingType",bundle.getString("lead_posting_type"));
                 intent.putExtra("propertyType",bundle.getString("lead_prop_type"));
                 intent.putExtra("clientMobile",bundle.getString("lead_mobile"));
+                intent.putExtra("sub_propertyType",bundle.getString("lead_sub_prop_type"));
                 intent.putExtra("frgToLoad",("requirement_page"));
                 startActivity(intent);
             }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,11 +24,11 @@ import appface.brongo.util.Utils;
 public class HistoricalAdapter extends RecyclerView.Adapter<HistoricalAdapter.MyViewHolder> {
 
 
-    List<ApiModel.HistoricalModel> arraylist = Collections.emptyList();
+    List<ApiModel.BuyAndRentModel> arraylist = Collections.emptyList();
     Context context;
 
 
-    public HistoricalAdapter(List<ApiModel.HistoricalModel> arraylist, Context context) {
+    public HistoricalAdapter(List<ApiModel.BuyAndRentModel> arraylist, Context context) {
         this.arraylist = arraylist;
         this.context = context;
     }
@@ -68,6 +69,7 @@ public class HistoricalAdapter extends RecyclerView.Adapter<HistoricalAdapter.My
        //holder.his_address.setText(arraylist.get(position).getMicroMarketName());
         holder.his_commission.setText(arraylist.get(position).getCommission() + "%");
         holder.his_deal_id.setText(arraylist.get(position).getPropertyId());
+        addview(arraylist.get(position).getProperty(),holder.his_flowlayout);
        /* if(arraylist.get(position).getBedRoomType().equalsIgnoreCase("")){
             holder.his_bhk.setVisibility(View.GONE);
         }else {
@@ -83,18 +85,18 @@ public class HistoricalAdapter extends RecyclerView.Adapter<HistoricalAdapter.My
         }else {
             holder.his_sub_proptype.setText(arraylist.get(position).getSubPropertyType());
         }*/
-       addView(arraylist.get(position).getMicroMarketName(),holder.his_flowlayout);
-        addView(arraylist.get(position).getBedRoomType(),holder.his_flowlayout);
-        String budget = arraylist.get(position).getBudget()+"";
-        budget = Utils.stringToInt(budget);
-        addView(budget,holder.his_flowlayout);
+     //  addView(arraylist.get(position).getMicroMarketName(),holder.his_flowlayout);
+       // addView(arraylist.get(position).getBedRoomType(),holder.his_flowlayout);
+      //  String budget = arraylist.get(position).getBudget()+"";
+      //  budget = Utils.stringToInt(budget);
+        //addView(budget,holder.his_flowlayout);
         holder.his_post_type.setText(arraylist.get(position).getPostingType().toUpperCase()+"/"+arraylist.get(position).getPropertyType().toUpperCase());
         String back_color = Utils.getPostingColor(arraylist.get(position).getPostingType());
         holder.his_post_type.setBackgroundColor(Color.parseColor(back_color));
-        addView(arraylist.get(position).getPropertyStatus(),holder.his_flowlayout);
-        addView(arraylist.get(position).getSubPropertyType(),holder.his_flowlayout);
+       // addView(arraylist.get(position).getPropertyStatus(),holder.his_flowlayout);
+        //addView(arraylist.get(position).getSubPropertyType(),holder.his_flowlayout);
     }
-    private void addView(String text, FlowLayout flowLayout) {
+   /* private void addView(String text, FlowLayout flowLayout) {
         if(text != null) {
             if (!text.isEmpty()) {
                 try {
@@ -103,6 +105,24 @@ public class HistoricalAdapter extends RecyclerView.Adapter<HistoricalAdapter.My
                     deal_textview.setBackgroundResource(R.drawable.rounded_purple);
                     deal_textview.setText(text);
                     flowLayout.addView(layout2);
+                } catch (Exception e) {
+                    String error = e.toString();
+                }
+            }
+        }
+    }*/
+    private void addview(ArrayList<String> keyList, FlowLayout flowLayout) {
+        if(keyList != null && keyList.size()> 0 ) {
+            for (int j = 0; j < keyList.size(); j++) {
+                try {
+                    if(!keyList.get(j).isEmpty()) {
+                        View layout2 = LayoutInflater.from(context).inflate(R.layout.deal_child, flowLayout, false);
+                        TextView deal_textview = (TextView) layout2.findViewById(R.id.deal_text);
+                        deal_textview.setBackgroundResource(R.drawable.rounded_blue_btn);
+                        deal_textview.setTextColor(context.getResources().getColor(R.color.white));
+                        deal_textview.setText(keyList.get(j));
+                        flowLayout.addView(layout2);
+                    }
                 } catch (Exception e) {
                     String error = e.toString();
                 }

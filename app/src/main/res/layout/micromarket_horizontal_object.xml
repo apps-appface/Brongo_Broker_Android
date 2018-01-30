@@ -11,14 +11,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/hori_micromarket_name"
-        android:text="Marathahalli"
         android:shadowColor="#73000000"
-        android:padding="3sp"
+     android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:background="@drawable/rounded_empty_btn"
         android:shadowDx="6.123233995736766e-17"
         android:shadowDy="1"
         android:shadowRadius="3"
-        android:textSize="16sp"
+        android:textSize="13sp"
         android:textColor="@color/edit_text_color"
         app:customFont="lato_regular.ttf"/>
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 android:orientation="vertical"
 android:layout_width="match_parent"
-android:layout_height="wrap_content"
+android:layout_height="match_parent"
 android:background="@color/white"
 >
     <LinearLayout
@@ -26,7 +26,8 @@ android:background="@color/white"
     <ListView
         android:id="@+id/market_list_view"
         android:layout_width="match_parent"
-        android:layout_height="275dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:paddingBottom="10dp"/>
     <Button
         android:layout_width="wrap_content"
@@ -36,8 +37,9 @@ android:background="@color/white"
         android:id="@+id/market_dialog_cancel"
         android:background="@drawable/dialog_button"
         android:text="Cancel"
+        android:textColor="@color/white"
         android:textAllCaps="false"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="60dp"/>
+        android:layout_marginBottom="40dp"/>
 </LinearLayout>
-</ScrollView>
+</LinearLayout>

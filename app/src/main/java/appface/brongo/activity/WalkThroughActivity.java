@@ -168,6 +168,12 @@ public class WalkThroughActivity extends AppCompatActivity implements ViewPager.
                 case "splash":
                     finishAffinity();
                     break;
+                case "terms":
+                    Intent intent = new Intent(WalkThroughActivity.this,LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
+                    finish();
+                    break;
                 case "menu":
                    /* Intent intent = new Intent(WalkThroughActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

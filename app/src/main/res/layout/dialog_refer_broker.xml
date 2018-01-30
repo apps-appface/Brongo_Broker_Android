@@ -24,13 +24,14 @@
         android:layout_height="wrap_content"
         android:textColorHint="@color/edit_hint_color"
         android:layout_marginTop="20dp"
+        android:imeOptions="actionNext"
         app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
         <EditText
             android:id="@+id/referee_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="REFEREE NAME"
-            android:maxLength="32"
+            android:inputType="textCapWords"
             app:backgroundTint="@color/edit_hint_color"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
@@ -38,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColorHint="@color/edit_hint_color"
+        android:imeOptions="actionDone"
         app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
         <EditText
             android:id="@+id/referee_mobile"

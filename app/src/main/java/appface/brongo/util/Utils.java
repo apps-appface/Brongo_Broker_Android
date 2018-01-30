@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -178,7 +179,20 @@ public class Utils {
                 (ViewGroup)activity.findViewById(R.id.toast_layout_root));
         TextView text = (TextView) layout.findViewById(R.id.toast_text);
         text.setText(message);*/
-      Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+     // Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    }
+    public static void showAlert(String title,String message,Context context){
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setTitle(title)
+                .setMessage(message)
+                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .setCancelable(false)
+                .create()
+                .show();
     }
 
     public static String numToWord(int number){
@@ -557,6 +571,13 @@ public class Utils {
             stringurl = baseurl.concat(stringurl);
         }
         return url;
+    }
+    public static void setSnackBar(View coordinatorLayout, String snackTitle) {
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, snackTitle, Snackbar.LENGTH_SHORT);
+        snackbar.show();
+        View view = snackbar.getView();
+        TextView txtv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        txtv.setGravity(Gravity.CENTER_HORIZONTAL);
     }
 
 

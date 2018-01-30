@@ -44,6 +44,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import appface.brongo.R;
 import appface.brongo.model.ApiModel;
@@ -87,7 +89,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
     private CountDownTimer countDownTimer;
     private String clientMobileNo,reject_reason="";
     private RelativeLayout progress_container;
-    private String prop_address,prop_bhk,prop_status,prop_type,budget,prop_client_name,prop_client_type,client_image,prop_id,posting_type,sub_property_type,commission1,plantype;
+    private String prop_address,prop_bhk,prop_status,prop_type,budget,prop_client_name,prop_client_type,client_image,prop_id,posting_type,sub_property_type,commission1,plantype,impFields;
     private float rating1;
     private MediaPlayer mediaPlayer;
     private SharedPreferences pref;
@@ -96,6 +98,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
     private SlideView slideView;
     private BroadcastReceiver broadcastReceiver;
     IntentFilter intentFilter1;
+    private ArrayList<String> keyList;
     private Vibrator v;
     Intent serviceIntent;
     private Context context;
@@ -118,6 +121,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
             client_image = data.getString("image");
             posting_type = data.getString("postingType");
             budget = data.getString("budget");
+            impFields = data.getString("impFields","");
             //plantype = data.getString("planType");
             plantype = "PREMIUM";
             sub_property_type = data.getString("subPropertyType");
@@ -126,7 +130,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
             matchedProperties = matchCount(posting_type,prop_type);
             matchedProperties = 0;
         }else{
-            prop_address=prop_bhk=prop_status=prop_type=budget=prop_client_name=prop_client_type=client_image=prop_id=posting_type=sub_property_type=commission1=plantype="";
+            prop_address=prop_bhk=prop_status=prop_type=budget=prop_client_name=prop_client_type=client_image=prop_id=posting_type=sub_property_type=commission1=plantype=impFields="";
         }
         setContentView(R.layout.popup_new_notification);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -190,6 +194,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         //mediaPlayer = MediaPlayer.create(context,R.raw.ios7_radiate);
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         editor = pref.edit();
+        keyList = new ArrayList<>();
         noti_address = (TextView)findViewById(R.id.noti_address);
         noti_bhk = (TextView)findViewById(R.id.noti_bhk);
         push_flowlayout = (FlowLayout)findViewById(R.id.push_flowlayout);
@@ -213,18 +218,17 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         if(pref.getString(AppConstants.NOTI_TYPE,"").equalsIgnoreCase("call")) {
             editor.remove(AppConstants.NOTI_TYPE).commit();
             callNotificationApi();
+            getImportantKeys();
             slideView.setVisibility(View.VISIBLE);
             noti_reject.setVisibility(View.VISIBLE);
             startService(serviceIntent);
             showTimer();
             setValue();
-        }else{
-
         }
     }
     private void addview(String text) {
         if(text != null) {
-            if (!text.isEmpty()) {
+            if (!text.isEmpty() && !text.equalsIgnoreCase("null")) {
                 try {
                     LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View layout2 = inflater.inflate(R.layout.deal_child, null);
@@ -390,12 +394,12 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
     }
     private void setValue(){
         if(data != null) {
-            budget = Utils.stringToInt(budget);
+           /* budget = Utils.stringToInt(budget);
             addview(prop_address);
             addview(prop_status);
             addview(prop_bhk);
             addview(budget);
-            addview(sub_property_type);
+            addview(sub_property_type);*/
             plan_textview.setText(plantype);
             if (plantype.equalsIgnoreCase("")) {
                 plan_textview.setVisibility(View.GONE);
@@ -814,4 +818,33 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         startActivity(intent);
         finish();
     }
+    private void getImportantKeys(){
+        if(impFields != null && !impFields.isEmpty()){
+           impFields = impFields.substring(1,impFields.length()-1);
+           if(impFields.length()>0) {
+              keyList =  new ArrayList<>(Arrays.asList(impFields.split(",")));
+              addviewTolayout(keyList);
+           }
+        }
+    }
+    private void addviewTolayout(ArrayList<String> arrayList){
+        if(arrayList.size() != 0) {
+            for (int i = 0; i < arrayList.size(); i++) {
+                    try {
+                        if (!arrayList.get(i).isEmpty() && !arrayList.get(i).equalsIgnoreCase("null")) {
+                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View layout2 = inflater.inflate(R.layout.deal_child, null);
+                        TextView deal_textview = (TextView) layout2.findViewById(R.id.deal_text);
+                        deal_textview.setText(arrayList.get(i));
+                        deal_textview.setBackgroundResource(R.drawable.rounded_empty_btn);
+                        deal_textview.setTextColor(getResources().getColor(R.color.appColor));
+                        push_flowlayout.addView(layout2);
+                        }
+                    } catch (Exception e) {
+                        String error = e.toString();
+                }
+            }
+        }
+    }
+
 }

@@ -609,7 +609,6 @@ public class ApiModel {
 
     public static class HomeProfileModel {
         int statusCode;
-
         public int getStatusCode() {
             return statusCode;
         }
@@ -655,7 +654,15 @@ public class ApiModel {
         String planType;
         String referralId;
         String imageBaseurl;
+        public String premiumPlan;
 
+        public String getPremiumPlan() {
+            return premiumPlan;
+        }
+
+        public void setPremiumPlan(String premiumPlan) {
+            this.premiumPlan = premiumPlan;
+        }
         public String getReferralId() {
             return referralId;
         }
@@ -803,8 +810,8 @@ public class ApiModel {
     public static class OpenDealObject {
         ArrayList<BuyAndRentModel> sellAndRentOut;
         ArrayList<BuyAndRentModel> buyAndRent;
-        ArrayList<HistoricalModel> openDeals;
-        ArrayList<HistoricalModel> closedDeals;
+        ArrayList<BuyAndRentModel> openDeals;
+        ArrayList<BuyAndRentModel> closedDeals;
 
 
         public double getpCommission() {
@@ -819,19 +826,19 @@ public class ApiModel {
             return sellAndRentOut;
         }
 
-        public ArrayList<HistoricalModel> getOpenDeals() {
+        public ArrayList<BuyAndRentModel> getOpenDeals() {
             return openDeals;
         }
 
-        public void setOpenDeals(ArrayList<HistoricalModel> openDeals) {
+        public void setOpenDeals(ArrayList<BuyAndRentModel> openDeals) {
             this.openDeals = openDeals;
         }
 
-        public ArrayList<HistoricalModel> getClosedDeals() {
+        public ArrayList<BuyAndRentModel> getClosedDeals() {
             return closedDeals;
         }
 
-        public void setClosedDeals(ArrayList<HistoricalModel> closedDeals) {
+        public void setClosedDeals(ArrayList<BuyAndRentModel> closedDeals) {
             this.closedDeals = closedDeals;
         }
 
@@ -850,35 +857,143 @@ public class ApiModel {
 
         double pCommission;
     }
-
     public static class BuyAndRentModel {
         String clientName;
-        String mobileNo;
+        String clientMobileNo;
+        String meetingLocation;
+        String dateOfVisit;
+        String timeOfVisit;
+        String microMarketName;
+
+        public boolean isClientRated() {
+            return isClientRated;
+        }
+
+        public void setClientRated(boolean clientRated) {
+            isClientRated = clientRated;
+        }
+
+        boolean isClientRated;
+        public String getMicroMarketName() {
+            return microMarketName;
+        }
+
+        public void setMicroMarketName(String microMarketName) {
+            this.microMarketName = microMarketName;
+        }
+
+        public String getMeetingLocation() {
+            return meetingLocation;
+        }
+
+        public void setMeetingLocation(String meetingLocation) {
+            this.meetingLocation = meetingLocation;
+        }
+
+        public String getDateOfVisit() {
+            return dateOfVisit;
+        }
+
+        public void setDateOfVisit(String dateOfVisit) {
+            this.dateOfVisit = dateOfVisit;
+        }
+
+        public String getTimeOfVisit() {
+            return timeOfVisit;
+        }
+
+        public void setTimeOfVisit(String timeOfVisit) {
+            this.timeOfVisit = timeOfVisit;
+        }
+
+        public String getMeetAt() {
+            return meetAt;
+        }
+
+        public void setMeetAt(String meetAt) {
+            this.meetAt = meetAt;
+        }
+
+        public String getNote() {
+            return note;
+        }
+
+        public void setNote(String note) {
+            this.note = note;
+        }
+
+        public ArrayList<Double> getLatLong() {
+            return latLong;
+        }
+
+        public void setLatLong(ArrayList<Double> latLong) {
+            this.latLong = latLong;
+        }
+
+        String meetAt;
+        String note;
+        ArrayList<Double> latLong;
         float rating;
-        String budget;
-        ClientDetailsModel.ClientDetailsObject dealStatus;
+        String dealClosedTime;
+        ArrayList<String> completedStatus;
 
-        public ClientDetailsModel.ClientDetailsObject getDealStatus() {
-            return dealStatus;
+        public String getClientMobileNo() {
+            return clientMobileNo;
         }
 
-        public void setDealStatus(ClientDetailsModel.ClientDetailsObject dealStatus) {
-            this.dealStatus = dealStatus;
+        public void setClientMobileNo(String clientMobileNo) {
+            this.clientMobileNo = clientMobileNo;
         }
 
-        public String getBudget() {
-            return budget;
+        public String getDealClosedTime() {
+            return dealClosedTime;
         }
 
-        public void setBudget(String budget) {
-            this.budget = budget;
+        public void setDealClosedTime(String dealClosedTime) {
+            this.dealClosedTime = dealClosedTime;
         }
 
+        public ArrayList<ClientDetailsModel.SiteDetails> getSiteVisit() {
+            return siteVisit;
+        }
+
+        public void setSiteVisit(ArrayList<ClientDetailsModel.SiteDetails> siteVisit) {
+            this.siteVisit = siteVisit;
+        }
+
+        public ArrayList<String> getStatusUpdatedTimes() {
+            return statusUpdatedTimes;
+        }
+
+        public void setStatusUpdatedTimes(ArrayList<String> statusUpdatedTimes) {
+            this.statusUpdatedTimes = statusUpdatedTimes;
+        }
+
+        public ArrayList<String> getProperty() {
+            return property;
+        }
+
+        public void setProperty(ArrayList<String> property) {
+            this.property = property;
+        }
+
+        ArrayList<String> remainingStatus;
+        ArrayList<ClientDetailsModel.SiteDetails>  siteVisit;
+        ArrayList<String> statusUpdatedTimes;
+        ArrayList<String> property;
         String postingType;
         String propertyId;
         String clientImage;
+
+        public ArrayList<String> getCompletedStatus() {
+            return completedStatus;
+        }
+
+        public void setCompletedStatus(ArrayList<String> completedStatus) {
+            this.completedStatus = completedStatus;
+        }
+
         String planType;
-        String siteVisit;
 
         public String getSubPropertyType() {
             return subPropertyType;
@@ -889,10 +1004,6 @@ public class ApiModel {
         }
 
         String subPropertyType;
-        String microMarketName;
-        String buyLandType;
-        Double budgetRange1;
-        Double budgetRange2;
 
         public String getClientName() {
             return clientName;
@@ -900,14 +1011,6 @@ public class ApiModel {
 
         public void setClientName(String clientName) {
             this.clientName = clientName;
-        }
-
-        public String getMobileNo() {
-            return mobileNo;
-        }
-
-        public void setMobileNo(String mobileNo) {
-            this.mobileNo = mobileNo;
         }
 
         public float getRating() {
@@ -950,52 +1053,13 @@ public class ApiModel {
             this.planType = planType;
         }
 
-        public String getSiteVisit() {
-            return siteVisit;
+
+        public ArrayList<String> getRemainingStatus() {
+            return remainingStatus;
         }
 
-        public void setSiteVisit(String siteVisit) {
-            this.siteVisit = siteVisit;
-        }
-
-        public String getMicroMarketName() {
-            return microMarketName;
-        }
-
-        public void setMicroMarketName(String microMarketName) {
-            this.microMarketName = microMarketName;
-        }
-
-        public String getBuyLandType() {
-            return buyLandType;
-        }
-
-        public void setBuyLandType(String buyLandType) {
-            this.buyLandType = buyLandType;
-        }
-
-        public Double getBudgetRange1() {
-            return budgetRange1;
-        }
-
-        public void setBudgetRange1(Double budgetRange1) {
-            this.budgetRange1 = budgetRange1;
-        }
-
-        public Double getBudgetRange2() {
-            return budgetRange2;
-        }
-
-        public void setBudgetRange2(Double budgetRange2) {
-            this.budgetRange2 = budgetRange2;
-        }
-
-        public String getOrientation() {
-            return orientation;
-        }
-
-        public void setOrientation(String orientation) {
-            this.orientation = orientation;
+        public void setRemainingStatus(ArrayList<String> remainingStatus) {
+            this.remainingStatus = remainingStatus;
         }
 
         public String getPropertyType() {
@@ -1006,29 +1070,6 @@ public class ApiModel {
             this.propertyType = propertyType;
         }
 
-        public String getComments() {
-            return comments;
-        }
-
-        public void setComments(String comments) {
-            this.comments = comments;
-        }
-
-        public String getPropertyStatus() {
-            return propertyStatus;
-        }
-
-        public void setPropertyStatus(String propertyStatus) {
-            this.propertyStatus = propertyStatus;
-        }
-
-        public String getBedRoomType() {
-            return bedRoomType;
-        }
-
-        public void setBedRoomType(String bedRoomType) {
-            this.bedRoomType = bedRoomType;
-        }
 
         public int getMatchedProperty() {
             return matchedProperty;
@@ -1046,11 +1087,7 @@ public class ApiModel {
             this.commission = commission;
         }
 
-        String orientation;
         String propertyType;
-        String comments;
-        String propertyStatus;
-        String bedRoomType;
         int matchedProperty;
         Double commission;
     }
@@ -2013,7 +2050,7 @@ public class ApiModel {
     public static class SubscriptionObject{
         public String _id;
         public String name;
-        public String amountToSub;
+        public float amountToSub;
         public int duration;
 
         public int getDuration() {
@@ -2024,15 +2061,15 @@ public class ApiModel {
             this.duration = duration;
         }
 
-        public int getOffers() {
+        public float getOffers() {
             return offers;
         }
 
-        public void setOffers(int offers) {
+        public void setOffers(float offers) {
             this.offers = offers;
         }
 
-        public int offers;
+        public float offers;
         public String get_id() {
             return _id;
         }
@@ -2049,13 +2086,6 @@ public class ApiModel {
             this.name = name;
         }
 
-        public String getAmountToSub() {
-            return amountToSub;
-        }
-
-        public void setAmountToSub(String amountToSub) {
-            this.amountToSub = amountToSub;
-        }
 
         public ArrayList<String> getServices() {
             return services;
@@ -2075,6 +2105,9 @@ public class ApiModel {
 
         public ArrayList<String> services;
         public ArrayList<String> conditions;
+        public String actual;
+        public float netForMonth;
+        public float youPay;
     }
 
     public static class SubscriptionModel{
@@ -2489,6 +2522,36 @@ public class ApiModel {
 
             String name;
         String builderId;
+        }
+        public static class UnsubscribeModel{
+        String mobileNo;
+            String msg;
+
+            public String getMobileNo() {
+                return mobileNo;
+            }
+
+            public void setMobileNo(String mobileNo) {
+                this.mobileNo = mobileNo;
+            }
+
+            public String getMsg() {
+                return msg;
+            }
+
+            public void setMsg(String msg) {
+                this.msg = msg;
+            }
+
+            public String getPlanType() {
+                return planType;
+            }
+
+            public void setPlanType(String planType) {
+                this.planType = planType;
+            }
+
+            String planType;
         }
     }
 

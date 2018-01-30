@@ -98,7 +98,7 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="reject"
+            android:text="Reject"
             android:layout_weight="1"
             android:paddingRight="30dp"
             android:paddingLeft="30dp"
@@ -110,7 +110,7 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="proceed"
+            android:text="Proceed"
             android:layout_weight="1"
             android:paddingRight="30dp"
             android:paddingLeft="30dp"

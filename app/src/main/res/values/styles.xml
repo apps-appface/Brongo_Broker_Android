@@ -95,4 +95,5 @@
         <item name="android:textColor">@color/edit_hint_color</item>
     </style>
     <style parent="@android:style/Widget" name="Widget.GifView"/>
+
 </resources>

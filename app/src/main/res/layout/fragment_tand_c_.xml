@@ -1,32 +1,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="appface.brongo.fragment.AboutUsFragment"
-    android:background="#ededed">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/edit_border"
-        android:layout_margin="20dp"
-        android:padding="20dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <appface.brongo.uiwidget.CustomTextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="left"
-            android:id="@+id/terms_condition_text"
-            android:shadowColor="#c0ffffff"
-            android:textSize="56sp"
-            android:textColor="#6e6e6e"
-            app:customFont="lato_regular.ttf"/>
-    </RelativeLayout>
-    </ScrollView>
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/pdfView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/pdf_scrollBar"/>
+
+    <com.github.barteksc.pdfviewer.ScrollBar
+        android:id="@+id/pdf_scrollBar"
+        android:layout_width="5dp"
+        android:layout_height="match_parent"
+        app:sb_handlerColor="@color/appColor"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>
 

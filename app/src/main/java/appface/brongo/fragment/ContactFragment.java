@@ -25,7 +25,7 @@ import appface.brongo.util.Utils;
  * A simple {@link Fragment} subclass.
  */
 public class ContactFragment extends Fragment {
-    private ImageView edit_icon,delete_icon,add_icon;
+    private ImageView edit_icon,delete_icon,add_icon,call_btn,email_btn;
     private TextView menu_title,email_text,phone_text;
     private RelativeLayout call_relative,email_relative;
     private Toolbar toolbar;
@@ -45,36 +45,25 @@ public class ContactFragment extends Fragment {
         call_relative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mobile = phone_text.getText().toString().replaceAll("\\s","");
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:"+mobile));
-                try {
-                    if (ActivityCompat.checkSelfPermission(context,
-                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        return;
-                    }
-                    startActivity(callIntent);
-                }catch (Exception e){
-
-                }
+               call();
             }
         });
         email_relative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String recipient = email_text.getText().toString();
-                String[] TO = {recipient};
-                Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                //emailIntent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
-                emailIntent.setData(Uri.parse("mailto:"));
-                emailIntent.setType("text/plain");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-                try {
-                    startActivity(emailIntent);
-                    //startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-                } catch (android.content.ActivityNotFoundException ex) {
-                    Utils.showToast(context,"There is no email client installed.");
-                }
+               email();
+            }
+        });
+        call_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                call();
+            }
+        });
+        email_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                email();
             }
         });
 
@@ -95,8 +84,38 @@ public class ContactFragment extends Fragment {
         toolbar.setVisibility(View.VISIBLE);
         email_text = (TextView)view.findViewById(R.id.email_text);
         phone_text = (TextView)view.findViewById(R.id.phone_text);
+        call_btn = (ImageView)view.findViewById(R.id.contact_us_call_btn);
+        email_btn = (ImageView)view.findViewById(R.id.contact_us_email_btn);
         menu_title.setText("Contact Us");
     }
+    private void call(){
+        String mobile = phone_text.getText().toString().replaceAll("\\s","");
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:"+mobile));
+        try {
+            if (ActivityCompat.checkSelfPermission(context,
+                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            startActivity(callIntent);
+        }catch (Exception e){
 
+        }
+    }
+    private void email(){
+        String recipient = email_text.getText().toString();
+        String[] TO = {recipient};
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        //emailIntent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        try {
+            startActivity(emailIntent);
+            //startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Utils.showToast(context,"There is no email client installed.");
+        }
+    }
 
 }

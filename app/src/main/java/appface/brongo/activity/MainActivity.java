@@ -53,6 +53,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -66,6 +67,7 @@ import appface.brongo.model.TokenModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.services.RegistrationIntentService;
+import appface.brongo.uiwidget.WrapContentViewPager;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.CustomApplicationClass;
 import appface.brongo.util.DatabaseHandler;
@@ -81,19 +83,19 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,ItemFragment.ViewListener,NoInternetTryConnectListener{
     int pageMargin,currentPage = 0;
-    private float  RATIO_SCALE = 0.3f;
+    private float  RATIO_SCALE = 0.3f, rating1 = 0.0f;;
     Timer timer;
     private int taskcompleted =0;
     final long DELAY_MS = 500,PERIOD_MS = 3000;//delay in milliseconds before task is to be executed
     private Button open_deal_buy_btn,referral_btn,open_deal_sell_btn;
     private boolean doubleBackToExitPressedOnce = false;
-    private LinearLayout no_deal_linear,deal_linear,linearLayout2,switch_linear;
+    private LinearLayout no_deal_linear,deal_linear,linearLayout2,switch_linear,drawer_layout;
     private RelativeLayout pager_linear,cutoff_relative;
     private ArrayList<ApiModel.BuyAndRentModel> buyAndRentList,sellAndRentList;
     public final static int LOOPS = 1;
     public CarouselPagerAdapter adapter1;
     private MainAdapter adapter2;
-    public static ViewPager pager,pager1;
+    public static WrapContentViewPager pager,pager1;
     private Bundle data;
     private String drop_reason = "";
     private SharedPreferences pref;
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView tool_navbar_image,noti_message,noti_icon;
     FragmentManager fragmentManager;
     Context context = this;
-    private boolean isLoader = false;
+    private boolean isLoader = false,isActiveCalled = false;
     private TextView switch_text,chat_count,home_commission,home_name,home_plan,home_pot_commission,homerating,noti_count;
     private SwitchButton switchButton;
     private FloatingActionButton floatingActionButton;
@@ -136,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initialise() {
+        drawer_layout = (LinearLayout)findViewById(R.id.drawer_layout);
         fragmentManager = getSupportFragmentManager();
         home_name = (TextView) findViewById(R.id.main_user_name);
         home_plan = (TextView) findViewById(R.id.main_plan);
@@ -172,8 +175,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         chat_count = (TextView)toolbar.findViewById(R.id.message_count);
         // attach to current activity;
         setUpMenu();
-        pager = (ViewPager)findViewById(R.id.myviewpager);
-        pager1 = (ViewPager)findViewById(R.id.myviewpager1);
+        pager = (WrapContentViewPager)findViewById(R.id.myviewpager);
+        pager1 = (WrapContentViewPager)findViewById(R.id.myviewpager1);
         pager.setPageMargin(-pageMargin);
         adapter1 = new CarouselPagerAdapter(this, getSupportFragmentManager(),buyAndRentList,this,pager);
         pager.setAdapter(adapter1);
@@ -338,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 editor.putString(AppConstants.REFERRAL_ID, homeProfileModel.getData().get(0).getReferralId());
                                 editor.putString(AppConstants.IMAGE_BASE_URL, homeProfileModel.getData().get(0).getImageBaseurl());
                                 editor.putInt(AppConstants.REVIEW_COUNT,homeProfileModel.getData().get(0).getNoOfClientsRated());
-                                //editor.putInt(AppConstants.POTENTIAL_COMMISSION, homeProfileModel.getData().get(0).getPotemtialCommission());
+                                editor.putString(AppConstants.PREMIUM_ID, homeProfileModel.getData().get(0).getPremiumPlan());
                                 editor.putInt(AppConstants.NOTIFICATION_BADGES, homeProfileModel.getData().get(0).getNotificationsBadge());
                                 editor.putString(AppConstants.USER_STATUS, homeProfileModel.getData().get(0).getIsActive());
                                 editor.putString(AppConstants.MICROMARKET_NAME, homeProfileModel.getData().get(0).getMicroMarketName());
@@ -415,10 +418,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 if (statusCode == 200 && message.equalsIgnoreCase("Status Updated Successfully")) {
                                     if (newStatus.equalsIgnoreCase("ACTIVE")) {
                                         switchButton.setThumbColorRes(R.color.appColor);
-                                        switch_linear.setAlpha(1.0f);
+                                        switch_linear.setBackgroundColor(getResources().getColor(R.color.appColor));
                                     } else {
                                         switchButton.setThumbColorRes(R.color.round_empty_gray);
-                                        switch_linear.setAlpha(0.3f);
+                                        switch_linear.setBackgroundColor(getResources().getColor(R.color.refer_gray));
                                     }
                                     editor.putString(AppConstants.USER_STATUS, newStatus);
                                     editor.commit();
@@ -440,6 +443,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     new AllUtils().getTokenRefresh(context);
                                     callActiveApi(status);
                                 } else {
+                                    setSwitchView();
                                     Utils.showToast(context, message);
                                 }
                             } catch (IOException | JSONException e) {
@@ -492,7 +496,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     Utils.showToast(context, message);
                                     String mobile = pref.getString(AppConstants.MOBILE_NUMBER, "");
                                     Boolean login_remember = pref.getBoolean(AppConstants.LOGIN_REMEMBER, false);
+                                    Boolean tc_read = pref.getBoolean(AppConstants.IS_TERMS_ACCEPTED, false);
                                     editor.clear();
+                                    editor.putBoolean(AppConstants.IS_TERMS_ACCEPTED,tc_read);
                                     editor.commit();
                                     if (login_remember) {
                                         editor.putBoolean(AppConstants.LOGIN_REMEMBER, login_remember);
@@ -542,23 +548,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
     private void setView() {
-        String isActive = pref.getString(AppConstants.USER_STATUS,"");
-        if(isActive.equalsIgnoreCase("Active") || isActive.equalsIgnoreCase("")){
-            switchButton.setChecked(true);
-            switch_text.setText("ACTIVE");
-            switch_linear.setAlpha(1.0f);
-        }else{
-            switchButton.setChecked(false);
-            switch_text.setText("INACTIVE");
-            switch_linear.setAlpha(0.3f);
-        }
+       setSwitchView();
         int totalUnreadCount = new MessageDatabaseService(context).getTotalUnreadCount();
         if(totalUnreadCount>0) {
             chat_count.setVisibility(View.VISIBLE);
             chat_count.setText(totalUnreadCount + "");
         }
         displayNotification();
-        resideMenu.setMenuProfile(pref.getString(AppConstants.FIRST_NAME,"") + " "+pref.getString(AppConstants.LAST_NAME,""),pref.getString(AppConstants.PLAN_TYPE,""),pref.getString(AppConstants.MOBILE_NUMBER,"")+","+pref.getString(AppConstants.MICROMARKET_NAME,""),pref.getString(AppConstants.USER_PIC,""),pref.getFloat(AppConstants.RATING,0.0f));
+        resideMenu.setMenuProfile(pref.getString(AppConstants.FIRST_NAME,"") + " "+pref.getString(AppConstants.LAST_NAME,""),pref.getString(AppConstants.PLAN_TYPE,""),pref.getString(AppConstants.MOBILE_NUMBER,"")+", \n"+pref.getString(AppConstants.MICROMARKET_NAME,""),pref.getString(AppConstants.USER_PIC,""),pref.getFloat(AppConstants.RATING,0.0f));
         this.home_name.setText("Welcome " + this.pref.getString(AppConstants.FIRST_NAME, "") + " !");
         this.home_plan.setText(this.pref.getString(AppConstants.PLAN_TYPE, ""));
         String commission = AllUtils.changeNumberFormat(pref.getFloat(AppConstants.COMMISSION, 0.0f));
@@ -587,13 +584,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
              view.setScaleY(0.7f);
      }
     }
+    private void setSwitchView(){
+        String isActive = pref.getString(AppConstants.USER_STATUS,"");
+        if(isActive.equalsIgnoreCase("Active") || isActive.equalsIgnoreCase("")){
+            switchButton.setChecked(true);
+            switch_text.setText("ACTIVE");
+            switch_linear.setBackgroundColor(getResources().getColor(R.color.appColor));
+        }else{
+            switchButton.setChecked(false);
+            switch_text.setText("INACTIVE");
+            switch_linear.setBackgroundColor(getResources().getColor(R.color.refer_gray));
+        }
+    }
     public void populateArrayList1() {
         if (Utils.isNetworkAvailable(context)) {
             RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
             String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
             String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
             String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
-            Call<ApiModel.OpenDealModels> call = retrofitAPIs.getOpenClosedApi(tokenaccess, "android", deviceId, mobileNo);
+            Call<ApiModel.OpenDealModels> call = retrofitAPIs.getActiveDeals(tokenaccess, "android", deviceId, mobileNo,true);
             call.enqueue(new Callback<ApiModel.OpenDealModels>() {
                 @Override
                 public void onResponse(Call<ApiModel.OpenDealModels> call, Response<ApiModel.OpenDealModels> response) {
@@ -690,6 +699,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
        dropDialog(position,bundle1);
 
     }
+
+    @Override
+    public void feedBackClick(int position, Bundle bundle) {
+        rating_dialog(bundle,position,true);
+    }
+
+    @Override
+    public void alert(String message) {
+        Utils.setSnackBar(drawer_layout,message);
+    }
+
     private void setButtonText(){
         open_deal_buy_btn.setText("Buy/Rent("+buyAndRentList.size()+" of 3)");
         open_deal_sell_btn.setText("Sell/Rent Out("+sellAndRentList.size()+" of 3)");
@@ -700,7 +720,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-    private void dropLead(final int position, final String drop_reason) {
+    private void dropLead(final int position, final String drop_reason, final Bundle bundle) {
         if(Utils.isNetworkAvailable(context)) {
             if(!isLoader) {
                 Utils.LoaderUtils.showLoader(context);
@@ -708,11 +728,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             ApiModel.ClientAcceptModel clientAcceptModel = new ApiModel.ClientAcceptModel();
             if (btn_click == 1) {
-                clientAcceptModel.setClientMobileNo(buyAndRentList.get(position).getMobileNo());
+                clientAcceptModel.setClientMobileNo(buyAndRentList.get(position).getClientMobileNo());
                 clientAcceptModel.setPostingType(buyAndRentList.get(position).getPostingType());
                 clientAcceptModel.setPropertyId(buyAndRentList.get(position).getPropertyId());
             } else if (btn_click == 2) {
-                clientAcceptModel.setClientMobileNo(sellAndRentList.get(position).getMobileNo());
+                clientAcceptModel.setClientMobileNo(sellAndRentList.get(position).getClientMobileNo());
                 clientAcceptModel.setPostingType(sellAndRentList.get(position).getPostingType().toUpperCase());
                 clientAcceptModel.setPropertyId(sellAndRentList.get(position).getPropertyId());
             }
@@ -738,29 +758,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 200 && message.equalsIgnoreCase("Lead Dropped Successfully")) {
                                     Utils.showToast(context, message);
-                                    if (btn_click == 1) {
-                                        buyAndRentList.remove(position);
-                                        // adapter1.deletePage(position);
-                                        adapter1.notifyDataSetChanged();
-
-                                        //setViewPager(buyAndRentList);
-                                    } else if (btn_click == 2) {
-                                        //adapter2.deletePage(position);
-                                        sellAndRentList.remove(position);
-                                        adapter2.notifyDataSetChanged();
-                                        //setViewPager1(sellAndRentList);
+                                    if(!bundle.getBoolean("isClientRated",false)) {
+                                        rating_dialog(bundle,position,false);
+                                    }else{
+                                        if (btn_click == 1) {
+                                            buyAndRentList.remove(position);
+                                            adapter1.notifyDataSetChanged();
+                                        } else if (btn_click == 2) {
+                                            sellAndRentList.remove(position);
+                                            adapter2.notifyDataSetChanged();
+                                        }
+                                        if (buyAndRentList.size() == 0 && sellAndRentList.size() == 0) {
+                                            no_deal_linear.setVisibility(View.VISIBLE);
+                                            deal_linear.setVisibility(View.GONE);
+                                        } else {
+                                            no_deal_linear.setVisibility(View.GONE);
+                                            deal_linear.setVisibility(View.VISIBLE);
+                                        }
                                     }
-                               /* Intent intent = getIntent();
-                                startActivity(intent);
-                                finish();*/
-                                    if (buyAndRentList.size() == 0 && sellAndRentList.size() == 0) {
-                                        no_deal_linear.setVisibility(View.VISIBLE);
-                                        deal_linear.setVisibility(View.GONE);
-                                    } else {
-                                        no_deal_linear.setVisibility(View.GONE);
-                                        deal_linear.setVisibility(View.VISIBLE);
-                                    }
-                               setButtonText();
+                                    setButtonText();
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -773,7 +789,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
-                                    dropLead(position, drop_reason);
+                                    dropLead(position, drop_reason,bundle);
                                 } else {
                                     Utils.showToast(context, message);
                                 }
@@ -818,7 +834,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }, DELAY_MS, PERIOD_MS);
     }
 
-    private void dropDialog(final int position,Bundle bundle1){
+    private void dropDialog(final int position, final Bundle bundle1){
         final Dialog dialog = new Dialog(MainActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
@@ -877,7 +893,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(drop_reason == null || drop_reason.equalsIgnoreCase("")){
                     Utils.showToast(context,"select the reason first");
                 }else {
-                        dropLead(position, drop_reason);
+                        dropLead(position, drop_reason,bundle1);
                     dialog.dismiss();
                 }
 
@@ -1292,10 +1308,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onTryReconnect() {
         switch (taskcompleted){
             case 100:
-                if(!isLoader) {
-                    Utils.LoaderUtils.showLoader(context);
-                    isLoader = true;
-                }
                 callHomeProfileApi();
                 break;
             case 200:
@@ -1343,5 +1355,307 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         dialog.show();
+    }
+    private void rating_dialog(final Bundle bundle, final int position, final boolean isCancellable){
+        final String posting = bundle.getString("lead_posting_type");
+        final ArrayList<String> arrayList = new ArrayList<>();
+        final ArrayList<String> buy_sell_list1 = new ArrayList<String>(Arrays.asList("Delayed Commission", "Didn't pay my commission", "Difficult to reach Client","Always late for meeting","Takes time to make decision"));
+        final ArrayList<String> buy_sell_list2 = new ArrayList<String>(Arrays.asList("Treated me profession","clear about Requirement","Always on time","Always reachable","paid commission on time"));
+        final ArrayList<String> buy_sell_list3 = new ArrayList<String>(Arrays.asList("6 Star service", "Open for suggestions","Great Attitude","Organised","Clear about Requirements"));
+        final ArrayList<String> rent_list1 = new ArrayList<String>(Arrays.asList("unorganised", "Not clear about the requirement", "Difficult to reach Client","Always late for meeting","Takes time to make decision"));
+        final ArrayList<String> rent_list2 = new ArrayList<String>(Arrays.asList("Treated me profession","clear about Requirement","Always on time","Always reachable","organised"));
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
+/*        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);*/
+        dialog.setContentView(R.layout.dialog_client_rating);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        if(!isCancellable){
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+        }
+        ImageView rating_client_image = (ImageView) dialog.findViewById(R.id.client_image_rating);
+        RatingBar dialog_ratingbar = (RatingBar)dialog.findViewById(R.id.rating_dialog_ratingBar);
+        TextView ratimg_client_name = (TextView)dialog.findViewById(R.id.client_name_rating);
+        TextView ratimg_client_address = (TextView)dialog.findViewById(R.id.client_address_rating);
+        //  TextView rating_client_plan = (TextView)dialog.findViewById(R.id.client_rating_plan);
+        Button dialog_submit = (Button)dialog.findViewById(R.id.client_rating_btn);
+        final LinearLayout rating_linear = (LinearLayout)dialog.findViewById(R.id.rating_check_linear);
+        final CheckBox rating_check1 = (CheckBox)dialog.findViewById(R.id.rating_check1);
+        final CheckBox rating_check2 = (CheckBox)dialog.findViewById(R.id.rating_check2);
+        final CheckBox rating_check3 = (CheckBox)dialog.findViewById(R.id.rating_check3);
+        final CheckBox rating_check4 = (CheckBox)dialog.findViewById(R.id.rating_check4);
+        final CheckBox rating_check5 = (CheckBox)dialog.findViewById(R.id.rating_check5);
+        ratimg_client_name.setText(bundle.getString("lead_name"));
+        //rating_client_plan.setText(bundle.getString("lead_plan"));
+        ratimg_client_address.setText(bundle.getString("lead_address"));
+       /* Glide.with(context).load(bundle.getString("lead_image")).placeholder(R.drawable.placeholder1)
+                .diskCacheStrategy(DiskCacheStrategy.ALL).transform(new CircleTransform(getActivity())).dontAnimate().into(rating_client_image);*/
+        Glide.with(context)
+                .load(bundle.getString("lead_image"))
+                .apply(CustomApplicationClass.getRequestOption(true))
+                .into(rating_client_image);
+        dialog_ratingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                rating_linear.setVisibility(View.VISIBLE);
+                rating_check1.setChecked(false);
+                rating_check2.setChecked(false);
+                rating_check3.setChecked(false);
+                rating_check4.setChecked(false);
+                rating_check5.setChecked(false);
+                if(rating<1.0f){
+                    ratingBar.setRating(1.0f);
+                }
+                arrayList.clear();
+                rating1 = rating;
+                if(posting.equalsIgnoreCase("Sell") || posting.equalsIgnoreCase("Buy")){
+                    if(rating1<3.0){
+                        rating_check1.setText(buy_sell_list1.get(0));
+                        rating_check2.setText(buy_sell_list1.get(1));
+                        rating_check3.setText(buy_sell_list1.get(2));
+                        rating_check4.setText(buy_sell_list1.get(3));
+                        rating_check5.setText(buy_sell_list1.get(4));
+                    }else if(rating1 >= 3.0 && rating1 <5.0){
+                        rating_check1.setText(buy_sell_list2.get(0));
+                        rating_check2.setText(buy_sell_list2.get(1));
+                        rating_check3.setText(buy_sell_list2.get(2));
+                        rating_check4.setText(buy_sell_list2.get(3));
+                        rating_check5.setText(buy_sell_list2.get(4));
+                    } else if(rating1 == 5.0){
+                        rating_check1.setText(buy_sell_list3.get(0));
+                        rating_check2.setText(buy_sell_list3.get(1));
+                        rating_check3.setText(buy_sell_list3.get(2));
+                        rating_check4.setText(buy_sell_list3.get(3));
+                        rating_check5.setText(buy_sell_list3.get(4));
+                    }
+                }else if(posting.equalsIgnoreCase("rent") || posting.equalsIgnoreCase("rent_out")){
+                    if(rating1 == 1.0 || rating1 == 2.0){
+                        rating_check1.setText(rent_list1.get(0));
+                        rating_check2.setText(rent_list1.get(1));
+                        rating_check3.setText(rent_list1.get(2));
+                        rating_check4.setText(rent_list1.get(3));
+                        rating_check5.setText(rent_list1.get(4));
+                    }else if(rating1 == 3.0 || rating1 == 4.0){
+                        rating_check1.setText(rent_list2.get(0));
+                        rating_check2.setText(rent_list2.get(1));
+                        rating_check3.setText(rent_list2.get(2));
+                        rating_check4.setText(rent_list2.get(3));
+                        rating_check5.setText(rent_list2.get(4));
+                    } else if(rating1 == 5.0){
+                        rating_check1.setText(buy_sell_list3.get(0));
+                        rating_check2.setText(buy_sell_list3.get(1));
+                        rating_check3.setText(buy_sell_list3.get(2));
+                        rating_check4.setText(buy_sell_list3.get(3));
+                        rating_check5.setText(buy_sell_list3.get(4));
+                    }
+                }
+            }
+        });
+        dialog_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(arrayList.size()>0) {
+                    updateRating(rating1, arrayList, isCancellable,bundle,position);
+                    dialog.dismiss();
+                }else{
+                    Utils.showToast(context,"Select atleast 1 comment");
+                }
+
+            }
+        });
+
+        rating_check4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    arrayList.add(rating_check4.getText().toString());
+                }else{
+                    if(arrayList.contains(rating_check4.getText().toString())){
+                        arrayList.remove(rating_check4.getText().toString());
+                    }
+                }
+            }
+        });
+        rating_check1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    arrayList.add(rating_check1.getText().toString());
+                }else{
+                    if(arrayList.contains(rating_check1.getText().toString())){
+                        arrayList.remove(rating_check1.getText().toString());
+                    }
+                }
+            }
+        });
+        rating_check2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    arrayList.add(rating_check2.getText().toString());
+                }else{
+                    if(arrayList.contains(rating_check2.getText().toString())){
+                        arrayList.remove(rating_check2.getText().toString());
+                    }
+                }
+            }
+        });
+        rating_check3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    arrayList.add(rating_check3.getText().toString());
+                }else{
+                    if(arrayList.contains(rating_check3.getText().toString())){
+                        arrayList.remove(rating_check3.getText().toString());
+                    }
+                }
+            }
+        });
+        rating_check5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    arrayList.add(rating_check5.getText().toString());
+                }else{
+                    if(arrayList.contains(rating_check5.getText().toString())){
+                        arrayList.remove(rating_check5.getText().toString());
+                    }
+                }
+            }
+        });
+
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        dialog.show();
+    }
+    private void updateRating(final float rating, final ArrayList<String> arrayList, final boolean isCancellable, final Bundle bundle, final int position){
+        if (Utils.isNetworkAvailable(context)) {
+            if(!isLoader) {
+                Utils.LoaderUtils.showLoader(context);
+                isLoader = true;
+            }
+            ApiModel.RatingModel ratingModel = new ApiModel.RatingModel();
+            ratingModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
+            ratingModel.setClientMobileNo(bundle.getString("lead_mobile"));
+            ratingModel.setRating(rating);
+            ratingModel.setReview(arrayList);
+            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+            Call<ResponseBody> call = retrofitAPIs.updateRatingApi(tokenaccess, "android", deviceId, ratingModel);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
+                    if (response != null) {
+                        String responseString = null;
+                        if (response.isSuccessful()) {
+                            try {
+                                responseString = response.body().string();
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                int statusCode = jsonObject.optInt("statusCode");
+                                String message = jsonObject.optString("message");
+                                if (statusCode == 200 && message.equalsIgnoreCase("Thanks For Your Valuable Feedback")) {
+                                    if (btn_click == 1) {
+                                        if(!isCancellable) {
+                                            buyAndRentList.remove(position);
+                                        }else{
+                                            buyAndRentList.get(position).setClientRated(true);
+                                        }
+                                        adapter1.notifyDataSetChanged();
+                                    } else if (btn_click == 2) {
+                                        if(!isCancellable) {
+                                            buyAndRentList.remove(position);
+                                        }else{
+                                            buyAndRentList.get(position).setClientRated(true);
+                                        }
+                                        adapter2.notifyDataSetChanged();
+                                    }
+                                    if (buyAndRentList.size() == 0 && sellAndRentList.size() == 0) {
+                                        no_deal_linear.setVisibility(View.VISIBLE);
+                                        deal_linear.setVisibility(View.GONE);
+                                    } else {
+                                        no_deal_linear.setVisibility(View.GONE);
+                                        deal_linear.setVisibility(View.VISIBLE);
+                                    }
+                                    //ratingBar.setRating(rating);
+                                    Utils.showToast(context, message);
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            try {
+                                responseString = response.errorBody().string();
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                int statusCode = jsonObject.optInt("statusCode");
+                                String message = jsonObject.optString("message");
+                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                    new AllUtils().getTokenRefresh(context);
+                                    updateRating(rating, arrayList, isCancellable, bundle,position);
+                                } else {
+                                    if (btn_click == 1) {
+                                        if(!isCancellable) {
+                                            buyAndRentList.remove(position);
+                                        }
+                                        adapter1.notifyDataSetChanged();
+                                    } else if (btn_click == 2) {
+                                        if(!isCancellable) {
+                                            buyAndRentList.remove(position);
+                                        }
+                                        adapter2.notifyDataSetChanged();
+                                    }
+                                    if (buyAndRentList.size() == 0 && sellAndRentList.size() == 0) {
+                                        no_deal_linear.setVisibility(View.VISIBLE);
+                                        deal_linear.setVisibility(View.GONE);
+                                    } else {
+                                        no_deal_linear.setVisibility(View.GONE);
+                                        deal_linear.setVisibility(View.VISIBLE);
+                                    }
+                                    Utils.showToast(context, message);
+                                }
+                            } catch (IOException | JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
+                    if (btn_click == 1) {
+                        if(!isCancellable) {
+                            buyAndRentList.remove(position);
+                        }
+                        adapter1.notifyDataSetChanged();
+                    } else if (btn_click == 2) {
+                        if(!isCancellable) {
+                            buyAndRentList.remove(position);
+                        }
+                        adapter2.notifyDataSetChanged();
+                    }
+                    if (buyAndRentList.size() == 0 && sellAndRentList.size() == 0) {
+                        no_deal_linear.setVisibility(View.VISIBLE);
+                        deal_linear.setVisibility(View.GONE);
+                    } else {
+                        no_deal_linear.setVisibility(View.GONE);
+                        deal_linear.setVisibility(View.VISIBLE);
+                    }
+                    Utils.showToast(context, "Some Problem Occured");
+                }
+            });
+        }else{
+            Utils.internetDialog(context,this);
+        }
     }
 }

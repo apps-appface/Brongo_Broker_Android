@@ -4,6 +4,8 @@ package appface.brongo.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.format.DateFormat;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
 import android.text.style.ClickableSpan;
@@ -21,23 +24,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.util.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import appface.brongo.R;
 import appface.brongo.activity.MainActivity;
 import appface.brongo.activity.Menu_Activity;
 import appface.brongo.adapter.CustomAdapter;
 import appface.brongo.model.ApiModel;
+import appface.brongo.model.PaymentHashModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
@@ -60,12 +71,14 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
     private SharedPreferences pref;
     private TextView toolbar_title;
     private Toolbar toolbar;
+    private int Task_completed = 1000;
     private int trial_position=100,basic_position=100,premium_position=100;
-    private String trial_tc,basic_tc,premium_tc,plan_tc;
+    private String trial_tc,basic_tc,premium_tc,plan_tc,cur_plan_id="";
     private ArrayList<ApiModel.SubscriptionObject> arrayList;
     private ArrayList<String> trial_condition_list,basic_condition_list,premium_condition_list;
     private CustomAdapter trial_adapter,basic_adapter,premium_adapter;
     private RecyclerView trial_recycle,basic_recycle,premium_recycle;
+    private RelativeLayout premium_linear_rate;
     private TextView sub_username,subscription_plan,subscription_tc,subscription_expiry,subscription_plan2,subscription_tc2,sub_cur_expiry2,subscription_basic,subscription_basic_plan
             ,subscription_basic_tc,sub_upgrade_premium,subscription_premium_plan,sub_premium_price,sub_premium_expiry,subscription_premium_tc,sub_see_more;
     private ImageView sub_user_image,edit_icon,delete_icon,add_icon;;
@@ -109,6 +122,7 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
         toolbar_title.setText("Subscription");
         trial_recycle = (RecyclerView) view.findViewById(R.id.subs_trial_listview);
         basic_recycle = (RecyclerView) view.findViewById(R.id.subs_basic_listview);
+        premium_recycle = (RecyclerView) view.findViewById(R.id.subs_premium_listview);
         sub_user_image = (ImageView)view.findViewById(R.id.subscription_image);
         sub_username = (TextView)view.findViewById(R.id.subscription_username);
         subscription_plan = (TextView)view.findViewById(R.id.subscription_plan);
@@ -142,6 +156,12 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
         basic_recycle.setLayoutManager(verticalmanager1);
         basic_adapter = new CustomAdapter(basic_condition_list,context);
         basic_recycle.setAdapter(basic_adapter);
+        premium_linear_rate = (RelativeLayout) view.findViewById(R.id.premium_linear_rate);
+        LinearLayoutManager verticalmanager2 = new LinearLayoutManager(context, 0, false);
+        verticalmanager2.setOrientation(LinearLayoutManager.VERTICAL);
+        premium_recycle.setLayoutManager(verticalmanager2);
+        premium_adapter = new CustomAdapter(premium_condition_list,context);
+        premium_recycle.setAdapter(premium_adapter);
         foo();
         setLayoutVisibility();
         fetchSubscriptionPlans();
@@ -205,6 +225,7 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
                 }
             });
         }else{
+            Task_completed = 100;
             Utils.internetDialog(context,this);
         }
     }
@@ -223,9 +244,6 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
         subscription_basic_tc.setText(basic_tc);
         subscription_premium_tc.setText(premium_tc);
         subscription_tc.setText(plan_tc);
-        String  text1 = "FREE";
-        SpannableStringBuilder str = Utils.convertToSpannableString(text1,0,text1.length(),"green");
-        subscription_tc.append(str);
 
     }
     private String getTc(ArrayList<String> list){
@@ -241,30 +259,36 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
         return text;
     }
     private void getPlanPosition(ArrayList<ApiModel.SubscriptionObject> list){
+        String currentPlan = pref.getString(AppConstants.PLAN_TYPE,"");
         for(int i=0; i<list.size();i++){
-            if(list.get(i).getName().equalsIgnoreCase("TRIAL_PLAN")){
+            if(list.get(i).getName().contains("TRIAL")){
                 trial_position = i;
                 String trial_tc1 = getTc(arrayList.get(trial_position).getServices());
                 trial_tc = "All ("+ trial_tc1 + ") leads are free";
                 trial_condition_list.addAll(arrayList.get(trial_position).getConditions());
                 trial_adapter.notifyDataSetChanged();
-                plan_tc = "All ("+ trial_tc1 + ") \n are ";
-            }else if(list.get(i).getName().equalsIgnoreCase("BASIC_PLAN")){
+            }else if(list.get(i).getName().contains("BASIC")){
                 basic_position=i;
                 String basic_tc1 = getTc(arrayList.get(basic_position).getServices());
                 basic_tc = "All ("+ basic_tc1 +") leads are free";
                 basic_condition_list.addAll(arrayList.get(basic_position).getConditions());
                 basic_adapter.notifyDataSetChanged();
-                plan_tc = "All ("+ basic_tc1 + ") \n are ";
-            }else if(list.get(i).getName().equalsIgnoreCase("PREMIUM_PLAN")){
+            }else if(list.get(i).getName().contains("PREMIUM")){
                 premium_position=i;
-                String premium_tc1 = getTc(arrayList.get(basic_position).getServices());
-                basic_tc = "All ("+ premium_tc1 +") leads are free";
-                premium_condition_list.addAll(arrayList.get(basic_position).getConditions());
+                String premium_tc1 = getTc(arrayList.get(premium_position).getServices());
+                premium_tc = "All ("+ premium_tc1 +") leads are free";
+                premium_condition_list.addAll(arrayList.get(premium_position).getConditions());
                 premium_adapter.notifyDataSetChanged();
-                plan_tc = "All ("+ premium_tc1 + ") \n are ";
             }
         }
+        if(currentPlan.contains("PREMIUM")){
+           cur_plan_id = list.get(premium_position).get_id();
+        }else if(currentPlan.contains("TRIAL")){
+            cur_plan_id = list.get(trial_position).get_id();
+        }else {
+            cur_plan_id = list.get(basic_position).get_id();
+        }
+        fetchCurrentPlan(cur_plan_id);
         setView();
     }
     private void foo() {
@@ -323,7 +347,14 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
 
     @Override
     public void onTryReconnect() {
-        fetchSubscriptionPlans();
+        switch (Task_completed){
+            case 100:
+                fetchSubscriptionPlans();
+                break;
+            case 200:
+                fetchCurrentPlan(cur_plan_id);
+                break;
+        }
     }
 
 /*
@@ -342,17 +373,32 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
     }
     private void setLayoutVisibility(){
         String currentPlan = pref.getString(AppConstants.PLAN_TYPE,"");
-        if(currentPlan.equalsIgnoreCase("TRIAL")){
+        if(currentPlan.contains("TRIAL")){
             isBasicVisible = false;
             subscription_basic.setVisibility(View.VISIBLE);
             basic_linear_parent.setVisibility(View.GONE);
-        }else if(currentPlan.equalsIgnoreCase("BASIC")){
+            trial_linear_parent.setVisibility(View.VISIBLE);
+            sub_cur_expiry2.setVisibility(View.VISIBLE);
+            sub_upgrade_premium.setVisibility(View.VISIBLE);
+            sub_linear_premium.setVisibility(View.GONE);
+            premium_linear_rate.setVisibility(View.VISIBLE);
+        }else if(currentPlan.contains("BASIC")){
             isBasicVisible = true;
             basic_linear_parent.setVisibility(View.VISIBLE);
             trial_linear_parent.setVisibility(View.GONE);
             subscription_basic.setVisibility(View.GONE);
-        }else if(currentPlan.equalsIgnoreCase("PREMIUM")){
+            sub_cur_expiry2.setVisibility(View.VISIBLE);
+            sub_upgrade_premium.setVisibility(View.VISIBLE);
+            sub_linear_premium.setVisibility(View.GONE);
+            premium_linear_rate.setVisibility(View.VISIBLE);
+        }else if(currentPlan.contains("PREMIUM")){
             trial_linear_parent.setVisibility(View.GONE);
+            basic_linear_parent.setVisibility(View.GONE);
+            subscription_basic.setVisibility(View.GONE);
+            sub_cur_expiry2.setVisibility(View.GONE);
+            sub_upgrade_premium.setVisibility(View.GONE);
+            sub_linear_premium.setVisibility(View.VISIBLE);
+            premium_linear_rate.setVisibility(View.GONE);
         }
     }
     @Override
@@ -364,5 +410,128 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
     public void onDestroy() {
         super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
+    }
+    private void fetchCurrentPlan(String planId){
+        if(Utils.isNetworkAvailable(context)) {
+            Utils.LoaderUtils.showLoader(context);
+            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+            String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
+            Call<PaymentHashModel.CurrentPlanModel> call = retrofitAPIs.getCurrentPlanApi(tokenaccess, "android", deviceId, mobileNo,planId);
+            call.enqueue(new Callback<PaymentHashModel.CurrentPlanModel>() {
+                @Override
+                public void onResponse(Call<PaymentHashModel.CurrentPlanModel> call, Response<PaymentHashModel.CurrentPlanModel> response) {
+                    Utils.LoaderUtils.dismissLoader();
+                    if (response != null) {
+                        if (response.isSuccessful()) {
+                            PaymentHashModel.CurrentPlanModel currentPlanModel = response.body();
+                            int statusCode = currentPlanModel.getStatusCode();
+                            String message = currentPlanModel.getMessage();
+                            if (statusCode == 200 && message.equalsIgnoreCase("")) {
+                                ArrayList<PaymentHashModel.CurrentPlanObject> subscription_list = currentPlanModel.getData();
+                                if (subscription_list.size() != 0) {
+                                  setCurrentPlan(subscription_list);
+                                }
+                            }
+                            // referAdapter.notifyDataSetChanged();
+                        } else {
+                            String responseString = null;
+                            try {
+                                responseString = response.errorBody().string();
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                int statusCode = jsonObject.optInt("statusCode");
+                                String message = jsonObject.optString("message");
+                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                    new AllUtils().getTokenRefresh(context);
+                                    fetchCurrentPlan(cur_plan_id);
+                                } else {
+                                    Utils.showToast(context, message);
+                                }
+                           /* if(pd.isShowing()) {
+                                pd.dismiss();
+                            }*/
+                            } catch (IOException | JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<PaymentHashModel.CurrentPlanModel> call, Throwable t) {
+                    Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
+                    Utils.LoaderUtils.dismissLoader();
+                /*if(pd.isShowing()) {
+                    pd.dismiss();
+                }*/
+                }
+            });
+        }else{
+            Task_completed = 200;
+            Utils.internetDialog(context,this);
+        }
+    }
+    private void setCurrentPlan(ArrayList<PaymentHashModel.CurrentPlanObject> arrayList){
+        String cur_plan_tc = getTc(arrayList.get(0).getServices());
+        plan_tc = "All ("+ cur_plan_tc +") leads \n are ";
+        subscription_tc.setText(plan_tc);
+        String  text1 = "FREE";
+        SpannableStringBuilder str = Utils.convertToSpannableString(text1,0,text1.length(),"green");
+        subscription_tc.append(str);
+        subscription_expiry.setText("Your subscription ends in "+arrayList.get(0).getExpireWithIn()+" days..");
+        if(arrayList.size()>0 && arrayList.get(0).getSubPlans().size()>0) {
+            String plan_rate = AllUtils.changeNumberFormat(arrayList.get(0).getSubPlans().get(0).getPayed());
+            sub_premium_price.setText(plan_rate);
+            sub_premium_price.setPaintFlags(sub_premium_price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            sub_premium_expiry.setText(arrayList.get(0).getSubPlans().get(0).getDuration() + " month");
+            String expiryText = changeTimeFormat(arrayList.get(0).getExpireTime());
+            sub_cur_expiry2.setText("Post expiry you will be moved to ");
+            String basic_plan = "BASIC PLAN";
+            SpannableStringBuilder str1 = new SpannableStringBuilder(basic_plan);
+            str1.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, basic_plan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            str1.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.appColor)), 0, basic_plan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            sub_cur_expiry2.append(str1);
+            sub_cur_expiry2.append(expiryText);
+
+        }
+    }
+    public String changeTimeFormat(String DateString){
+        int day=0;
+        String formattedDate = DateString != null ? DateString : "";
+        Calendar calendar = Calendar.getInstance();
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(formattedDate);
+            calendar.setTime(date);
+            SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
+            //SimpleDateFormat day_date = new SimpleDateFormat("dd");
+            String month_name = month_date.format(calendar.getTime());
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        formattedDate =getExpiryString(day,month_name);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formattedDate;
+    }
+  private  String getExpiryString(final int n,String month_name) {
+        String date_string="";
+        if (n > 1 && n < 32) {
+            if (n >= 11 && n <= 13) {
+            date_string = n+"th";
+            }
+            switch (n % 10) {
+                case 1:
+                    date_string = n+"st";
+                case 2:
+                    date_string = n+"nd";
+                case 3:
+                    date_string = n+"rd";
+                default:
+                    date_string = n+"th";
+            }
+        }
+
+        date_string = " from \n"+ date_string +" of "+month_name;
+        return date_string;
     }
 }

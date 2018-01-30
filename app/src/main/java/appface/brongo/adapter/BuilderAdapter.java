@@ -95,13 +95,15 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
         holder.invent_builder_address.setText(arrayList.get(position).getSubLocation());
         holder.invent_builder_commission.setText(arrayList.get(position).getCommission()+"% Commission");
         String imageUrl = "";
-        if(arrayList.get(position).getImageFiles().size()>0){
+        /*if(arrayList.get(position).getImageFiles().size()>0){
             imageUrl = arrayList.get(position).getImageFiles().get(0);
            imageUrl = Utils.getImageUrl(imageUrl,pref);
-            }
+            }*/
        /* Glide.with(context).load(arrayList.get(position).getImageFiles()).placeholder(R.drawable.no_image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.invent_builder_image);*/
-      Glide.with(context).load(imageUrl).apply(CustomApplicationClass.getPropertyImage(true)).into(holder.invent_builder_image);
+        if(arrayList.get(position).getImageFiles().size()>0) {
+            Glide.with(context).load(arrayList.get(position).getImageFiles().get(0)).apply(CustomApplicationClass.getPropertyImage(true)).into(holder.invent_builder_image);
+        }
 
         holder.invent_builder_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +135,7 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
                 onClick.proceedToWeb(position,builderObject);
             }
         });
-        int budget = (arrayList.get(position).getLandArea())* (arrayList.get(position).getPricePerSQFT());
+        int budget = (int) (Float.parseFloat(arrayList.get(position).getDimensionsOfBedRoom()) * (arrayList.get(position).getPricePerSQFT()));
         String project_budget = Utils.numToWord(budget);
         holder.builder_flowLayout.removeAllViews();
         addView(project_budget,holder.builder_flowLayout);
@@ -141,6 +143,7 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
         addView(arrayList.get(position).getLandArea()+" "+arrayList.get(position).getLandAreaUnits(),holder.builder_flowLayout);
         addView(arrayList.get(position).getProjectStatus(),holder.builder_flowLayout);
         addView(arrayList.get(position).getProjectType(),holder.builder_flowLayout);
+        addView(arrayList.get(position).getDimensionsOfBedRoom()+" Sqft",holder.builder_flowLayout);
     }
 
     @Override

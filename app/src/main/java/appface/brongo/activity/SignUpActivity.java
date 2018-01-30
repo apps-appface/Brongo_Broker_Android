@@ -17,7 +17,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.method.MovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -70,7 +76,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     private ApiModel.MicroMarketModel microMarketModel1, microMarketModel2, microMarketModel3;
     private String microMarket1,microMarket2,microMarket3;
     private Button register_btn, real_estate_resi_btn, real_estate_commer_btn;
-    public static TextView addmore_text, sign_title;
+    public static TextView addmore_text, sign_title,signUp_tc;
     private BottomSheetDialog dialog;
     private TextInputLayout phone_signup_layout,email_signup_layout;
     ArrayList<SignUpModel.MarketObject> marketlist;
@@ -145,6 +151,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         office_line1_edit = (EditText) findViewById(R.id.sign_office_line1);
         office_line2_edit = (EditText) findViewById(R.id.sign_office_line2);
         editor = pref.edit();
+        signUp_tc = (TextView)findViewById(R.id.signup_tc);
         referredBy = (EditText) findViewById(R.id.sign_referredby);
         String refer_code = pref.getString(AppConstants.REFERREDBY, "");
         if (refer_code.length() > 0) {
@@ -170,6 +177,8 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                 }
             }
         });
+        foo();
+
     }
 
     private void setListener() {
@@ -631,4 +640,52 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         });
         dialog.show();
     }
+    private void foo() {
+        SpannableString link = makeLinkSpan("Terms & Conditions", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,TermsConditionActivity.class);
+                intent.putExtra("fromActivity","signup");
+                startActivity(intent);
+            }
+        });
+        signUp_tc.setText("By signing up, you agree to our \n ");
+        signUp_tc.append(link);
+
+        // This line makes the link clickable!
+        makeLinksFocusable(signUp_tc);
+    }
+
+/*
+ * Methods used above.
+ */
+
+    private SpannableString makeLinkSpan(CharSequence text, View.OnClickListener listener) {
+        SpannableString link = new SpannableString(text);
+        link.setSpan(new ClickableString(listener), 0, text.length(),
+                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+        link.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.edit_hint_color)), 0, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return link;
+    }
+
+    private void makeLinksFocusable(TextView tv) {
+        MovementMethod m = tv.getMovementMethod();
+        if ((m == null) || !(m instanceof LinkMovementMethod)) {
+            if (tv.getLinksClickable()) {
+                tv.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+        }
+        tv.setHighlightColor(Color.TRANSPARENT);
+    }
+    private static class ClickableString extends ClickableSpan {
+        private View.OnClickListener mListener;
+        public ClickableString(View.OnClickListener listener) {
+            mListener = listener;
+        }
+        @Override
+        public void onClick(View v) {
+            mListener.onClick(v);
+        }
+    }
+
 }

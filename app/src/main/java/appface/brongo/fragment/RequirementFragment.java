@@ -50,7 +50,7 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class RequirementFragment extends Fragment implements NoInternetTryConnectListener{
-    private String posting_type,property_type,deal_id,client_mobile;
+    private String posting_type,property_type,deal_id,client_mobile,sub_propertyType;
     private LinearLayout req_linear,req_image_linear;
     private Bundle bundle;
     private Context context;
@@ -71,13 +71,14 @@ public class RequirementFragment extends Fragment implements NoInternetTryConnec
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        posting_type = property_type = deal_id = "";
+        posting_type = property_type = deal_id = sub_propertyType="";
         if(getArguments() != null){
             bundle = getArguments();
             posting_type = bundle.getString("postingType");
             property_type = bundle.getString("propertyType");
             deal_id = bundle.getString("dealId");
             client_mobile = bundle.getString("clientMobile");
+            sub_propertyType = bundle.getString("sub_propertyType");
         }
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_requirement, container, false);
@@ -120,6 +121,7 @@ public class RequirementFragment extends Fragment implements NoInternetTryConnec
             propertyModel.setPropertyId(deal_id);
             propertyModel.setPropertyType(property_type);
             propertyModel.setClientMobileNo(client_mobile);
+            propertyModel.setSubPropertyType(sub_propertyType);
             Call<ClientDetailsModel.DealModel> call = retrofitAPIs.fetchDealApi(tokenaccess, "android", deviceId, propertyModel);
             call.enqueue(new Callback<ClientDetailsModel.DealModel>() {
                 @Override

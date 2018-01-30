@@ -2,10 +2,7 @@ package appface.brongo.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -18,7 +15,7 @@ import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,7 +24,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,7 +36,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +46,6 @@ import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.ImageFilePath;
 import appface.brongo.util.ImageUtils;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
@@ -81,6 +75,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private final int STORAGE_PERMISSION_REQUEST = 100;
     private String filename,filename1,filename2,filename3;
    private Uri uri;
+   private File image_file;
    private MultipartBody.Part reraCertificate,IDProof,addressProof;
     private SharedPreferences pref ;
    private SharedPreferences.Editor editor;
@@ -195,7 +190,12 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                     onSelectFromGalleryResult(data);
 
                 } else if (requestCode == Camera_CODE) {
-                    onCaptureImageResult();
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                        onCaptureImageResult(uri);
+                    }else {
+                        uri = Uri.fromFile(image_file);
+                        onCaptureImageResult(uri);
+                    }
                 }
                 switch (i) {
                     case 2:
@@ -261,25 +261,9 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         }
         if (fileUri != null && fileUri.getPath().length() > 0 && compressedImagePath != null && compressedImagePath.length() > 0) {
             File imageFile = new File(compressedImagePath);
-
+            setFile(imageFile);
         // create RequestBody instance from file
-        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
-            filename = imageFile.getName();
-        // MultipartBody.Part is used to send also the actual file name
-        switch(fileNumber){
-            case 0:
-                reraCertificate = MultipartBody.Part.createFormData("reraCertificate", imageFile.getName(), requestFile);
-                filename1 = filename;
-                break;
-            case 1:
-                IDProof = MultipartBody.Part.createFormData("IDProof",  imageFile.getName(), requestFile);
-                filename2 = filename;
-                break;
-            case 2:
-                addressProof = MultipartBody.Part.createFormData("addressProof",  imageFile.getName(), requestFile);
-                filename3 = filename;
-                break;
-        }
+
     }
     }
 
@@ -429,7 +413,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                                         String message = jsonObject.optString("message");
                                         if (statusCode == 200 && message.equalsIgnoreCase("Broker Documents Successfully Uploaded")) {
                                             Utils.showToast(context, message);
-                                            startActivity(new Intent(DocumentUploadActivity.this, MapActivity.class));
+                                            startActivity(new Intent(DocumentUploadActivity.this, VenueActivity.class));
                                             finish();
                                         }
                                     } catch (JSONException | IOException e) {
@@ -466,11 +450,41 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         }
     }
     private void openCamera() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        uri = getOutputMediaFileUri();
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        startActivityForResult(cameraIntent, Camera_CODE);
+       /* try {
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            uri = getOutputMediaFileUri();
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            startActivityForResult(cameraIntent, Camera_CODE);
+        }catch(Exception e){
 
+        }*/
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            uri = getOutputMediaFileUri();
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        } else {
+            image_file = ImageUtils.CreateNewFileForPicture();
+            uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", image_file);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        }
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            startActivityForResult(intent, Camera_CODE);
+        }
+
+      /*  Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            uri = getOutputMediaFileUri();
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        } else {
+            File file = new File(uri.getPath());
+            Uri photoUri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+        }
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if (intent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
+            startActivityForResult(intent, Camera_CODE);
+        }*/
     }
 
     private void openGallery() {
@@ -500,7 +514,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         System.out.println("Media File Name for New Post : " + mediaFile);
         return mediaFile;
     }
-    private void onCaptureImageResult() {
+    private void onCaptureImageResult(Uri uri) {
+
         try {
             Glide.with(context)
                     .load(new File(uri.getPath()))
@@ -520,8 +535,10 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 break;
             case 4:
                 check4.setVisibility(View.VISIBLE);
+                break;
         }
-        prepareFilePart(uri);
+
+            prepareFilePart(uri);
 
     }
     private void loadGlide(Intent data) {
@@ -764,5 +781,24 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void requestCameraAndWritablePermission() {
         requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_CAMERA_AND_WRITABLE_PERMISSIONS);
+    }
+    private void setFile(File imageFile){
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), imageFile);
+        filename = imageFile.getName();
+        // MultipartBody.Part is used to send also the actual file name
+        switch(fileNumber){
+            case 0:
+                reraCertificate = MultipartBody.Part.createFormData("reraCertificate", imageFile.getName(), requestFile);
+                filename1 = filename;
+                break;
+            case 1:
+                IDProof = MultipartBody.Part.createFormData("IDProof",  imageFile.getName(), requestFile);
+                filename2 = filename;
+                break;
+            case 2:
+                addressProof = MultipartBody.Part.createFormData("addressProof",  imageFile.getName(), requestFile);
+                filename3 = filename;
+                break;
+        }
     }
 }

@@ -256,7 +256,8 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
                 text = text + list.get(i).toUpperCase()+ "/";
             }
         }
-        text = "All ("+ text+ ")leads \n are ";
+        //text = "All ("+ text+ ")leads \n are ";
+        text = "All (BUY/SELL/RENT) leads \n are ";
         String  text1 = "FREE";
         SpannableStringBuilder str = Utils.convertToSpannableString(text1,0,text1.length(),"green");
         prof_plan_tc.setText(text);

@@ -11,16 +11,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.ScrollBar;
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
+
 import appface.brongo.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TandC_Fragment extends Fragment {
-    private int position;
+public class TandC_Fragment extends Fragment implements OnPageChangeListener {
+    private int position = 10;
     private TextView toolbar_title;
     private Toolbar toolbar;
 private Context context;
+private  PDFView pdfView;
     private ImageView edit_icon,delete_icon,add_icon;
     public TandC_Fragment() {
         // Required empty public constructor
@@ -47,12 +52,29 @@ private Context context;
         toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
         toolbar.setVisibility(View.VISIBLE);
         toolbar_title.setText("Terms & Conditions");
-        TextView tc_text = (TextView)view.findViewById(R.id.terms_condition_text);
         String[] TermsList = context.getResources().getStringArray(R.array.tc_array);
-        if(position<=TermsList.length){
-            tc_text.setText(TermsList[position]);
-        }
+       pdfView = (PDFView)view.findViewById(R.id.pdfView);
+        ScrollBar scrollBar = (ScrollBar)view.findViewById(R.id.pdf_scrollBar);
+        pdfView.setScrollBar(scrollBar);
+        setView();
         return view;
     }
+    private void setView(){
+        if(position == 0) {
+            try {
+                pdfView.fromAsset("tc_brokers.pdf")
+                        .defaultPage(1)
+                        .onPageChange(this)
+                        .swipeVertical(true)
+                        .showMinimap(false)
+                        .load();
+            } catch (Exception e) {
+            }
+        }
+    }
 
+    @Override
+    public void onPageChanged(int page, int pageCount) {
+
+    }
 }

@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import appface.brongo.R;
 import appface.brongo.adapter.ReferAdapter;
 import appface.brongo.model.ApiModel;
+import appface.brongo.model.BuilderModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
@@ -115,7 +116,7 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
         SpannableString link = makeLinkSpan("Terms & Conditions", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.showToast(context,"Terms and Conditions");
+               tc_dialog();
             }
         });
         SpannableString referral_plan_link = makeLinkSpan("See Referral plans", new View.OnClickListener() {
@@ -449,9 +450,37 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
         }
     }
     private void openContact(){
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
         startActivityForResult(intent, 1);
+        /*Intent it = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        startActivityForResult(it, 1);*/
+    }
+    private void tc_dialog(){
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_tc);
+        //dialog.setCanceledOnTouchOutside(false);
+        // dialog.setCancelable(false);
+        final ImageView cross_btn = (ImageView) dialog.findViewById(R.id.tc_close_btn);
+        final Button accept_btn = (Button)dialog.findViewById(R.id.tcDialog_accept);
+        TextView commission_text = (TextView)dialog.findViewById(R.id.tcDialog_commission);
+        commission_text.setVisibility(View.GONE);
+        cross_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        accept_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        dialog.show();
     }
 
 }

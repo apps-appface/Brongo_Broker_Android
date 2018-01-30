@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="appColor">#88288f</color>
+    <color name="status_inactive_color">#8888288f</color>
     <color name="round_empty_gray">#bfbebe</color>
     <color name="notification_color">#E6E2E2</color>
     <color name="round_empty_blue">#1bb1df</color>

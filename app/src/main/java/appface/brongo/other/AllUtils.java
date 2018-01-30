@@ -183,8 +183,11 @@ public class AllUtils implements NoInternetTryConnectListener{
 
     public static String changeNumberFormat(float amount){
         String moneyString = "";
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
-        moneyString = formatter.format(amount);
+        try {
+            NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
+            moneyString = formatter.format(amount);
+        }catch (Exception e){
+        }
         return moneyString;
     }
 }
