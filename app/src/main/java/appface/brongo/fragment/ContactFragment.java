@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,7 +26,7 @@ import appface.brongo.util.Utils;
 public class ContactFragment extends Fragment {
     private ImageView edit_icon,delete_icon,add_icon,call_btn,email_btn;
     private TextView menu_title,email_text,phone_text;
-    private RelativeLayout call_relative,email_relative;
+    private RelativeLayout call_relative,email_relative,parentLayout;
     private Toolbar toolbar;
     private Context context;
 
@@ -71,6 +70,7 @@ public class ContactFragment extends Fragment {
     }
     private void initialise(View view){
         context = getActivity();
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         call_relative = (RelativeLayout)view.findViewById(R.id.contact_call_relative);
         email_relative = (RelativeLayout)view.findViewById(R.id.contact_email_relative);
         menu_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
@@ -114,7 +114,7 @@ public class ContactFragment extends Fragment {
             startActivity(emailIntent);
             //startActivity(Intent.createChooser(emailIntent, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
-            Utils.showToast(context,"There is no email client installed.");
+            Utils.showToast(context,"There is no email client installed.","Error");
         }
     }
 

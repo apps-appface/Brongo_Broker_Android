@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.barteksc.pdfviewer.PDFView;
@@ -19,6 +20,7 @@ import appface.brongo.util.AppConstants;
 public class TermsConditionActivity extends AppCompatActivity implements OnPageChangeListener {
     private Bundle bundle;
     String activityName="";
+    private LinearLayout parentLayout;
     Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class TermsConditionActivity extends AppCompatActivity implements OnPageC
         }
         setContentView(R.layout.activity_terms_condition);
         context = TermsConditionActivity.this;
+        parentLayout = (LinearLayout)findViewById(R.id.tc_parent_linear);
         PDFView pdfView = (PDFView)findViewById(R.id.start_pdfView);
         ScrollBar scrollBar = (ScrollBar)findViewById(R.id.start_pdf_scrollBar);
         Button accept_btn = (Button)findViewById(R.id.tc_accept_btn);

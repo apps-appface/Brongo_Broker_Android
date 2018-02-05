@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.SUPPORT;
  */
 public class HelpFaqFragment extends Fragment {
     private Context context;
+    private RelativeLayout parentLayout;
     private RecyclerView help_recycle;
     private ArrayList<String> arrayList;
     private SubmenuAdapter helpAdapter;
@@ -68,6 +70,7 @@ public class HelpFaqFragment extends Fragment {
         LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
         verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
         help_recycle.setLayoutManager(verticalmanager);
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         helpAdapter = new SubmenuAdapter(context,arrayList);
         help_recycle.setAdapter(helpAdapter);
         toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);

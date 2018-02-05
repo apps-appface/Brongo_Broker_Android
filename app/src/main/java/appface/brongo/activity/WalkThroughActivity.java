@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,7 @@ public class WalkThroughActivity extends AppCompatActivity implements ViewPager.
     ArrayList<Integer> imageIdList;
     ArrayList<ApiModel.WalkThroughModel> arrayList;
     private WalkPagerAdapter mAdapter;
+    private RelativeLayout parentLayout;
     private ImageView[] dots;
     private boolean isLastPageSwiped;
     private int counterPageScroll;
@@ -69,6 +71,7 @@ public class WalkThroughActivity extends AppCompatActivity implements ViewPager.
 
     }
     private void setReference() {
+        parentLayout = (RelativeLayout)findViewById(R.id.walk_parent_relative);
         arrayList = new ArrayList<>();
         titleList = new ArrayList<>();
         sub_titleList = new ArrayList<>();

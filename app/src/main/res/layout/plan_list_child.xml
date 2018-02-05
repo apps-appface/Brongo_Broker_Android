@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingRight="20dp"
-    android:paddingLeft="20dp"
+    android:paddingRight="@dimen/deal_large"
+    android:paddingLeft="@dimen/deal_large"
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <ImageView
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="@dimen/ra_green_tick"
+        android:layout_height="@dimen/ra_green_tick"
+        android:layout_marginTop="@dimen/deal_normal"
         android:background="@drawable/green_tick_second"
         android:id="@+id/plan_green_tick"
         />
@@ -15,19 +15,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#b3000000"
-        android:textSize="10sp"
+        android:textSize="@dimen/text_extra_small"
         android:id="@+id/plan_child_text"
         android:layout_alignTop="@+id/plan_green_tick"
         android:layout_toRightOf="@+id/plan_green_tick"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="@dimen/deal_large"
         />
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/view_small"
         android:background="#b6b2b2"
         android:id="@+id/plan_child_view"
         android:layout_alignLeft="@+id/plan_child_text"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/deal_normal"
         android:layout_below="@+id/plan_child_text" />
 
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class FaqFragment extends Fragment {
     private ImageView edit_icon,delete_icon,add_icon;
     private TextView toolbar_title;
     private Toolbar toolbar;
+    private RelativeLayout parentLayout;
    private ExpandableListView expandableListView,expandableListView2,expandableListView3;
     private ExpandableListAdapter expandableListAdapter,expandableListAdapter2,expandableListAdapter3;
     private List<String> expandableListTitle,expandableListTitle2,expandableListTitle3;
@@ -79,6 +81,7 @@ public class FaqFragment extends Fragment {
         expandableListDetail = getData();
         expandableListDetail2 = getSecondData();
         expandableListDetail3 = getThirdData();
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
         expandableListTitle2 = new ArrayList<String>(expandableListDetail2.keySet());
         expandableListTitle3 = new ArrayList<String>(expandableListDetail3.keySet());

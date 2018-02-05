@@ -1,16 +1,12 @@
 package appface.brongo.activity;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +20,6 @@ import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -35,16 +30,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
-import com.applozic.mobicomkit.api.account.user.MobiComUserPreference;
-import com.applozic.mobicomkit.api.account.user.PushNotificationTask;
-import com.applozic.mobicomkit.api.account.user.User;
-import com.applozic.mobicomkit.api.account.user.UserLoginTask;
-import com.applozic.mobicomkit.uiwidgets.ApplozicSetting;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.json.JSONException;
@@ -57,7 +45,6 @@ import java.util.Arrays;
 import appface.brongo.R;
 import appface.brongo.adapter.HorizontalAdapter;
 import appface.brongo.model.ApiModel;
-import appface.brongo.model.DeviceDetailsModel;
 import appface.brongo.model.SignUpModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
@@ -90,6 +77,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     private int data_incomplete=1;
     private String emailPattern,comp_type = "";
     private String mobile,email="";
+    private LinearLayout parentLayout;
     public static HorizontalAdapter horizontalAdapter;
     private SharedPreferences pref;
     private ArrayAdapter<String> adapter;
@@ -111,6 +99,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     private void initialise() {
         microMarket1 = microMarket2 = microMarket3 ="";
         context = SignUpActivity.this;
+        parentLayout = (LinearLayout)findViewById(R.id.sign_parent_linear);
         dialog = new BottomSheetDialog (context);
         pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
         poc_list = new ArrayList<>();
@@ -118,7 +107,6 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         adapter = new ArrayAdapter<String>(this, R.layout.spinner_text,poc_list);
         fetchMicromarket();
         marketIdList = new ArrayList<>();
-        mobile = "";
         emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         phone_signup_layout = (TextInputLayout) findViewById(R.id.input_layout_sign_phone);
         email_signup_layout = (TextInputLayout) findViewById(R.id.input_layout_email);
@@ -154,6 +142,8 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         signUp_tc = (TextView)findViewById(R.id.signup_tc);
         referredBy = (EditText) findViewById(R.id.sign_referredby);
         String refer_code = pref.getString(AppConstants.REFERREDBY, "");
+        mobile_edit.setText(pref.getString(AppConstants.MOBILE_NUMBER,""));
+        mobile = mobile_edit.getText().toString();
         if (refer_code.length() > 0) {
             referredBy.setText(refer_code);
             referredBy.setEnabled(false);
@@ -268,7 +258,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         String res_line_one = resi_line1_edit.getText().toString();
         String res_line_two = resi_line2_edit.getText().toString();
         if (fname.length() == 0 || lname.length() == 0 || city.length() == 0 || email.length() == 0 || mobile.length() == 0 || comp_type.length() == 0 || real_estate_type_list.size() == 0 || res_line_one.length() == 0 || res_line_two.length() == 0 ) {
-            Toast.makeText(context, "Data should not be empty",Toast.LENGTH_SHORT).show();
+            Utils.setSnackBar(parentLayout, "Data should not be empty");
         } else {
             editor.putString(AppConstants.FIRST_NAME, fname);
             editor.putString(AppConstants.LAST_NAME, lname);
@@ -311,7 +301,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             if (data_incomplete == 0) {
                 signUp(signUpModel);
             } else {
-                Utils.showToast(context, "Add atleast 1 microMarket");
+                Utils.setSnackBar(parentLayout,"Add atleast 1 microMarket");
             }
         }
     }
@@ -413,15 +403,16 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 200) {
-                                    Utils.showToast(context, message);
-                                    editor.remove(AppConstants.REFERREDBY);
+                                    Utils.setSnackBar(parentLayout,message);
+                                  /*  editor.remove(AppConstants.REFERREDBY);
                                     editor.putString(AppConstants.MOBILE_NUMBER, mobile);
                                     editor.putBoolean(AppConstants.ISWALKTHROUGH, false);
                                     editor.commit();
                                     Intent serviceIntent = new Intent(context, RegistrationIntentService.class);
                                     serviceIntent.putExtra("key", 200);
                                     startService(serviceIntent);
-                                    startActivity(new Intent(SignUpActivity.this, DocumentUploadActivity.class));
+                                    startActivity(new Intent(SignUpActivity.this, DocumentUploadActivity.class));*/
+                                  nextPage();
                                 }
                             } catch (JSONException | IOException e) {
                                 e.printStackTrace();
@@ -434,8 +425,10 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                                 String message = jsonObject.optString("message");
                                 if (message.equalsIgnoreCase("Broker Already Exist with this Mobile Number")) {
                                     phone_signup_layout.setError("Phone Number already Exists");
+                                }else if(message.equalsIgnoreCase("We are not live in this location")){
+                                    nonPocDialog(context);
                                 }
-                                Utils.showToast(context, message);
+                                Utils.showToast(context, message,"Error");
                             } catch (IOException e) {
                                 e.printStackTrace();
                             } catch (JSONException e) {
@@ -448,7 +441,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                 }
             });
@@ -513,7 +506,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                                     new AllUtils().getTokenRefresh(context);
                                    fetchMicromarket();
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error" );
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -524,7 +517,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                 @Override
                 public void onFailure(Call<SignUpModel.MarketModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -533,20 +526,13 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     }
     private void marketDialog(){
         isDialogOpen = true;
-        /*dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-       // dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
-        dialog.setContentView(R.layout.dialog_refer_broker);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.MATCH_PARENT);*/
-        View view = View.inflate(context, R.layout.market_dialog, null);
-        dialog.setContentView(view);
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(1500);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-       /* dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
+/*        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);*/
         dialog.setContentView(R.layout.market_dialog);
-        dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        dialog.getWindow().setDimAmount(0.7f);*/
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
        dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         ListView listView = (ListView)dialog.findViewById(R.id.market_list_view);
@@ -617,13 +603,13 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
     }
-    public static void nonPocDialog(Context context){
+    private void nonPocDialog(Context context){
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.poc_live_dialog);
-        //dialog.setCanceledOnTouchOutside(false);
-        // dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         final ImageView cross_btn = (ImageView) dialog.findViewById(R.id.poc_dialog_close);
         final Button got_it_btn = (Button)dialog.findViewById(R.id.poc_dialog_btn);
         cross_btn.setOnClickListener(new View.OnClickListener() {
@@ -636,6 +622,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+               nextPage();
             }
         });
         dialog.show();
@@ -686,6 +673,17 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         public void onClick(View v) {
             mListener.onClick(v);
         }
+    }
+
+    private void nextPage(){
+        editor.remove(AppConstants.REFERREDBY);
+        editor.putString(AppConstants.MOBILE_NUMBER, mobile);
+        editor.putBoolean(AppConstants.ISWALKTHROUGH, false);
+        editor.commit();
+        Intent serviceIntent = new Intent(context, RegistrationIntentService.class);
+        serviceIntent.putExtra("key", 200);
+        startService(serviceIntent);
+        startActivity(new Intent(SignUpActivity.this, DocumentUploadActivity.class));
     }
 
 }

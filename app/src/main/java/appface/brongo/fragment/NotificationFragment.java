@@ -2,7 +2,6 @@ package appface.brongo.fragment;
 
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +20,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,12 +32,10 @@ import java.util.ArrayList;
 
 import appface.brongo.R;
 import appface.brongo.adapter.NotiAdapter;
-import appface.brongo.adapter.NotificationAdapter;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
@@ -58,6 +55,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
     private Toolbar toolbar;
     private LinearLayout no_noti_linear;
     private Context context;
+    private RelativeLayout parentLayout;
     protected Handler handler;
     private NotiAdapter notificationAdapter;
     private ApiModel.NotificationChildModel notificationItemModel;
@@ -90,6 +88,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
         pd.getWindow().setGravity(Gravity.BOTTOM);*/
         pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
         editor = pref.edit();
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         unread = pref.getInt(AppConstants.NOTIFICATION_BADGES,0);
         notificationItemModel = new ApiModel.NotificationChildModel();
         editor.putInt(AppConstants.NOTIFICATION_BADGES,0).commit();
@@ -190,7 +189,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                     new AllUtils().getTokenRefresh(context);
                                     populateNotification(i, size);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -206,7 +205,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                         notificationAdapter.notifyItemRemoved(arrayList.size());
                     }
                     stopLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -285,7 +284,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                     new AllUtils().getTokenRefresh(context);
                                     callBtnClick(lead_mobile, propertyId);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
 
                             } catch (IOException | JSONException e) {
@@ -298,7 +297,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     stopLoader();
-                    Toast.makeText(context, "some error occured", Toast.LENGTH_SHORT);
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -384,7 +383,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                     new AllUtils().getTokenRefresh(context);
                                     readNotification(notificationChildModel,position,isDataSet);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message, "Error");
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -399,6 +398,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     stopLoader();
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 /*if(pd.isShowing()) {
                     pd.dismiss();
                 }*/
@@ -435,7 +435,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                             if (statusCode == 200 && message.equalsIgnoreCase("Builder And Broker Connection Is Established")) {
                                 arrayList.get(position).setStatus("accept");
                                 notificationAdapter.notifyDataSetChanged();
-                                Utils.showToast(context, message);
+                                Utils.setSnackBar(parentLayout,message);
                             }
                         } else {
                             try {
@@ -447,7 +447,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                     new AllUtils().getTokenRefresh(context);
                                     accept_builder(notificationChildModel,position);
                                 }else{
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -459,7 +459,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                 @Override
                 public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                     stopLoader();
-                    Utils.showToast(context, t.getMessage().toString());
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -515,7 +515,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                     new AllUtils().getTokenRefresh(context);
                                     builderRejectApi(notificationChildModel,position);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -527,7 +527,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     stopLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{

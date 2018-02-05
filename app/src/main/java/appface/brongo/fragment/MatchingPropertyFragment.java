@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
     private ImageView edit_icon,delete_icon,add_icon;
     private TextView toolbar_title;
     private Toolbar toolbar;
+    private RelativeLayout parentLayout;
     private ArrayList<ApiModel.MatchingModel> arraylist = new ArrayList<>();;
     private SharedPreferences pref;
     ProgressDialog pd;
@@ -78,6 +80,7 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
 
     private void initialise(View view){
         context = getActivity();
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         matching_recycle = (RecyclerView)view.findViewById(R.id.matching_prop_recycle);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         matching_recycle.setLayoutManager(layoutManager);

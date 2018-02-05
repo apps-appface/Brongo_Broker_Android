@@ -57,7 +57,7 @@ import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.ADD_INVENTORY;
  */
 public class IndividualInventoryFragment extends Fragment implements NoInternetTryConnectListener,View.OnTouchListener{
    private ApiModel.InventoryPersoanlList inventoryPersoanlList = new ApiModel.InventoryPersoanlList();
-    private TextView inven_individual_name,inven_individual_mobile,inven_individual_client_type,toolbar_title,inven_individual_email,inven_individual_address,inven_individual_bhk,inven_individual_budget,inven_individual_prop_status,inven_individual_prop_type,inven_individual_notes;
+    private TextView inven_individual_name,inven_individual_mobile,inven_individual_client_type,toolbar_title,inven_individual_email,inven_individual_notes;
     private ImageView inven_individual_image,toolbar_delete,toolbar_edit,toolbarAdd,imageView1;
     private String propertyImage2,propertyImage3,propertyId,postingType,microMarketName,microMarketCity,microMarketState,propertyType,propertyStatus,clientName,clientMobileNo,emailId,note,propertyImage1,bedRoomType,subPropertyType;
     private long budget;
@@ -68,6 +68,7 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
     private View email_view;
     private ImageView[] dots;
     private int dotsCount;
+    private RelativeLayout parentLayout;
     private ScaleGestureDetector scaleGestureDetector;
     private Matrix matrix = new Matrix();
     private MyCustomPagerAdapter customPagerAdapter;
@@ -156,18 +157,14 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
             images.add(propertyImage3);
         }
         pref=context.getSharedPreferences(AppConstants.PREF_NAME,0);
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         inven_individual_name = (TextView)view.findViewById(R.id.inventory_individual_name);
         inven_individual_client_type = (TextView)view.findViewById(R.id.inventory_individual_client);
         inven_individual_mobile = (TextView)view.findViewById(R.id.inventory_individual_mobile);
         inven_individual_email = (TextView)view.findViewById(R.id.inventory_individual_email);
-        inven_individual_address = (TextView)view.findViewById(R.id.invent_individual_address);
-        inven_individual_bhk = (TextView)view.findViewById(R.id.invent_individual_bhk);
         email_view = (View)view.findViewById(R.id.email_view);
         pager_indicator = (LinearLayout)view.findViewById(R.id.viewPagerCountDots1);
         viewPager = (ViewPager)view.findViewById(R.id.viewPager_inventory);
-        inven_individual_budget = (TextView)view.findViewById(R.id.invent_individual_budget);
-        inven_individual_prop_type = (TextView)view.findViewById(R.id.invent_individual_prop_type);
-        inven_individual_prop_status = (TextView)view.findViewById(R.id.invent_individual_prop_status);
         inven_individual_notes = (TextView)view.findViewById(R.id.inventory_individual_notes);
         inven_individual_image = (ImageView)view.findViewById(R.id.inventory_individual_image);
         toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
@@ -202,27 +199,6 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
             inven_individual_email.setVisibility(View.GONE);
             email_view.setVisibility(View.GONE);
         }
-       /* inven_individual_address.setText(microMarketName);
-        if(bedRoomType.equalsIgnoreCase("")){
-            inven_individual_bhk.setVisibility(View.GONE);
-        }else {
-            inven_individual_bhk.setText(bedRoomType);
-        }
-        if(budget1.equalsIgnoreCase("")){
-            inven_individual_budget.setVisibility(View.GONE);
-        }else {
-            inven_individual_budget.setText(budget1);
-        }
-        if(subPropertyType.equalsIgnoreCase("")){
-            inven_individual_prop_type.setVisibility(View.GONE);
-        }else {
-            inven_individual_prop_type.setText(subPropertyType);
-        }
-        if(propertyStatus.equalsIgnoreCase("")){
-            inven_individual_prop_status.setVisibility(View.GONE);
-        }else {
-            inven_individual_prop_status.setText(propertyStatus);
-        }*/
         addview(microMarketName);
         addview(bedRoomType);
         addview(budget1);
@@ -298,7 +274,7 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
                                 String message = jsonObject.optString("message");
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 200 && message.equalsIgnoreCase("Property Deleted Successfully")) {
-                                    Utils.showToast(context, message);
+                                    Utils.setSnackBar(parentLayout,message);
                                     context.startActivity(new Intent(context, MainActivity.class));
                                     getActivity().finish();
                                 }
@@ -314,7 +290,7 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     deleteInventory();
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error" );
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -325,7 +301,7 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Utils.showToast(context, "some error occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                 }
             });

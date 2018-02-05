@@ -73,16 +73,6 @@ public class MatchingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             String budget = arrayList.get(position).getBudget()+"";
             budget = Utils.stringToInt(budget);
             holder.personal_tag.setVisibility(View.VISIBLE);
-        /*holder.statename.setText(object1.getMicroMarketState());
-        holder.cityname.setText(object1.getMicroMarketCity());
-        holder.microname.setText(object1.getMicroMarketName());*/
-            // Glide.with(context).load(arrayList.get(position).getPropertyImage1()).into(holder.prop_image);
-           /* Glide.with(context).load(arrayList.get(position).getImage()).skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.prop_image);*/
-         /*   Glide.with(context)
-                    .load(arrayList.get(position).getPropertyimage1())
-                    .apply(CustomApplicationClass.getRequestOption(true))
-                    .into(holder.prop_image);*/
             holder.invent_child_clientName.setText(arrayList.get(position).getName());
             holder.invent_child_client.setText(arrayList.get(position).getPostingtype().toUpperCase()+"/"+arrayList.get(position).getPropertytype().toUpperCase());
             holder.invent_child_mobile.setText(arrayList.get(position).getMobile());
@@ -167,12 +157,7 @@ public class MatchingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             invent_child_clientName = (TextView) itemView.findViewById(R.id.invent_personal_name);
             personal_tag = (TextView) itemView.findViewById(R.id.personal_tag);
             invent_child_client = (TextView) itemView.findViewById(R.id.invent_pesonal_postingtype);
-            invent_child_bhk = (TextView) itemView.findViewById(R.id.invent_personal_bhk);
             invent_child_mobile = (TextView) itemView.findViewById(R.id.invent_pesonal_mobile);
-            invent_child_prop_status = (TextView) itemView.findViewById(R.id.invent_personal_prop_status);
-            invent_child_location = (TextView) itemView.findViewById(R.id.invent_personal_address);
-            invent_child_budget = (TextView) itemView.findViewById(R.id.invent_personal_budget);
-            invent_child_prop_type = (TextView) itemView.findViewById(R.id.invent_personal_prop_type);
             prop_image = (ImageView) itemView.findViewById(R.id.invent_personal_image);
             invent_child_editBtn = (Button) itemView.findViewById(R.id.edit_image);
             invent_child_deleteBtn = (Button) itemView.findViewById(R.id.delete_image);

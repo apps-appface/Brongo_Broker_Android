@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     final long DELAY_MS = 500,PERIOD_MS = 3000;//delay in milliseconds before task is to be executed
     private Button open_deal_buy_btn,referral_btn,open_deal_sell_btn;
     private boolean doubleBackToExitPressedOnce = false;
-    private LinearLayout no_deal_linear,deal_linear,linearLayout2,switch_linear,drawer_layout;
+    private LinearLayout no_deal_linear,deal_linear,linearLayout2,switch_linear,parentLayout;
     private RelativeLayout pager_linear,cutoff_relative;
     private ArrayList<ApiModel.BuyAndRentModel> buyAndRentList,sellAndRentList;
     public final static int LOOPS = 1;
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initialise() {
-        drawer_layout = (LinearLayout)findViewById(R.id.drawer_layout);
+        parentLayout = (LinearLayout)findViewById(R.id.drawer_layout);
         fragmentManager = getSupportFragmentManager();
         home_name = (TextView) findViewById(R.id.main_user_name);
         home_plan = (TextView) findViewById(R.id.main_plan);
@@ -175,6 +175,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         chat_count = (TextView)toolbar.findViewById(R.id.message_count);
         // attach to current activity;
         setUpMenu();
+        no_deal_linear.setVisibility(View.VISIBLE);
+        deal_linear.setVisibility(View.GONE);
         pager = (WrapContentViewPager)findViewById(R.id.myviewpager);
         pager1 = (WrapContentViewPager)findViewById(R.id.myviewpager1);
         pager.setPageMargin(-pageMargin);
@@ -292,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
            super.onBackPressed();
            finishAffinity();
        }else{
-           Utils.showToast(this, "click back button to exit");
+           Utils.setSnackBar(parentLayout,"click back button to exit");
        }
 
        this.doubleBackToExitPressedOnce = true;
@@ -363,7 +365,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     callHomeProfileApi();
                                 } else {
                                     Utils.LoaderUtils.dismissLoader();
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -377,7 +379,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onFailure(Call<ApiModel.HomeProfileModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
                     isLoader = false;
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -444,7 +446,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     callActiveApi(status);
                                 } else {
                                     setSwitchView();
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error" );
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -459,7 +461,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
                     isLoader = false;
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -493,7 +495,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 String message = jsonObject.optString("message");
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 200 && message.equalsIgnoreCase("Broker Successfully Logged Out")) {
-                                    Utils.showToast(context, message);
+                                    Utils.setSnackBar(parentLayout,message);
                                     String mobile = pref.getString(AppConstants.MOBILE_NUMBER, "");
                                     Boolean login_remember = pref.getBoolean(AppConstants.LOGIN_REMEMBER, false);
                                     Boolean tc_read = pref.getBoolean(AppConstants.IS_TERMS_ACCEPTED, false);
@@ -522,7 +524,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     new AllUtils().getTokenRefresh(context);
                                     logOut();
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error" );
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -533,7 +535,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                     isLoader = false;
                 }
@@ -668,7 +670,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                     populateArrayList1();
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -682,7 +684,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 @Override
                 public void onFailure(Call<ApiModel.OpenDealModels> call, Throwable t) {
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                     isLoader = false;
                 }
@@ -696,18 +698,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void clickBtn(int position,Bundle bundle1) {
-       dropDialog(position,bundle1);
-
+        if(!bundle1.getBoolean("isBrokerRated",false)){
+            rating_dialog(bundle1,position,1);
+        }else {
+            dropDialog(position, bundle1);
+        }
     }
 
     @Override
     public void feedBackClick(int position, Bundle bundle) {
-        rating_dialog(bundle,position,true);
+        rating_dialog(bundle,position,0);
     }
 
     @Override
     public void alert(String message) {
-        Utils.setSnackBar(drawer_layout,message);
+        Utils.setSnackBar(parentLayout,message);
     }
 
     private void setButtonText(){
@@ -727,15 +732,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 isLoader = true;
             }
             ApiModel.ClientAcceptModel clientAcceptModel = new ApiModel.ClientAcceptModel();
-            if (btn_click == 1) {
-                clientAcceptModel.setClientMobileNo(buyAndRentList.get(position).getClientMobileNo());
-                clientAcceptModel.setPostingType(buyAndRentList.get(position).getPostingType());
-                clientAcceptModel.setPropertyId(buyAndRentList.get(position).getPropertyId());
-            } else if (btn_click == 2) {
-                clientAcceptModel.setClientMobileNo(sellAndRentList.get(position).getClientMobileNo());
-                clientAcceptModel.setPostingType(sellAndRentList.get(position).getPostingType().toUpperCase());
-                clientAcceptModel.setPropertyId(sellAndRentList.get(position).getPropertyId());
-            }
+                clientAcceptModel.setClientMobileNo(bundle.getString("lead_mobile",""));
+                clientAcceptModel.setPostingType(bundle.getString("lead_posting_type",""));
+                clientAcceptModel.setPropertyId(bundle.getString("propertyId",""));
             //clientAcceptModel.setRentPropertyId(rentPropertyId);
             clientAcceptModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
             clientAcceptModel.setReason(drop_reason);
@@ -757,11 +756,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 String message = jsonObject.optString("message");
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 200 && message.equalsIgnoreCase("Lead Dropped Successfully")) {
-                                    Utils.showToast(context, message);
-                                    if(!bundle.getBoolean("isClientRated",false)) {
-                                        rating_dialog(bundle,position,false);
-                                    }else{
-                                        if (btn_click == 1) {
+                                    Utils.setSnackBar(parentLayout,message);
+                                       /* if (btn_click == 1) {
                                             buyAndRentList.remove(position);
                                             adapter1.notifyDataSetChanged();
                                         } else if (btn_click == 2) {
@@ -775,8 +771,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             no_deal_linear.setVisibility(View.GONE);
                                             deal_linear.setVisibility(View.VISIBLE);
                                         }
+                                    setButtonText();*/
+                                    if(!isLoader) {
+                                        Utils.LoaderUtils.showLoader(context);
+                                        isLoader = true;
                                     }
-                                    setButtonText();
+                                       populateArrayList1();
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -791,7 +791,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     new AllUtils().getTokenRefresh(context);
                                     dropLead(position, drop_reason,bundle);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error" );
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -804,7 +804,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
                     isLoader = false;
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -891,7 +891,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 if(drop_reason == null || drop_reason.equalsIgnoreCase("")){
-                    Utils.showToast(context,"select the reason first");
+                    Utils.setSnackBar(parentLayout,"select the reason first" );
                 }else {
                         dropLead(position, drop_reason,bundle1);
                     dialog.dismiss();
@@ -899,6 +899,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         dialog.show();
     }
 
@@ -937,7 +938,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 new AllUtils().getTokenRefresh(context);
                                 fetchList();
                             }else{
-                                Utils.showToast(context,message);
+                                Utils.showToast(context,message,"Error");
                                 Utils.LoaderUtils.dismissLoader();
                                 isLoader = false;
                             }
@@ -956,7 +957,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onFailure(Call<ApiModel.InventoryModel> call, Throwable t) {
                 Utils.LoaderUtils.dismissLoader();
                 isLoader = false;
-                Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
+                Utils.showToast(context, t.getMessage().toString(),"Failure");
             }
         });
     }
@@ -1190,7 +1191,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             @Override
             public void onFailure(Exception exception) {
-                Utils.showToast(context,exception.getMessage().toString());
+                Utils.showToast(context, exception.getMessage().toString(),"Failure");
                 Utils.LoaderUtils.dismissLoader();
                 isLoader = false;
                 //Logout failure
@@ -1244,7 +1245,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 503) {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -1258,10 +1259,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 @Override
                 public void onFailure(Call<TokenModel> call, Throwable t) {
-                    String message = t.getMessage();
                     Utils.LoaderUtils.dismissLoader();
                     isLoader = false;
-                    Utils.showToast(context, message);
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -1356,7 +1356,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         dialog.show();
     }
-    private void rating_dialog(final Bundle bundle, final int position, final boolean isCancellable){
+    private void rating_dialog(final Bundle bundle, final int position, final int i){
         final String posting = bundle.getString("lead_posting_type");
         final ArrayList<String> arrayList = new ArrayList<>();
         final ArrayList<String> buy_sell_list1 = new ArrayList<String>(Arrays.asList("Delayed Commission", "Didn't pay my commission", "Difficult to reach Client","Always late for meeting","Takes time to make decision"));
@@ -1371,10 +1371,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);*/
         dialog.setContentView(R.layout.dialog_client_rating);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        if(!isCancellable){
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-        }
         ImageView rating_client_image = (ImageView) dialog.findViewById(R.id.client_image_rating);
         RatingBar dialog_ratingbar = (RatingBar)dialog.findViewById(R.id.rating_dialog_ratingBar);
         TextView ratimg_client_name = (TextView)dialog.findViewById(R.id.client_name_rating);
@@ -1457,10 +1453,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 if(arrayList.size()>0) {
-                    updateRating(rating1, arrayList, isCancellable,bundle,position);
+                    updateRating(rating1, arrayList, i,bundle,position);
                     dialog.dismiss();
                 }else{
-                    Utils.showToast(context,"Select atleast 1 comment");
+                    Utils.setSnackBar(parentLayout,"Select atleast 1 comment");
                 }
 
             }
@@ -1528,9 +1524,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         dialog.show();
     }
-    private void updateRating(final float rating, final ArrayList<String> arrayList, final boolean isCancellable, final Bundle bundle, final int position){
+    private void updateRating(final float rating, final ArrayList<String> arrayList, final int i, final Bundle bundle, final int position){
         if (Utils.isNetworkAvailable(context)) {
             if(!isLoader) {
                 Utils.LoaderUtils.showLoader(context);
@@ -1541,6 +1538,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ratingModel.setClientMobileNo(bundle.getString("lead_mobile"));
             ratingModel.setRating(rating);
             ratingModel.setReview(arrayList);
+            ratingModel.setPropertyId(bundle.getString("propertyId"));
             String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
             String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
             RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
@@ -1560,29 +1558,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 200 && message.equalsIgnoreCase("Thanks For Your Valuable Feedback")) {
                                     if (btn_click == 1) {
-                                        if(!isCancellable) {
-                                            buyAndRentList.remove(position);
-                                        }else{
-                                            buyAndRentList.get(position).setClientRated(true);
-                                        }
+                                        buyAndRentList.get(position).setBrokerRated(true);
                                         adapter1.notifyDataSetChanged();
                                     } else if (btn_click == 2) {
-                                        if(!isCancellable) {
-                                            buyAndRentList.remove(position);
-                                        }else{
-                                            buyAndRentList.get(position).setClientRated(true);
-                                        }
+                                        sellAndRentList.get(position).setBrokerRated(true);
                                         adapter2.notifyDataSetChanged();
                                     }
-                                    if (buyAndRentList.size() == 0 && sellAndRentList.size() == 0) {
-                                        no_deal_linear.setVisibility(View.VISIBLE);
-                                        deal_linear.setVisibility(View.GONE);
-                                    } else {
-                                        no_deal_linear.setVisibility(View.GONE);
-                                        deal_linear.setVisibility(View.VISIBLE);
+                                    if(i==1){
+                                        dropDialog(position,bundle);
                                     }
-                                    //ratingBar.setRating(rating);
-                                    Utils.showToast(context, message);
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -1598,27 +1583,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
-                                    updateRating(rating, arrayList, isCancellable, bundle,position);
+                                    updateRating(rating, arrayList, i, bundle,position);
                                 } else {
-                                    if (btn_click == 1) {
-                                        if(!isCancellable) {
-                                            buyAndRentList.remove(position);
-                                        }
-                                        adapter1.notifyDataSetChanged();
-                                    } else if (btn_click == 2) {
-                                        if(!isCancellable) {
-                                            buyAndRentList.remove(position);
-                                        }
-                                        adapter2.notifyDataSetChanged();
-                                    }
-                                    if (buyAndRentList.size() == 0 && sellAndRentList.size() == 0) {
-                                        no_deal_linear.setVisibility(View.VISIBLE);
-                                        deal_linear.setVisibility(View.GONE);
-                                    } else {
-                                        no_deal_linear.setVisibility(View.GONE);
-                                        deal_linear.setVisibility(View.VISIBLE);
-                                    }
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -1633,25 +1600,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
                     isLoader = false;
-                    if (btn_click == 1) {
-                        if(!isCancellable) {
-                            buyAndRentList.remove(position);
-                        }
-                        adapter1.notifyDataSetChanged();
-                    } else if (btn_click == 2) {
-                        if(!isCancellable) {
-                            buyAndRentList.remove(position);
-                        }
-                        adapter2.notifyDataSetChanged();
-                    }
-                    if (buyAndRentList.size() == 0 && sellAndRentList.size() == 0) {
-                        no_deal_linear.setVisibility(View.VISIBLE);
-                        deal_linear.setVisibility(View.GONE);
-                    } else {
-                        no_deal_linear.setVisibility(View.GONE);
-                        deal_linear.setVisibility(View.VISIBLE);
-                    }
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{

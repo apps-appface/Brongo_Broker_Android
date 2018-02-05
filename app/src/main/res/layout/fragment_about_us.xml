@@ -11,33 +11,31 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@drawable/edit_border"
-        android:layout_margin="20dp">
+        android:layout_margin="@dimen/af_margin_large">
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/af_logo_size"
+        android:layout_height="@dimen/af_logo_size"
         android:src="@drawable/logo"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="@dimen/af_margin_large"/>
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/af_margin_large"
         android:text="@string/about_us_tagline"
         android:textColor="#6e6e6e"
+        android:textSize="@dimen/text_size_normal"
         app:customFont="lato_regular.ttf"/>
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="5dp"
+        android:padding="@dimen/af_margin_small"
         android:shadowColor="#c0ffffff"
-        android:shadowDx="6.123233995736766e-17"
-        android:shadowDy="1"
-        android:textSize="15sp"
+        android:textSize="@dimen/text_size_normal"
         android:textColor="#6e6e6e"
-        android:lineSpacingExtra="6.7sp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/af_margin_large"
         android:text="@string/about_us_content"
 
         app:customFont="lato_regular.ttf"/>

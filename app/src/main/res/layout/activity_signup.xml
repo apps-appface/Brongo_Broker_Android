@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="#fff"
     android:orientation="vertical"
+    android:id="@+id/sign_parent_linear"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <include
         layout="@layout/other_toolbar"
@@ -17,9 +18,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginLeft="@dimen/sa_layout_margin"
+                android:layout_marginRight="@dimen/sa_layout_margin"
+                android:layout_marginBottom="@dimen/sa_layout_margin"
                 android:focusable="true"
                 android:focusableInTouchMode="true">
 
@@ -28,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/edit_hint_color"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/sa_padding_large"
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
             <EditText
                 android:id="@+id/sign_fname"
@@ -44,6 +45,7 @@
             android:id="@+id/input_layout_lname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/sa_top_margin"
             android:textColorHint="@color/edit_hint_color"
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
            >
@@ -56,13 +58,14 @@
                 android:inputType="textCapWords"
                 android:maxLength="32"
                 android:textColor="@color/edit_text_color"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/sa_padding_large"
                 app:backgroundTint="@color/edit_line" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_sign_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/sa_top_margin"
             android:textColorHint="@color/edit_hint_color"
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
 
@@ -70,7 +73,7 @@
                 android:id="@+id/sign_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/sa_padding_large"
                 android:hint="PHONE NUMBER"
                 android:inputType="number"
                 android:maxLength="10"
@@ -79,7 +82,8 @@
         </android.support.design.widget.TextInputLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/sa_top_margin">
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_email"
             android:layout_width="match_parent"
@@ -123,6 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/comp_type"
+                android:layout_marginTop="@dimen/sa_top_margin"
                 app:met_textColorHint="@color/edit_hint_color"
                 app:met_underlineColor="@color/edit_line"
                 app:met_textColor="@color/edit_text_color"
@@ -145,13 +150,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="@dimen/sa_padding_large">
 
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="REAL ESTATE TYPE"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_big"
                 android:textColor="@color/edit_hint_color"
                 android:layout_weight="1"
                 app:customFont="lato_regular.ttf"/>
@@ -160,12 +165,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="@dimen/sa_padding_large">
             <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-                android:padding="4dp"
+                android:padding="@dimen/sa_padding_small"
                 android:text="Residential"
                 android:textColor="@color/real_state_color"
                 android:textAllCaps="false"
@@ -182,17 +187,17 @@
                 android:textAllCaps="false"
                 android:id="@+id/real_estate_commercial"
                 android:gravity="center"
-                android:padding="4dp"
-                android:layout_marginLeft="10dp"
+                android:padding="@dimen/sa_padding_small"
+                android:layout_marginLeft="@dimen/sa_padding_normal"
                 android:background="@drawable/gray_empty_btn"/>
         </LinearLayout>
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="MICROMARKET"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_big"
             android:textColor="@color/edit_hint_color"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/sa_padding_large"
             app:customFont="lato_regular.ttf"
             />
         <LinearLayout
@@ -200,7 +205,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="@dimen/sa_padding_normal">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/hori_micromarket_recycle"
             android:layout_width="match_parent"
@@ -210,7 +215,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="@dimen/sa_padding_normal"
                 android:src="@drawable/ic_remove"
                 android:id="@+id/micromarketlist_reset"
                 android:visibility="gone"
@@ -219,15 +224,15 @@
         <View android:layout_height="1dp"
             android:layout_width="match_parent"
             android:background="@color/edit_line"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/sa_padding_small"
             android:layout_below="@+id/hori_micromarket_recycle"/>
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="+ ADD 3 MORE"
             android:id="@+id/add_more_text"
-            android:layout_marginTop="20dp"
-            android:textSize="18sp"
+            android:layout_marginTop="@dimen/sa_padding_large"
+            android:textSize="@dimen/text_size_big"
             android:textColor="#000"
             app:customFont="lato_bold.ttf"/>
                 <android.support.design.widget.TextInputLayout
@@ -235,14 +240,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColorHint="@color/edit_hint_color"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/sa_padding_normal"
                     app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
 
                     <EditText
                         android:id="@+id/sign_city"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="@dimen/sa_padding_large"
                         android:hint="CITY"
                         android:inputType="textCapWords"
                         android:textColor="@color/edit_text_color"
@@ -250,7 +255,8 @@
                 </android.support.design.widget.TextInputLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sa_top_margin">
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layou_off_address1"
             android:layout_width="match_parent"
@@ -262,7 +268,7 @@
                 android:id="@+id/sign_office_line1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/sa_padding_large"
                android:inputType="text"
                 android:hint="OFFICE ADDRESS(Line 1)"
                 android:textColor="@color/edit_text_color"
@@ -278,7 +284,8 @@
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sa_top_margin">
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_off_address2"
             android:layout_width="match_parent"
@@ -289,7 +296,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/sign_office_line2"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/sa_padding_large"
                 android:inputType="text"
                 android:hint="OFFICE ADDRESS(Line 2)"
                 android:textColor="@color/edit_text_color"
@@ -305,7 +312,8 @@
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sa_top_margin">
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_resi_address1"
             android:layout_width="match_parent"
@@ -317,7 +325,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/sign_residential_line1"
                 android:hint="RESIDENTIAL ADDRESS(Line 1)"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/sa_padding_large"
                 android:inputType="text"
                 android:textColor="@color/edit_text_color"
                 app:backgroundTint="@color/edit_line" />
@@ -328,12 +336,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/edit_hint_color"
+            android:layout_marginTop="@dimen/sa_top_margin"
             app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/sign_residential_line2"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/sa_padding_large"
                 android:inputType="text"
                 android:textColor="@color/edit_text_color"
                 android:hint="RESIDENTIAL ADDRESS(Line 2)"
@@ -341,7 +350,8 @@
         </android.support.design.widget.TextInputLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sa_top_margin">
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_referredby"
             android:layout_width="match_parent"
@@ -352,7 +362,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/sign_referredby"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/sa_padding_large"
                 android:hint="REFERRAL"
                 android:inputType="text"
                 android:textColor="@color/edit_text_color"
@@ -373,19 +383,21 @@
              android:layout_gravity="center_horizontal"
              android:id="@+id/signup_tc"
              android:gravity="center"
-             app:customFont="lato_regular.ttf"/>
+             android:textSize="@dimen/text_size_normal"
+             app:customFont="lato_regular.ttf"
+             android:layout_marginTop="@dimen/sa_top_margin"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign Up"
             android:background="@drawable/dialog_button"
             android:textColor="#fff"
-            android:paddingRight="60dp"
-            android:paddingLeft="60dp"
+            android:paddingRight="@dimen/btn_padding"
+            android:paddingLeft="@dimen/btn_padding"
             android:layout_gravity="center"
             android:id="@+id/signup_btn"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginTop="@dimen/sa_padding_large"
+            android:layout_marginBottom="@dimen/sa_padding_large"/>
         </LinearLayout>
         </ScrollView>
     </LinearLayout>

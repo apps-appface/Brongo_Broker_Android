@@ -4,12 +4,12 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,11 +33,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import appface.brongo.R;
 import appface.brongo.model.ApiModel;
 import appface.brongo.model.ClientDetailsModel;
-import appface.brongo.model.SignUpModel;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RetrofitAPIs;
@@ -49,23 +49,23 @@ import retrofit2.Response;
 
 public class ReminderActivity extends AppCompatActivity implements OnMapReadyCallback,NoInternetTryConnectListener{
     private CalendarView calendarView;
-    private EditText reminder_edit_note;
+    private EditText reminder_edit_note,reminder_edit_area;
     private SupportMapFragment mapfragment;
-    private LinearLayout map_layout;
+    private LinearLayout map_layout,parentLayout;
     private GoogleMap map;
     private Calendar c;
     private TextView add_time_text,time_text,addLocation,reminder_edit;
     private ImageView reminder_back;
-    private Button btn_15,btn_30,btn_60,reminder_save_btn;
+    private Button reminder_save_btn;
     private Context context;
+    private DatePicker datePicker;
     private SharedPreferences pref;
     private double lat_value,long_value;
     private ArrayList<Double> arrayList;
-   private String selected_date,selected_time,notes,prop_id,client_mobile;
+   private String selected_date,selected_time,notes,area_name,prop_id,client_mobile;
     private String pm_am = "";
-    private String pre_date,pre_time,pre_note;
+    private String pre_date,pre_time,pre_note,pre_meetingLocation;
     private Double preLat,preLong;
-    private Long maxDate,minDate ;
     private Date strDate = new Date();
     private Date meetingDate = new Date();
 
@@ -81,6 +81,7 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
             pre_note = data.getString("meeting_notes","");
             preLat = data.getDouble("meeting_lat",0.0d);
             preLong = data.getDouble("meeting_long",0.0d);
+            pre_meetingLocation = data.getString("meeting_location","");
         }
         onNewIntent(getIntent());
         setContentView(R.layout.activity_reminder);
@@ -89,23 +90,29 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
     }
     private void initialise(){
         context = this;
-        selected_date = selected_time = notes="";
+        selected_date = selected_time = notes=area_name="";
+        parentLayout = (LinearLayout)findViewById(R.id.reminder_parent_linear);
         pref = getSharedPreferences(AppConstants.PREF_NAME,0);
         calendarView = (CalendarView)findViewById(R.id.reminder_calender);
         reminder_edit = (TextView)findViewById(R.id.reminder_edit_btn);
         reminder_back = (ImageView)findViewById(R.id.reminder_back);
         c = Calendar.getInstance();
-        calendarView.setMinDate(c.getTimeInMillis());
+        c.setTimeZone(TimeZone.getDefault());
+        long systemDate = System.currentTimeMillis();
+        String timezone = c.getTimeZone().getDisplayName();
+         //   calendarView.setMinDate(c.getTimeInMillis());
         arrayList = new ArrayList<>();
         reminder_edit_note = (EditText)findViewById(R.id.reminder_edit_notes);
+        reminder_edit_area = (EditText)findViewById(R.id.reminder_edit_area);
         add_time_text = (TextView)findViewById(R.id.reminder_add_time);
         time_text = (TextView)findViewById(R.id.time_text);
         addLocation = (TextView)findViewById(R.id.add_lcation);
+        datePicker = (DatePicker) findViewById(R.id.datepicker);
         reminder_save_btn = (Button)findViewById(R.id.reminder_save_btn);
         map_layout = (LinearLayout)findViewById(R.id.reminder_map_linear);
         mapfragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.reminder_map_fragment));
         mapfragment.getMapAsync(this);
-        setData();
+        setDatePicker();
         if(pre_date != null && !pre_date.isEmpty()){
             if(isFutureDate(pre_date,pre_time)){
                 meetingDate = strDate;
@@ -115,7 +122,8 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
     private void setListener(){
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
+       /* calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 month = month+1;
@@ -129,7 +137,7 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
                 }
                 selected_date = year+"-"+month1+"-"+day;
             }
-        });
+        });*/
         add_time_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,9 +166,10 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onClick(View v) {
                 addLocation.setEnabled(true);
-                calendarView.setEnabled(true);
+                datePicker.setEnabled(true);
                 add_time_text.setEnabled(true);
                 reminder_edit_note.setEnabled(true);
+                reminder_edit_area.setEnabled(true);
                 reminder_save_btn.setVisibility(View.VISIBLE);
                 reminder_edit.setVisibility(View.GONE);
             }
@@ -168,6 +177,7 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
     }
     private void openTimeDialog(){
         Calendar mcurrentTime = Calendar.getInstance();
+        mcurrentTime.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
         int second = mcurrentTime.get(Calendar.SECOND);
@@ -229,9 +239,10 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
     }
     private void submitMeetingDetails() {
         notes = reminder_edit_note.getText().toString();
+        area_name = reminder_edit_area.getText().toString();
         if(isFutureDate(selected_date,selected_time)) {
             if (selected_date.length() == 0 || selected_time.length() == 0 || arrayList.size() < 2 || prop_id.length() == 0 || client_mobile.length() == 0) {
-                Toast.makeText(context, "data shouldn't be empty", Toast.LENGTH_SHORT).show();
+                Utils.setSnackBar(parentLayout, "data shouldn't be empty");
             } else {
                 if (Utils.isNetworkAvailable(context)) {
                     Utils.LoaderUtils.showLoader(context);
@@ -245,6 +256,7 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
                     meetingModel.setDateOfVisit(selected_date);
                     meetingModel.setPropertyId(prop_id);
                     meetingModel.setNote(notes);
+                    meetingModel.setMeetAt(area_name);
                     meetingModel.setTimeOfVisit(selected_time);
                     meetingModel.setLatLong(arrayList);
                     Call<ApiModel.ResponseModel> call = retrofitAPIs.meetingApi(tokenaccess, "android", deviceId, meetingModel);
@@ -258,7 +270,7 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
                                     int statusCode = responseModel.getStatusCode();
                                     String message = responseModel.getMessage();
                                     if (statusCode == 200) {
-                                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                                        Utils.setSnackBar(parentLayout,message);
                                         onBackPressed();
                                     }
                                 } else {
@@ -267,7 +279,7 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
                                         responseString = response.errorBody().string();
                                         JSONObject jsonObject = new JSONObject(responseString);
                                         String message = jsonObject.optString("message");
-                                        Utils.showToast(context, message);
+                                        Utils.showToast(context, message,"Error");
                                     } catch (IOException | JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -278,7 +290,7 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
                         @Override
                         public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                             Utils.LoaderUtils.dismissLoader();
-                            Utils.showToast(context, "Some Problem Occured");
+                            Utils.showToast(context, t.getMessage().toString(),"Failure");
                         }
                     });
                 } else {
@@ -286,7 +298,7 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
                 }
             }
         }else{
-            Utils.showToast(context,"select valid Time");
+            Utils.setSnackBar(parentLayout,"select valid Time");
         }
     }
 
@@ -313,6 +325,7 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
         boolean isFutureDate = true;
         String meeting_date = pre_date+" "+pre_time;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("IST"));
         try {
             strDate = sdf.parse(meeting_date);
             long systemDate = System.currentTimeMillis();
@@ -333,10 +346,13 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
         }
      calendarView.setDate(meetingDate.getTime(),true,true);
      reminder_edit_note.setText(pre_note);
+     reminder_edit_area.setText(pre_meetingLocation);
+     setDate();
      addLocation.setEnabled(false);
-       calendarView.setEnabled(false);
+       datePicker.setEnabled(false);
         add_time_text.setEnabled(false);
         reminder_edit_note.setEnabled(false);
+        reminder_edit_area.setEnabled(false);
         reminder_save_btn.setVisibility(View.GONE);
         reminder_edit.setVisibility(View.VISIBLE);
     }
@@ -377,5 +393,34 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
         String time =selectedHour + ":" + minute+" "+pm_am;
         time_text.setText(time);
         time_text.setVisibility(View.VISIBLE);
+    }
+    private void setDate(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(meetingDate);
+        int day = calendar.get(Calendar.DAY_OF_MONTH); //Day of the month :)
+       int month = calendar.get(Calendar.MONTH);
+       int Year = calendar.get(Calendar.YEAR);
+       datePicker.updateDate(Year,month,day);
+    }
+    private void setDatePicker(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        datePicker.setMinDate(System.currentTimeMillis()-1000);
+        datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
+
+            @Override
+            public void onDateChanged(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                month = month+1;
+                String month1 = month+"";
+                String day = dayOfMonth+"";
+                if(month < 10){
+                    month1 = "0"+month;
+                }
+                if(dayOfMonth < 10){
+                    day = "0"+dayOfMonth;
+                }
+                selected_date = year+"-"+month1+"-"+day;
+            }
+        });
     }
 }

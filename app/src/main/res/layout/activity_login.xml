@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#fff"
+    android:id="@+id/login_parent_linear"
     tools:context="appface.brongo.activity.LoginActivity">
     <include
         layout="@layout/other_toolbar"
@@ -18,12 +19,12 @@
         android:id="@+id/otp_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_margin="@dimen/la_layout_margin"
+        android:layout_marginTop="@dimen/la_margin_large"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="@dimen/la_margin_large"
+        android:paddingRight="@dimen/la_margin_large"
         android:visibility="gone">
 
         <appface.brongo.uiwidget.CustomTextView
@@ -33,7 +34,7 @@
             android:gravity="center"
             android:text="@string/otp_text"
             android:textColor="@color/round_empty_gray"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_big"
             app:customFont="lato_regular.ttf"/>
 
         <appface.brongo.uiwidget.CustomTextView
@@ -42,14 +43,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/black"
-            android:textSize="22dp"
+            android:textSize="@dimen/text_size_large"
             app:customFont="lato_regular.ttf"/>
 
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="20sp"
+            android:layout_marginTop="@dimen/la_margin_large"
             android:text="ENTER OTP"
             android:textColor="#4b6d9b"
             app:customFont="lato_regular.ttf"/>
@@ -69,7 +70,7 @@
                 android:inputType="number"
                 android:maxLength="1"
                 android:textColor="@color/edit_text_color"
-                android:textSize="15sp" />
+                android:textSize="@dimen/text_size_normal" />
 
             <EditText
                 android:id="@+id/otp_edit2"
@@ -81,7 +82,7 @@
                 android:inputType="number"
                 android:maxLength="1"
                 android:textColor="@color/edit_text_color"
-                android:textSize="15sp" />
+                android:textSize="@dimen/text_size_normal" />
 
             <EditText
                 android:id="@+id/otp_edit3"
@@ -93,7 +94,7 @@
                 android:inputType="number"
                 android:maxLength="1"
                 android:textColor="@color/edit_text_color"
-                android:textSize="15sp" />
+                android:textSize="@dimen/text_size_normal" />
 
             <EditText
                 android:id="@+id/otp_edit4"
@@ -105,7 +106,7 @@
                 android:inputType="number"
                 android:maxLength="1"
                 android:textColor="@color/edit_text_color"
-                android:textSize="15sp" />
+                android:textSize="@dimen/text_size_normal" />
 
         </LinearLayout>
         <appface.brongo.uiwidget.CustomTextView
@@ -113,12 +114,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/invalid_otp"
             android:shadowColor="#73000000"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:shadowRadius="3"
-            android:textSize="13.3sp"
+            android:textSize="@dimen/text_size_small"
             android:textColor="#ed1c24"
-            android:letterSpacing="0.02"
             android:text="Incorrect OTP"
             android:layout_below="@+id/input_layout_phone"
             android:visibility="gone"
@@ -128,9 +125,9 @@
             android:id="@+id/otp_verify_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginLeft="@dimen/la_margin_large"
+            android:layout_marginRight="@dimen/la_margin_large"
+            android:layout_marginTop="@dimen/la_margin_large"
             android:background="@drawable/rounded_btn"
             android:text="Verify"
             android:textAllCaps="false"
@@ -140,7 +137,7 @@
             android:id="@+id/linear_resend_otp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/la_margin_large"
             android:orientation="horizontal"
             android:visibility="gone">
 
@@ -163,36 +160,40 @@
                 app:customFont="lato_regular.ttf"/>
         </LinearLayout>
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/login_relative_layout">
 
     <LinearLayout
-        android:id="@+id/login_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:padding="10dp"
-        android:gravity="center"
+        android:layout_margin="@dimen/la_margin_large"
+        android:padding="@dimen/la_margin_normal"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
         android:visibility="visible">
 
         <ImageView
             android:id="@+id/login_image_logo"
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="@dimen/la_logo_height"
             android:src="@drawable/logo" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="@dimen/la_topmargin">
 
             <appface.brongo.uiwidget.CustomTextView
                 android:id="@+id/register_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="23.3sp"
+                android:textSize="@dimen/text_size_large"
                 android:textColor="#103c76"
                 android:layout_centerHorizontal="true"
                 android:text="Already Registered?"
+                android:visibility="gone"
                 app:customFont="lato_bold.ttf"/>
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
@@ -200,18 +201,21 @@
                 android:text="+91"
                 android:textColor="@color/edit_text_color"
                 android:layout_alignBottom="@+id/input_layout_phone"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="@dimen/la_margin_normal"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:textSize="@dimen/text_size_normal"
+                android:gravity="bottom"
+                android:includeFontPadding="false"
                 app:customFont="lato_regular.ttf"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_phone"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="25dp"
+                android:layout_marginLeft="@dimen/la_phone_left_margin"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/register_text"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/la_margin_large"
                 android:textColorHint="@color/edit_hint_color"
                 app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
 
@@ -227,17 +231,14 @@
                     android:inputType="phone"
                     android:maxLength="10"
                     android:textColor="@color/edit_text_color"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/text_size_normal" />
             </android.support.design.widget.TextInputLayout>
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/invalid_phone"
                 android:shadowColor="#73000000"
-                android:shadowDx="6.123233995736766e-17"
-                android:shadowDy="1"
-                android:shadowRadius="3"
-                android:textSize="12.3sp"
+                android:textSize="@dimen/text_size_vsmall"
                 android:textColor="#ed1c24"
                 android:text="Not a registered number, register as a new broker."
                 android:layout_below="@+id/input_layout_phone"
@@ -249,64 +250,107 @@
             android:id="@+id/loginCheck"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15.3sp"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="#1c1c1c"
             android:text="Remember me"
             android:checked="false"
             />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
             <Button
                 android:id="@+id/login_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-               android:paddingLeft="80dp"
-                android:paddingRight="80dp"
+               android:paddingLeft="@dimen/btn_padding"
+                android:paddingRight="@dimen/btn_padding"
+                android:layout_marginTop="@dimen/la_layout_margin"
                 android:background="@drawable/dialog_button"
-                android:text="Sign In"
+                android:text="Continue"
                 android:textAllCaps="false"
                 android:textColor="#fff" />
-        </LinearLayout>
 
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/contact_new_text"
+            android:paddingTop="@dimen/la_margin_normal"
+            android:paddingLeft="@dimen/la_margin_large"
+            android:paddingRight="@dimen/la_margin_large"
+            android:paddingBottom="@dimen/la_margin_large"
+            android:background="?attr/selectableItemBackground"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:clickable="true">
+
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="#000000"
+                android:gravity="center_horizontal"
+                android:text="Need help?"
+                app:customFont="lato_regular.ttf"
+                />
+
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:shadowColor="#73000000"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_big"
+                android:textColor="#1d4f91"
+                android:text="Contact us"
+                android:layout_marginLeft="@dimen/la_margin_normal"
+                app:customFont="lato_bold.ttf"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_call_relative"
+        android:layout_gravity="center_horizontal"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:visibility="gone"
+        android:layout_margin="@dimen/la_margin_large"
+        android:padding="@dimen/la_margin_normal">
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="#000000"
-            android:letterSpacing="0.01"
-            android:gravity="center_horizontal"
-            android:text="OR"
-            android:layout_marginTop="30dp"
+            android:textSize="@dimen/text_size_small"
+            android:layout_marginLeft="@dimen/cf_margin_normal"
+            android:textColor="#1d4f91"
+            android:text="Brongo Support"
+            android:id="@+id/login_callus_text"
+            app:customFont="lato_regular.ttf"
+            android:layout_marginTop="@dimen/cf_margin_normal"
+            />
+        <appface.brongo.uiwidget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_marginLeft="@dimen/cf_margin_normal"
+            android:layout_marginTop="@dimen/cf_margin_normal"
+            android:textColor="@color/appColor"
+            android:text="+91 9590269269"
+            android:id="@+id/support_phone_text"
+            android:layout_below="@+id/login_callus_text"
             app:customFont="lato_regular.ttf"
             />
+        <ImageView
+            android:layout_width="@dimen/cf_small_image"
+            android:layout_height="@dimen/cf_small_image"
+            android:layout_toRightOf="@+id/login_callus_text"
+            android:layout_marginLeft="@dimen/la_layout_margin"
+            android:layout_centerVertical="true"
+            android:id="@+id/contact_us_call_btn"
+            android:src="@drawable/call_icon"
+            android:padding="@dimen/cf_margin_small"
+            android:background="@drawable/circle_purple"
+            android:clickable="true"/>
 
-        <appface.brongo.uiwidget.CustomTextView
-            android:id="@+id/register_new_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:shadowColor="#73000000"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:gravity="center"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
-            android:layout_marginTop="20dp"
-            android:shadowRadius="3"
-            android:textSize="18sp"
-            android:textColor="#1d4f91"
-            android:text="Register as a new broker"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            app:customFont="lato_bold.ttf"
-            />
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>

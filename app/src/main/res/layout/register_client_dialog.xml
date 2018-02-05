@@ -7,11 +7,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/dialog_margin_large"
         android:orientation="vertical"
         android:layout_centerInParent="true"
         android:background="@drawable/edit_border"
-        android:padding="20dp">
+        android:padding="@dimen/dialog_margin_large">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,9 +22,7 @@
         android:layout_height="wrap_content"
         android:text="Register Client"
         android:shadowColor="#c0ffffff"
-        android:shadowDx="6.123233995736766e-17"
-        android:shadowDy="1"
-        android:textSize="18sp"
+        android:textSize="@dimen/dialog_title_size"
         android:textColor="#88288f"
         android:gravity="center"
         app:customFont="lato_bold.ttf"
@@ -35,7 +33,7 @@
         android:layout_height="wrap_content"
         android:hint="SELECT CLIENT"
         app:met_textColorHint="@color/edit_hint_color"
-        app:met_underlineColor="#000"
+        app:met_underlineColor="@color/edit_line"
         app:met_textColor="@color/edit_text_color"
         app:met_floatingLabelTextColor="@color/edit_hint_color"
         app:met_floatingLabel="normal"
@@ -44,15 +42,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="OR"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="@dimen/dialog_margin_normal"
         android:shadowColor="#73000000"
-        android:shadowDx="6.123233995736766e-17"
-        android:shadowDy="1"
-        android:shadowRadius="3"
-        android:textSize="16sp"
+        android:textSize="@dimen/text_size_big"
         android:textColor="#8f8f8f"
         android:gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/dialog_margin_large"
         app:customFont="lato_regular.ttf"
         android:visibility="visible"
         />
@@ -62,13 +57,10 @@
         android:layout_height="wrap_content"
         android:text="+ADD NEW CLIENT"
         android:gravity="center"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:paddingTop="@dimen/dialog_margin_small"
+        android:paddingBottom="@dimen/dialog_margin_small"
         android:shadowColor="#73000000"
-        android:shadowDx="6.123233995736766e-17"
-        android:shadowDy="1"
-        android:shadowRadius="3"
-        android:textSize="16sp"
+        android:textSize="@dimen/text_size_normal"
         android:textColor="#1d4f91"
         app:customFont="lato_regular.ttf"
         android:id="@+id/client_register_add"
@@ -87,7 +79,7 @@
         android:id="@+id/input_layout_client_clientname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dialog_margin_normal"
         android:textColorHint="@color/edit_hint_color">
 
         <EditText
@@ -103,7 +95,7 @@
         android:id="@+id/input_layout_client_mobile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dialog_margin_normal"
         android:textColorHint="@color/edit_hint_color">
 
         <EditText
@@ -119,7 +111,7 @@
         android:id="@+id/input_layout_client_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dialog_margin_normal"
         android:textColorHint="@color/edit_hint_color">
 
         <EditText
@@ -137,7 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="@dimen/dialog_margin_large">
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -148,7 +140,7 @@
                 android:textAllCaps="false"
                 android:text="Cancel"
                 android:background="@drawable/gray_dialog_btn"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="@dimen/dialog_margin_normal"/>
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -159,7 +151,7 @@
                 android:textAllCaps="false"
                 android:text="Register"
                 android:background="@drawable/dialog_button"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="@dimen/dialog_margin_normal"/>
 
         </LinearLayout>
     </LinearLayout>

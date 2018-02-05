@@ -4,6 +4,6 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:textColor="@color/edit_hint_color"
-    android:padding="10dp"
+    android:padding="@dimen/spinner_normal"
     app:customFont="lato_regular.ttf">
 </appface.brongo.uiwidget.CustomTextView>

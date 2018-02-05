@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -57,6 +58,7 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
     private Button venue_submit, venue_cancel, map_btn;
     private SupportMapFragment mapFragment;
     private Context context;
+    private ScrollView parentLayout;
     private HashMap<String, ArrayList<SignUpModel.SlotModel>> slotMap;
     ArrayList<SignUpModel.SlotModel> slotList;
     ArrayList<String> timelist;
@@ -71,13 +73,14 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_venue);
         initialise();
     }
 
     private void initialise() {
         context = VenueActivity.this;
         selected_date = selected_slot = "";
+        parentLayout = (ScrollView)findViewById(R.id.venue_parent_scroll);
         pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
         date_spinner = (MaterialBetterSpinner) findViewById(R.id.venue_calendar_spinner);
         time_spinner = (MaterialBetterSpinner) findViewById(R.id.venue_time_spinner);
@@ -152,7 +155,7 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
             startActivity(intent);
             finish();
         }else{
-            Utils.showToast(this, "click again to back");
+            Utils.setSnackBar(parentLayout, "click again to back");
         }
 
         this.doubleBackToExitPressedOnce = true;
@@ -216,7 +219,7 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
                     if (intent.resolveActivity(getPackageManager()) != null) {
                         startActivity(intent);
                     }else{
-                        Utils.showToast(context,"No application to open");
+                        Utils.setSnackBar(parentLayout,"No application to open");
                     }
                 }
             }
@@ -259,7 +262,7 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
                             responseString = response.errorBody().string();
                             JSONObject jsonObject = new JSONObject(responseString);
                             String message = jsonObject.optString("message");
-                                Utils.showToast(context, message);
+                                Utils.showToast(context, message,"Error");
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
                         }
@@ -269,7 +272,7 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
                 @Override
                 public void onFailure(Call<SignUpModel.VenueModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -323,7 +326,7 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
                             int statusCode = responseModel.getStatusCode();
                             String message = responseModel.getMessage();
                             if (statusCode == 200) {
-                                Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+                                Utils.setSnackBar(parentLayout,message);
                                 startActivity(new Intent(context,LoginActivity.class));
                                 finish();
                             }
@@ -334,7 +337,7 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
                             responseString = response.errorBody().string();
                             JSONObject jsonObject = new JSONObject(responseString);
                             String message = jsonObject.optString("message");
-                            Utils.showToast(context, message);
+                            Utils.showToast(context, message,"Error");
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
                         }
@@ -345,7 +348,7 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
                 @Override
                 public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{

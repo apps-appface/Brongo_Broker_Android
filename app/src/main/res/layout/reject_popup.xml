@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/drawer_background"
-    android:scrollbars="none"
-    android:padding="20dp">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    android:padding="@dimen/dialog_margin_large">
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,38 +13,38 @@
         android:gravity="center"
         android:id="@+id/reject_text"
         android:textColor="@color/white"
-        android:textSize="16dp"
+        android:textSize="@dimen/text_size_big"
         app:customFont="lato_regular.ttf"/>
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:background="@drawable/edit_border"
             android:gravity="center"
-            android:layout_below="@+id/reject_text"
             android:orientation="vertical"
-            android:paddingBottom="20dp">
+            android:layout_marginTop="@dimen/dialog_margin_large"
+            android:layout_marginRight="@dimen/dialog_margin_large"
+            android:layout_marginLeft="@dimen/dialog_margin_large"
+            android:paddingBottom="@dimen/dialog_margin_large">
 
             <ImageView
                 android:id="@+id/reject_client_image"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="@dimen/prof_pic_size"
+                android:layout_height="@dimen/prof_pic_size"
                 android:scaleType="fitXY"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="@dimen/dialog_margin_large" />
 
             <appface.brongo.uiwidget.CustomTextView
                 android:id="@+id/reject_client_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/dialog_margin_large"
                 android:gravity="center"
-                android:text="Katey D'couto"
                 android:shadowColor="#c0ffffff"
-                android:shadowDx="6.123233995736766e-17"
-                android:shadowDy="1"
-                android:textSize="23.3sp"
+                android:textSize="@dimen/text_size_big"
                 android:textColor="#163d70"
                 app:customFont="lato_bold.ttf"/>
 
@@ -57,11 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Koramangala"
                 android:shadowColor="#c0ffffff"
-                android:shadowDx="6.123233995736766e-17"
-                android:shadowDy="1"
-                android:textSize="16.7sp"
+                android:textSize="@dimen/text_size_normal"
                 android:textColor="#8e8e8e"
                 app:customFont="lato_regular.ttf"/>
 
@@ -69,7 +62,7 @@
                 android:id="@+id/noti_star_linear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/dialog_margin_normal"
                 android:gravity="center"
                 android:orientation="horizontal">
                 <RatingBar
@@ -81,7 +74,6 @@
                     android:numStars="5"
                     android:layout_gravity="center_horizontal"
                     android:progressTint="@color/star_yellow"
-                    android:rating="3.0"
                     android:stepSize="0.5" />
             </LinearLayout>
 
@@ -89,48 +81,58 @@
                 android:id="@+id/reject_checkbox1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="@dimen/dialog_margin_normal"
+                android:layout_marginTop="@dimen/dialog_margin_large"
+                android:layout_marginRight="@dimen/dialog_margin_normal"
                 android:text="I'm busy working on \n other leads"
-                android:textColor="#c1b9c2"
-                android:textSize="18dp" />
+                android:textColor="#c1b9c2" />
 
             <CheckBox
                 android:id="@+id/reject_checkbox2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="@dimen/dialog_margin_normal"
+                android:layout_marginRight="@dimen/dialog_margin_normal"
                 android:text="Budget is low"
-                android:textColor="#c1b9c2"
-                android:textSize="18dp" />
+                android:textColor="#c1b9c2" />
 
             <CheckBox
                 android:id="@+id/reject_checkbox3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="@dimen/dialog_margin_normal"
+                android:layout_marginRight="@dimen/dialog_margin_normal"
                 android:text="Difficult to find property"
-                android:textColor="#c1b9c2"
-                android:textSize="18dp" />
+                android:textColor="#c1b9c2" />
 
             <Button
                 android:id="@+id/lead_reject_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/dialog_margin_large"
                 android:background="@drawable/dialog_button"
                 android:textColor="@color/white"
+                android:paddingLeft="@dimen/btn_padding"
+                android:paddingRight="@dimen/btn_padding"
                 android:textAllCaps="false"
-                android:textSize="18dp"
                 android:text="Submit" />
 
         </LinearLayout>
-
+        <appface.brongo.uiwidget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/premium_back"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/dialog_margin_layout"
+            android:text="PREMIUM"
+            android:gravity="center"
+            android:id="@+id/drop_plan"
+            android:padding="@dimen/dialog_margin_small"
+            android:layout_marginRight="@dimen/dialog_margin_small"
+            android:layout_alignParentRight="true"
+            app:customFont="lato_bold.ttf"
+            />
     </RelativeLayout>
-    </ScrollView>
+    </LinearLayout>

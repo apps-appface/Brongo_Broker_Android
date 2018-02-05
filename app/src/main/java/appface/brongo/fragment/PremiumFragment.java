@@ -4,7 +4,6 @@ package appface.brongo.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import appface.brongo.R;
-import appface.brongo.activity.ReminderActivity;
 import appface.brongo.adapter.CustomAdapter;
 import appface.brongo.model.PaymentHashModel;
 import appface.brongo.model.PaymentHashResponseModel;
@@ -59,6 +58,7 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
     private TextView toolbar_title;
     private Toolbar toolbar;
     private Context context;
+    private RelativeLayout parentLayout;
     private int Task_completed = 10000;
     private RecyclerView premium_condition_recycle;
    private CustomAdapter premiumAdapter;
@@ -81,6 +81,7 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
     private void initialise(View view){
         context = getActivity();
         pref = context.getSharedPreferences(AppConstants.PREF_NAME,0);
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         plans_linear = (LinearLayout)view.findViewById(R.id.premium_sub_linear);
         edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
         delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
@@ -329,7 +330,7 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
                                     new AllUtils().getTokenRefresh(context);
 
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -343,7 +344,7 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
 
                 @Override
                 public void onFailure(Call<PaymentHashModel.CurrentPlanModel> call, Throwable t) {
-                    Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                 /*if(pd.isShowing()) {
                     pd.dismiss();

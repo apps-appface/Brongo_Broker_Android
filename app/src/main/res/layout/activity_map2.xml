@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/map_parent_relative"
     tools:context="appface.brongo.activity.MapActivity">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/autoplace_relative">
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map_picker"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -14,13 +19,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/map_done_btn"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingRight="@dimen/ma_margin_large"
+        android:paddingLeft="@dimen/ma_margin_large"
+        android:paddingTop="@dimen/ma_margin_normal"
+        android:paddingBottom="@dimen/ma_margin_normal"
         android:text="done"
-        android:textAllCaps="false"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
-
-</FrameLayout>
+        android:textAllCaps="false" />
+    </FrameLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/edit_border"
+        android:id="@+id/autoplace_relative"
+        >
+    <fragment android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        android:id="@+id/place_autocomplete_fragment" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -3,7 +3,6 @@ package appface.brongo.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,10 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -44,18 +40,15 @@ import com.applozic.mobicomkit.api.account.user.MobiComUserPreference;
 import com.applozic.mobicomkit.uiwidgets.conversation.ConversationUIService;
 import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.util.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import appface.brongo.R;
 import appface.brongo.activity.Menu_Activity;
-import appface.brongo.activity.ReferActivity;
 import appface.brongo.activity.ReminderActivity;
 import appface.brongo.model.ApiModel;
 import appface.brongo.model.ClientDetailsModel;
@@ -63,13 +56,11 @@ import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.uiwidget.FlowLayout;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.CircleTransform;
 import appface.brongo.util.CustomApplicationClass;
 import appface.brongo.util.DatabaseHandler;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
-import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -85,7 +76,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
     private int status = 50;
     private static ArrayList<ApiModel.BuyAndRentModel> itemList = new ArrayList<>();
     private static ViewListener viewListener1;
-    private int screenWidth,screenHeight;
+    private int screenWidth,screenHeight,remaining=10;
     private RelativeLayout relativeLayout;
     private ArrayList<String> arrayList,timeList,remaininglist;
     private SharedPreferences pref;
@@ -120,9 +111,10 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         b.putStringArrayList("timelist",arrayList.get(position).getStatusUpdatedTimes());
         b.putStringArrayList("property_list",arrayList.get(position).getProperty());
         b.putString("meeting_date",arrayList.get(position).getDateOfVisit());
+        b.putString("meeting_location",arrayList.get(position).getMeetAt());
         b.putString("meeting_time",arrayList.get(position).getTimeOfVisit());
         b.putString("meeting_notes",arrayList.get(position).getNote());
-        b.putBoolean("isClientRated",arrayList.get(position).isClientRated());
+        b.putBoolean("isBrokerRated",arrayList.get(position).isBrokerRated());
         if(arrayList.get(position).getLatLong().size()>1) {
             b.putDouble("meeting_lat", arrayList.get(position).getLatLong().get(0));
             b.putDouble("meeting_long", arrayList.get(position).getLatLong().get(1));
@@ -155,7 +147,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         ArrayList<String> completedlist = getArguments().getStringArrayList("completedlist");
        remaininglist = getArguments().getStringArrayList("remainglist");
         ArrayList<String> keylist = getArguments().getStringArrayList("property_list");
-        isClientRated = getArguments().getBoolean("isClientRated",false);
+        isClientRated = getArguments().getBoolean("isBrokerRated",false);
         if(completedlist.size() != 0) {
             arrayList.addAll(completedlist);
         }if(remaininglist.size() != 0) {
@@ -271,7 +263,10 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
     }
     private void addLayout(final ArrayList<String> arrayList) {
         if(!isClientRated) {
-            if (remaininglist.size() < 3) {
+            if(arrayList.size()>0){
+                remaining = arrayList.size()-1-status;
+            }
+            if (remaining < 3) {
                 feedBackBtn.setVisibility(View.VISIBLE);
             } else {
                 feedBackBtn.setVisibility(View.GONE);
@@ -349,7 +344,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                 statusChangedDialog(position1, arrayList.get(status), arrayList.get(status + 1));
                             }
                         } else {
-                            Utils.showToast(context, "First select status '" + arrayList.get(status + 1) + "'");
+                            viewListener1.alert("First select status '" + arrayList.get(status + 1) + "'");
                         }
                     }
                 });
@@ -364,6 +359,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                         intent.putExtra("meeting_notes",bundle.getString("meeting_notes"));
                         intent.putExtra("meeting_lat",bundle.getDouble("meeting_lat"));
                         intent.putExtra("meeting_long",bundle.getDouble("meeting_long"));
+                        intent.putExtra("meeting_location",bundle.getString("meeting_location"));
                         startActivity(intent);
                     }
                 });
@@ -444,7 +440,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                     new AllUtils().getTokenRefresh(context);
                                     callClient(lead_mobile, propertyId);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
 
                             } catch (IOException | JSONException e) {
@@ -457,7 +453,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Toast.makeText(context, "some error occured", Toast.LENGTH_SHORT);
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         } else {
@@ -514,7 +510,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                 String message = jsonObject.optString("message");
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 200 && message.equalsIgnoreCase("Lead Status Updated Successfully")) {
-                                    Utils.showToast(context, message);
+                                   viewListener1.alert(message);
                                     status = position1;
                                     timeList.add("NOW");
                                     mLinearLayout.removeAllViews();
@@ -534,7 +530,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                     new AllUtils().getTokenRefresh(context);
                                     updateLeadStatus(position1);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error" );
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -546,7 +542,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{

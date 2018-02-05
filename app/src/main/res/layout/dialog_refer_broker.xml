@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:gravity="center"
-    android:padding="30dp">
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="@dimen/dialog_margin_layout">
 
     <appface.brongo.uiwidget.CustomTextView
         android:id="@+id/textView6"
@@ -15,7 +20,7 @@
         android:gravity="center"
         android:text="Refer a Broker"
         android:textColor="@color/appColor"
-        android:textSize="25sp"
+        android:textSize="@dimen/dialog_title_size"
         app:customFont="lato_bold.ttf" />
 
     <android.support.design.widget.TextInputLayout
@@ -23,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColorHint="@color/edit_hint_color"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/dialog_margin_large"
         android:imeOptions="actionNext"
         app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
         <EditText
@@ -53,9 +58,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/dialog_button"
-        android:layout_marginTop="20dp"
-        android:paddingRight="60dp"
-        android:paddingLeft="60dp"
+        android:layout_marginTop="@dimen/dialog_margin_large"
+        android:paddingRight="@dimen/dialog_margin_sixty"
+        android:paddingLeft="@dimen/dialog_margin_sixty"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:text="Submit"
@@ -65,48 +70,60 @@
         android:layout_height="wrap_content"
         android:text="OR CHOOSE FROM"
         android:textColor="@color/edit_hint_color"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/dialog_margin_large"
         android:gravity="center"
         app:customFont="lato_regular.ttf"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/refer_phonebook"
-            android:layout_weight="1"
-            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/dialog_margin_layout"
+            android:layout_marginTop="@dimen/dialog_margin_normal"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:drawableTop="@drawable/ic_phonebook"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="8dp"
-            android:text="Phonebook"
-            android:textAllCaps="false"
-            android:textColor="@color/round_empty_gray" />
-        <Button
+            android:clickable="true">
+            <ImageView
+                android:layout_width="@dimen/dialog_round_icon_size"
+                android:layout_height="@dimen/dialog_round_icon_size"
+                android:src="@drawable/ic_phonebook"
+                android:id="@+id/refer_phone_imageview"
+                android:layout_centerHorizontal="true"/>
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/refer_phone_imageview"
+                android:text="Phonebook"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/round_empty_gray"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/refer_whatsapp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dialog_margin_layout"
+            android:layout_marginTop="@dimen/dialog_margin_normal"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:drawableTop="@drawable/ic_whatsapp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="8dp"
-            android:text="Whatsapp"
-            android:textAllCaps="false"
-            android:textColor="@color/round_empty_gray" />
+            android:clickable="true">
+            <ImageView
+                android:layout_width="@dimen/dialog_round_icon_size"
+                android:layout_height="@dimen/dialog_round_icon_size"
+                android:src="@drawable/ic_whatsapp"
+                android:id="@+id/refer_whatsapp_imageview"
+                android:layout_centerHorizontal="true"/>
+            <appface.brongo.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/refer_whatsapp_imageview"
+                android:text="Whatsapp"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/round_empty_gray"/>
+        </RelativeLayout>
 
     </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

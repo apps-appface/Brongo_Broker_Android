@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/edit_border"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginTop="@dimen/builder_normal"
+    android:layout_marginLeft="@dimen/builder_large"
+    android:layout_marginRight="@dimen/builder_large"
+    android:layout_marginBottom="@dimen/builder_normal"
     >
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,12 +18,12 @@
             android:layout_height="wrap_content"
             android:background="@drawable/personal_invent_tag"
             android:id="@+id/personal_tag"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/builder_normal"
             android:text="Personal"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_small"
             android:textColor="#ffffff"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="@dimen/builder_small"
             app:customFont="lato_regular.ttf"
             android:visibility="gone"/>
     <LinearLayout
@@ -31,18 +31,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/linear_item"
-      android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
+      android:layout_marginTop="@dimen/builder_large"
+        android:layout_marginLeft="@dimen/builder_large"
+        android:layout_marginRight="@dimen/builder_large"
+        android:layout_marginBottom="@dimen/builder_normal"
         android:clickable="true">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/prof_pic_size"
+            android:layout_height="@dimen/prof_pic_size"
             android:id="@+id/invent_personal_image"
             android:scaleType="fitXY"
             android:layout_alignParentTop="true"
@@ -52,52 +52,56 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#c0ffffff"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_big"
             android:textColor="#163d70"
             android:layout_toRightOf="@+id/invent_personal_image"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/builder_normal"
             android:id="@+id/invent_personal_name"
             app:customFont="lato_bold.ttf"/>
+        <ImageView
+            android:layout_width="@dimen/builder_icon_size"
+            android:layout_height="@dimen/builder_icon_size"
+            android:layout_toRightOf="@+id/invent_personal_image"
+            android:layout_marginLeft="@dimen/builder_normal"
+            android:layout_marginTop="@dimen/builder_small"
+            android:padding="@dimen/builder_small"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_call_icon"
+            android:layout_below="@+id/invent_personal_name"
+            android:id="@+id/per_inven_phone"/>
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#c0ffffff"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="#6e6e6e"
             android:gravity="center_vertical"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/invent_personal_image"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/builder_small"
+            android:layout_alignTop="@+id/per_inven_phone"
+            android:layout_toRightOf="@+id/per_inven_phone"
+            android:layout_marginLeft="@dimen/builder_small"
             android:id="@+id/invent_pesonal_mobile"
-            android:drawableLeft="@drawable/ic_call_icon"
             android:layout_below="@+id/invent_personal_name"
             app:customFont="lato_regular.ttf"/>
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#73000000"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:shadowRadius="3"
-            android:textSize="13.3sp"
+            android:textSize="@dimen/text_size_small"
             android:textColor="#ffffff"
-            android:padding="3sp"
+            android:padding="@dimen/builder_small"
             android:textAllCaps="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/builder_normal"
             android:layout_toRightOf="@+id/invent_personal_image"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/builder_normal"
             android:id="@+id/invent_pesonal_postingtype"
             android:layout_below="@+id/invent_pesonal_mobile"
             app:customFont="lato_bold.ttf"/>
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/view_small"
             android:background="@color/round_empty_gray"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/builder_small"
          android:layout_below="@+id/invent_pesonal_postingtype"
             android:layout_alignLeft="@+id/invent_pesonal_postingtype"/>
     </RelativeLayout>
@@ -105,130 +109,80 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/invent_personal_flowlayout"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/builder_normal"
             app:flowDirection="leftToRight"
-            app:elementSpacing="4dp"
-            app:lineSpacing="10dp">
-        <appface.brongo.uiwidget.CustomTextView
-            android:id="@+id/invent_personal_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_purple"
-            android:gravity="center"
-            android:padding="5sp"
-            android:textAllCaps="false"
-            android:shadowColor="#73000000"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:shadowRadius="3"
-            android:textSize="13sp"
-            android:textColor="#33609b"
-            android:visibility="gone"
-            app:customFont="lato_regular.ttf"/>
-
-        <appface.brongo.uiwidget.CustomTextView
-            android:id="@+id/invent_personal_bhk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_purple"
-            android:padding="5sp"
-            android:gravity="center"
-            android:shadowColor="#73000000"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:shadowRadius="3"
-            android:textSize="13sp"
-            android:textColor="#33609b"
-            android:visibility="gone"
-            app:customFont="lato_regular.ttf"/>
-
-        <appface.brongo.uiwidget.CustomTextView
-            android:id="@+id/invent_personal_budget"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_purple"
-            android:padding="5sp"
-            android:gravity="center"
-            android:textAllCaps="false"
-            android:shadowColor="#73000000"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:shadowRadius="3"
-            android:textSize="13sp"
-            android:textColor="#33609b"
-            android:visibility="gone"
-            app:customFont="lato_regular.ttf"/>
-            <appface.brongo.uiwidget.CustomTextView
-                android:id="@+id/invent_personal_prop_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_purple"
-                android:padding="5sp"
-                android:textAllCaps="false"
-                android:gravity="center"
-                android:shadowColor="#73000000"
-                android:shadowDx="6.123233995736766e-17"
-                android:shadowDy="1"
-                android:shadowRadius="3"
-                android:textSize="13sp"
-                android:textColor="#33609b"
-                android:visibility="gone"
-                app:customFont="lato_regular.ttf"/>
-
-            <appface.brongo.uiwidget.CustomTextView
-                android:id="@+id/invent_personal_prop_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_purple"
-                android:padding="5sp"
-                android:gravity="center"
-                android:textAllCaps="false"
-                android:shadowColor="#73000000"
-                android:shadowDx="6.123233995736766e-17"
-                android:shadowDy="1"
-                android:shadowRadius="3"
-                android:textSize="13sp"
-                android:textColor="#33609b"
-                android:visibility="gone"
-                app:customFont="lato_regular.ttf"/>
+            app:elementSpacing="@dimen/element_spacing"
+            app:lineSpacing="@dimen/builder_normal">
         </appface.brongo.uiwidget.FlowLayout>
     </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="end"
             android:layout_below="@+id/linear_item"
             android:orientation="horizontal">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_edit_icon"
-                android:id="@+id/edit_image"
-                android:paddingBottom="5dp"
-                android:paddingLeft="20dp"
-                android:layout_marginRight="5dp"
-                android:paddingTop="5dp"
-                android:text="Edit"
-                android:textAllCaps="false"
-                android:textColor="#103c76"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"/>
-            <Button
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:drawableLeft="@drawable/ic_delete_icon"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/builder_large"
+                android:paddingTop="@dimen/builder_normal"
+                android:id="@+id/edit_image"
+                android:gravity="center"
+                android:layout_toLeftOf="@+id/delete_image">
+                <ImageView
+                    android:layout_width="@dimen/builder_icon_size"
+                    android:layout_height="@dimen/builder_icon_size"
+                    android:src="@drawable/ic_edit_icon"
+                    android:padding="@dimen/builder_small"
+                    android:id="@+id/edit_imageview"/>
+                <appface.brongo.uiwidget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edit"
+                    android:padding="@dimen/da_small_margin"
+                    android:textSize="@dimen/text_size_small"
+                    android:layout_centerVertical="true"
+                    android:textColor="#103c76"
+                    android:includeFontPadding="false"
+                    app:customFont="lato_regular.ttf"
+                    android:layout_alignParentLeft="true"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:paddingLeft="@dimen/builder_large"
+                android:paddingTop="@dimen/builder_normal"
+                android:layout_alignParentRight="true"
                 android:id="@+id/delete_image"
-                android:paddingBottom="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
-                android:paddingLeft="10dp"
-                android:layout_marginLeft="5dp"
-                android:text="Delete"
-                android:textAllCaps="false"
-                android:textColor="#103c76" />
-        </LinearLayout>
+                android:layout_marginRight="@dimen/builder_normal">
+                <ImageView
+                    android:layout_width="@dimen/builder_icon_size"
+                    android:layout_height="@dimen/builder_icon_size"
+                    android:src="@drawable/ic_delete_icon"
+                    android:padding="@dimen/builder_small"
+                    android:id="@+id/delete_imageview"/>
+                <appface.brongo.uiwidget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delete"
+                    android:padding="@dimen/da_small_margin"
+                    android:textSize="@dimen/text_size_small"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/delete_imageview"
+                    android:textColor="#103c76"
+
+                    android:includeFontPadding="false"
+                    app:customFont="lato_regular.ttf"
+                    android:layout_alignParentLeft="true"/>
+            </LinearLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
 </LinearLayout>

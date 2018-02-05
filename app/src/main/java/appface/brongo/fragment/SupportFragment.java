@@ -17,8 +17,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +31,6 @@ import appface.brongo.R;
 import appface.brongo.activity.WalkThroughActivity;
 import appface.brongo.adapter.SubmenuAdapter;
 import appface.brongo.model.ApiModel;
-import appface.brongo.model.ClientDetailsModel;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RecyclerItemClickListener;
@@ -53,6 +52,7 @@ public class SupportFragment extends Fragment implements NoInternetTryConnectLis
     private Toolbar toolbar;
     private ImageView edit_icon,delete_icon,add_icon;
     private TextView toolbar_title;
+    private RelativeLayout parentLayout;
     private SharedPreferences pref;
 
     public SupportFragment() {
@@ -66,6 +66,7 @@ public class SupportFragment extends Fragment implements NoInternetTryConnectLis
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_support, container, false);
         context = getActivity();
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         arrayList = new ArrayList<String>(Arrays.asList("Take me to the app walkthrough", "Contact Brongo Customer Support", "I want to unsubscribe"));
         pref = context.getSharedPreferences(AppConstants.PREF_NAME,0);
         RecyclerView support_recycle = (RecyclerView)view.findViewById(R.id.support_recycle);
@@ -161,7 +162,7 @@ public class SupportFragment extends Fragment implements NoInternetTryConnectLis
                                     responseString = response.errorBody().string();
                                     JSONObject jsonObject = new JSONObject(responseString);
                                     String message = jsonObject.optString("message");
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -172,7 +173,7 @@ public class SupportFragment extends Fragment implements NoInternetTryConnectLis
                     @Override
                     public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.showToast(context, "Some Problem Occured");
+                        Utils.showToast(context, t.getMessage().toString(),"Failure");
                     }
                 });
             } else {

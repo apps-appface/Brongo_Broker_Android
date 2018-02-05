@@ -6,8 +6,8 @@
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/hf_margin_normal"
         android:background="#ededed"
         android:id="@+id/help_reycleview">
     </android.support.v7.widget.RecyclerView>

@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="20dp"
-    android:paddingTop="20dp">
+    android:paddingBottom="@dimen/noti_bottom_progress_height"
+    android:paddingTop="@dimen/noti_bottom_progress_height">
 
     <ProgressBar
         android:id="@+id/progressBar1"

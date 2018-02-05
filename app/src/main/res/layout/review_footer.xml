@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/footer_text"
-    android:textSize="18sp"
+    android:textSize="@dimen/text_size_big"
     android:textColor="@color/appColor"
     android:text="+ See more"
     app:customFont="lato_bold.ttf"

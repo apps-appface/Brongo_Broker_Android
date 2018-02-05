@@ -34,7 +34,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private FooterListener footerListener;
     private ArrayList<ApiModel.ReviewChild> reviewChildArrayList;
     private Context context;
-    private boolean isVisible = true;
+    private boolean isVisible = false;
     private ArrayList<Integer> starCountList;
 
     public ReviewAdapter(Context context, ArrayList<ApiModel.ReviewChild> reviewChildArrayList,ArrayList<Integer> starCountList,FooterListener footerListener) {
@@ -112,56 +112,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 itemViewHolder.review1.setText(reviewChildArrayList.get(position - 1).getReview().get(0));
                 itemViewHolder.review1.setVisibility(View.VISIBLE);
             }
-               /* case 2:
-                    itemViewHolder.review1.setText(reviewChildArrayList.get(position-1).getReview().get(0));
-                    itemViewHolder.review1.setVisibility(View.VISIBLE);
-                    itemViewHolder.review2.setText(reviewChildArrayList.get(position-1).getReview().get(1));
-                    itemViewHolder.review2.setVisibility(View.VISIBLE);
-                    break;
-                case 3:
-                    itemViewHolder.review1.setText(reviewChildArrayList.get(position-1).getReview().get(0));
-                    itemViewHolder.review1.setVisibility(View.VISIBLE);
-                    itemViewHolder.review2.setText(reviewChildArrayList.get(position-1).getReview().get(1));
-                    itemViewHolder.review2.setVisibility(View.VISIBLE);
-                    itemViewHolder.review3.setText(reviewChildArrayList.get(position-1).getReview().get(2));
-                    itemViewHolder.review3.setVisibility(View.VISIBLE);
-                    break;
-                case 4:
-                    itemViewHolder.review1.setText(reviewChildArrayList.get(position-1).getReview().get(0));
-                    itemViewHolder.review1.setVisibility(View.VISIBLE);
-                    itemViewHolder.review2.setText(reviewChildArrayList.get(position-1).getReview().get(1));
-                    itemViewHolder.review2.setVisibility(View.VISIBLE);
-                    itemViewHolder.review3.setText(reviewChildArrayList.get(position-1).getReview().get(2));
-                    itemViewHolder.review3.setVisibility(View.VISIBLE);
-                    itemViewHolder.review4.setText(reviewChildArrayList.get(position-1).getReview().get(3));
-                    itemViewHolder.review4.setVisibility(View.VISIBLE);
-                    break;
-                case 5:
-                    itemViewHolder.review1.setText(reviewChildArrayList.get(position-1).getReview().get(0));
-                    itemViewHolder.review1.setVisibility(View.VISIBLE);
-                    itemViewHolder.review2.setText(reviewChildArrayList.get(position-1).getReview().get(1));
-                    itemViewHolder.review2.setVisibility(View.VISIBLE);
-                    itemViewHolder.review3.setText(reviewChildArrayList.get(position-1).getReview().get(2));
-                    itemViewHolder.review3.setVisibility(View.VISIBLE);
-                    itemViewHolder.review4.setText(reviewChildArrayList.get(position-1).getReview().get(3));
-                    itemViewHolder.review4.setVisibility(View.VISIBLE);
-                    itemViewHolder.review5.setText(reviewChildArrayList.get(position-1).getReview().get(4));
-                    itemViewHolder.review5.setVisibility(View.VISIBLE);
-                    break;
-                case 6:
-                    itemViewHolder.review1.setText(reviewChildArrayList.get(position-1).getReview().get(0));
-                    itemViewHolder.review1.setVisibility(View.VISIBLE);
-                    itemViewHolder.review2.setText(reviewChildArrayList.get(position-1).getReview().get(1));
-                    itemViewHolder.review2.setVisibility(View.VISIBLE);
-                    itemViewHolder.review3.setText(reviewChildArrayList.get(position-1).getReview().get(2));
-                    itemViewHolder.review3.setVisibility(View.VISIBLE);
-                    itemViewHolder.review4.setText(reviewChildArrayList.get(position-1).getReview().get(3));
-                    itemViewHolder.review4.setVisibility(View.VISIBLE);
-                    itemViewHolder.review5.setText(reviewChildArrayList.get(position-1).getReview().get(4));
-                    itemViewHolder.review5.setVisibility(View.VISIBLE);
-                    itemViewHolder.review6.setText(reviewChildArrayList.get(position-1).getReview().get(5));
-                    itemViewHolder.review6.setVisibility(View.VISIBLE);
-                    break;*/
             itemViewHolder.review_ratingbar.setRating(reviewChildArrayList.get(position-1).getRating());
             itemViewHolder.comment.setText("");
         }
@@ -211,18 +161,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private class ItemViewHolder extends RecyclerView.ViewHolder {
-        TextView review1,review2,review3,review4,review5,comment,review_time,review6;
+        TextView review1,comment,review_time;
         RatingBar review_ratingbar;
         FlowLayout flowLayout;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             review1 = (TextView) itemView.findViewById(R.id.review_review1);
-            review2 = (TextView) itemView.findViewById(R.id.review_review2);
-            review3 = (TextView) itemView.findViewById(R.id.review_review3);
-            review4 = (TextView) itemView.findViewById(R.id.review_review4);
-            review5 = (TextView) itemView.findViewById(R.id.review_review5);
-            review6 = (TextView) itemView.findViewById(R.id.review_review6);
             comment = (TextView) itemView.findViewById(R.id.review_comment);
             review_time = (TextView) itemView.findViewById(R.id.review_child_time);
             flowLayout = (FlowLayout)itemView.findViewById(R.id.review_flowlayout);

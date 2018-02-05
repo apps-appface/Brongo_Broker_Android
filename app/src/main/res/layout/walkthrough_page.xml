@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="30dp"
-        android:layout_marginTop="20dp">
+        android:padding="@dimen/walkthrough_layout_margin"
+        android:layout_marginTop="@dimen/walkthrough_layout_margin">
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,18 +24,15 @@
         android:orientation="vertical"
         android:id="@+id/walk_text"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="80dp">
+        android:layout_marginLeft="@dimen/walkthrough_layout_margin"
+        android:layout_marginRight="@dimen/walkthrough_layout_margin"
+        android:layout_marginBottom="@dimen/walkthrough_bottom_padding">
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/walk_title"
             android:shadowColor="#73000000"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:shadowRadius="3"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_ebig"
             android:textColor="#ffffff"
             android:text="@string/silver"
             android:gravity="center_vertical"
@@ -46,12 +43,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/walk_sub_title"
             android:gravity="center_vertical"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/deal_normal"
             android:text="@string/medal_note"
             android:shadowColor="#c0ffffff"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:textSize="15sp"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="#80ffffff"
             app:customFont="lato_regular.ttf"
             />

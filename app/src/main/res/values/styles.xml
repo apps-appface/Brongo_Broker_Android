@@ -95,5 +95,9 @@
         <item name="android:textColor">@color/edit_hint_color</item>
     </style>
     <style parent="@android:style/Widget" name="Widget.GifView"/>
+    <style name="DialogTheme">
+        <item name="android:windowEnterAnimation">@anim/slide_left</item>
+        <item name="android:windowExitAnimation">@anim/slide_right</item>
+    </style>
 
 </resources>

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -27,7 +28,6 @@ import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
@@ -45,6 +45,7 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
     private ImageView edit_icon,delete_icon,add_icon;
     private TextView toolbar_title;
     private Toolbar toolbar;
+    private RelativeLayout parentLayout;
     private ArrayList<ApiModel.BuyAndRentModel> openList,closeList;
    private HistoricalAdapter adapter1,adapter2;
     private SharedPreferences pref;
@@ -85,6 +86,7 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
     }
     private void initialise(View view){
         context = getActivity();
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         pref = context.getSharedPreferences(AppConstants.PREF_NAME,0);
         his_recycle1 = (RecyclerView)view.findViewById(R.id.his_recycle_open_deal);
         his_recycle2 = (RecyclerView)view.findViewById(R.id.his_recycle_close_deal);
@@ -156,7 +158,7 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
                                     new AllUtils().getTokenRefresh(context);
                                     populateList();
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error" );
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -168,7 +170,7 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
                 @Override
                 public void onFailure(Call<ApiModel.OpenDealModels> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{

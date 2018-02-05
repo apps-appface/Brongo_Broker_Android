@@ -4,7 +4,6 @@ package appface.brongo.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.format.DateFormat;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
 import android.text.style.ClickableSpan;
@@ -29,14 +27,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.util.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,7 +39,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import appface.brongo.R;
-import appface.brongo.activity.MainActivity;
 import appface.brongo.activity.Menu_Activity;
 import appface.brongo.adapter.CustomAdapter;
 import appface.brongo.model.ApiModel;
@@ -52,13 +46,10 @@ import appface.brongo.model.PaymentHashModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.CircleTransform;
 import appface.brongo.util.CustomApplicationClass;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
-import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,6 +62,7 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
     private SharedPreferences pref;
     private TextView toolbar_title;
     private Toolbar toolbar;
+    private RelativeLayout parentLayout;
     private int Task_completed = 1000;
     private int trial_position=100,basic_position=100,premium_position=100;
     private String trial_tc,basic_tc,premium_tc,plan_tc,cur_plan_id="";
@@ -104,6 +96,7 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
     }
     private void initialiseView(View view){
         context = getActivity();
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         trial_tc = basic_tc =premium_tc = plan_tc="";
         pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
         arrayList = new ArrayList<>();
@@ -203,7 +196,7 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
                                     new AllUtils().getTokenRefresh(context);
                                     fetchSubscriptionPlans();
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -217,7 +210,7 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
 
                 @Override
                 public void onFailure(Call<ApiModel.SubscriptionModel> call, Throwable t) {
-                    Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                 /*if(pd.isShowing()) {
                     pd.dismiss();
@@ -446,7 +439,7 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
                                     new AllUtils().getTokenRefresh(context);
                                     fetchCurrentPlan(cur_plan_id);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -460,7 +453,7 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
 
                 @Override
                 public void onFailure(Call<PaymentHashModel.CurrentPlanModel> call, Throwable t) {
-                    Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                 /*if(pd.isShowing()) {
                     pd.dismiss();

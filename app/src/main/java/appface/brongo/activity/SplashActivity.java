@@ -23,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class SplashActivity extends AppCompatActivity {
     public static final int REQUEST_DEVICE_ID_PERMISSIONS = 112;
     private static final long ANIMATION_TIME = 1500;
     private Context context;
+    private LinearLayout parentLayout;
     private static int SPLASH_TIME_OUT = 2700;
     private TextView title, subTitle;
 
@@ -55,6 +57,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         context = SplashActivity.this;
+        parentLayout = (LinearLayout)findViewById(R.id.splash_parent_linear);
         title = (TextView) findViewById(R.id.textview);
         subTitle = (TextView) findViewById(R.id.subtitle);
         pref = getSharedPreferences(AppConstants.PREF_NAME,0);
@@ -146,7 +149,7 @@ public class SplashActivity extends AppCompatActivity {
                     if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) {
                      permissionDialog();
                     } else {
-                        Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
+                        Utils.setSnackBar(parentLayout, "Permission Denied");
                         finish();
                     }
                 }

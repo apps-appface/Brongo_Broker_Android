@@ -1,48 +1,35 @@
 package appface.brongo.activity;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import appface.brongo.R;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.CircleTransform;
 import appface.brongo.util.CustomApplicationClass;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
-import de.hdodenhof.circleimageview.CircleImageView;
-import ng.max.slideview.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,6 +38,7 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private Context context;
+    private LinearLayout parentLayout;
     private ArrayList<ApiModel.ProfileObject> mSelectedList;
     private ArrayList<ApiModel.SubscriptionObject> arrayList;
     private ImageView  prof_rera_certificate, prof_id_proof, prof_address_proof,profile_back;
@@ -123,6 +111,7 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
     }
     private void initialise(){
         context =this;
+        parentLayout = (LinearLayout)findViewById(R.id.profile_parent_linear);
         pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
         arrayList = new ArrayList<>();
         mSelectedList = new ArrayList<>();
@@ -302,7 +291,7 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
                                     new AllUtils().getTokenRefresh(context);
                                     callProfileApi();
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -314,7 +303,7 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
                 @Override
                 public void onFailure(Call<ApiModel.ProfileModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{

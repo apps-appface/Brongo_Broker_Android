@@ -2,9 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="10dp"
-    android:paddingRight="10dp"
-    android:paddingLeft="10dp"
+    android:paddingTop="@dimen/mf_margin_normal"
+    android:paddingRight="@dimen/mf_margin_normal"
+    android:paddingLeft="@dimen/mf_margin_normal"
     android:background="#ededed"
     tools:context="appface.brongo.fragment.MatchingPropertyFragment">
         <android.support.v7.widget.RecyclerView

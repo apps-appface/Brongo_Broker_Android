@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="3dp"
-    android:layout_margin="3dp"
+    android:padding="@dimen/deal_small"
+    android:layout_margin="@dimen/deal_small"
     >
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/deal_image_size"
+        android:layout_height="@dimen/deal_image_size"
         android:id="@+id/deal_image"
         android:scaleType="fitXY" />
 

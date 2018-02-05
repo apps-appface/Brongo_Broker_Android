@@ -13,9 +13,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/beforedeal_btn"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/faq_btn_margin"
             android:text="Before Deal"
-            android:textStyle="bold"
             android:background="@drawable/dialog_button"
             android:textColor="@color/white"/>
         <Button
@@ -23,9 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/Whiledeal_btn"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/faq_btn_margin"
             android:text="OPEN DEAL"
-            android:textStyle="bold"
             android:background="@drawable/button_change"
             android:textColor="@color/appColor"/>
         <Button
@@ -33,9 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/afterdeal_btn"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/faq_btn_margin"
             android:text="CLOSED DEAL"
-            android:textStyle="bold"
             android:background="@drawable/button_change"
             android:textColor="@color/appColor"/>
     </LinearLayout>

@@ -10,12 +10,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,23 +26,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import appface.brongo.R;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static appface.brongo.R.id.progress;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,12 +49,13 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
     private TextView toolbar_title;
     private Toolbar toolbar;
     private Context context;
+    private RelativeLayout parentLayout;
     private ImageView edit_icon,delete_icon,add_icon;
     private int taskcompleted = 0;
     private static AudioManager audio;
     private LinearLayout setting_parent;
     private SharedPreferences pref;
-    private boolean isLoader = false;
+    private boolean isLoader = false,isUpdateRequired=false;
     private boolean offerNoti,builderNoti,notiSound;
     private SharedPreferences.Editor editor;
     public SettingFragment() {
@@ -77,6 +73,7 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
     }
     private void initialise(View view){
         context = getActivity();
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
         editor = pref.edit();
         audio = (AudioManager)getActivity().getSystemService(Context.AUDIO_SERVICE);
@@ -114,14 +111,22 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                 if(isChecked){
                     offer_noti_switch.setThumbColorRes(R.color.appColor);
                     offerNoti = true;
-                    if(i==1) {
+                    if(isUpdateRequired) {
+                        /*if(!isLoader) {
+                            Utils.LoaderUtils.showLoader(context);
+                            isLoader = true;
+                        }*/
                             updateSetings(offerNoti, builderNoti, notiSound);
                     }
                     // pd.show(};
                 }else{
                     offer_noti_switch.setThumbColorRes(R.color.switch_off);
                     offerNoti = false;
-                    if(i==1) {
+                    if(isUpdateRequired) {
+                      /*  if(!isLoader) {
+                            Utils.LoaderUtils.showLoader(context);
+                            isLoader = true;
+                        }*/
                             updateSetings(offerNoti, builderNoti, notiSound);
                     }
                    // pd.show();
@@ -134,15 +139,23 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                 if(isChecked){
                     builderNoti = true;
                     builder_noti_switch.setThumbColorRes(R.color.appColor);
-                    if(i==1) {
-                            updateSetings(offerNoti, builderNoti, notiSound);
+                    if(isUpdateRequired) {
+                       /* if(!isLoader) {
+                            Utils.LoaderUtils.showLoader(context);
+                            isLoader = true;
+                        }*/
+                        updateSetings(offerNoti, builderNoti, notiSound);
                     }
                     // pd.show(};
                 }else{
                     builder_noti_switch.setThumbColorRes(R.color.switch_off);
                     builderNoti = false;
-                    if(i==1) {
-                            updateSetings(offerNoti, builderNoti, notiSound);
+                    if(isUpdateRequired) {
+                       /* if(!isLoader) {
+                            Utils.LoaderUtils.showLoader(context);
+                            isLoader = true;
+                        }*/
+                        updateSetings(offerNoti, builderNoti, notiSound);
                     }
                     // pd.show();
                 }
@@ -160,7 +173,9 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                 }else{
                     noti_sound_switch.setThumbColorRes(R.color.switch_off);
                     notiSound = false;
-                    sound_seekbar.setProgress(0);
+                    if(sound_seekbar.getProgress() != 0) {
+                        sound_seekbar.setProgress(0);
+                    }
                     setVolume(0);
                     // pd.show();
                 }
@@ -171,9 +186,13 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 setVolume(progress);
                 if(progress == 0){
-                    noti_sound_switch.setChecked(false);
+                   if(noti_sound_switch.isChecked()) {
+                       noti_sound_switch.setChecked(false);
+                   }
                 }else{
-                    noti_sound_switch.setChecked(true);
+                    if(!noti_sound_switch.isChecked()) {
+                        noti_sound_switch.setChecked(true);
+                    }
                 }
             }
 
@@ -192,17 +211,17 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
     setView(){
         builder_noti_switch.setChecked(pref.getBoolean(AppConstants.BUILDER_NOTI,true));
         offer_noti_switch.setChecked(pref.getBoolean(AppConstants.OFFER_NOTI,true));
-        noti_sound_switch.setChecked(pref.getBoolean(AppConstants.NOTI_SOUND,true));
-        i =1;
         setting_parent.setVisibility(View.VISIBLE);
         Utils.LoaderUtils.dismissLoader();
         isLoader = false;
+        isUpdateRequired = true;
     }
 
     private void fetchSettings(){
         if(Utils.isNetworkAvailable(context)) {
             if(!isLoader) {
                 Utils.LoaderUtils.showLoader(context);
+                isLoader = true;
             }
             RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
             String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
@@ -222,7 +241,6 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                             if (statusCode == 200 && message.equalsIgnoreCase("")) {
                                 offerNoti = settingPlanModel.getData().isOffers();
                                 builderNoti = settingPlanModel.getData().isBuilderProject();
-                                notiSound = settingPlanModel.getData().isNotificationSound();
                                 // editor.putBoolean(AppConstants.NOTI_SOUND,notiSound);
                                 editor.putBoolean(AppConstants.OFFER_NOTI, offerNoti);
                                 editor.putBoolean(AppConstants.BUILDER_NOTI, builderNoti);
@@ -240,7 +258,7 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                                     new AllUtils().getTokenRefresh(context);
                                     fetchSettings();
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -257,7 +275,7 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                 public void onFailure(Call<ApiModel.SettingPlanModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
                     isLoader = false;
-                    Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 /*if(pd.isShowing()) {
                     pd.dismiss();
                 }*/
@@ -271,9 +289,10 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
 
     private void updateSetings(final boolean offerNoti, final boolean builderNoti, final boolean notiSound){
         if(Utils.isNetworkAvailable(context)) {
-            if(!isLoader) {
-                Utils.LoaderUtils.showLoader(context);
-            }
+             if(!isLoader) {
+                            Utils.LoaderUtils.showLoader(context);
+                            isLoader = true;
+                        }
             ApiModel.SettingPlanObject settingPlanObject = new ApiModel.SettingPlanObject();
             settingPlanObject.setMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
             settingPlanObject.setOffers(offerNoti);
@@ -286,6 +305,8 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
             call.enqueue(new Callback<ApiModel.SettingPlanModel>() {
                 @Override
                 public void onResponse(Call<ApiModel.SettingPlanModel> call, Response<ApiModel.SettingPlanModel> response) {
+                    Utils.LoaderUtils.dismissLoader();
+                    isLoader = false;
                     if (response != null) {
                         String responseString = null;
                         if (response.isSuccessful()) {
@@ -293,11 +314,9 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                             int statusCode = settingPlanModel.getStatusCode();
                             String message = settingPlanModel.getMessage();
                             if (statusCode == 200 && message.equalsIgnoreCase("")) {
-                                Utils.showToast(context, "Setting updated successfully");
+                                Utils.setSnackBar(parentLayout, "Setting updated successfully");
                                 boolean offerNoti1 = settingPlanModel.getData().isOffers();
                                 boolean builderNoti1 = settingPlanModel.getData().isBuilderProject();
-                                boolean notiSound1 = settingPlanModel.getData().isNotificationSound();
-                                editor.putBoolean(AppConstants.NOTI_SOUND, notiSound1);
                                 editor.putBoolean(AppConstants.OFFER_NOTI, offerNoti1);
                                 editor.putBoolean(AppConstants.BUILDER_NOTI, builderNoti1);
                                 editor.commit();
@@ -312,25 +331,27 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                                     new AllUtils().getTokenRefresh(context);
                                     updateSetings(offerNoti, builderNoti, notiSound);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    isUpdateRequired = false;
+                                    setView();
+                                    Utils.showToast(context, message,"Error");
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                     }
-                    Utils.LoaderUtils.dismissLoader();
-                    isLoader = false;
                 }
 
                 @Override
                 public void onFailure(Call<ApiModel.SettingPlanModel> call, Throwable t) {
-                    Utils.showToast(context, "Some Problem Occured");
+                    isUpdateRequired = false;
+                    setView();
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                     isLoader = false;
                 }
             });
-        }{
+        }else{
             taskcompleted = 200;
             Utils.internetDialog(context,this);
         }
@@ -351,18 +372,19 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
         sound_seekbar.setMax(maxVolume);
         sound_seekbar.incrementProgressBy(1);
         sound_seekbar.setProgress(currentVolume);
-        if (currentVolume > 0) {
-            noti_sound_switch.setVisibility(View.VISIBLE);
-            //noti_sound_switch.setChecked(true);
-        }else{
-            //noti_sound_switch.setChecked(false);
-            noti_sound_switch.setVisibility(View.VISIBLE);
-        }
+        noti_sound_switch.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onTryReconnect() {
-        fetchSettings();
+        switch (taskcompleted){
+            case 100:
+                fetchSettings();
+                break;
+            case 200:
+                updateSetings(offerNoti, builderNoti, notiSound);
+                break;
+        }
     }
     public static void myOnKeyDown(int key_code){
         if(key_code == KeyEvent.KEYCODE_VOLUME_DOWN || key_code == KeyEvent.KEYCODE_VOLUME_UP) {

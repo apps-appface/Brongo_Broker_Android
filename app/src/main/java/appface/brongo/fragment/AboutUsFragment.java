@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import appface.brongo.R;
@@ -19,6 +20,7 @@ public class AboutUsFragment extends Fragment {
     private ImageView edit_icon,delete_icon,add_icon;
     private TextView toolbar_title;
     private Toolbar toolbar;
+    private RelativeLayout parentLayout;
 
     public AboutUsFragment() {
         // Required empty public constructor
@@ -34,6 +36,7 @@ public class AboutUsFragment extends Fragment {
         toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
         toolbar.setVisibility(View.VISIBLE);
         toolbar_title.setText("About Brongo");
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
         delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
         add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);

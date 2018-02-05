@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/walk_parent_relative"
     tools:context="appface.brongo.activity.WalkThroughActivity">
     <android.support.v4.view.ViewPager
         android:id="@+id/pager_introduction"
@@ -12,10 +13,10 @@
     <RelativeLayout
         android:id="@+id/viewPagerIndicator"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="@dimen/wa_indicator_height"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="@dimen/wa_margin_large"
+        android:layout_marginLeft="@dimen/wa_margin_layout"
         >
         <LinearLayout
             android:id="@+id/viewPagerCountDots"
@@ -24,15 +25,15 @@
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="@dimen/wa_margin_small"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SKIP"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_big"
             android:id="@+id/walk_skip_btn"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="@dimen/wa_margin_large"
             android:textColor="@color/white"
             android:background="@color/apploizc_transparent_color"
         android:layout_alignParentRight="true"

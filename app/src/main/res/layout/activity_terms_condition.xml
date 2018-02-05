@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/tc_parent_linear"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="0dp"
         android:minHeight="?attr/actionBarSize"
-        android:paddingBottom="5dp"
         app:contentInsetStart="0dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -28,7 +28,7 @@
                 android:text="Terms &amp; Conditions"
                 android:id="@+id/tc_toolbar_title"
                 android:layout_centerInParent="true"
-                android:textSize="18dp"
+                android:textSize="@dimen/text_size_big"
                 app:customFont="lato_regular.ttf"/>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
@@ -45,7 +45,7 @@
 
     <com.github.barteksc.pdfviewer.ScrollBar
         android:id="@+id/start_pdf_scrollBar"
-        android:layout_width="5dp"
+        android:layout_width="@dimen/tc_btn_padding"
         android:layout_height="match_parent"
         app:sb_handlerColor="@color/appColor"
         android:layout_alignParentRight="true"
@@ -53,8 +53,8 @@
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:padding="3dp">
+        android:layout_height="@dimen/tc_btn_size"
+        android:padding="@dimen/tc_btn_padding">
     <Button
         android:layout_width="match_parent"
         android:layout_height="match_parent"

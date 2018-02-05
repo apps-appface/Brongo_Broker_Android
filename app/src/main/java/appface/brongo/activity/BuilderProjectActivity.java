@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -15,6 +13,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -25,7 +24,6 @@ import java.io.IOException;
 
 import appface.brongo.R;
 import appface.brongo.model.ApiModel;
-import appface.brongo.model.BuilderModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
@@ -41,6 +39,7 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
     private WebView project_webview;
     Bundle bundle;
     private TextView project_title;
+    private LinearLayout parentLayout;
     private String Url="";
     private SharedPreferences pref;
     private boolean isLoading = false;
@@ -67,6 +66,7 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
     }
     private void initialise(){
         context = BuilderProjectActivity.this;
+        parentLayout = (LinearLayout)findViewById(R.id.builder_activity_linear);
         pref = getSharedPreferences(AppConstants.PREF_NAME,0);
         project_title = (TextView)findViewById(R.id.project_title);
         project_back = (ImageView)findViewById(R.id.toolbar_project_back);
@@ -207,7 +207,7 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
                             int statusCode = responseModel.getStatusCode();
                             String message = responseModel.getMessage();
                             if (statusCode == 200 ) {
-                                Utils.showToast(context, message);
+                                Utils.setSnackBar(parentLayout,message);
                             }
                         } else {
                             try {
@@ -219,7 +219,7 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
                                     new AllUtils().getTokenRefresh(context);
                                     emailLink();
                                 }else{
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error" );
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -231,7 +231,7 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
                 @Override
                 public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, t.getMessage().toString());
+                    Utils.showToast(context, t.getMessage().toString(),"Failure" );
                 }
             });
         }else{

@@ -10,18 +10,14 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.os.PowerManager;
 import android.os.Vibrator;
-import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,11 +30,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,24 +46,18 @@ import appface.brongo.R;
 import appface.brongo.model.ApiModel;
 import appface.brongo.model.ClientDetailsModel;
 import appface.brongo.model.DeviceDetailsModel;
-import appface.brongo.model.SignUpModel;
 import appface.brongo.model.TokenModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.services.MusicService;
-import appface.brongo.services.RegistrationIntentService;
 import appface.brongo.uiwidget.FlowLayout;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.CircleTransform;
 import appface.brongo.util.CustomApplicationClass;
 import appface.brongo.util.DatabaseHandler;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
-import de.hdodenhof.circleimageview.CircleImageView;
 import ng.max.slideview.SlideView;
-import ng.max.slideview.Util;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,10 +67,9 @@ import retrofit2.Response;
  * Created by panka_000 on 14-03-2016.
  */
 public class PushAlertActivity extends Activity implements NoInternetTryConnectListener/*implements View.OnTouchListener */{
-
     Bundle data;
     int currentTime,matchedProperties;
-    private TextView noti_address,noti_bhk,noti_budget,noti_status,noti_prop_type,noti_commission,noti_client_name,noti_reject,noti_progress,noti_client_type,noti_matching,plan_textview;
+    private TextView noti_commission,noti_client_name,noti_reject,noti_progress,noti_client_type,noti_matching,plan_textview;
    private ImageView noti_client_pic;
    private RatingBar noti_ratingbar;
    private FlowLayout push_flowlayout;
@@ -101,6 +89,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
     private ArrayList<String> keyList;
     private Vibrator v;
     Intent serviceIntent;
+    private ScrollView parentLayout;
     private Context context;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,24 +97,24 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         Intent intent = getIntent();
         data = intent.getExtras();
         if (data != null) {
-            prop_address = data.getString("microMarketName");
-            clientMobileNo = data.getString("clientMobileNo");
-            prop_bhk = data.getString("bedRoomType");
-            prop_status = data.getString("propertyStatus");
-            prop_type = data.getString("propertyType");
-            commission1 = data.getString("commission");
-            prop_id = data.getString("propertyId");
-            prop_client_name = data.getString("clientName");
-            String rating2 = data.getString("rating");
+            prop_address = data.getString("microMarketName","");
+            clientMobileNo = data.getString("clientMobileNo","");
+            prop_bhk = data.getString("bedRoomType","");
+            prop_status = data.getString("propertyStatus","");
+            prop_type = data.getString("propertyType","");
+            commission1 = data.getString("commission","");
+            prop_id = data.getString("propertyId","");
+            prop_client_name = data.getString("clientName","");
+            String rating2 = data.getString("rating","");
            rating1 = Float.parseFloat(rating2);
-            client_image = data.getString("image");
-            posting_type = data.getString("postingType");
-            budget = data.getString("budget");
+            client_image = data.getString("image","");
+            posting_type = data.getString("postingType","");
+            budget = data.getString("budget","");
             impFields = data.getString("impFields","");
             //plantype = data.getString("planType");
             plantype = "PREMIUM";
-            sub_property_type = data.getString("subPropertyType");
-            String matchedProperties1 = data.getString("matchedProperties");
+            sub_property_type = data.getString("subPropertyType","");
+            String matchedProperties1 = data.getString("matchedProperties","");
             //matchedProperties = Integer.parseInt(matchedProperties1);
             matchedProperties = matchCount(posting_type,prop_type);
             matchedProperties = 0;
@@ -144,19 +133,6 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
             }
         };
         registerReceiver(broadcastReceiver,intentFilter1);
-
-       /* enableButton.setOnStateChangeListener(new OnStateChangeListener() {
-            @Override
-            public void onStateChange(boolean active) {
-            if(active){
-                mediaPlayer.stop();
-                progress_container.setVisibility(View.GONE);
-                enableButton.setVisibility(View.GONE);
-                clientAccept();
-                pd.show();
-            }
-            }
-        });*/
         slideView.setOnSlideCompleteListener(new SlideView.OnSlideCompleteListener() {
             @Override
             public void onSlideComplete(SlideView slideView) {
@@ -185,6 +161,8 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
     }
     private void initialise() {
         context = this;
+        parentLayout = (ScrollView)findViewById(R.id.push_parent_scroll);
+        parentLayout.setVisibility(View.GONE);
         mediaPlayer = new MediaPlayer();
         if(isDeviceLocked(context)) {
             unlockScreen();
@@ -195,12 +173,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         editor = pref.edit();
         keyList = new ArrayList<>();
-        noti_address = (TextView)findViewById(R.id.noti_address);
-        noti_bhk = (TextView)findViewById(R.id.noti_bhk);
         push_flowlayout = (FlowLayout)findViewById(R.id.push_flowlayout);
-        noti_budget = (TextView)findViewById(R.id.noti_budget);
-        noti_status = (TextView)findViewById(R.id.noti_prop_status);
-        noti_prop_type = (TextView)findViewById(R.id.noti_prop_type);
         noti_commission = (TextView)findViewById(R.id.noti_commission);
         noti_client_name = (TextView)findViewById(R.id.notification_client_name);
         noti_reject = (TextView)findViewById(R.id.noti_reject);
@@ -213,17 +186,14 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         slideView = (SlideView)findViewById(R.id.slideView);
         progressBar = (ProgressBar) findViewById(R.id.noti_progressBar);
         progress_container = (RelativeLayout)findViewById(R.id.container);
-        slideView.setVisibility(View.GONE);
-        noti_reject.setVisibility(View.GONE);
         if(pref.getString(AppConstants.NOTI_TYPE,"").equalsIgnoreCase("call")) {
             editor.remove(AppConstants.NOTI_TYPE).commit();
             callNotificationApi();
             getImportantKeys();
-            slideView.setVisibility(View.VISIBLE);
-            noti_reject.setVisibility(View.VISIBLE);
             startService(serviceIntent);
             showTimer();
             setValue();
+            parentLayout.setVisibility(View.VISIBLE);
         }
     }
     private void addview(String text) {
@@ -290,7 +260,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                                     new AllUtils().getTokenRefresh(context);
                                     clientAccept();
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.setSnackBar(parentLayout,message);
                                     Intent intent = new Intent(PushAlertActivity.this, MainActivity.class);
                                     intent.putExtra("shouldShowDialog", false);
                                     startActivity(intent);
@@ -306,8 +276,8 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     makeScreenOff();
+                    Utils.setSnackBar(parentLayout,t.getMessage().toString());
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
                     goToMainPage();
                 }
             });
@@ -323,37 +293,10 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         long[] pattern = { 0, 200, 0 };
         v.vibrate(pattern,0);
         //playMedia();
-/*        handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                currentTime++;
-                progressBar.setProgress(currentTime + 1);
-                noti_progress.setText((30-currentTime)+"");
-                if(currentTime != 30){
-                    handler.postDelayed(runnable,1000);
-                }else {
-                    handler.removeCallbacks(runnable);
-                    currentTime++;
-                    progressBar.setProgress(currentTime);
-                    progressBar.setVisibility(View.INVISIBLE);
-                    //countDownTimer.cancel();
-                    mediaPlayer.stop();
-                    mediaPlayer.release();
-                    v.cancel();
-                    //clientMissedDialog(prop_client_name,posting_type);
-                }
-            }
-        };
-        handler.postDelayed(runnable,0);*/
         countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 currentTime++;
-               /* if(currentTime >44){
-                    progressBar.getIndeterminateDrawable()
-                            .setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);;
-                }*/
                 progressBar.setProgress(currentTime + 1);
                 if(currentTime > 50){
                     noti_progress.setText("00:0" + (60 - currentTime));
@@ -365,8 +308,6 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
 
             @Override
             public void onFinish() {
-                slideView.setVisibility(View.GONE);
-                noti_reject.setVisibility(View.GONE);
                 currentTime++;
                 stopService();
                 progressBar.setProgress(currentTime);
@@ -378,6 +319,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                 }
                 progressBar.setVisibility(View.INVISIBLE);
                 noti_progress.setVisibility(View.INVISIBLE);
+                parentLayout.setVisibility(View.GONE);
                 countDownTimer.cancel();
                 //stopMedia();
                 v.cancel();
@@ -424,9 +366,6 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
     private void playMedia(){
         String audioUri = "android.resource://" + getPackageName() + "/" + R.raw.ios7_radiate;
         try {
-          //  mediaPlayer.setDataSource(context, defaultRingtoneUri);
-          //  mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);
-           // mediaPlayer.prepare();
             mediaPlayer.setLooping(true);
             AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             audio.setMode(AudioManager.MODE_NORMAL);
@@ -534,13 +473,14 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
             @Override
             public void onClick(View v) {
                 if(reject_reason == null || reject_reason.equalsIgnoreCase("")){
-                    Utils.showToast(context,"select the reason first");
+                    Utils.setSnackBar(parentLayout,"select the reason first");
                 }else {
                         leadRejectApi();
                     dialog.dismiss();
                 }
             }
         });
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         dialog.show();
     }
 
@@ -574,7 +514,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                                     countDownTimer.cancel();
                                     slideView.setVisibility(View.GONE);
                                     progress_container.setVisibility(View.GONE);
-                                    Utils.showToast(context, message);
+                                    Utils.setSnackBar(parentLayout,message);
                                     goToMainPage();
                                     int noti_count = pref.getInt(AppConstants.NOTIFICATION_COUNT, 0);
                                     if (noti_count > 0) {
@@ -595,7 +535,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                                     leadRejectApi();
                                 } else {
                                     goToMainPage();
-                                    Utils.showToast(context, message);
+                                    Utils.setSnackBar(parentLayout, message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -607,7 +547,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.setSnackBar(parentLayout, t.getMessage().toString());
                     goToMainPage();
                 }
             });
@@ -699,7 +639,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                             int statusCode = jsonObject.optInt("statusCode");
                             String message = jsonObject.optString("message");
                             if(statusCode == 503){
-                                Utils.showToast(context,message);
+                                Utils.setSnackBar(parentLayout,message);
                             }
                         }  catch (IOException e) {
                             e.printStackTrace();
@@ -712,8 +652,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
 
                 @Override
                 public void onFailure(Call<TokenModel> call, Throwable t) {
-                    String message = t.getMessage();
-                    Utils.showToast(context,message);
+                    Utils.setSnackBar(parentLayout, t.getMessage().toString());
                 }
             });
     }
@@ -758,7 +697,6 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-
                 }
             });
         }else{
@@ -819,12 +757,15 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         finish();
     }
     private void getImportantKeys(){
-        if(impFields != null && !impFields.isEmpty()){
-           impFields = impFields.substring(1,impFields.length()-1);
-           if(impFields.length()>0) {
-              keyList =  new ArrayList<>(Arrays.asList(impFields.split(",")));
-              addviewTolayout(keyList);
-           }
+        try {
+            if (impFields != null && !impFields.isEmpty()) {
+                impFields = impFields.substring(1, impFields.length() - 1);
+                if (impFields.length() > 0) {
+                    keyList = new ArrayList<>(Arrays.asList(impFields.split(",")));
+                    addviewTolayout(keyList);
+                }
+            }
+        }catch(Exception e){
         }
     }
     private void addviewTolayout(ArrayList<String> arrayList){

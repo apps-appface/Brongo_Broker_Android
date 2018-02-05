@@ -10,17 +10,14 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_purple"
         android:gravity="center"
-       android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+       android:paddingBottom="@dimen/deal_normal"
+        android:paddingTop="@dimen/deal_normal"
+        android:paddingLeft="@dimen/deal_large"
+        android:paddingRight="@dimen/deal_large"
         android:shadowColor="#73000000"
-        android:shadowDx="6.123233995736766e-17"
-        android:shadowDy="1"
-        android:shadowRadius="3"
         android:textAllCaps="false"
         android:textColor="#1d4f91"
-        android:textSize="13sp"
+        android:textSize="@dimen/text_size_small"
         app:customFont="lato_regular.ttf" />
 
 </LinearLayout>

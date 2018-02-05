@@ -1,9 +1,7 @@
 package appface.brongo.adapter;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.support.v4.app.FragmentManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -18,20 +16,14 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.util.Util;
 
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -44,7 +36,6 @@ import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.uiwidget.FlowLayout;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.CustomApplicationClass;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
@@ -62,17 +53,19 @@ import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.INDIVIDUAL_INVENTOR
 
 public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPersonalAdapter.EmployeeViewHolder> implements NoInternetTryConnectListener{
     private Context context;
+    private DeleteInventoryListener deleteInventoryListener;
     private ArrayList<ApiModel.InventoryPersoanlList> arrayList;
     private LayoutInflater inflater;
     private FragmentManager fragmentManager;
     private SharedPreferences pref;
 
 
-    public InventoryPersonalAdapter(Context context, ArrayList<ApiModel.InventoryPersoanlList> arrayList,FragmentManager fragmentManager) {
+    public InventoryPersonalAdapter(Context context, ArrayList<ApiModel.InventoryPersoanlList> arrayList,FragmentManager fragmentManager,DeleteInventoryListener deleteInventoryListener) {
         this.context = context;
         this.arrayList = arrayList;
         this.fragmentManager = fragmentManager;
         inflater = LayoutInflater.from(context);
+        this.deleteInventoryListener = deleteInventoryListener;
         pref = context.getSharedPreferences(AppConstants.PREF_NAME,0);
     }
 
@@ -106,30 +99,6 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
         holder.invent_child_clientName.setText(arrayList.get(position).getClientName());
         holder.invent_child_client.setText(arrayList.get(position).getPostingType().toUpperCase()+"/"+arrayList.get(position).getPropertyType().toUpperCase());
         holder.invent_child_mobile.setText(arrayList.get(position).getClientMobileNo());
-       /* holder.invent_child_location.setText(arrayList.get(position).getMicroMarketName());
-        if(arrayList.get(position).getBedRoomType().equalsIgnoreCase("")){
-            holder.invent_child_bhk.setVisibility(View.GONE);
-        }else {
-            holder.invent_child_bhk.setText(arrayList.get(position).getBedRoomType());
-        }
-        if(arrayList.get(position).getPropertyStatus().equalsIgnoreCase("")){
-            holder.invent_child_prop_status.setVisibility(View.GONE);
-        }else {
-            holder.invent_child_prop_status.setText(arrayList.get(position).getPropertyStatus());
-        }
-        if(budget.equalsIgnoreCase("")){
-            holder.invent_child_budget.setVisibility(View.GONE);
-        }else {
-            holder.invent_child_budget.setText(budget);
-        }if(arrayList.get(position).getSubPropertyType() == null){
-            holder.invent_child_prop_type.setVisibility(View.GONE);
-        }else {
-            if (arrayList.get(position).getSubPropertyType().equalsIgnoreCase("")) {
-                holder.invent_child_prop_type.setVisibility(View.GONE);
-            } else {
-                holder.invent_child_prop_type.setText(arrayList.get(position).getSubPropertyType());
-            }
-        }*/
        addView(arrayList.get(position).getMicroMarketName(),holder.flowLayout);
         addView(arrayList.get(position).getBedRoomType(),holder.flowLayout);
         addView(arrayList.get(position).getPropertyStatus(),holder.flowLayout);
@@ -187,23 +156,17 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
         TextView invent_child_client,invent_child_clientName,invent_child_bhk,invent_child_mobile,invent_child_prop_status,invent_child_location,invent_child_budget,invent_child_prop_type;
         ImageView prop_image;
         FlowLayout flowLayout;
-        LinearLayout recycle_item_linear;
-        Button invent_child_editBtn,invent_child_deleteBtn;
+        LinearLayout recycle_item_linear,invent_child_editBtn,invent_child_deleteBtn;
 
         public EmployeeViewHolder(View itemView) {
             super(itemView);
             flowLayout = (FlowLayout)itemView.findViewById(R.id.invent_personal_flowlayout);
             invent_child_clientName = (TextView) itemView.findViewById(R.id.invent_personal_name);
             invent_child_client = (TextView) itemView.findViewById(R.id.invent_pesonal_postingtype);
-            invent_child_bhk = (TextView) itemView.findViewById(R.id.invent_personal_bhk);
             invent_child_mobile = (TextView) itemView.findViewById(R.id.invent_pesonal_mobile);
-            invent_child_prop_status = (TextView) itemView.findViewById(R.id.invent_personal_prop_status);
-            invent_child_location = (TextView) itemView.findViewById(R.id.invent_personal_address);
-            invent_child_budget = (TextView) itemView.findViewById(R.id.invent_personal_budget);
-            invent_child_prop_type = (TextView) itemView.findViewById(R.id.invent_personal_prop_type);
             prop_image = (ImageView) itemView.findViewById(R.id.invent_personal_image);
-            invent_child_editBtn = (Button) itemView.findViewById(R.id.edit_image);
-            invent_child_deleteBtn = (Button) itemView.findViewById(R.id.delete_image);
+            invent_child_editBtn = (LinearLayout) itemView.findViewById(R.id.edit_image);
+            invent_child_deleteBtn = (LinearLayout) itemView.findViewById(R.id.delete_image);
             recycle_item_linear = (LinearLayout)itemView.findViewById(R.id.linear_item);
         }
     }
@@ -233,7 +196,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
                                 if (statusCode == 200 && message.equalsIgnoreCase("Property Deleted Successfully")) {
                                     arrayList.remove(position);
                                     notifyDataSetChanged();
-                                    Utils.showToast(context, message);
+                                    deleteInventoryListener.onDelete(message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -248,7 +211,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
                                     new AllUtils().getTokenRefresh(context);
                                     deleteInventory(position);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error" );
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -260,7 +223,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -279,7 +242,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
             TextView delete_client_message = (TextView) dialog.findViewById(R.id.delete_inventory_client_name);
             Button delete_client_cancel = (Button) dialog.findViewById(R.id.inventory_delete_cancel);
             Button delete_client_delete = (Button) dialog.findViewById(R.id.inventory_delete_delete);
-            String message = "Are you sure you want to delete the \n inventory details of '" + arrayList.get(position).getClientName() + "'?";
+            String message = "Are you sure you want to delete the inventory details of '" + arrayList.get(position).getClientName() + "'?";
             delete_client_message.setText(message);
             delete_client_cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -343,6 +306,9 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
         IndividualInventoryFragment individualInventoryFragment = new IndividualInventoryFragment();
         individualInventoryFragment.setArguments(bundle);
         Utils.replaceFragment(fragmentManager,individualInventoryFragment,R.id.inventory_frag_container,INDIVIDUAL_INVENTORY);
+    }
+    public interface DeleteInventoryListener{
+        void onDelete(String message);
     }
 
 }

@@ -2,19 +2,15 @@ package appface.brongo.fragment;
 
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +22,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.applozic.mobicomkit.api.conversation.database.MessageDatabaseService;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.json.JSONException;
@@ -48,8 +44,6 @@ import appface.brongo.model.ClientDetailsModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.RecyclerItemClickListener;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
@@ -63,10 +57,11 @@ import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.ADD_INVENTORY;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InventoryListFragment extends Fragment implements NoInternetTryConnectListener,BuilderAdapter.OnClick{
+public class InventoryListFragment extends Fragment implements NoInternetTryConnectListener,BuilderAdapter.OnClick,InventoryPersonalAdapter.DeleteInventoryListener{
     private RecyclerView inventory_personal_recycle,inventory_builder_recycle;
     private InventoryPersonalAdapter inventoryPersonalAdapter;
     private Toolbar toolbar;
+    private RelativeLayout parentLayout;
     private ArrayList<ClientDetailsModel.ConnectedClientObject> clientDetails_list;
     private BuilderAdapter inventory_builderAdapter;
     private ArrayList<String> client_list;
@@ -82,6 +77,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
     boolean isVisible;
     ArrayAdapter<String> clientAdapter;
     private String builderMessage="";
+    private boolean shouldMessageShown = false;
     private Context context;
     public InventoryListFragment() {
         // Required empty public constructor
@@ -112,6 +108,9 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
         builder_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(shouldMessageShown) {
+                    Utils.setSnackBar(parentLayout, builderMessage);
+                }
                 inventory_add.setVisibility(View.GONE);
                 personal_btn.setBackgroundResource(R.drawable.button_change);
                 builder_btn.setBackgroundResource(R.drawable.dialog_button);
@@ -136,6 +135,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
     private void initialise(View view){
         context = getActivity();
         client = mobile = email ="";
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         client_list = new ArrayList<>();
         clientDetails_list = new ArrayList<>();
         inventory_personal_recycle = (RecyclerView)view.findViewById(R.id.inventory_personal_recycle);
@@ -152,7 +152,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
         arraylist = new ArrayList<>();
         builder_list = new ArrayList<>();
         pref = context.getSharedPreferences(AppConstants.PREF_NAME,0);
-        inventoryPersonalAdapter = new InventoryPersonalAdapter(context,arraylist,getFragmentManager());
+        inventoryPersonalAdapter = new InventoryPersonalAdapter(context,arraylist,getFragmentManager(),this);
         inventory_builderAdapter = new BuilderAdapter(context,builder_list,getFragmentManager(),this);
         inventory_personal_recycle.setAdapter(inventoryPersonalAdapter);
         inventory_builder_recycle.setAdapter(inventory_builderAdapter);
@@ -212,7 +212,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                     fetchList();
                                 } else {
                                     Utils.LoaderUtils.dismissLoader();
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error" );
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -227,7 +227,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
 
                 @Override
                 public void onFailure(Call<ApiModel.InventoryModel> call, Throwable t) {
-                    Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                 }
             });
@@ -285,6 +285,8 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                     new AllUtils().getTokenRefresh(context);
                                     fetchBuilderList();
                                 } else {
+                                    shouldMessageShown = true;
+                                    //Utils.showToast(context,message,"Error");
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -299,7 +301,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
 
                 @Override
                 public void onFailure(Call<BuilderModel.BuilderDetailsModel> call, Throwable t) {
-                    Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                 }
             });
@@ -417,7 +419,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                     new AllUtils().getTokenRefresh(context);
                                     builderRejectApi(position,builderObject);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error" );
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -429,7 +431,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -459,7 +461,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                             String message = responseModel.getMessage();
                             if (statusCode == 200 && message.equalsIgnoreCase("Builder And Broker Connection Is Established")) {
                                 fetchBuilderList();
-                                Utils.showToast(context, message);
+                                Utils.setSnackBar(parentLayout,message);
                             }
                         } else {
                             try {
@@ -471,7 +473,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                     new AllUtils().getTokenRefresh(context);
                                     accept_builder(position,builderObject);
                                 }else{
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error" );
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -483,7 +485,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                 @Override
                 public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, t.getMessage().toString());
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -541,10 +543,10 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                     if(mobile.length() == 10 && mobile.startsWith("6") || mobile.startsWith("7") || mobile.startsWith("8") || mobile.startsWith("9")){
                         callRegisterApi(builderObject,mobile,client,email);
                     }else{
-                        Utils.showToast(context,"Invalid mobile Number");
+                        Utils.setSnackBar(parentLayout,"Invalid mobile Number");
                     }
                 }else {
-                        Utils.showToast(context, "data should not be empty");
+                        Utils.setSnackBar(parentLayout, "data should not be empty");
                 }
                 dialog.dismiss();
             }
@@ -583,7 +585,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                             int statusCode = responseModel.getStatusCode();
                             String message = responseModel.getMessage();
                             if (statusCode == 200 && message.equalsIgnoreCase("Client Has Registred Successfully")) {
-                                Utils.showToast(context, message);
+                                Utils.setSnackBar(parentLayout,message);
                             }
                         } else {
                             try {
@@ -594,6 +596,8 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
                                     callRegisterApi(builderObject, mobile_no, name, email);
+                                }else{
+                                    Utils.showToast(context,message,"Error");
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -605,7 +609,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                 @Override
                 public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, t.getMessage().toString());
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -684,6 +688,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                     new AllUtils().getTokenRefresh(context);
                                     fetchConnectedClient();
                                 } else {
+                                    Utils.showToast(context,message,"Error");
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -698,7 +703,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
 
                 @Override
                 public void onFailure(Call<ClientDetailsModel.ConnectedClientModel> call, Throwable t) {
-                    Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                 }
             });
@@ -708,4 +713,8 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
 
     }
 
+    @Override
+    public void onDelete(String message) {
+        Utils.setSnackBar(parentLayout,message);
+    }
 }

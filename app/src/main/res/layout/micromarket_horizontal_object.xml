@@ -5,20 +5,17 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:paddingLeft="4sp"
-    android:paddingRight="4sp">
+    android:paddingLeft="@dimen/deal_small"
+    android:paddingRight="@dimen/deal_small">
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/hori_micromarket_name"
         android:shadowColor="#73000000"
-     android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+     android:paddingLeft="@dimen/deal_small"
+        android:paddingRight="@dimen/deal_small"
         android:background="@drawable/rounded_empty_btn"
-        android:shadowDx="6.123233995736766e-17"
-        android:shadowDy="1"
-        android:shadowRadius="3"
-        android:textSize="13sp"
+        android:textSize="@dimen/text_size_small"
         android:textColor="@color/edit_text_color"
         app:customFont="lato_regular.ttf"/>
 

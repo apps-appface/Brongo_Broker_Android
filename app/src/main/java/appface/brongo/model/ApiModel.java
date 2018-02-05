@@ -865,15 +865,15 @@ public class ApiModel {
         String timeOfVisit;
         String microMarketName;
 
-        public boolean isClientRated() {
-            return isClientRated;
+        public boolean isBrokerRated() {
+            return isBrokerRated;
         }
 
-        public void setClientRated(boolean clientRated) {
-            isClientRated = clientRated;
+        public void setBrokerRated(boolean brokerRated) {
+            isBrokerRated = brokerRated;
         }
 
-        boolean isClientRated;
+        boolean isBrokerRated;
         public String getMicroMarketName() {
             return microMarketName;
         }
@@ -1368,6 +1368,15 @@ public class ApiModel {
         }
 
         ArrayList<String> review;
+        String propertyId;
+
+        public String getPropertyId() {
+            return propertyId;
+        }
+
+        public void setPropertyId(String propertyId) {
+            this.propertyId = propertyId;
+        }
     }
 
     public static class HistoricalModel {

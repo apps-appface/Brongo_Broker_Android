@@ -4,24 +4,25 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
+    android:layout_marginTop="@dimen/sidemenu_padding_small"
+    android:paddingTop="@dimen/sidemenu_padding_small"
+    android:paddingBottom="@dimen/sidemenu_padding_small"
     android:background="?attr/selectableItemBackground">
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/sidemenu_image_size"
+        android:layout_height="@dimen/sidemenu_image_size"
         android:id="@+id/iv_icon"
         android:layout_centerVertical="true"
-        android:padding="5dp"/>
+        android:padding="@dimen/sidemenu_padding_small"/>
 
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/round_empty_gray"
-        android:layout_marginLeft="40dp"
+      android:layout_toRightOf="@+id/iv_icon"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/sidemenu_padding_normal"
         android:id="@+id/tv_title"
         app:customFont="lato_regular.ttf"/>
 </RelativeLayout>

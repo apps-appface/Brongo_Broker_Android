@@ -3,40 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_marginLeft="10dp">
+    android:layout_height="@dimen/status_height"
+    android:layout_marginLeft="@dimen/status_margin_normal">
     <RelativeLayout
-        android:layout_width="40dp"
+        android:layout_width="@dimen/status_relative_size"
         android:layout_height="match_parent">
     <LinearLayout
-        android:layout_width="2dp"
+        android:layout_width="@dimen/status_view_size"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_centerInParent="true"
         android:id="@+id/view_linear">
     <View
-        android:layout_width="2dp"
+        android:layout_width="@dimen/status_view_size"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/status_green"
         android:id="@+id/status_view1"/>
         <View
-            android:layout_width="2dp"
+            android:layout_width="@dimen/status_view_size"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="@color/status_green"
             android:id="@+id/status_view2"/>
     </LinearLayout>
         <View
-            android:layout_width="50dp"
-            android:layout_height="2dp"
+            android:layout_width="@dimen/status_relative_size"
+            android:layout_height="@dimen/status_view_size"
             android:background="@color/status_green"
             android:layout_centerVertical="true"
             android:layout_alignLeft="@+id/view_linear"
             android:id="@+id/status_view3"/>
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/status_round_size"
+            android:layout_height="@dimen/status_round_size"
             android:background="@drawable/status_circle"
             android:layout_centerInParent="true"
             android:id="@+id/circle_view"
@@ -49,7 +49,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/status_margin_normal"
         android:orientation="vertical"
         android:id="@+id/status_text_linear"
         android:clickable="true">
@@ -57,17 +57,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/status_tick_size"
+                android:layout_height="@dimen/status_tick_size"
                 android:background="@drawable/ic_green_tick"
                 android:id="@+id/tick_view"
                 android:layout_alignTop="@+id/status_text1"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="@dimen/status_margin_small"
                 android:visibility="gone"/>
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="13sp"
+                android:textSize="@dimen/text_size_small"
                 android:includeFontPadding="false"
                 android:layout_toRightOf="@+id/tick_view"
                 android:id="@+id/status_text1"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/status_text1"
                 android:layout_alignLeft="@+id/status_text1"
-                android:textSize="10sp"
+                android:textSize="@dimen/text_extra_small"
                 android:textColor="#33609b"
                 android:id="@+id/status_time_text"
                 app:customFont="lato_regular.ttf"
@@ -86,10 +86,10 @@
         </RelativeLayout>
     </LinearLayout>
         <ImageView
-            android:layout_width="18dp"
-            android:layout_height="16dp"
+            android:layout_width="@dimen/staus_calender_icon_size"
+            android:layout_height="@dimen/staus_calender_icon_size"
             android:background="@drawable/reminder_icon"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/status_margin_normal"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/status_reminder"
             android:id="@+id/status_reminder_imageview"
@@ -101,14 +101,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:padding="5dp"
-            android:shadowColor="#c0ffffff"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:layout_marginRight="10dp"
+            android:padding="@dimen/status_margin_small"
+            android:layout_marginRight="@dimen/status_margin_normal"
             android:text="Schedule \n Meeting"
             android:textColor="#88288f"
-            android:textSize="10sp"
+            android:textSize="@dimen/text_extra_small"
             android:visibility="visible"
             app:customFont="lato_regular.ttf" />
     </RelativeLayout>

@@ -8,20 +8,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:paddingBottom="10dp"
+        android:layout_marginRight="@dimen/deal_normal"
+        android:layout_marginLeft="@dimen/deal_normal"
+        android:paddingBottom="@dimen/deal_normal"
         android:background="@drawable/expand_group_child">
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/table_text"
         android:layout_centerVertical="true"
-        android:paddingLeft="10dp"
+        android:paddingLeft="@dimen/deal_normal"
         android:shadowColor="#c0ffffff"
-        android:shadowDx="6.123233995736766e-17"
-        android:shadowDy="1"
-        android:textSize="15sp"
+        android:textSize="@dimen/text_size_normal"
         android:gravity="left"
         android:textColor="#e63f3f3f"
         app:customFont="lato_regular.ttf"
@@ -39,93 +37,93 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:textSize="16dp"
+            android:textSize="@dimen/text_size_big"
             app:customFont="lato_bold"
             android:textColor="@color/black"
             android:layout_weight="1"
-            android:padding="5dp"
+            android:padding="@dimen/deal_small"
             />
         <appface.brongo.uiwidget.CustomTextView
             android:text="@string/criteria"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_column="2"
-            android:textSize="16dp"
+            android:textSize="@dimen/text_size_big"
             android:textColor="@color/black"
             app:customFont="lato_bold"
             android:layout_weight="1"
-            android:padding="5dp"/>
+            android:padding="@dimen/deal_small"/>
     </TableRow>
     <TableRow
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/table_height"
         android:background="#dddddd"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="@dimen/deal_small">
 
         <appface.brongo.uiwidget.CustomTextView
             android:text="@string/bronze"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:textSize="15sp"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="lato_regular"
-            android:padding="5dp"
+            android:padding="@dimen/deal_small"
             />
         <appface.brongo.uiwidget.CustomTextView
             android:text="@string/bronze_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="2"
-            android:textSize="15sp"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="lato_regular"
-            android:padding="5dp"/>
+            android:padding="@dimen/deal_small"/>
     </TableRow>
     <TableRow
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="5dp">
+        android:layout_height="@dimen/table_height"
+        android:layout_marginTop="@dimen/deal_small">
 
         <appface.brongo.uiwidget.CustomTextView
             android:text="@string/silver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:textSize="15sp"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="lato_regular"
-            android:padding="5dp"
+            android:padding="@dimen/deal_small"
             />
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="2"
-            android:padding="5dp"
+            android:padding="@dimen/deal_small"
             android:text="@string/silver_desc"
-            android:textSize="15sp"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="lato_regular" />
     </TableRow>
     <TableRow
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/table_height"
         android:background="#dddddd"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="@dimen/deal_small">
 
         <appface.brongo.uiwidget.CustomTextView
             android:text="@string/gold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
-            android:textSize="15sp"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="lato_regular"
-            android:padding="5dp"
+            android:padding="@dimen/deal_small"
             />
         <appface.brongo.uiwidget.CustomTextView
             android:text="@string/gold_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="2"
-            android:textSize="15sp"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="lato_regular"
-            android:padding="5dp"/>
+            android:padding="@dimen/deal_small"/>
     </TableRow>
     </TableLayout>
     <appface.brongo.uiwidget.CustomTextView
@@ -133,11 +131,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:shadowColor="#c0ffffff"
-        android:shadowDx="6.123233995736766e-17"
         android:text="@string/medal_note"
-        android:shadowDy="1"
-        android:paddingLeft="10dp"
-        android:textSize="15sp"
+        android:paddingLeft="@dimen/deal_normal"
+        android:textSize="@dimen/text_size_normal"
         android:gravity="left"
         android:textColor="#e63f3f3f"
         app:customFont="lato_regular"

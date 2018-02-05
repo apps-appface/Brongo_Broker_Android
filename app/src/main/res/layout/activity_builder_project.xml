@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#ededed"
+    android:id="@+id/builder_activity_linear"
     tools:context="appface.brongo.activity.BuilderProjectActivity">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             android:elevation="0dp"
             android:minHeight="?attr/actionBarSize"
-            android:paddingBottom="5dp"
+            android:paddingBottom="@dimen/bp_five_dp"
             app:contentInsetStart="0dp"
             android:background="@color/white"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -28,27 +29,27 @@
             android:layout_alignParentStart="true">
         </android.support.v7.widget.Toolbar>
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/bp_three_dot"
+            android:layout_height="@dimen/bp_three_dot"
             android:src="@drawable/ic_three_dot"
             android:id="@+id/project_three_dot"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingLeft="@dimen/bp_ten_dp"
+            android:paddingRight="@dimen/bp_ten_dp"
+            android:paddingTop="@dimen/bp_five_dp"
+            android:paddingBottom="@dimen/bp_five_dp"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             />
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/bp_back_size"
+            android:layout_height="@dimen/bp_back_size"
             android:src="@drawable/ic_back"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:layout_marginLeft="10dp"
-            android:padding="20dp"
+            android:layout_marginLeft="@dimen/bp_ten_dp"
+            android:padding="@dimen/bp_back_padding"
             android:layout_centerVertical="true"
             android:id="@+id/toolbar_project_back"/>
         <appface.brongo.uiwidget.CustomTextView
@@ -57,7 +58,7 @@
             android:id="@+id/project_title"
             android:layout_centerInParent="true"
             app:customFont="lato_regular.ttf"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_big"
             android:textColor="@color/appColor"
             />
     </RelativeLayout>
@@ -65,7 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="10dp">
+        android:padding="@dimen/bp_ten_dp">
         <WebView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

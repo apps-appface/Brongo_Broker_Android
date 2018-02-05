@@ -19,8 +19,8 @@
         android:id="@+id/no_notification_linear"
         >
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/nf_icon_width"
+            android:layout_height="@dimen/nf_icon_height"
             android:layout_gravity="center"
             android:src="@drawable/ic_14_notificationscopy2"/>
         <appface.brongo.uiwidget.CustomTextView
@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/appColor"
             android:text="No notification yet!"
+            android:textSize="@dimen/text_size_big"
             android:textStyle="bold"
             app:customFont="lato_bold.ttf"/>
 

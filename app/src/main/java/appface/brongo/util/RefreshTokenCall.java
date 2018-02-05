@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,14 +15,12 @@ import java.io.IOException;
 
 import appface.brongo.R;
 import appface.brongo.activity.MainActivity;
-import appface.brongo.activity.PushAlertActivity;
 import appface.brongo.model.DeviceDetailsModel;
 import appface.brongo.model.TokenModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 
 /**
@@ -112,11 +109,7 @@ public void run() {
                         JSONObject jsonObject = new JSONObject(responseString);
                         int statusCode = jsonObject.optInt("statusCode");
                         String message = jsonObject.optString("message");
-                        if (statusCode == 417) {
-                            Utils.showToast(context,message);
-                        }else if(statusCode == 503){
-                            Utils.showToast(context,message);
-                        }
+                            Utils.showToast(context,message,"Error");
                     }  catch (IOException e) {
                         e.printStackTrace();
                     }catch (JSONException e) {
@@ -129,7 +122,7 @@ public void run() {
             @Override
             public void onFailure(Call<TokenModel> call, Throwable t) {
                 String message = t.getMessage();
-                Utils.showToast(context,message);
+                Utils.showToast(context, t.getMessage().toString(),"Failure");
                 if(i == 0){
                     i++;
                     context.startActivity(new Intent(context, MainActivity.class));

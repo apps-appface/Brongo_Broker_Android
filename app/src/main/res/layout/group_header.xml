@@ -9,9 +9,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/group_linear"
-       android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
+       android:layout_marginLeft="@dimen/deal_normal"
+        android:layout_marginRight="@dimen/deal_normal"
+        android:layout_marginTop="@dimen/deal_normal"
         android:background="@drawable/edit_border">
         <appface.brongo.uiwidget.CustomTextView
             android:id="@+id/listTitle"
@@ -19,17 +19,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:shadowColor="#c0ffffff"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="#88288f"
-           android:padding="10dp" />
+           android:padding="@dimen/deal_normal" />
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="@dimen/faq_plus_size"
+            android:layout_height="@dimen/faq_plus_size"
             android:id="@+id/group_icon"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="@dimen/deal_large"
             android:src="@drawable/ic_plus_icon"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"/>

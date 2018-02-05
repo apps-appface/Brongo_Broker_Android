@@ -3,66 +3,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="30dp"
+    android:layout_marginLeft="@dimen/dialog_margin_layout"
     android:gravity="center">
-
-    <ImageView
-        android:id="@+id/close"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:adjustViewBounds="false"
-        android:elevation="20dp"
-        android:src="@drawable/ic_remove" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginRight="@dimen/dialog_margin_layout"
+        android:layout_marginTop="@dimen/dialog_margin_layout"
         android:background="@drawable/edit_border"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingBottom="30dp"
-        android:paddingTop="30dp">
+        android:paddingBottom="@dimen/dialog_margin_large"
+        android:paddingTop="@dimen/dialog_margin_large">
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="@dimen/dialog_margin_sixty"
+            android:layout_height="@dimen/dialog_margin_sixty"
+            android:padding="@dimen/dialog_margin_large"
+            android:layout_gravity="right"
+            android:adjustViewBounds="false"
+            android:elevation="@dimen/dialog_margin_large"
+            android:src="@drawable/ic_remove" />
 
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+        <ImageView
+            android:layout_width="@dimen/dialog_margin_layout"
+            android:layout_height="@dimen/dialog_margin_layout"
             android:background="@drawable/network_error"
             android:scaleType="fitXY" />
 
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="@dimen/dialog_margin_layout"
             android:gravity="center"
             android:text="Payment Failed"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="@dimen/dialog_title_size"
             android:textStyle="bold" />
 
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="@dimen/dialog_margin_layout"
             android:gravity="center"
             android:text="Your payment could not be completed."
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_normal"
             android:textStyle="normal" />
 
         <Button
             android:id="@+id/try_again_payment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="30dp"
+          android:background="@drawable/dialog_button"
+            android:textColor="@color/white"
+            android:paddingRight="@dimen/btn_padding"
+            android:paddingLeft="@dimen/btn_padding"
+            android:layout_marginTop="@dimen/dialog_margin_layout"
             android:text="TRY AGAIN"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_small"
         />
 
 

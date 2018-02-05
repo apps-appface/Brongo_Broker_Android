@@ -1,7 +1,6 @@
 package appface.brongo.activity;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.telephony.SmsMessage;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -27,32 +24,23 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
-import com.applozic.mobicomkit.api.account.user.MobiComUserPreference;
-import com.applozic.mobicomkit.api.account.user.PushNotificationTask;
-import com.applozic.mobicomkit.api.account.user.User;
 import com.applozic.mobicomkit.api.account.user.UserLoginTask;
-import com.applozic.mobicomkit.uiwidgets.ApplozicSetting;
-import com.google.gson.JsonArray;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import appface.brongo.R;
 import appface.brongo.model.SignInModel;
 import appface.brongo.model.SignUpModel;
 import appface.brongo.other.NoInternetTryConnectListener;
-import appface.brongo.services.TokenServices;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
@@ -77,16 +65,18 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
     private ImageView otp_back;
     private BroadcastReceiver broadcastReceiver;
     private Toolbar otp_toolbar;
-    private LinearLayout linear_login, linear_otp,linear_resend_otp;
-    private TextView goto_register, resend_otp, register_text, otp_mobile_text, title_text,otp_timer,phone_invalid,otp_invalid;
+    private LinearLayout goto_register, linear_otp,linear_resend_otp,parentLayout;
+    private TextView resend_otp, register_text, otp_mobile_text, title_text,otp_timer,phone_invalid,otp_invalid;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
+    private RelativeLayout relative_login;
     private Intent intent1;
     private String otpValue, phone;
     private CountDownTimer countDownTimer;
     private IntentFilter intentFilter;
     private Context context = this;
     private CheckBox remember_check;
+    private boolean isOtpVisible = false;
 
 
     @Override
@@ -195,6 +185,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
     private void initalise() {
         pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
         editor = pref.edit();
+        parentLayout = (LinearLayout)findViewById(R.id.login_parent_linear);
         editor.putBoolean(AppConstants.ISWALKTHROUGH,false).commit();
         remember_check = (CheckBox)findViewById(R.id.loginCheck);
         login_phone_edit = (EditText) findViewById(R.id.loginid);
@@ -213,9 +204,9 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
         otp_edit4 = (EditText) findViewById(R.id.otp_edit4);
         login_btn = (Button) findViewById(R.id.login_btn);
         otp_verify_btn = (Button) findViewById(R.id.otp_verify_btn);
-        goto_register = (TextView) findViewById(R.id.register_new_text);
+        goto_register = (LinearLayout) findViewById(R.id.contact_new_text);
         resend_otp = (TextView) findViewById(R.id.resened_otp);
-        linear_login = (LinearLayout) findViewById(R.id.login_linear_layout);
+        relative_login = (RelativeLayout) findViewById(R.id.login_relative_layout);
         linear_otp = (LinearLayout) findViewById(R.id.otp_linear_layout);
         Utils.storeDeviceInfo(context, editor);
         String code = "+91  ";
@@ -234,18 +225,21 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
             public void onClick(View v) {
                 phone = login_phone_edit.getText().toString();
                 if (phone.length() == 0) {
-                    Utils.showToast(context,"Mobile can not be empty");
+                    Utils.setSnackBar(parentLayout,"Mobile can not be empty");
                 } else if ((phone.startsWith("6") ||phone.startsWith("7") || phone.startsWith("8") || phone.startsWith("9")) && (phone.length() == 10)) {
                            callLogin(phone);
                 } else {
-                    Utils.showToast(context,"Invalid Mobile Number");
+                    Utils.setSnackBar(parentLayout,"Invalid Mobile Number");
                 }
             }
         });
         goto_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                //startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                Intent i = new Intent(LoginActivity.this, Menu_Activity.class);
+                i.putExtra("frgToLoad", "ContactFragment");
+                startActivity(i);
             }
         });
         resend_otp.setOnClickListener(new View.OnClickListener() {
@@ -263,7 +257,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                 String otp3 = otp_edit3.getText().toString();
                 String otp4 = otp_edit4.getText().toString();
                 if (otp1.length() == 0 || otp2.length() == 0 || otp3.length() == 0 || otp4.length() == 0) {
-                    Toast.makeText(context, "Otp can not be empty",Toast.LENGTH_SHORT).show();
+                    Utils.setSnackBar(parentLayout, "Otp can not be empty");
                 } else {
                     otpValue = otp1 + otp2 + otp3 + otp4;
                     verifyOtp(otpValue);
@@ -274,13 +268,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
         otp_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                otp_edit1.setText("");
-                otp_edit2.setText("");
-                otp_edit3.setText("");
-                otp_edit4.setText("");
-                linear_login.setVisibility(View.VISIBLE);
-                linear_otp.setVisibility(View.GONE);
-                otp_toolbar.setVisibility(View.GONE);
+               otpBack();
             }
         });
         remember_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -301,6 +289,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
             String deviceId = Utils.getDeviceId(context);
             Call<SignInModel> call = null;
             editor.putString(AppConstants.DEVICE_ID, deviceId);
+            editor.putString(AppConstants.MOBILE_NUMBER, phone);
             editor.commit();
             SignUpModel.LoginModel loginModel = new SignUpModel.LoginModel();
             loginModel.setUserId(phone);
@@ -322,14 +311,13 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                             String message = signInModel.getMessage();
                             String otp = signInModel.getData().get(0).getOtp();
                             if (statusCode == 200 && message.equalsIgnoreCase("OTP Sent To Your Mobile Number Please Check")) {
-                                Utils.showToast(context, otp);
-                                editor.putString(AppConstants.MOBILE_NUMBER, phone);
-                                editor.commit();
-                                linear_login.setVisibility(View.GONE);
+                                //Utils.setSnackBar(parentLayout, otp);
+                                relative_login.setVisibility(View.GONE);
                                 linear_otp.setVisibility(View.VISIBLE);
                                 otp_toolbar.setVisibility(View.VISIBLE);
                                 title_text.setText("Verification");
                                 otp_mobile_text.setText(pref.getString(AppConstants.MOBILE_NUMBER, ""));
+                                isOtpVisible = true;
                                 showTimer();
                                 //startService(new Intent(LoginActivity.this, TokenServices.class));
                             }
@@ -339,22 +327,21 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                                 JSONObject jsonObject = new JSONObject(responseString);
                                 String message = jsonObject.optString("message");
                                 if (message.equalsIgnoreCase("Broker Not Found")) {
-                                    phone_invalid.setVisibility(View.VISIBLE);
+                                    //phone_invalid.setVisibility(View.VISIBLE);
+                                    startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-                    } else {
-                        Utils.showToast(context, "Some Problem Occured");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<SignInModel> call, Throwable t) {
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                 }
             });
@@ -389,7 +376,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 200 && message.equalsIgnoreCase("OTP Verified Successfully")) {
-                                    Utils.showToast(context, message);
+                                    Utils.setSnackBar(parentLayout,message);
                               /*  JSONArray data = jsonObject.getJSONArray("data");
                                 JSONObject broker = data.getJSONObject(0);
                                 String brokerImage =  broker.optString("brokerImage");
@@ -413,7 +400,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                                 if (message.equalsIgnoreCase("Invalid OTP")) {
                                     otp_invalid.setVisibility(View.VISIBLE);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error" );
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -426,6 +413,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                 }
             });
@@ -641,7 +629,11 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
     }
     @Override
     public void onBackPressed() {
-        finishAffinity();
+        if(isOtpVisible){
+            otpBack();
+        }else {
+            finishAffinity();
+        }
     }
 
     @Override
@@ -659,6 +651,16 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
     public void onDestroy() {
         super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
+    }
+    private void otpBack(){
+        otp_edit1.setText("");
+        otp_edit2.setText("");
+        otp_edit3.setText("");
+        otp_edit4.setText("");
+        relative_login.setVisibility(View.VISIBLE);
+        linear_otp.setVisibility(View.GONE);
+        otp_toolbar.setVisibility(View.GONE);
+        isOtpVisible = false;
     }
 
 }

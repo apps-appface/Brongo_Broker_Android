@@ -18,8 +18,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
@@ -36,6 +43,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     private Button done_btn;
+    private RelativeLayout parentLayout;
     private Marker marker;
     private final int FINE_PERMISSION_REQUEST = 1000;
     private Context context;
@@ -46,8 +54,36 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map2);
         context = MapActivity.this;
+        parentLayout = (RelativeLayout)findViewById(R.id.map_parent_relative);
         mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_picker));
-        done_btn = (Button)findViewById(R.id.map_done_btn);
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment.setHint("Search For Place");
+        AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(Place.TYPE_COUNTRY)
+                .setCountry("IN")
+                .build();
+        autocompleteFragment.setFilter(autocompleteFilter);
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                                                            @Override
+                                                            public void onPlaceSelected(Place place) {
+                                                               LatLng latLng = place.getLatLng();
+                                                                if(marker != null){
+                                                                    marker.remove();
+                                                                }
+                                                                marker = map.addMarker(new MarkerOptions().position(latLng).draggable(true));
+                                                                //markerOptions.draggable(true);
+                                                                map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                                                                map.animateCamera(CameraUpdateFactory.zoomTo(15));
+                                                            }
+
+                                                            @Override
+                                                            public void onError(Status status) {
+
+                                                            }
+                                                        });
+
+                done_btn = (Button)findViewById(R.id.map_done_btn);
         mapFragment.getMapAsync(this);
         done_btn.setOnClickListener(new View.OnClickListener() {
             @Override

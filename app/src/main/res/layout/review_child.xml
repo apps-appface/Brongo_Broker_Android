@@ -4,15 +4,15 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="@dimen/review_header_normal">
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/view_small"
         android:background="#c1bfbf"/>
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="@dimen/review_header_normal">
     <RatingBar
         android:id="@+id/review_child_ratingbar"
         style="?android:attr/ratingBarStyleSmall"
@@ -21,14 +21,13 @@
         android:isIndicator="true"
         android:numStars="5"
         android:progressTint="@color/star_yellow"
-        android:rating="3.0"
         android:stepSize="0.5"  />
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/review_child_ratingbar"
-        android:layout_marginLeft="20dp"
-        android:textSize="16sp"
+        android:layout_marginLeft="@dimen/review_header_normal"
+        android:textSize="@dimen/text_size_normal"
         android:textColor="#000000"
         android:id="@+id/review_review1"
         app:customFont="lato_regular.ttf"
@@ -37,7 +36,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="@dimen/review_header_normal">
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,7 +46,7 @@
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="@dimen/review_header_normal"
             android:layout_toRightOf="@+id/review_by"
             android:id="@+id/review_by_name"
             android:layout_centerVertical="true"
@@ -57,10 +56,10 @@
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="#58595b"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/review_header_normal"
             android:layout_toRightOf="@+id/review_by_name"
             android:id="@+id/review_child_time"
             app:customFont="lato_regular.ttf"/>
@@ -68,92 +67,15 @@
     <appface.brongo.uiwidget.FlowLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/review_header_small"
         app:flowDirection="leftToRight"
-        app:elementSpacing="4dp"
-        app:lineSpacing="5dp"
+        app:elementSpacing="@dimen/element_spacing"
+        app:lineSpacing="@dimen/review_header_small"
         android:id="@+id/review_flowlayout"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/review_linear1"
-        android:layout_marginTop="10dp">
-        <appface.brongo.uiwidget.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/review_review2"
-            android:background="@drawable/rounded_purple"
-            android:gravity="center"
-            android:textSize="13sp"
-            android:padding="5sp"
-            android:textAllCaps="false"
-            android:textColor="@color/edit_hint_color"
-            android:visibility="gone"
-            />
-        <appface.brongo.uiwidget.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/review_review3"
-            android:background="@drawable/rounded_purple"
-            android:gravity="center"
-            android:textSize="13sp"
-            android:padding="5sp"
-            android:layout_marginLeft="10dp"
-            android:textAllCaps="false"
-            android:textColor="@color/edit_hint_color"
-            android:visibility="gone"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/review_linear2"
-        android:layout_marginTop="10dp">
-        <appface.brongo.uiwidget.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_purple"
-            android:gravity="center"
-            android:padding="5sp"
-            android:textSize="13sp"
-            android:textAllCaps="false"
-            android:textColor="@color/edit_hint_color"
-            android:id="@+id/review_review4"
-            android:visibility="gone"
-            />
-        <appface.brongo.uiwidget.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_purple"
-            android:gravity="center"
-            android:padding="5sp"
-            android:layout_marginLeft="10dp"
-            android:textSize="13sp"
-            android:textAllCaps="false"
-            android:textColor="@color/edit_hint_color"
-            android:id="@+id/review_review5"
-            android:visibility="gone"
-            />
-    </LinearLayout>
-    <appface.brongo.uiwidget.CustomTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_purple"
-        android:gravity="center"
-        android:padding="5sp"
-        android:layout_marginTop="10dp"
-        android:textAllCaps="false"
-        android:textSize="13sp"
-        android:textColor="@color/edit_hint_color"
-        android:id="@+id/review_review6"
-        android:visibility="gone"
-        />
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/review_comment"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/review_header_normal"
         />
 </LinearLayout>

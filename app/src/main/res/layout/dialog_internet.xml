@@ -5,26 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:padding="30dp">
+    android:padding="@dimen/dialog_margin_layout">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_border"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:padding="20dp">
+        android:padding="@dimen/dialog_margin_large">
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dialog_margin_layout"
+            android:layout_height="@dimen/dialog_margin_layout"
             android:background="@drawable/ic_network_error"/>
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#c0ffffff"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:layout_marginTop="20dp"
-            android:textSize="23.3sp"
+            android:layout_marginTop="@dimen/dialog_margin_normal"
+            android:textSize="@dimen/dialog_title_size"
             android:textColor="#88288f"
             android:lineSpacingExtra="0sp"
             android:gravity="center_horizontal"
@@ -35,12 +33,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#c0ffffff"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-            android:textSize="16.7sp"
-            android:layout_marginTop="20dp"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_marginTop="@dimen/dialog_margin_normal"
             android:textColor="#6e6e6e"
-            android:lineSpacingExtra="6.7sp"
             android:gravity="center_horizontal"
             android:text="You seem to have lost your
 internet connection. Try again with an active connection"
@@ -52,9 +47,9 @@ internet connection. Try again with an active connection"
             android:id="@+id/internet_dialog_btn"
             android:textColor="@color/white"
             android:textAllCaps="false"
-            android:paddingRight="60dp"
-            android:paddingLeft="60dp"
-            android:layout_marginTop="10dp"
+            android:paddingRight="@dimen/btn_padding"
+            android:paddingLeft="@dimen/btn_padding"
+            android:layout_marginTop="@dimen/dialog_margin_normal"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/dialog_button"
             />

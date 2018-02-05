@@ -94,7 +94,7 @@
         <activity
             android:name=".activity.SignUpActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
@@ -144,9 +144,6 @@
 
         <activity
             android:name=".activity.VenueActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.AutoFillActivity"
             android:screenOrientation="portrait" />
 
         <meta-data

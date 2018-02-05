@@ -6,9 +6,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_margin="@dimen/dialog_margin_layout"
         android:layout_centerInParent="true"
-        android:padding="20dp"
+        android:padding="@dimen/dialog_margin_large"
         android:background="@drawable/edit_border"
         android:orientation="vertical">
         <appface.brongo.uiwidget.CustomTextView
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:text="Delete Inventory"
             android:textColor="@color/appColor"
-            android:textSize="25dp"
+            android:textSize="@dimen/dialog_title_size"
             android:gravity="center"
             app:customFont="lato_bold.ttf"/>
         <appface.brongo.uiwidget.CustomTextView
@@ -25,12 +25,13 @@
             android:text=""
             android:id="@+id/delete_inventory_client_name"
             android:gravity="center"
+            android:layout_marginTop="@dimen/dialog_margin_large"
             app:customFont="lato_regular.ttf"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="@dimen/dialog_margin_large">
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -41,7 +42,7 @@
                 android:textAllCaps="false"
                 android:text="Cancel"
                 android:background="@drawable/gray_dialog_btn"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="@dimen/dialog_margin_normal"/>
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -52,7 +53,7 @@
                 android:textAllCaps="false"
                 android:text="Delete"
                 android:background="@drawable/dialog_button"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="@dimen/dialog_margin_normal"/>
 
         </LinearLayout>
     </LinearLayout>

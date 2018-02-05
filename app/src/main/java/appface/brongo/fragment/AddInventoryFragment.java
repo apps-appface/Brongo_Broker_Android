@@ -36,7 +36,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.applozic.mobicommons.file.FileUtils;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.json.JSONException;
@@ -45,14 +44,12 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import appface.brongo.R;
-import appface.brongo.activity.AutoFillActivity;
 import appface.brongo.activity.MainActivity;
 import appface.brongo.model.SignUpModel;
 import appface.brongo.other.AllUtils;
@@ -93,7 +90,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
     private TextView inventory_addImage,inventory_add_more,imageName1,imageSize1,imageName2,imageSize2,imageName3,imageSize3,toolbar_title;
     private LinearLayout linearImage1,linearImage2,linearImage3;
     private Button relativeRemove1,relativeRemove2,relativeRemove3;
-    private RelativeLayout relativeUpload,image_relative;
+    private RelativeLayout relativeUpload,image_relative,parentLayout;
     private ArrayList<File> fileList;
     private ImageView inventory_toolbar_delete,inventory_toolbar_edit,add_icon;
     private String[] inventory_clientlist = {"RENT","BUY","SELL","RENT_OUT"};
@@ -179,6 +176,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
          emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         fileList = new ArrayList<>();
         marketlist = new ArrayList<>();
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         invent_email_layout = (TextInputLayout)view.findViewById(R.id.input_layout_inventory_email);
         invent_phone_layout = (TextInputLayout)view.findViewById(R.id.input_layout_inventory_mobile);
         inventory_budget = (EditText)view.findViewById(R.id.inventory_budget);
@@ -420,12 +418,6 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                 sub_prop_type = parent.getItemAtPosition(position).toString();
             }
         });
-        inventory_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                autoPlace();
-            }
-        });
         marketSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -557,7 +549,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                                         int statusCode = jsonObject.optInt("statusCode");
                                         String message = jsonObject.optString("message");
                                         if (statusCode == 200) {
-                                            Utils.showToast(context, message);
+                                            Utils.setSnackBar(parentLayout,message);
                                             Intent intent = new Intent(context, MainActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                             startActivity(intent);
@@ -577,7 +569,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                                             new AllUtils().getTokenRefresh(context);
                                             setInventory();
                                         } else {
-                                            Utils.showToast(context, message);
+                                            Utils.showToast(context, message,"Error" );
                                         }
                                     } catch (JSONException | IOException e) {
                                         e.printStackTrace();
@@ -589,6 +581,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
                             Utils.LoaderUtils.dismissLoader();
+                            Utils.showToast(context, t.getMessage().toString(),"Failure" );
                         }
                     });
                 } else {
@@ -596,7 +589,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                     Utils.internetDialog(context, this);
                 }
             }else{
-                Utils.showToast(context,"Data can not be empty");
+                Utils.setSnackBar(parentLayout,"Data can not be empty");
             }
     }
     private void enterValue(){
@@ -634,11 +627,6 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         if(! image3.equalsIgnoreCase("")){
             filename3 = image3.substring(image3.lastIndexOf('/') + 1);
         }
-    }
-    private void autoPlace(){
-        Intent intent = new Intent(context,AutoFillActivity.class);
-        intent.putExtra("sender_intent","AddInventory");
-        startActivity(intent);
     }
 
     private void setTextWatcher(){
@@ -758,7 +746,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                             if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) || !shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                                 Utils.permissionDialog(context);
                             } else {
-                                Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
+                                Utils.setSnackBar(parentLayout, "Permission Denied");
                             }
                         }
                     }
@@ -772,7 +760,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                                 if (!shouldShowRequestPermissionRationale(permissions[0])) {
                                     Utils.permissionDialog(context);
                                 } else {
-                                    Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
+                                    Utils.setSnackBar(parentLayout, "Permission Denied");
                                 }
                             }
                         }
@@ -840,7 +828,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                                 new AllUtils().getTokenRefresh(context);
                                 fetchMicromarket();
                             } else {
-                                Utils.showToast(context, message);
+                                Utils.showToast(context, message,"Error");
                             }
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
@@ -851,7 +839,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                 @Override
                 public void onFailure(Call<SignUpModel.MarketModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{

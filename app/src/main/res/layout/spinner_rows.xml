@@ -4,25 +4,25 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+    android:paddingTop="@dimen/spinner_small"
+    android:paddingBottom="@dimen/spinner_small"
+    android:paddingLeft="@dimen/spinner_normal"
+    android:paddingRight="@dimen/spinner_normal">
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinner_header"
         android:textColor="#64687f"
-        android:textSize="15sp"
+        android:textSize="@dimen/text_size_normal"
         app:customFont="lato_bold.ttf"/>
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textSize="13sp"
+        android:layout_marginTop="@dimen/spinner_small"
+        android:textSize="@dimen/text_size_small"
         android:id="@+id/spinner_child"
         android:textColor="#64687f"
-        android:padding="5dp"
+        android:padding="@dimen/spinner_small"
         app:customFont="lato_regular.ttf"
         android:includeFontPadding="false"/>
 </LinearLayout>

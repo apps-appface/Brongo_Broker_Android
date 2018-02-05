@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,14 +62,14 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private final String TAG = DocumentUploadActivity.class.getName();
     Context context;
     private boolean doubleBackToExitPressedOnce = false;
-    private LinearLayout docu_linear1,docu_linear2,docu_linear3,docu_linear4,docu_linear22,docu_linear33,docu_linear44;
+    private LinearLayout docu_linear1,docu_linear2,docu_linear3,docu_linear4,docu_linear22,docu_linear33,docu_linear44,parentLayout;
     private TextView docu_btn1,docu_btn2,docu_btn3,docu_btn4,round_text1,round_text2,round_text3,round_text4,docu_title;
     private EditText rera_edit,pan_edit;
     private int i,open_view1,open_view2,open_view3,open_view4,image_code2,image_code3,image_code4;
     private ImageView docu_imageview,document_back,check1,check2,check3,check4;
     private Button continue_btn;
-    private TextView docu_heading,recapture_text,remove_text;
-    private TextView gallery_btn,camera_btn;
+    private TextView docu_heading;
+    private RelativeLayout recapture_text,remove_text, gallery_btn,camera_btn;
     private int Gallery_CODE = 30;
     private int Camera_CODE = 50;
     private int fileNumber = -1;
@@ -96,6 +97,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 
     private void initialise() {
         context = this;
+        parentLayout = (LinearLayout)findViewById(R.id.document_activity_linear);
         docu_title = (TextView)findViewById(R.id.document_toolbar).findViewById(R.id.other_toolbar_title);
         document_back = (ImageView) findViewById(R.id.document_toolbar).findViewById(R.id.other_toolbar_back);
         check1 = (ImageView)findViewById(R.id.document_check1);
@@ -216,9 +218,9 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 }
 
             } else if (resultCode == RESULT_CANCELED) {
-                Utils.showToast(context, " Picture selection was canceled");
+                Utils.setSnackBar(parentLayout,"Picture selection was canceled");
             } else {
-                Utils.showToast(this, " Picture was not taken ");
+                Utils.setSnackBar(parentLayout,"Picture was not taken");
             }
         }catch (Exception e){
 
@@ -283,10 +285,10 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                fileNumber=0;
                setView(i);
                docu_imageview = (ImageView)findViewById(R.id.layout22).findViewById(R.id.docu_imageview);
-               recapture_text = (TextView)findViewById(R.id.layout22).findViewById(R.id.recapture_text);
-               remove_text = (TextView)findViewById(R.id.layout22).findViewById(R.id.remove_text);
-               gallery_btn= (TextView) findViewById(R.id.layout2).findViewById(R.id.docu_gallery);
-               camera_btn= (TextView)findViewById(R.id.layout2).findViewById(R.id.docu_camera);
+               recapture_text = (RelativeLayout) findViewById(R.id.layout22).findViewById(R.id.recapture_text);
+               remove_text = (RelativeLayout)findViewById(R.id.layout22).findViewById(R.id.remove_text);
+               gallery_btn= (RelativeLayout) findViewById(R.id.layout2).findViewById(R.id.docu_gallery);
+               camera_btn= (RelativeLayout)findViewById(R.id.layout2).findViewById(R.id.docu_camera);
                gallery_btn.setOnClickListener(this);
                camera_btn.setOnClickListener(this);
                remove_text.setOnClickListener(this);
@@ -297,10 +299,10 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                fileNumber =1;
                setView(i);
                docu_imageview = (ImageView)findViewById(R.id.layout33).findViewById(R.id.docu_imageview);
-               recapture_text = (TextView)findViewById(R.id.layout33).findViewById(R.id.recapture_text);
-               remove_text = (TextView)findViewById(R.id.layout33).findViewById(R.id.remove_text);
-               gallery_btn= (TextView)findViewById(R.id.layout3).findViewById(R.id.docu_gallery);
-               camera_btn= (TextView)findViewById(R.id.layout3).findViewById(R.id.docu_camera);
+               recapture_text = (RelativeLayout)findViewById(R.id.layout33).findViewById(R.id.recapture_text);
+               remove_text = (RelativeLayout)findViewById(R.id.layout33).findViewById(R.id.remove_text);
+               gallery_btn= (RelativeLayout)findViewById(R.id.layout3).findViewById(R.id.docu_gallery);
+               camera_btn= (RelativeLayout)findViewById(R.id.layout3).findViewById(R.id.docu_camera);
                gallery_btn.setOnClickListener(this);
                camera_btn.setOnClickListener(this);
                remove_text.setOnClickListener(this);
@@ -311,10 +313,10 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                fileNumber =2;
                setView(i);
                docu_imageview = (ImageView)findViewById(R.id.layout44).findViewById(R.id.docu_imageview);
-               recapture_text = (TextView)findViewById(R.id.layout44).findViewById(R.id.recapture_text);
-               remove_text = (TextView)findViewById(R.id.layout44).findViewById(R.id.remove_text);
-               gallery_btn= (TextView)findViewById(R.id.layout4).findViewById(R.id.docu_gallery);
-               camera_btn= (TextView)findViewById(R.id.layout4).findViewById(R.id.docu_camera);
+               recapture_text = (RelativeLayout)findViewById(R.id.layout44).findViewById(R.id.recapture_text);
+               remove_text = (RelativeLayout)findViewById(R.id.layout44).findViewById(R.id.remove_text);
+               gallery_btn= (RelativeLayout)findViewById(R.id.layout4).findViewById(R.id.docu_gallery);
+               camera_btn= (RelativeLayout)findViewById(R.id.layout4).findViewById(R.id.docu_camera);
                gallery_btn.setOnClickListener(this);
                camera_btn.setOnClickListener(this);
                remove_text.setOnClickListener(this);
@@ -412,7 +414,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                                         int statusCode = jsonObject.optInt("statusCode");
                                         String message = jsonObject.optString("message");
                                         if (statusCode == 200 && message.equalsIgnoreCase("Broker Documents Successfully Uploaded")) {
-                                            Utils.showToast(context, message);
+                                            Utils.setSnackBar(parentLayout,message);
                                             startActivity(new Intent(DocumentUploadActivity.this, VenueActivity.class));
                                             finish();
                                         }
@@ -426,7 +428,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                                         JSONObject jsonObject = new JSONObject(responseString);
                                         String message = jsonObject.optString("message");
                                         int statusCode = jsonObject.optInt("statusCode");
-                                        Utils.showToast(context, message);
+                                        Utils.showToast(context, message,"Error");
                                     } catch (JSONException | IOException e) {
                                         e.printStackTrace();
                                     }
@@ -437,13 +439,14 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
                             Utils.LoaderUtils.dismissLoader();
+                            Utils.showToast(context, t.getMessage().toString(),"Failure" );
                         }
                     });
                 } else {
-                    Utils.showToast(context, "Either pan no or rera registration is empty");
+                    Utils.setSnackBar(parentLayout, "Either pan no or rera registration is empty");
                 }
             } else {
-                Utils.showToast(context, "select all file first");
+                Utils.setSnackBar(parentLayout, "select all file first");
             }
         }else{
             Utils.internetDialog(context,this);
@@ -685,7 +688,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                         if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                             Utils.permissionDialog(context);
                     } else {
-                            Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
+                           Utils.setSnackBar(parentLayout, "Permission Denied");
                         }
                 }
                 break;
@@ -700,7 +703,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                             if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) && !shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                                 Utils.permissionDialog(context);
                             } else {
-                                Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
+                                Utils.setSnackBar(parentLayout, "Permission Denied");
                             }
                         }
                     }
@@ -714,7 +717,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                                 if (!shouldShowRequestPermissionRationale(permissions[0])) {
                                     Utils.permissionDialog(context);
                                 } else {
-                                    Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
+                                    Utils.setSnackBar(parentLayout, "Permission Denied");
                                 }
                             }
                         }
@@ -734,7 +737,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             startActivity(intent);
             finish();
         }else{
-            Utils.showToast(this, "click again to back");
+            Utils.setSnackBar(parentLayout, "click again to back");
         }
 
         this.doubleBackToExitPressedOnce = true;

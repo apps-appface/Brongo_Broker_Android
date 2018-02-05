@@ -12,7 +12,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
@@ -34,8 +33,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,11 +48,9 @@ import java.util.ArrayList;
 import appface.brongo.R;
 import appface.brongo.adapter.ReferAdapter;
 import appface.brongo.model.ApiModel;
-import appface.brongo.model.BuilderModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
@@ -68,6 +66,7 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
     private TextView refer_text,referral_plan,referral_code_text,toolbar_title;
     private EditText referee_name,referee_mobile;
     private Button refer_broker_btn,refer_share_btn;
+    private LinearLayout parentLayout;
     private ImageView refer_back;
     private Toolbar toolbar;
     private Context context;
@@ -98,6 +97,7 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
     }
     private void initialise(){
         context = this;
+        parentLayout = (LinearLayout)findViewById(R.id.refer_parent_linear);
         pref = getSharedPreferences(AppConstants.PREF_NAME,0);
         refer_text = (TextView)findViewById(R.id.refer_text);
         refer_back = (ImageView)findViewById(R.id.refer_back);
@@ -199,7 +199,7 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
                     Log.i("MyApp", "got my Branch link to share: " + url);
                     shorturl = url;
                 }else{
-                    Utils.showToast(context,"Try Again");
+                    Utils.setSnackBar(parentLayout,"Try Again");
                 }
             }
         });
@@ -245,8 +245,8 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
         referee_name = (EditText)dialog.findViewById(R.id.referee_name);
         referee_mobile = (EditText)dialog.findViewById(R.id.referee_mobile);
         Button referee_submit_btn = (Button)dialog.findViewById(R.id.refer_submit_btn);
-        Button referee_phonebook_btn = (Button)dialog.findViewById(R.id.refer_phonebook);
-        Button referee_whatsapp_btn = (Button)dialog.findViewById(R.id.refer_whatsapp);
+        RelativeLayout referee_phonebook_btn = (RelativeLayout)dialog.findViewById(R.id.refer_phonebook);
+        RelativeLayout referee_whatsapp_btn = (RelativeLayout)dialog.findViewById(R.id.refer_whatsapp);
         referee_submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -341,7 +341,7 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
                                     new AllUtils().getTokenRefresh(context);
                                     callReferralPlanApi();
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -357,7 +357,7 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
                 @Override
                 public void onFailure(Call<ApiModel.ReferPlanModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 /*if(pd.isShowing()) {
                     pd.dismiss();
                 }*/
@@ -442,7 +442,7 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
                     if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
                         Utils.permissionDialog(context);
                     } else {
-                        Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show();
+                        Utils.setSnackBar(parentLayout, "Permission Denied");
                     }
                 }
                 break;

@@ -4,17 +4,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="20dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:paddingBottom="20dp"
+android:padding="@dimen/dialog_margin_large"
     android:background="@drawable/drawer_background">
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="20sp"
-        android:layout_marginTop="20dp"
+        android:textSize="@dimen/text_size_big"
+        android:layout_marginTop="@dimen/dialog_margin_large"
         android:text="Rate your experience"
         android:gravity="center"
         app:customFont="lato_regular.ttf"
@@ -30,24 +27,24 @@
         android:orientation="vertical"
         android:background="@drawable/edit_border"
         android:id="@+id/rating_layout"
-        android:paddingTop="20dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp">
+        android:paddingTop="@dimen/dialog_margin_large"
+        android:paddingLeft="@dimen/dialog_margin_large"
+        android:paddingRight="@dimen/dialog_margin_large"
+        android:paddingBottom="@dimen/dialog_margin_large"
+        android:layout_marginTop="@dimen/dialog_margin_large"
+        android:layout_marginRight="@dimen/dialog_margin_large"
+        android:layout_marginLeft="@dimen/dialog_margin_large">
         <ImageView
             android:id="@+id/client_image_rating"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/dialog_margin_sixty"
+            android:layout_height="@dimen/dialog_margin_sixty"
             android:scaleType="fitXY"
             android:layout_gravity="center" />
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginTop="20dp"
+            android:textSize="@dimen/text_size_big"
+            android:layout_marginTop="@dimen/dialog_margin_large"
             android:textColor="@color/edit_text_color"
             android:gravity="center"
             android:id="@+id/client_name_rating"
@@ -55,10 +52,9 @@
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/dialog_margin_normal"
             android:textColor="@color/round_empty_gray"
             android:gravity="center"
-            android:text="Koramangala"
             android:id="@+id/client_address_rating"
             app:customFont="lato_regular.ttf"/>
         <RatingBar
@@ -83,9 +79,9 @@
             android:layout_height="wrap_content"
             android:text="Delayed Commission"
             android:id="@+id/rating_check1"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/dialog_margin_normal"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/dialog_margin_normal"
             android:textColor="@color/round_empty_gray"
             />
         <CheckBox
@@ -93,7 +89,7 @@
             android:layout_height="wrap_content"
             android:text="Didn't pay commission"
             android:id="@+id/rating_check2"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/dialog_margin_normal"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/round_empty_gray"
             />
@@ -103,7 +99,7 @@
             android:text="Difficult to reach"
             android:id="@+id/rating_check3"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/dialog_margin_normal"
             android:textColor="@color/round_empty_gray"
             />
         <CheckBox
@@ -112,7 +108,7 @@
             android:text="Always late for payment"
             android:layout_gravity="center_horizontal"
             android:id="@+id/rating_check4"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/dialog_margin_normal"
             android:textColor="@color/round_empty_gray"
             />
         <CheckBox
@@ -121,7 +117,7 @@
             android:text="Always late for payment"
             android:layout_gravity="center_horizontal"
             android:id="@+id/rating_check5"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/dialog_margin_normal"
             android:textColor="@color/round_empty_gray"
             />
         <Button
@@ -131,10 +127,10 @@
             android:layout_gravity="center"
             android:id="@+id/client_rating_btn"
             android:text="Submit"
-            android:paddingRight="60dp"
-            android:paddingLeft="60dp"
+            android:paddingRight="@dimen/btn_padding"
+            android:paddingLeft="@dimen/btn_padding"
             android:textAllCaps="false"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/dialog_margin_large"
             android:textColor="@color/white"/>
         </LinearLayout>
     </LinearLayout>
@@ -142,15 +138,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/premium_back"
-            android:layout_alignTop="@+id/rating_layout"
             android:layout_alignParentEnd="true"
             android:textColor="@color/black"
-            android:layout_marginTop="34dp"
+            android:layout_marginTop="@dimen/dialog_margin_layout"
             android:text="PREMIUM"
             android:gravity="center"
             android:id="@+id/client_rating_plan"
-            android:padding="5dp"
-            android:layout_marginRight="6dp"
+            android:padding="@dimen/dialog_margin_small"
+            android:layout_marginRight="@dimen/dialog_margin_small"
             android:layout_alignParentRight="true"
             app:customFont="lato_bold.ttf"
              />

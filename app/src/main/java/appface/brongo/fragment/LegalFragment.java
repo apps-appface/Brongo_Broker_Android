@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class LegalFragment extends Fragment {
    private Context context;
     private Toolbar toolbar;
    private TextView toolbar_title;
+   private RelativeLayout parentLayout;
     public LegalFragment() {
         // Required empty public constructor
     }
@@ -47,6 +49,7 @@ public class LegalFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_legal, container, false);
         arrayList = new ArrayList<String>(Arrays.asList("Terms & Conditions", "Privacy Policy", "T & C for Buying & Selling Deals","T & C for Rental Deals"));
         context = getActivity();
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         RecyclerView legalrecycle = (RecyclerView)view.findViewById(R.id.legal_recycle);
         toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
         LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);

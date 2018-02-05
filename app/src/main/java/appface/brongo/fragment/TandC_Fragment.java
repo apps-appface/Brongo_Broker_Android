@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.barteksc.pdfviewer.PDFView;
@@ -25,6 +26,7 @@ public class TandC_Fragment extends Fragment implements OnPageChangeListener {
     private TextView toolbar_title;
     private Toolbar toolbar;
 private Context context;
+private RelativeLayout parentLayout;
 private  PDFView pdfView;
     private ImageView edit_icon,delete_icon,add_icon;
     public TandC_Fragment() {
@@ -42,6 +44,7 @@ private  PDFView pdfView;
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tand_c_, container, false);
         context = getActivity();
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
         delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
         add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
@@ -60,7 +63,7 @@ private  PDFView pdfView;
         return view;
     }
     private void setView(){
-        if(position == 0) {
+        if(position == 0 || position == 2 || position == 3) {
             try {
                 pdfView.fromAsset("tc_brokers.pdf")
                         .defaultPage(1)

@@ -4,13 +4,13 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp"
+    android:paddingBottom="@dimen/subplan_margin_normal"
+    android:paddingTop="@dimen/subplan_margin_normal"
     android:background="#ededed">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="@dimen/subplan_margin_normal"
         android:background="@drawable/premium_child_back">
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
@@ -20,19 +20,19 @@
             app:customFont="lato_regular.ttf"/>
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="@dimen/subplan_btn_height"
             android:layout_below="@+id/premium_plan_type"
             android:layout_alignParentRight="true"
             android:background="@drawable/dialog_button"
             android:text="BUY NOW"
             android:id="@+id/pay_btn"
-            android:padding="5dp"
+            android:padding="@dimen/subplan_margin_small"
             android:textColor="#fafafa"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/subplan_margin_normal"
             android:layout_below="@+id/pay_btn"
             >
             <appface.brongo.uiwidget.CustomTextView
@@ -40,15 +40,15 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/premium_actual_rate"
                 android:textColor="#eaedf1"
-                android:textSize="13sp"
+                android:textSize="@dimen/text_size_small"
                 app:customFont="lato_regular.ttf"
                 />
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/subplan_margin_normal"
                 android:id="@+id/premium_paying_rate"
-                android:textSize="15sp"
+                android:textSize="@dimen/text_size_normal"
                 android:textColor="#ebee10"
                 app:customFont="lato_regular.ttf"
                 />
@@ -58,27 +58,27 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:padding="@dimen/subplan_margin_small"
         android:background="@drawable/expand_group_child">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="@dimen/subplan_margin_normal"
+            android:layout_marginRight="@dimen/subplan_margin_normal"
             android:layout_alignParentLeft="true">
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Save: "
-                android:textSize="13sp"
+                android:textSize="@dimen/text_size_small"
                 android:textColor="#20518f"
                 app:customFont="lato_regular.ttf"/>
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#20518f"
-                android:textSize="13sp"
+                android:textSize="@dimen/text_size_small"
                 android:id="@+id/premium_save"
                 app:customFont="lato_regular.ttf"/>
         </LinearLayout>
@@ -86,21 +86,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginRight="@dimen/subplan_margin_normal"
+            android:layout_marginLeft="@dimen/subplan_margin_normal"
             android:layout_alignParentRight="true">
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Net Per Month: "
-                android:textSize="13sp"
+                android:textSize="@dimen/text_size_small"
                 android:textColor="#20518f"
                 app:customFont="lato_regular.ttf"/>
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#20518f"
-                android:textSize="13sp"
+                android:textSize="@dimen/text_size_small"
                 android:id="@+id/premium_net_worth"
                 app:customFont="lato_regular.ttf"/>
         </LinearLayout>

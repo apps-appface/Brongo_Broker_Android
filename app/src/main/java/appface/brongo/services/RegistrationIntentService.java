@@ -144,6 +144,7 @@ public class RegistrationIntentService extends IntentService {
                             JSONObject jsonObject = new JSONObject(responseString);
                             int statusCode = jsonObject.optInt("statusCode");
                             String message = jsonObject.optString("message");
+                            Utils.showToast(context,message,"Failure");
                         }  catch (IOException e) {
                             e.printStackTrace();
                         }catch (JSONException e) {
@@ -156,6 +157,7 @@ public class RegistrationIntentService extends IntentService {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utils.showToast(context,t.getMessage().toString(),"Failure");
             }
         });
     }

@@ -23,7 +23,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -31,16 +30,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.TouchDelegate;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -50,16 +46,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import appface.brongo.R;
-import appface.brongo.activity.MainActivity;
-import appface.brongo.activity.PushAlertActivity;
-import appface.brongo.activity.SplashActivity;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.uiwidget.GifView;
 
@@ -166,20 +157,28 @@ public class Utils {
         animation.setBackgroundColor(context.getResources().getColor(R.color.appColor));
         view.startAnimation(animation);
     }
-    public static void showToast(Context context,String message){
-     /*   Toast toast = Toast.makeText(context,message,Toast.LENGTH_SHORT);
-        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-        if( v != null) {
-            v.setGravity(Gravity.CENTER);
+    public static void showToast(Context context, String message, String title){
+        try {
+            dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.setContentView(R.layout.alertdialog);
+            dialog.setCanceledOnTouchOutside(false);
+            final TextView title_text = (TextView) dialog.findViewById(R.id.alert_title);
+            final TextView message_text = (TextView) dialog.findViewById(R.id.alert_message);
+            title_text.setText(title);
+            message_text.setText(message);
+            final Button ok_btn = (Button) dialog.findViewById(R.id.alert_ok_btn);
+            ok_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }catch (Exception e){
+
         }
-        toast.show();*/
-       /* Activity activity = (Activity)context;
-        LayoutInflater inflater = activity.getLayoutInflater();
-        View layout = inflater.inflate(R.layout.toast,
-                (ViewGroup)activity.findViewById(R.id.toast_layout_root));
-        TextView text = (TextView) layout.findViewById(R.id.toast_text);
-        text.setText(message);*/
-     // Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
     }
     public static void showAlert(String title,String message,Context context){
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
@@ -362,18 +361,11 @@ public class Utils {
                     dialog.dismiss();
                     if (internetTryConnectListener != null)
                         internetTryConnectListener.onTryReconnect();
-                   /* Intent intent = activity.getIntent();
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    activity.startActivity(intent);*/
-                   //activity.recreate();
-                   // activity.finish();
-                }else{
-                    showToast(context,"Please check your Internet");
                 }
             }
         });
         dialog.show();
-         br = new BroadcastReceiver() {
+        /* br = new BroadcastReceiver() {
 
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -400,7 +392,7 @@ public class Utils {
         };
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        context.registerReceiver((BroadcastReceiver) br, intentFilter);
+        context.registerReceiver((BroadcastReceiver) br, intentFilter);*/
     }
 
     public static void bidAcceptedDialog(String message,Context context){
@@ -573,11 +565,14 @@ public class Utils {
         return url;
     }
     public static void setSnackBar(View coordinatorLayout, String snackTitle) {
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, snackTitle, Snackbar.LENGTH_SHORT);
-        snackbar.show();
-        View view = snackbar.getView();
-        TextView txtv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-        txtv.setGravity(Gravity.CENTER_HORIZONTAL);
+        try {
+            Snackbar snackbar = Snackbar.make(coordinatorLayout, snackTitle, Snackbar.LENGTH_SHORT);
+            snackbar.show();
+            View view = snackbar.getView();
+            TextView txtv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+            txtv.setGravity(Gravity.CENTER_HORIZONTAL);
+        }catch (Exception e){
+        }
     }
 
 

@@ -13,10 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,13 +30,10 @@ import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.CircleTransform;
 import appface.brongo.util.CustomApplicationClass;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
-import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,6 +50,7 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
     private Toolbar toolbar;
     private RatingBar review_ratingbar;
     private RecyclerView review_list;
+    private RelativeLayout parentLayout;
     private ReviewAdapter reviewAdapter;
     private int from =0,totalCount = 0,size=10;
     ArrayList<ApiModel.ReviewChild> arrayList;
@@ -76,6 +74,7 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
     private void initialise(View view){
         context = getActivity();
         arrayList = new ArrayList<>();
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         ratingCountList = new ArrayList<>();
         pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
         review_list = (RecyclerView)view.findViewById(R.id.review_recycle);
@@ -154,6 +153,8 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
                                 if (arrayList1.size() < size) {
                                     isemptyData = true;
                                     reviewAdapter.setButton(false);
+                                }else{
+                                    reviewAdapter.setButton(true);
                                 }
                             }
                             reviewAdapter.notifyDataSetChanged();
@@ -167,7 +168,7 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
                                     new AllUtils().getTokenRefresh(context);
                                     getReviewList(from, size);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -179,7 +180,7 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
                 @Override
                 public void onFailure(Call<ApiModel.ReviewModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{

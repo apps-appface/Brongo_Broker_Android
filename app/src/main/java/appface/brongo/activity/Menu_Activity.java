@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.payu.india.Payu.Payu;
@@ -43,6 +44,7 @@ import appface.brongo.util.Utils;
 import static appface.brongo.fragment.SettingFragment.myOnKeyDown;
 import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.ABOUTUS;
 import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.ADD_INVENTORY;
+import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.CONTACT;
 import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.HELP_FAQ;
 import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.HISTORICAL;
 import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.INVENTORY_LIST;
@@ -62,6 +64,7 @@ public class Menu_Activity extends AppCompatActivity {
     private Bundle bundle;
     private Toolbar toolbar;
     private String activity_name="";
+    RelativeLayout parentLayout;
     private ImageView back_image,toolbar_delete,toolbar_edit,toolbar_add;
     private ProgressBar progressBar;
     @Override
@@ -75,6 +78,7 @@ public class Menu_Activity extends AppCompatActivity {
             bundle = getIntent().getExtras();
         }
         setContentView(R.layout.activity_menu);
+        parentLayout = (RelativeLayout)findViewById(R.id.menu_parent_relative);
         toolbar = (Toolbar)findViewById(R.id.inventory_toolbar);
         back_image = (ImageView)findViewById(R.id.toolbar_inventory_back);
         toolbar_delete = (ImageView)findViewById(R.id.toolbar_inventory_delete);
@@ -168,6 +172,10 @@ public class Menu_Activity extends AppCompatActivity {
                 RequirementFragment requirementFragment = new RequirementFragment();
                 requirementFragment.setArguments(bundle);
                 Utils.replaceFragment(getSupportFragmentManager(),requirementFragment,R.id.inventory_frag_container,REQUIREMENT);
+                break;
+            case "ContactFragment":
+                ContactFragment contactFragment = new ContactFragment();
+                Utils.replaceFragment(getSupportFragmentManager(),contactFragment,R.id.inventory_frag_container,CONTACT);
                 break;
         }
     }

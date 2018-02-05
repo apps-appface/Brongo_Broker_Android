@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ededed"
+    android:id="@+id/menu_parent_relative"
     tools:context="appface.brongo.activity.Menu_Activity">
     <android.support.v7.widget.Toolbar
         android:id="@+id/inventory_toolbar"
@@ -12,7 +13,7 @@
         android:layout_height="?attr/actionBarSize"
         android:elevation="0dp"
         android:minHeight="?attr/actionBarSize"
-        android:paddingBottom="5dp"
+
         app:contentInsetStart="0dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -24,12 +25,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="60dp"
-                android:padding="15dp"
+                android:layout_width="@dimen/menu_icon_width"
+                android:layout_height="match_parent"
+                android:padding="@dimen/menu_margin_big"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_back"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/menu_margin_normal"
                 android:id="@+id/toolbar_inventory_back"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
@@ -41,13 +42,13 @@
                 android:gravity="center"
                 android:id="@+id/inventory_toolbar_title"
               android:layout_centerInParent="true"
-                android:textSize="18dp"
+                android:textSize="@dimen/text_size_big"
                 app:customFont="lato_regular.ttf"/>
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/menu_icon_width"
             android:layout_height="wrap_content"
-            android:padding="15dp"
+            android:padding="@dimen/menu_margin_big"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_edit"
             android:layout_toRightOf="@+id/inventory_toolbar_title"
@@ -57,26 +58,26 @@
             android:visibility="gone"
           />
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/menu_icon_width"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:padding="@dimen/menu_margin_big"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_delete"
                 android:layout_toRightOf="@+id/toolbar_inventory_edit"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/menu_margin_normal"
                 android:id="@+id/toolbar_inventory_delete"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:visibility="gone"
                 />
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:layout_width="@dimen/menu_icon_width"
+                android:layout_height="match_parent"
+                android:padding="@dimen/menu_margin_big"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_add_icon"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="@dimen/menu_margin_big"
                 android:id="@+id/toolbar_inventory_add"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"

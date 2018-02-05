@@ -11,54 +11,51 @@
         android:id="@+id/open_relative1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="20dp"
-        android:layout_marginBottom="60dp">
+        android:paddingBottom="@dimen/hof_margin_large"
+        android:layout_marginBottom="@dimen/hof_margin_sixty">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="60dp"
-            android:paddingBottom="20dp"
+            android:layout_marginLeft="@dimen/hof_margin_large"
+            android:layout_marginRight="@dimen/hof_margin_large"
+            android:layout_marginBottom="@dimen/hof_margin_sixty"
+            android:paddingBottom="@dimen/hof_margin_large"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="@dimen/hof_margin_small">
 
             <LinearLayout
                 android:id="@+id/item_linear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="@dimen/hof_margin_large"
                 android:background="@drawable/edit_border"
-                android:elevation="10dp"
+                android:elevation="@dimen/hof_margin_normal"
                 android:orientation="vertical"
-                android:paddingBottom="20dp"
-                android:paddingTop="10dp">
+                android:paddingBottom="@dimen/hof_margin_large"
+                android:paddingTop="@dimen/hof_margin_normal">
 
                 <appface.brongo.uiwidget.CustomTextView
                     android:id="@+id/text_matching_properties"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="@dimen/hof_margin_normal"
                     android:background="@drawable/match_prop_back"
                     android:gravity="center_horizontal"
-                    android:padding="5sp"
+                    android:padding="@dimen/hof_margin_small"
                     android:shadowColor="#73000000"
-                    android:shadowDx="6.123233995736766e-17"
-                    android:shadowDy="1"
-                    android:shadowRadius="3"
                     android:textColor="#000000"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/text_size_small"
                     app:customFont="lato_bold.ttf" />
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginLeft="@dimen/hof_margin_normal"
+                    android:layout_marginTop="@dimen/hof_margin_normal">
 
                 <RelativeLayout
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/hof_margin_sixty"
+                    android:layout_height="@dimen/hof_margin_sixty"
                     android:id="@+id/main_relative_image">
                     <ProgressBar
                         android:id="@+id/progress"
@@ -81,7 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/main_relative_image"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="@dimen/hof_margin_normal"
                     android:orientation="vertical">
                     <appface.brongo.uiwidget.CustomTextView
                         android:id="@+id/opendeal_client_name"
@@ -89,10 +86,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:shadowColor="#c0ffffff"
-                        android:shadowDx="6.123233995736766e-17"
-                        android:shadowDy="1"
                         android:textColor="#163d70"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/text_size_big"
                         app:customFont="lato_bold.ttf" />
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -104,10 +99,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:isIndicator="true"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="@dimen/hof_margin_normal"
                         android:numStars="5"
                         android:progressTint="@color/star_yellow"
-                        android:rating="3.0"
                         android:stepSize="0.5" />
                     </LinearLayout>
 
@@ -117,30 +111,30 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="@dimen/view_esmall"
+                    android:layout_marginLeft="@dimen/hof_margin_large"
+                    android:layout_marginRight="@dimen/hof_margin_large"
+                    android:layout_marginTop="@dimen/hof_margin_normal"
                     android:background="#3388288f" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingLeft="30dp"
-                    android:paddingRight="30dp">
+                    android:paddingLeft="@dimen/hof_margin_thirty"
+                    android:paddingRight="@dimen/hof_margin_thirty">
 
                     <Button
                         android:id="@+id/client_chat"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="@dimen/hof_margin_small"
+                        android:layout_marginRight="@dimen/hof_margin_small"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:drawableTop="@drawable/bchat_icon"
-                        android:paddingTop="10dp"
+                        android:paddingTop="@dimen/hof_margin_normal"
                         android:text="B-CHAT"
                         android:textColor="@color/appColor" />
 
@@ -148,13 +142,13 @@
                         android:id="@+id/client_call"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="@dimen/hof_margin_small"
+                        android:layout_marginRight="@dimen/hof_margin_small"
                         android:layout_weight="1"
                         android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:drawableTop="@drawable/call_client_icon"
-                        android:paddingTop="10dp"
+                        android:paddingTop="@dimen/hof_margin_normal"
                         android:textColor="@color/appColor"
                         android:text="CALL"
                        />
@@ -167,21 +161,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_border"
-                android:padding="10dp"
-                android:layout_marginBottom="20dp"
-                android:elevation="10dp">
+                android:padding="@dimen/hof_margin_normal"
+                android:layout_marginBottom="@dimen/hof_margin_large"
+                android:elevation="@dimen/hof_margin_normal">
                 <appface.brongo.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:shadowColor="#73000000"
-                    android:shadowDx="6.123233995736766e-17"
-                    android:shadowDy="1"
                     android:layout_centerVertical="true"
-                    android:shadowRadius="3"
                     android:text="Potential Commission"
                     android:textColor="#64687f"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/text_size_small"
                     app:customFont="lato_bold.ttf" />
 
                 <appface.brongo.uiwidget.CustomTextView
@@ -191,11 +182,8 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:shadowColor="#73000000"
-                    android:shadowDx="6.123233995736766e-17"
-                    android:shadowDy="1"
-                    android:shadowRadius="3"
                     android:textColor="#264c91"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/text_size_big"
                     app:customFont="lato_bold.ttf" />
             </RelativeLayout>
 
@@ -204,16 +192,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/item_linear"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="@dimen/hof_margin_large"
                 android:background="@drawable/edit_border"
-                android:elevation="10dp"
+                android:elevation="@dimen/hof_margin_normal"
                 android:orientation="vertical"
-                android:paddingBottom="20dp"
-                android:paddingTop="10dp">
+                android:paddingBottom="@dimen/hof_margin_large"
+                android:paddingTop="@dimen/hof_margin_normal">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginLeft="@dimen/hof_margin_normal">
                     <appface.brongo.uiwidget.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -230,21 +218,21 @@
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_vertical"
                     android:layout_toRightOf="@+id/landing_requirement"
-                    android:layout_marginLeft="10dp"
-                    android:padding="5dp"
+                    android:layout_marginLeft="@dimen/hof_margin_normal"
+                    android:padding="@dimen/hof_margin_small"
                     android:textColor="@color/white"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/text_size_small"
                     app:customFont="lato_bold.ttf" />
                 </RelativeLayout>
                 <appface.brongo.uiwidget.CustomTextView
                     android:id="@+id/deal_id"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="@dimen/hof_margin_normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="#e5eaf0"
                     android:gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:padding="5dp"
+                    android:layout_marginTop="@dimen/hof_margin_normal"
+                    android:padding="@dimen/hof_margin_small"
                     android:text=""
                     android:textColor="@color/edit_hint_color"
                     app:customFont="lato_bold.ttf"/>
@@ -253,19 +241,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/main_deal_flowlayout"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/hof_margin_normal"
                     app:flowDirection="leftToRight"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    app:elementSpacing="4dp"
-                    app:lineSpacing="10dp">
+                    android:layout_marginLeft="@dimen/hof_margin_normal"
+                    android:layout_marginRight="@dimen/hof_margin_normal"
+                    app:elementSpacing="@dimen/element_spacing"
+                    app:lineSpacing="@dimen/hof_margin_normal">
                 </appface.brongo.uiwidget.FlowLayout>
                 <appface.brongo.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/landing_viewall"
                     android:text="View all requirements"
-                  android:padding="10dp"
+                  android:padding="@dimen/hof_margin_normal"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
                     app:customFont="lato_bold.ttf"/>
@@ -277,16 +265,16 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/client_linear2"
                 android:background="@drawable/edit_border"
-                android:elevation="10dp"
+                android:elevation="@dimen/hof_margin_normal"
                 android:orientation="vertical"
-                android:paddingBottom="20dp">
+                android:paddingBottom="@dimen/hof_margin_large">
 
                 <appface.brongo.uiwidget.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="@dimen/hof_margin_large"
                     android:textColor="#64687f"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="@dimen/hof_margin_normal"
                     android:text="Status of the lead"
                     app:customFont="lato_bold.ttf"/>
 
@@ -300,9 +288,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/dialog_button"
-                    android:layout_marginTop="10dp"
-                    android:paddingRight="60dp"
-                    android:paddingLeft="60dp"
+                    android:layout_marginTop="@dimen/hof_margin_normal"
+                    android:paddingRight="@dimen/btn_padding"
+                    android:paddingLeft="@dimen/btn_padding"
                  android:textColor="@color/white"
                     android:text="Give Feedback"
                     android:layout_gravity="center"
@@ -316,23 +304,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp">
+                android:layout_marginTop="@dimen/hof_margin_normal"
+                android:layout_marginBottom="@dimen/hof_margin_large">
 
                 <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/hof_drop_size"
+                    android:layout_height="@dimen/hof_drop_size"
                     android:background="@drawable/drop_stroke"
-                    android:padding="8dp"
+                    android:padding="@dimen/hof_margin_eight"
                     android:src="@drawable/drop_deal_icon" />
 
                 <appface.brongo.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/hof_margin_eight"
                     android:text="DROP OUT"
                     android:textColor="@color/appColor"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="normal" />
             </LinearLayout>
         </LinearLayout>
@@ -343,12 +331,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginEnd="@dimen/hof_margin_normal"
+            android:layout_marginRight="@dimen/hof_margin_normal"
+            android:layout_marginTop="@dimen/hof_margin_large"
             android:background="@drawable/premium_back"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="@dimen/hof_margin_small"
             android:text="PREMIUM"
             android:textColor="@color/black"
             app:customFont="lato_bold.ttf" />

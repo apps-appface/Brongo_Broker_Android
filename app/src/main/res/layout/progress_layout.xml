@@ -9,13 +9,13 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
-    android:padding="15dp"
+    android:padding="@dimen/loader_padding_layout"
     android:alpha="0.7"
     android:background="@drawable/edit_border">
     <appface.brongo.uiwidget.GifView
         android:id="@+id/check_mark_GV"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/loader_size"
+        android:layout_height="@dimen/loader_size"
        />
 </RelativeLayout>
 

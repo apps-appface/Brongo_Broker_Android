@@ -608,6 +608,15 @@ public class ClientDetailsModel {
     public static class MeetingModel{
         public String note;
         public String dateOfVisit;
+        public String meetAt;
+
+        public String getMeetAt() {
+            return meetAt;
+        }
+
+        public void setMeetAt(String meetAt) {
+            this.meetAt = meetAt;
+        }
 
         public String getNote() {
             return note;

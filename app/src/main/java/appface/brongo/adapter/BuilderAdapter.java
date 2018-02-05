@@ -160,9 +160,9 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
         TextView invent_builder_name,invent_builder_address,invent_builder_commission;
         ImageView invent_builder_image;
         LinearLayout recycle_item_linear,build_linear,builder_web_linear;
-        RelativeLayout invent_TC_relative;
+        RelativeLayout invent_builder_tc,invent_builder_register,invent_TC_relative;
         FlowLayout builder_flowLayout;
-        Button invent_builder_tc,invent_builder_register,invent_builder_proceed,invent_builder_reject;
+        Button invent_builder_proceed,invent_builder_reject;
 
         public EmployeeViewHolder(View itemView) {
             super(itemView);
@@ -171,9 +171,9 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
             invent_builder_address = (TextView) itemView.findViewById(R.id.invent_builder_addresss);
             invent_builder_commission = (TextView) itemView.findViewById(R.id.invent_builder_commission);;
             invent_builder_image = (ImageView) itemView.findViewById(R.id.invent_builder_image);
-            invent_builder_tc = (Button) itemView.findViewById(R.id.invent_builder_tc);
+            invent_builder_tc = (RelativeLayout) itemView.findViewById(R.id.invent_builder_tc);
             invent_TC_relative = (RelativeLayout)itemView.findViewById(R.id.invent_TC_relative);
-            invent_builder_register = (Button) itemView.findViewById(R.id.invent_builder_register);
+            invent_builder_register = (RelativeLayout) itemView.findViewById(R.id.invent_builder_register);
             build_linear = (LinearLayout)itemView.findViewById(R.id.invent_builder_linear);
             builder_web_linear = (LinearLayout)itemView.findViewById(R.id.builder_web_linear);
             invent_builder_proceed = (Button) itemView.findViewById(R.id.invent_builder_proceed);

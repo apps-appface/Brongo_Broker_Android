@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
+    android:id="@+id/splash_parent_linear"
     android:gravity="bottom">
    <LinearLayout
        android:layout_width="match_parent"
@@ -13,8 +14,8 @@
        android:orientation="vertical">
    <appface.brongo.util.LogoPathView
        android:id="@+id/pathview"
-       android:layout_width="200dp"
-       android:layout_height="200dp"
+       android:layout_width="@dimen/spa_animation_size"
+       android:layout_height="@dimen/spa_animation_size"
        android:visibility="visible" />
    <appface.brongo.uiwidget.CustomTextView
        android:id="@+id/textview"
@@ -22,7 +23,7 @@
        android:layout_height="wrap_content"
        android:text="BRONGO"
        android:textColor="@color/appColor"
-       android:textSize="30sp"
+       android:textSize="@dimen/spa_title_text"
        android:textStyle="normal"
        app:customFont="lato_bold.ttf"/>
    <appface.brongo.uiwidget.CustomTextView
@@ -31,13 +32,13 @@
        android:layout_height="wrap_content"
        android:text="brokers on the go"
        android:textColor="@color/round_empty_gray"
-       android:textSize="15sp"
+       android:textSize="@dimen/text_size_normal"
        android:textStyle="normal"
        app:customFont="lato_bold.ttf"/>
       <ImageView
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="40dp"
+          android:layout_marginTop="@dimen/spa_top_margin"
           android:scaleType="fitXY"
           android:src="@drawable/ilustration1"/>
    </LinearLayout>

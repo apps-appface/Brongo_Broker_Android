@@ -5,26 +5,21 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.util.Util;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import org.json.JSONException;
@@ -55,6 +50,7 @@ public class RequirementFragment extends Fragment implements NoInternetTryConnec
     private Bundle bundle;
     private Context context;
     private Toolbar toolbar;
+    private RelativeLayout parentLayout;
     ArrayList<ClientDetailsModel.DealObject> deallist;
     ArrayList<String> imageList ;
     private SharedPreferences pref;
@@ -88,6 +84,7 @@ public class RequirementFragment extends Fragment implements NoInternetTryConnec
     private void initialise(View view){
         context = getActivity();
         pref = context.getSharedPreferences(AppConstants.PREF_NAME,0);
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         location=location_area=project_name=prop_type=bhk_type=budget=martial_status=avoid_project=orientation=furnishing=other_req="";
         deallist = new ArrayList<>();
         imageList = new ArrayList<>();
@@ -160,7 +157,7 @@ public class RequirementFragment extends Fragment implements NoInternetTryConnec
                                     new AllUtils().getTokenRefresh(context);
                                populateList();
                                 } else {
-                                    Utils.showToast(context,message);
+                                    Utils.showToast(context,message,"Error" );
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -175,7 +172,7 @@ public class RequirementFragment extends Fragment implements NoInternetTryConnec
 
                 @Override
                 public void onFailure(Call<ClientDetailsModel.DealModel> call, Throwable t) {
-                    Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                 }
             });
@@ -206,7 +203,6 @@ public class RequirementFragment extends Fragment implements NoInternetTryConnec
             for(int i=0;i<imagelist.size();i++) {
                 String stringurl = imagelist.get(i);
                 if(stringurl != null && !stringurl.isEmpty()) {
-                        stringurl = Utils.getImageUrl(stringurl,pref);
                     View layout2 = LayoutInflater.from(getActivity()).inflate(R.layout.deal_image_item, req_image_linear, false);
                     ImageView imageview = (ImageView) layout2.findViewById(R.id.deal_image);
                     Glide.with(context).load(stringurl).apply(CustomApplicationClass.getPropertyImage(true)).into(imageview);

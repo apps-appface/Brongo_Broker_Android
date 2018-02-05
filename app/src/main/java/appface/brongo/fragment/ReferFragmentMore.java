@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONException;
@@ -29,8 +30,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import appface.brongo.R;
-import appface.brongo.activity.MainActivity;
-import appface.brongo.activity.Menu_Activity;
 import appface.brongo.activity.ProfileActivity;
 import appface.brongo.activity.ReferActivity;
 import appface.brongo.adapter.ReferMoreAdapter;
@@ -38,7 +37,6 @@ import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
@@ -54,6 +52,7 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
     private RecyclerView refer_recycle;
     private TextView toolbar_title;
     private Toolbar toolbar;
+    private RelativeLayout parentLayout;
     private Button refer_more_btn;
     private ImageView edit_icon,delete_icon,add_icon,referback2;
     private ReferMoreAdapter referMoreAdapter;
@@ -93,6 +92,7 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
     }
     private void initialise(View view){
         context = getActivity();
+        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         arrayList = new ArrayList<>();
         arrayList_full = new ArrayList<>();
         referMoreAdapter = new ReferMoreAdapter(context,arrayList);
@@ -242,7 +242,7 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
                                     new AllUtils().getTokenRefresh(context);
                                     referApi();
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -258,7 +258,7 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
                 @Override
                 public void onFailure(Call<ApiModel.ReferralData> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Toast.makeText(context, "Some Problem Occured", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 /*if(pd.isShowing()) {
                     pd.dismiss();
                 }*/

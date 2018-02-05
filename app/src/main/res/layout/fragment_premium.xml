@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:padding="20dp">
+        android:layout_marginRight="@dimen/pf_layout_margin"
+        android:layout_marginLeft="@dimen/pf_layout_margin"
+        android:padding="@dimen/pf_padding_large">
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,16 +22,16 @@
     android:layout_height="wrap_content"
     android:text="Buy &amp; Sell Leads Plan"
     app:customFont="lato_bold.ttf"
-    android:textSize="18sp"
+    android:textSize="@dimen/text_size_big"
     android:layout_gravity="center_horizontal"
-    android:layout_marginTop="20dp"/>
+    android:layout_marginTop="@dimen/pf_padding_large"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/pf_padding_normal"
             android:id="@+id/premium_sub_linear"
-            android:paddingBottom="10dp"/>
+            android:paddingBottom="@dimen/pf_padding_normal"/>
     </LinearLayout>
 
 </ScrollView>

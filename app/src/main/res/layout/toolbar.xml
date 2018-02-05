@@ -14,13 +14,13 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolBar1"
         android:layout_width="match_parent"
-        android:layout_height="58dp"
+        android:layout_height="@dimen/ha_toolbar_size"
         android:background="@color/appColor"
         android:elevation="0dp"
         android:minHeight="?attr/actionBarSize"
-        android:paddingBottom="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="5dp"
+        android:paddingBottom="@dimen/ha_padding_small"
+        android:paddingRight="@dimen/ha_padding_small"
+        android:paddingTop="@dimen/ha_padding_small"
         app:contentInsetStart="0dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -35,11 +35,11 @@
 
             <ImageView
                 android:id="@+id/side_navi_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:layout_width="@dimen/ha_toolbar_size"
+                android:layout_height="match_parent"
+                android:padding="@dimen/ha_padding_big"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="13dp"
+                android:layout_marginLeft="@dimen/ha_padding_normal"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_burger_menu"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -47,8 +47,8 @@
 
             <ImageView
                 android:id="@+id/toolbar_logo"
-                android:layout_width="40dp"
-                android:layout_height="35dp"
+                android:layout_width="@dimen/ha_logo_width"
+                android:layout_height="@dimen/ha_logo_height"
                 android:layout_centerInParent="true"
                 android:src="@drawable/logowhite2" />
             <LinearLayout
@@ -63,31 +63,30 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/message_relative"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="@dimen/ha_padding_normal"
          >
             <ImageView
                 android:id="@+id/toolbar_message_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_bchat_topbar"
-            android:padding="12dp"
+            android:padding="@dimen/ha_padding_normal"
                 android:layout_centerInParent="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                  />
                 <appface.brongo.uiwidget.CustomTextView
                     android:id="@+id/message_count"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:maxHeight="20dp"
-                    android:maxWidth="20dp"
-                    android:textSize="10sp"
+                    android:layout_width="@dimen/ha_padding_large"
+                    android:layout_height="@dimen/ha_padding_large"
+                    android:maxHeight="@dimen/ha_padding_large"
+                    android:maxWidth="@dimen/ha_padding_large"
+                    android:textSize="@dimen/ha_padding_normal"
                     android:gravity="center"
                     android:textColor="@color/appColor"
                 android:layout_alignParentRight="true"
                     android:visibility="gone"
-                    android:text="99+"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="@dimen/ha_padding_small"
                     android:background="@drawable/text_circular_white"
                     app:customFont="lato_bold.ttf"/>
             </RelativeLayout>
@@ -98,27 +97,26 @@
                     android:id="@+id/notificaton_relative"
                     android:layout_toRightOf="@+id/message_relative"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginRight="@dimen/ha_padding_normal">
                     <ImageView
                         android:id="@+id/toolbar_notification_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="match_parent"
                         android:layout_centerInParent="true"
-                       android:padding="12dp"
+                       android:padding="@dimen/ha_padding_normal"
                         android:src="@drawable/ic_notification"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"/>
                     <appface.brongo.uiwidget.CustomTextView
                         android:id="@+id/notification_count"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:maxHeight="20dp"
-                        android:maxWidth="20dp"
-                        android:textSize="10sp"
+                        android:layout_width="@dimen/ha_padding_large"
+                        android:layout_height="@dimen/ha_padding_large"
+                        android:maxHeight="@dimen/ha_padding_large"
+                        android:maxWidth="@dimen/ha_padding_large"
+                        android:textSize="@dimen/ha_padding_normal"
                         android:gravity="center"
-                        android:layout_marginRight="7dp"
+                        android:layout_marginRight="@dimen/noti_text_margin"
                         android:textColor="@color/appColor"
-                        android:text="99+"
                         android:layout_alignParentRight="true"
                         android:background="@drawable/text_circular_white"
                         android:visibility="gone"
@@ -152,22 +150,22 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="@dimen/curve_height"
                     android:background="@drawable/mainfrontshape2"
-                    android:paddingLeft="33dp"
+                    android:paddingLeft="@dimen/curve_padding"
                     >
                     <Button
                         android:id="@+id/refer_broker_btn"
-                        android:layout_width="80dp"
-                        android:layout_height="40dp"
+                        android:layout_width="@dimen/ha_refer_width"
+                        android:layout_height="@dimen/ha_refer_height"
                         android:layout_alignTop="@+id/linearLayout_name"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="@dimen/ha_padding_large"
                         android:layout_alignParentRight="true"
                         android:background="@drawable/half_rounded_white"
                         android:text="Refer a \n Broker"
                         android:gravity="center_vertical"
-                        android:paddingLeft="20dp"
-                        android:textSize="12sp"
+                        android:paddingLeft="@dimen/ha_padding_large"
+                        android:textSize="@dimen/text_size_vsmall"
                         android:textAllCaps="false"
                         android:textColor="@color/appColor" />
 
@@ -176,7 +174,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="@dimen/ha_padding_large"
                         android:orientation="horizontal"
                         android:layout_alignParentLeft="true">
 
@@ -185,13 +183,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:textSize="15sp"
+                            android:textSize="@dimen/text_size_normal"
                             app:customFont="lato_regular.ttf"/>
                         <ImageView
-                            android:layout_width="13dp"
-                            android:layout_height="13dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
+                            android:layout_width="@dimen/ha_padding_big"
+                            android:layout_height="@dimen/ha_padding_big"
+                            android:layout_marginLeft="@dimen/ha_padding_small"
+                            android:layout_marginRight="@dimen/ha_padding_small"
                             android:background="@drawable/bronze_medal_copy"
                             android:layout_gravity="center"
                             />
@@ -202,17 +200,16 @@
                             android:shadowColor="#73000000"
                             android:shadowDx="6.123233995736766e-17"
                             android:shadowDy="1"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="@dimen/ha_padding_small"
                             android:shadowRadius="3"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/text_size_vsmall"
                             android:textColor="#000000"
-                            android:letterSpacing="0.02"
                             android:gravity="center_horizontal"
                             android:text="PLAN 1"
-                            android:paddingRight="5dp"
-                            android:paddingLeft="5dp"
-                            android:paddingBottom="3dp"
-                            android:paddingTop="3dp"
+                            android:paddingRight="@dimen/ha_padding_small"
+                            android:paddingLeft="@dimen/ha_padding_small"
+                            android:paddingBottom="@dimen/ha_plan_top_padding"
+                            android:paddingTop="@dimen/ha_plan_top_padding"
                             android:background="#f2d40c"
                             android:id="@+id/main_plan"
                             app:customFont="lato_bold.ttf"
@@ -225,7 +222,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignStart="@+id/linearLayout_name"
                         android:layout_below="@+id/linearLayout_name"
-                        android:paddingTop="5dp"
+                        android:paddingTop="@dimen/ha_padding_small"
                         android:orientation="horizontal"
                         android:gravity="center"
                         android:layout_alignLeft="@+id/linearLayout_name">
@@ -235,7 +232,7 @@
                             style="?android:attr/ratingBarStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="@dimen/ha_padding_small"
                             android:isIndicator="true"
                             android:numStars="5"
                             android:progressTint="@color/star_yellow"
@@ -248,27 +245,25 @@
                             android:shadowColor="#73000000"
                             android:shadowDx="6.123233995736766e-17"
                             android:shadowDy="1"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="@dimen/ha_padding_small"
                             android:shadowRadius="3"
-                            android:textSize="12sp"
-                            android:padding="2dp"
+                            android:textSize="@dimen/text_size_vsmall"
+                            android:padding="@dimen/ha_plan_top_padding"
                             android:textColor="#99ffffff"
-                            android:lineSpacingExtra="-0.7sp"
                             app:customFont="lato_regular.ttf"/>
                     </LinearLayout>
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/linearLayout2"
                         android:orientation="horizontal"
-                        android:layout_marginTop="20dp">
+                        android:layout_marginTop="@dimen/ha_padding_large">
 
                     <LinearLayout
                         android:id="@+id/commission_linear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:layout_below="@+id/linearLayout2"
                         android:orientation="vertical"
                         android:layout_alignParentLeft="true">
 
@@ -278,10 +273,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:shadowColor="#73000000"
-                                android:shadowDx="6.123233995736766e-17"
-                                android:shadowDy="1"
-                                android:shadowRadius="3"
-                                android:textSize="18sp"
+                                android:textSize="@dimen/text_size_big"
                                 android:maxLines="1"
                                 android:textColor="#ffffff"
                                 app:customFont="lato_regular.ttf"
@@ -290,12 +282,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:shadowColor="#73000000"
-                            android:shadowDx="6.123233995736766e-17"
-                            android:shadowDy="1"
-                            android:shadowRadius="3"
-                            android:textSize="11.3sp"
+                            android:textSize="@dimen/text_size_vsmall"
                             android:textColor="#99dccfdd"
-                            android:lineSpacingExtra="1.3sp"
                             android:text="Commission From \nclosed deals"
                             app:customFont="lato_regular.ttf"
                             />
@@ -305,19 +293,17 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/commission_linear"
                         android:orientation="vertical"
-                        android:layout_marginLeft="40dp">
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/curve_padding"
+                        android:layout_marginLeft="@dimen/ha_logo_width">
 
                         <appface.brongo.uiwidget.CustomTextView
                             android:id="@+id/opened_commission_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:shadowColor="#73000000"
-                            android:shadowDx="6.123233995736766e-17"
-                            android:shadowDy="1"
-                            android:shadowRadius="3"
-                            android:textSize="18sp"
+                            android:textSize="@dimen/text_size_big"
                             android:maxLines="1"
                             android:textColor="#ffffff"
                             app:customFont="lato_regular.ttf"/>
@@ -326,17 +312,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:shadowColor="#73000000"
-                            android:shadowDx="6.123233995736766e-17"
-                            android:shadowDy="1"
-                            android:shadowRadius="3"
-                            android:textSize="11.3sp"
+                            android:textSize="@dimen/text_size_vsmall"
                             android:textColor="#99dccfdd"
-                            android:lineSpacingExtra="1.3sp"
                             android:text="Potential Commission \nFrom Open deals"
                             app:customFont="lato_regular.ttf"
 />
                     </LinearLayout>
-                    </LinearLayout>
+                    </RelativeLayout>
                 </RelativeLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -344,12 +326,12 @@
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:id="@+id/no_deal_linear"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="@dimen/ha_refer_height"
                     android:orientation="vertical"
                     android:visibility="gone">
                     <ImageView
-                        android:layout_width="242dp"
-                        android:layout_height="116dp"
+                        android:layout_width="@dimen/main_house_width"
+                        android:layout_height="@dimen/main_house_height"
                         android:src="@drawable/mainimagehouseonly1"
                         />
                     <appface.brongo.uiwidget.CustomTextView
@@ -359,9 +341,9 @@
                         android:shadowDx="6.123233995736766e-17"
                         android:shadowDy="1"
                         android:shadowRadius="3"
-                        android:textSize="15.3sp"
+                        android:textSize="@dimen/text_size_normal"
                         android:textColor="#88288f"
-                        android:layout_marginTop="22dp"
+                        android:layout_marginTop="@dimen/ha_padding_large"
                         android:gravity="center_horizontal"
                         android:text="No Open Deals.\nAccept incoming deals"
                         app:customFont="lato_regular.ttf"
@@ -382,7 +364,7 @@
                     <appface.brongo.uiwidget.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/text_size_big"
                         android:textColor="#64687f"
                         android:text="Open Deals"
                         app:customFont="lato_bold.ttf"
@@ -393,16 +375,16 @@
                             android:id="@+id/cutoff_relative"
                             android:visibility="gone">
                         <View
-                            android:layout_width="2dp"
+                            android:layout_width="@dimen/view_width"
                             android:layout_height="match_parent"
                             android:background="#64687f"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
+                            android:layout_marginLeft="@dimen/ha_padding_small"
+                            android:layout_marginRight="@dimen/ha_padding_small"
                             android:id="@+id/cutoff_view" />
                         <appface.brongo.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="13sp"
+                            android:textSize="@dimen/text_size_small"
                             android:layout_centerInParent="true"
                             android:layout_toRightOf="@+id/cutoff_view"
                             android:textColor="#e3011e"
@@ -415,13 +397,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_margin="20sp">
+                        android:layout_margin="@dimen/ha_padding_large">
                         <Button
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:text="Buy/Rent"
-                            android:layout_marginRight="5dp"
+                            android:layout_marginRight="@dimen/ha_padding_small"
                             android:textAllCaps="false"
                             android:id="@+id/buy_rent"
                             android:textColor="@color/white"
@@ -431,7 +413,7 @@
                             android:id="@+id/sell_rentout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="@dimen/ha_padding_small"
                             android:layout_weight="1"
                             android:background="@drawable/rounded_blue_empty_btn"
                             android:text="Sell/Rent out"
@@ -449,7 +431,7 @@
                         >
                         <ImageView
                             android:layout_width="match_parent"
-                            android:layout_height="200dp"
+                            android:layout_height="@dimen/curve_height"
                             android:layout_alignParentBottom="true"
                             android:background="@drawable/ic_landing_back"
                             />
@@ -485,8 +467,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginBottom="@dimen/ha_padding_large"
+        android:layout_marginRight="@dimen/ha_padding_large"
         android:src="@drawable/floating_add_btn1"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
@@ -494,14 +476,14 @@
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="@dimen/icon_size"
         android:orientation="horizontal"
         android:id="@+id/linear2"
         android:gravity="center"
         android:layout_gravity="bottom"
         android:background="@color/appColor"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="@dimen/ha_padding_large"
+        android:paddingRight="@dimen/ha_padding_large"
         android:layout_alignParentBottom="true">
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="match_parent"
@@ -512,7 +494,7 @@
             android:shadowDx="6.123233995736766e-17"
             android:shadowDy="1"
             android:shadowRadius="3"
-            android:textSize="16.7sp"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="#ffffff"
             app:customFont="lato_regular.ttf" />
         <appface.brongo.uiwidget.CustomTextView
@@ -522,10 +504,10 @@
             android:shadowDx="6.123233995736766e-17"
             android:shadowDy="1"
             android:shadowRadius="3"
-            android:textSize="16.7sp"
+            android:textSize="@dimen/text_size_normal"
             android:textColor="#ffffff"
             android:gravity="center"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/ha_padding_normal"
             android:id="@+id/switch_status_text"
             app:customFont="lato_regular.ttf"
             />

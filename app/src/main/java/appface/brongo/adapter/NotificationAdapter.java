@@ -1,40 +1,24 @@
 package appface.brongo.adapter;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,20 +27,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import appface.brongo.R;
-import appface.brongo.activity.MainActivity;
-import appface.brongo.activity.PushAlertActivity;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.uiwidget.FlowLayout;
 import appface.brongo.util.AppConstants;
-import appface.brongo.util.CircleTransform;
 import appface.brongo.util.CustomApplicationClass;
-import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
-import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -296,7 +275,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                     new AllUtils().getTokenRefresh(context);
                                     readNotification(position, view);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -310,6 +289,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                     Utils.LoaderUtils.dismissLoader();
                 /*if(pd.isShowing()) {
                     pd.dismiss();
@@ -349,7 +329,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             if (statusCode == 200 && message.equalsIgnoreCase("Builder And Broker Connection Is Established")) {
                                 arrayList.get(position).setStatus("accept");
                                 notifyDataSetChanged();
-                                Utils.showToast(context, message);
                             }
                         } else {
                             try {
@@ -361,7 +340,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                     new AllUtils().getTokenRefresh(context);
                                     accept_builder(position);
                                 }else{
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -373,7 +352,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 @Override
                 public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, t.getMessage().toString());
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{
@@ -423,7 +402,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                     new AllUtils().getTokenRefresh(context);
                                     builderRejectApi(position);
                                 } else {
-                                    Utils.showToast(context, message);
+                                    Utils.showToast(context, message,"Error");
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -435,7 +414,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, "Some Problem Occured");
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
                 }
             });
         }else{

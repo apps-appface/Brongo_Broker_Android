@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:paddingBottom="5dp"
+    android:paddingLeft="@dimen/builder_large"
+    android:paddingRight="@dimen/builder_large"
+    android:paddingBottom="@dimen/builder_small"
     android:gravity="top"
     android:background="@color/white"
 >
@@ -14,22 +14,22 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:id="@+id/notification_parent_linear"
-            android:padding="5dp"
+            android:padding="@dimen/builder_small"
             >
             <RelativeLayout
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/builder_image_size"
+                android:layout_height="@dimen/builder_image_size"
                 android:id="@+id/noti_image_relative">
                 <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                     android:scaleType="fitXY"
                 android:id="@+id/notification_image"
                 android:layout_gravity="center"/>
                 <ProgressBar
                     android:id="@+id/noti_progress"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="match_parent"
                     android:visibility="gone"
                     android:indeterminateDrawable="@drawable/progress_loader"
                     style="@style/CustomProgressDialog"
@@ -39,23 +39,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:shadowColor="#c0ffffff"
-                android:shadowDx="6.123233995736766e-17"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/builder_small"
                 android:layout_gravity="top"
                 android:id="@+id/notification_content"
                 android:layout_toRightOf="@+id/noti_image_relative"
-                android:shadowDy="1"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_small"
                 android:textColor="#2c2c2c"
-                android:text="Mantri Constructions : Commission for mantri square apartmentsis now revised to 3%."
                 app:customFont="lato_regular.ttf"
                 />
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_small"
                 android:textColor="@color/appColor"
-            android:padding="3sp"
+            android:padding="@dimen/builder_small"
                 android:text="Know More"
                 android:gravity="center"
                 android:layout_alignLeft="@+id/notification_content"
@@ -71,9 +68,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/noti_flowlayout"
                 app:flowDirection="leftToRight"
-                android:layout_marginTop="5dp"
-                app:elementSpacing="4dp"
-                app:lineSpacing="5dp"
+                android:layout_marginTop="@dimen/builder_small"
+                app:elementSpacing="@dimen/element_spacing"
+                app:lineSpacing="@dimen/builder_small"
                 android:layout_alignLeft="@+id/know_more"
                 android:layout_below="@+id/know_more"
                 android:visibility="gone"
@@ -84,7 +81,7 @@
                 android:orientation="horizontal"
                 android:layout_alignLeft="@+id/noti_flowlayout"
                 android:layout_below="@+id/noti_flowlayout"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/builder_normal"
                 android:id="@+id/builder_view_linear"
                 android:visibility="gone">
                 <Button
@@ -94,7 +91,7 @@
                     android:id="@+id/notification_reject"
                     android:textColor="@color/white"
                     android:background="@drawable/gray_dialog_btn"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/builder_normal"
                     android:text="Reject" />
                 <Button
                     android:layout_width="0dp"
@@ -102,7 +99,7 @@
                     android:layout_weight="1"
                     android:id="@+id/notification_proceed"
                     android:textColor="@color/white"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="@dimen/builder_normal"
                     android:background="@drawable/dialog_button"
                     android:text="Proceed"
                     android:visibility="gone"/>
@@ -113,19 +110,19 @@
                     android:id="@+id/notification_view"
                     android:textColor="@color/white"
                     android:background="@drawable/dialog_button"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="@dimen/builder_normal"
                     android:text="View"/>
 
             </LinearLayout>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="20dp"
-                android:paddingLeft="20dp"
+                android:paddingRight="@dimen/btn_padding"
+                android:paddingLeft="@dimen/btn_padding"
                 android:id="@+id/notification_call"
                 android:textColor="@color/white"
                 android:background="@drawable/dialog_button"
-             android:layout_marginTop="10dp"
+             android:layout_marginTop="@dimen/builder_normal"
                 android:layout_alignLeft="@+id/builder_view_linear"
                 android:text="Call"
                 android:visibility="gone"
@@ -135,8 +132,8 @@
             <appface.brongo.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textSize="12sp"
+                android:layout_marginTop="@dimen/builder_small"
+                android:textSize="@dimen/text_size_vsmall"
                 android:textColor="#b3434343"
                 android:layout_alignLeft="@+id/notification_call"
                 android:layout_below="@+id/notification_call"
@@ -147,8 +144,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="@dimen/view_small"
+        android:layout_marginTop="@dimen/builder_small"
         android:layout_below="@+id/notification_time"
         android:background="@color/round_empty_gray"/>
 </LinearLayout>

@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Customer Reviews "
-        android:textSize="20sp"
+        android:textSize="@dimen/text_size_big"
         app:customFont="lato_bold.ttf"/>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,36 +23,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/five_star_count"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingTop="@dimen/review_header_small"
+            android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/four_star_count"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingTop="@dimen/review_header_small"
+            android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/three_star_count"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingTop="@dimen/review_header_small"
+            android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/two_star_count"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingTop="@dimen/review_header_small"
+            android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/one_star_count"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:paddingTop="@dimen/review_header_small"
+            android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
 
     </LinearLayout>
@@ -66,8 +66,8 @@
     android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
+        android:paddingTop="@dimen/review_header_small"
+        android:paddingBottom="@dimen/review_header_small">
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,8 +79,8 @@
             android:layout_weight="1"
             android:progressDrawable="@drawable/custom_progress"
             style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="@dimen/review_header_normal"
+            android:layout_marginRight="@dimen/review_header_normal"
             android:id="@+id/review_progress5"
            />
     </LinearLayout>
@@ -89,8 +89,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
+        android:paddingTop="@dimen/review_header_small"
+        android:paddingBottom="@dimen/review_header_small">
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,8 +102,8 @@
             android:layout_weight="1"
             android:progressDrawable="@drawable/custom_progress"
             style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="@dimen/review_header_normal"
+            android:layout_marginRight="@dimen/review_header_normal"
             android:id="@+id/review_progress4"/>
     </LinearLayout>
     <LinearLayout
@@ -111,8 +111,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
+        android:paddingTop="@dimen/review_header_small"
+        android:paddingBottom="@dimen/review_header_small">
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,8 +124,8 @@
             android:layout_weight="1"
             android:progressDrawable="@drawable/custom_progress"
             style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="@dimen/review_header_normal"
+            android:layout_marginRight="@dimen/review_header_normal"
             android:id="@+id/review_progress3"/>
     </LinearLayout>
     <LinearLayout
@@ -133,8 +133,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
+        android:paddingTop="@dimen/review_header_small"
+        android:paddingBottom="@dimen/review_header_small">
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -146,8 +146,8 @@
             android:layout_weight="1"
             android:progressDrawable="@drawable/custom_progress"
             style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="@dimen/review_header_normal"
+            android:layout_marginRight="@dimen/review_header_normal"
             android:id="@+id/review_progress2"/>
     </LinearLayout>
     <LinearLayout
@@ -155,8 +155,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
+        android:paddingTop="@dimen/review_header_small"
+        android:paddingBottom="@dimen/review_header_small">
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -168,8 +168,8 @@
             android:layout_weight="1"
             android:progressDrawable="@drawable/custom_progress"
             style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="@dimen/review_header_normal"
+            android:layout_marginRight="@dimen/review_header_normal"
             android:id="@+id/review_progress1"/>
     </LinearLayout>
         </LinearLayout>
