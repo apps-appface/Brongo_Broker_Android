@@ -74,14 +74,11 @@
 
         <meta-data
             android:name="io.branch.sdk.BranchKey"
-            android:value="key_live_dauVsFcrvv4BgBuMZLCixfcmyFdzzLmK" />
+            android:value="key_live_kfrSZl8ehvpg6h3Y7c4LvobeuzbWJVwq" />
         <meta-data
             android:name="io.branch.sdk.BranchKey.test"
-            android:value="key_test_ejuOyyfCCtZqhrqS7HsQEpplyAjyuJl9" />
+            android:value="key_test_lgEM7m0aewgoZd84Xa8QDocbBBl8KUAS" />
 
-        <service
-            android:name=".services.TokenServices"
-            android:enabled="true" />
 
         <activity
             android:name=".activity.PushAlertActivity"
@@ -369,7 +366,7 @@
         <activity
             android:name=".activity.Menu_Activity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".activity.ProfileActivity"
             android:screenOrientation="portrait" />

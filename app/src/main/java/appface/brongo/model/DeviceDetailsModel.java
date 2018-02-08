@@ -50,6 +50,15 @@ public class DeviceDetailsModel {
     public static class TokenGeneration{
         String mobileNo;
         String deviceId;
+        String version;
+
+        public String getVersion() {
+            return version;
+        }
+
+        public void setVersion(String version) {
+            this.version = version;
+        }
 
         public String getMobileNo() {
             return mobileNo;

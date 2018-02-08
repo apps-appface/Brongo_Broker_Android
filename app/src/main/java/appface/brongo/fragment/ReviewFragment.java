@@ -29,6 +29,7 @@ import appface.brongo.adapter.ReviewAdapter;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.CustomApplicationClass;
 import appface.brongo.util.RetrofitAPIs;
@@ -41,7 +42,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReviewFragment extends Fragment implements ReviewAdapter.FooterListener,NoInternetTryConnectListener {
+public class ReviewFragment extends Fragment implements ReviewAdapter.FooterListener,NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test{
     private TextView review_broker_name,review_count,review_rating_value;
     private ImageView review_image;
     private ImageView review_broker_badge;
@@ -165,10 +166,9 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
                                 String message = jsonObject.optString("message");
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    getReviewList(from, size);
+                                    getToken(context);
                                 } else {
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -209,5 +209,26 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
     @Override
     public void onTryReconnect() {
         getReviewList(from,size);
+    }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+
+    @Override
+    public void onTryRegenerate() {
+        getReviewList(from,size);
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
+
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            getReviewList(from,size);
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
+        }
     }
 }

@@ -35,6 +35,7 @@ import appface.brongo.adapter.NotiAdapter;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
@@ -47,7 +48,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NotificationFragment extends Fragment implements NotiAdapter.CallListener,NoInternetTryConnectListener {
+public class NotificationFragment extends Fragment implements NotiAdapter.CallListener,NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test {
     private ArrayList<ApiModel.NotificationChildModel> arrayList;
     private ImageView edit_icon,delete_icon,add_icon;
     private SharedPreferences pref;
@@ -60,7 +61,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
     private NotiAdapter notificationAdapter;
     private ApiModel.NotificationChildModel notificationItemModel;
     /*private ProgressDialog pd;*/
-    private int size=20;
+    private int apiCode, size=20;
     private int noti_position,unread,from=0;
     String client_mobile,client_property_id;
     private boolean isNotified=false ,isLoader= false;
@@ -131,7 +132,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                             notificationAdapter.notifyItemInserted(arrayList.size() - 1);
                         }
                         ++from;
-                        populateNotification(size,from);
+                        populateNotification(from,size);
                     }
                 };
 
@@ -186,10 +187,10 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    populateNotification(i, size);
+                                    apiCode = 100;
+                                   getToken(context);
                                 } else {
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -282,9 +283,9 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
-                                    callBtnClick(lead_mobile, propertyId);
+                                    Utils.setSnackBar(parentLayout,"Please try again");
                                 } else {
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
 
                             } catch (IOException | JSONException e) {
@@ -381,9 +382,9 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
-                                    readNotification(notificationChildModel,position,isDataSet);
+                                    Utils.setSnackBar(parentLayout,"Please try again");
                                 } else {
-                                    Utils.showToast(context, message, "Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -445,9 +446,9 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
-                                    accept_builder(notificationChildModel,position);
+                                    Utils.setSnackBar(parentLayout,"Please try again");
                                 }else{
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -513,9 +514,9 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
-                                    builderRejectApi(notificationChildModel,position);
+                                    Utils.setSnackBar(parentLayout,"Please try again");
                                 } else {
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -575,6 +576,30 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
         if(isLoader){
             Utils.LoaderUtils.dismissLoader();
             isLoader = false;
+        }
+    }
+
+    @Override
+    public void onTryRegenerate() {
+        switch (apiCode){
+            case 100:
+                populateNotification(from,size);
+                break;
+        }
+    }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            populateNotification(from,size);
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+         openTokenDialog(context);
         }
     }
 }

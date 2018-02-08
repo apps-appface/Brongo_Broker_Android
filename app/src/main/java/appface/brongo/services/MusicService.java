@@ -34,7 +34,7 @@ public class MusicService extends Service {
         }catch (Exception e){
 
         }
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
     private void playMedia(){
         String audioUri = "android.resource://" + getPackageName() + "/" + R.raw.ios7_radiate;

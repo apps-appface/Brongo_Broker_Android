@@ -39,6 +39,7 @@ import appface.brongo.model.PaymentHashModel;
 import appface.brongo.model.PaymentHashResponseModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.other.RetryPaymentListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RetrofitAPIs;
@@ -51,7 +52,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PremiumFragment extends Fragment implements NoInternetTryConnectListener,RetryPaymentListener {
+public class PremiumFragment extends Fragment implements NoInternetTryConnectListener,RetryPaymentListener,NoTokenTryListener,AllUtils.test{
     ArrayList<PaymentHashModel.SubPlanObject> arrayList;
     LinearLayout plans_linear;
     private ImageView edit_icon,delete_icon,add_icon;
@@ -327,10 +328,9 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-
+                                    getToken(context);
                                 } else {
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -354,6 +354,28 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
         }else{
             Task_completed = 200;
             Utils.internetDialog(context,this);
+        }
+    }
+
+    @Override
+    public void onTryRegenerate() {
+        fetchCurrentPlan();
+    }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
+
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            fetchCurrentPlan();
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
         }
     }
 }

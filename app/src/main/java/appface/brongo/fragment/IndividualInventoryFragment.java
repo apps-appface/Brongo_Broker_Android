@@ -290,7 +290,7 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     deleteInventory();
                                 } else {
-                                    Utils.showToast(context, message,"Error" );
+                                    Utils.setSnackBar(parentLayout, message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();

@@ -54,12 +54,14 @@ import appface.brongo.activity.MainActivity;
 import appface.brongo.model.SignUpModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.ImageFilePath;
 import appface.brongo.util.ImageUtils;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
 import appface.brongo.util.Utils;
+import fr.ganfra.materialspinner.MaterialSpinner;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -71,11 +73,12 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddInventoryFragment extends Fragment implements NoInternetTryConnectListener{
+public class AddInventoryFragment extends Fragment implements NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test{
     private Context context;
     private ArrayAdapter<String> marketAdapter;
    private ArrayList<String> poc_list;
    private File image_file;
+   private int apiCode = 0;
     private List<String> listPermissionsNeeded;
     public static final int REQUEST_CAMERA_AND_WRITABLE_PERMISSIONS = 111;
     private static final int REQUEST_CAMERA = 200;
@@ -400,7 +403,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 prop_type = parent.getItemAtPosition(position).toString();
                 if(prop_type.equalsIgnoreCase("Residential")){
-                    sub_property_spinner.setText("");
+                     sub_property_spinner.setText("");
                     subprop_typeAdpter = new ArrayAdapter<String>(context,
                             android.R.layout.simple_dropdown_item_1line, resi_prop_type_list);
                     sub_property_spinner.setAdapter(subprop_typeAdpter);
@@ -566,10 +569,10 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                                         String message = jsonObject.optString("message");
                                         int statusCode = jsonObject.optInt("statusCode");
                                         if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                            new AllUtils().getTokenRefresh(context);
-                                            setInventory();
+                                            apiCode =100;
+                                          getToken(context);
                                         } else {
-                                            Utils.showToast(context, message,"Error" );
+                                            Utils.setSnackBar(parentLayout, message);
                                         }
                                     } catch (JSONException | IOException e) {
                                         e.printStackTrace();
@@ -604,6 +607,11 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         bhk_spinner.setText(bedroomType);
         marketSpinner.setText(microMarketName1);
         prop_status_spinner.setText(prop_status);
+        if(client1.equalsIgnoreCase("BUY") || client1.equalsIgnoreCase("RENT")){
+            image_relative.setVisibility(View.GONE);
+        }else{
+            image_relative.setVisibility(View.VISIBLE);
+        }
         if(prop_type.equalsIgnoreCase("Residential")){
             sub_property_spinner.setText("");
             subprop_typeAdpter = new ArrayAdapter<String>(context,
@@ -825,10 +833,10 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                             int statusCode = jsonObject.optInt("statusCode");
                             String message = jsonObject.optString("message");
                             if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                new AllUtils().getTokenRefresh(context);
-                                fetchMicromarket();
+                                apiCode =200;
+                                getToken(context);
                             } else {
-                                Utils.showToast(context, message,"Error");
+                                Utils.setSnackBar(parentLayout, message);
                             }
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
@@ -966,6 +974,42 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
             throw e;
         }
     }
+
+    @Override
+    public void onTryRegenerate() {
+        switch(apiCode){
+            case 100:
+               setInventory();
+               break;
+            case 200:
+                fetchMicromarket();
+                break;
+        }
+    }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
+
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            switch(apiCode){
+                case 100:
+                    setInventory();
+                    break;
+                case 200:
+                    fetchMicromarket();
+                    break;
+            }
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
+        }
+    }
+
 }
 
 

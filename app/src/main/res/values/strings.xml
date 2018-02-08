@@ -16,9 +16,9 @@
 Congratulations! You can now visit the Brongo \n office at the specified time for the original \n verification of all the submitted documents.
     </string>
     <string name="office_address">BRONGO \n #203, 4th cross, 3rd Block, above \n Filter Coffee, HRBR  layout, \n Bangalore - 560 043 \n Brongo Support:9590269269</string>
-    <string name="version">Version 1.0 | Turnip Technolgies Pvt Ltd</string>
+    <string name="version">| Turnip Technolgies Pvt Ltd</string>
     <string name="patent_pending">Patent Pending for 201741031339</string>
-    <string name="about_us_tagline">A product of Turnip Technologies \n Version 1.0</string>
+    <string name="about_us_tagline">A product of Turnip Technologies</string>
     <string name="understand_rating">Ratings allow us to ensure a great
 experience with Brongo for both broker and client. Just like you rate client, client can rate broker on scale of 1-5 Stars after each deal closure.</string>
     <string name="rating_calculation">Your rating is an average of the rating you’ve received from client, and is measure out of 5 stars. Ratings are anonymous, so neither you nor your client will ever see an individual rating you’ve

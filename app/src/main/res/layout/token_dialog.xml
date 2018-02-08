@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="@dimen/dialog_margin_layout">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_border"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/dialog_margin_large">
+        <ImageView
+            android:layout_width="@dimen/dialog_margin_layout"
+            android:layout_height="@dimen/dialog_margin_layout"
+            android:background="@drawable/ic_network_error"/>
+        <appface.brongo.uiwidget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:shadowColor="#c0ffffff"
+            android:layout_marginTop="@dimen/dialog_margin_normal"
+            android:textSize="@dimen/dialog_title_size"
+            android:textColor="#88288f"
+            android:lineSpacingExtra="0sp"
+            android:gravity="center_horizontal"
+            android:text="Token Error "
+            app:customFont="lato_bold.ttf"
+            />
+        <appface.brongo.uiwidget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:shadowColor="#c0ffffff"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_marginTop="@dimen/dialog_margin_normal"
+            android:textColor="#6e6e6e"
+            android:gravity="center_horizontal"
+            android:text="You seem to have expired your Token. Try again with an active Token"
+            app:customFont="lato_regular.ttf"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Try again"
+            android:id="@+id/token_dialog_btn"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:paddingRight="@dimen/btn_padding"
+            android:paddingLeft="@dimen/btn_padding"
+            android:layout_marginTop="@dimen/dialog_margin_normal"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/dialog_button"
+            />
+    </LinearLayout>
+
+</LinearLayout>

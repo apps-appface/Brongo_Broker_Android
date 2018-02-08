@@ -114,8 +114,7 @@ public class ContactFragment extends Fragment {
             startActivity(emailIntent);
             //startActivity(Intent.createChooser(emailIntent, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
-            Utils.showToast(context,"There is no email client installed.","Error");
+            Utils.setSnackBar(parentLayout,"No email client installed.");
         }
     }
-
 }

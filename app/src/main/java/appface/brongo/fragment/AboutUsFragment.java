@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import appface.brongo.BuildConfig;
 import appface.brongo.R;
 
 /**
@@ -18,7 +19,7 @@ import appface.brongo.R;
  */
 public class AboutUsFragment extends Fragment {
     private ImageView edit_icon,delete_icon,add_icon;
-    private TextView toolbar_title;
+    private TextView toolbar_title,about_version_text;
     private Toolbar toolbar;
     private RelativeLayout parentLayout;
 
@@ -36,6 +37,7 @@ public class AboutUsFragment extends Fragment {
         toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
         toolbar.setVisibility(View.VISIBLE);
         toolbar_title.setText("About Brongo");
+        about_version_text = (TextView)view.findViewById(R.id.about_us_version_name);
         parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
         edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
         delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
@@ -43,6 +45,8 @@ public class AboutUsFragment extends Fragment {
         edit_icon.setVisibility(View.GONE);
         delete_icon.setVisibility(View.GONE);
         add_icon.setVisibility(View.GONE);
+        String versionName = BuildConfig.VERSION_NAME;
+        about_version_text.setText("Version "+ versionName);
         return view;
     }
 

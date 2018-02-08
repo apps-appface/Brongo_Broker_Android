@@ -27,6 +27,14 @@
         android:textColor="#6e6e6e"
         android:textSize="@dimen/text_size_normal"
         app:customFont="lato_regular.ttf"/>
+        <appface.brongo.uiwidget.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/about_us_version_name"
+            android:textColor="#6e6e6e"
+            android:textSize="@dimen/text_size_normal"
+            app:customFont="lato_regular.ttf"/>
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

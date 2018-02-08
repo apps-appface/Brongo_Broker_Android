@@ -403,7 +403,10 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 200) {
-                                    Utils.setSnackBar(parentLayout,message);
+                                    if(message.equalsIgnoreCase("We are not live in this location")){
+                                        nonPocDialog(context);
+                                    }else {
+                                        Utils.setSnackBar(parentLayout, message);
                                   /*  editor.remove(AppConstants.REFERREDBY);
                                     editor.putString(AppConstants.MOBILE_NUMBER, mobile);
                                     editor.putBoolean(AppConstants.ISWALKTHROUGH, false);
@@ -412,7 +415,8 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                                     serviceIntent.putExtra("key", 200);
                                     startService(serviceIntent);
                                     startActivity(new Intent(SignUpActivity.this, DocumentUploadActivity.class));*/
-                                  nextPage();
+                                        nextPage();
+                                    }
                                 }
                             } catch (JSONException | IOException e) {
                                 e.printStackTrace();
@@ -425,10 +429,9 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                                 String message = jsonObject.optString("message");
                                 if (message.equalsIgnoreCase("Broker Already Exist with this Mobile Number")) {
                                     phone_signup_layout.setError("Phone Number already Exists");
-                                }else if(message.equalsIgnoreCase("We are not live in this location")){
-                                    nonPocDialog(context);
+                                }else {
+                                    Utils.setSnackBar(parentLayout, message);
                                 }
-                                Utils.showToast(context, message,"Error");
                             } catch (IOException e) {
                                 e.printStackTrace();
                             } catch (JSONException e) {
@@ -502,12 +505,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                                 JSONObject jsonObject = new JSONObject(responseString);
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                   fetchMicromarket();
-                                } else {
-                                    Utils.showToast(context, message,"Error" );
-                                }
+                                Utils.setSnackBar(parentLayout, message);
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
                             }
@@ -622,7 +620,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-               nextPage();
+               onBackPressed();
             }
         });
         dialog.show();

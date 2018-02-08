@@ -45,6 +45,7 @@ import appface.brongo.model.ApiModel;
 import appface.brongo.model.PaymentHashModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.CustomApplicationClass;
 import appface.brongo.util.RetrofitAPIs;
@@ -57,13 +58,14 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SubscriptionFragment extends Fragment implements NoInternetTryConnectListener{
+public class SubscriptionFragment extends Fragment implements NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test{
     private Context context;
     private SharedPreferences pref;
     private TextView toolbar_title;
     private Toolbar toolbar;
     private RelativeLayout parentLayout;
     private int Task_completed = 1000;
+    private int apicode=0;
     private int trial_position=100,basic_position=100,premium_position=100;
     private String trial_tc,basic_tc,premium_tc,plan_tc,cur_plan_id="";
     private ArrayList<ApiModel.SubscriptionObject> arrayList;
@@ -193,10 +195,10 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    fetchSubscriptionPlans();
+                                    apicode = 100;
+                                    getToken(context);
                                 } else {
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -350,6 +352,18 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
         }
     }
 
+    @Override
+    public void onTryRegenerate() {
+        switch (apicode){
+            case 100:
+                fetchSubscriptionPlans();
+                break;
+            case 200:
+                fetchCurrentPlan(cur_plan_id);
+                break;
+        }
+    }
+
 /*
  * ClickableString class
  */
@@ -436,10 +450,10 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    fetchCurrentPlan(cur_plan_id);
+                                    apicode = 200;
+                                    getToken(context);
                                 } else {
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -524,7 +538,30 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
             }
         }
 
-        date_string = " from \n"+ date_string +" of "+month_name;
+        date_string = " from "+ date_string +" of "+month_name;
         return date_string;
+    }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
+
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            switch (apicode){
+                case 100:
+                    fetchSubscriptionPlans();
+                    break;
+                case 200:
+                    fetchCurrentPlan(cur_plan_id);
+                    break;
+            }
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
+        }
     }
 }

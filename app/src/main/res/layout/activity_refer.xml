@@ -34,54 +34,73 @@
             app:customFont="lato_regular.ttf"
             />
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"
-        android:gravity="center">
+        android:visibility="visible">
+
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/illustration"
+            android:layout_width="@dimen/ra_image_width"
+            android:layout_height="@dimen/ra_image_height"
             android:layout_gravity="center_horizontal"
-            />
+            android:scaleType="fitXY"
+            android:src="@drawable/illustration" />
+
         <appface.brongo.uiwidget.CustomTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/refer_text"
-            android:textColor="@color/refer_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/ra_margin_large"
-            app:customFont="lato_regular.ttf"/>
+            android:text="Coming soon ..."
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_large" />
+
+        <appface.brongo.uiwidget.CustomTextView
+            android:id="@+id/refer_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ra_margin_large"
+            android:gravity="center"
+            android:textColor="@color/refer_gray"
+            android:visibility="gone"
+            app:customFont="lato_regular.ttf" />
+
         <appface.brongo.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ra_margin_top"
             android:gravity="center"
             android:text="Your referral code"
             android:textColor="@color/refer_gray"
-            android:layout_marginTop="@dimen/ra_margin_top"
-            app:customFont="lato_regular.ttf"/>
+            android:visibility="gone"
+            app:customFont="lato_regular.ttf" />
+
         <appface.brongo.uiwidget.CustomTextView
+            android:id="@+id/refer_referral_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingRight="@dimen/ra_margin_large"
-            android:paddingLeft="@dimen/ra_margin_large"
-            android:paddingTop="@dimen/ra_margin_normal"
-            android:paddingBottom="@dimen/ra_margin_normal"
-            android:background="@drawable/ic_refer_code"
-            android:id="@+id/refer_referral_code"
-            android:textColor="@color/white"
             android:layout_marginTop="@dimen/ra_margin_large"
-            app:customFont="lato_regular.ttf"/>
+            android:background="@drawable/ic_refer_code"
+            android:gravity="center"
+            android:paddingBottom="@dimen/ra_margin_normal"
+            android:paddingLeft="@dimen/ra_margin_large"
+            android:paddingRight="@dimen/ra_margin_large"
+            android:paddingTop="@dimen/ra_margin_normal"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:customFont="lato_regular.ttf" />
+
         <appface.brongo.uiwidget.CustomTextView
+            android:id="@+id/referral_plans"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/referral_plans"
-            android:textColor="@color/refer_gray"
             android:layout_marginTop="@dimen/ra_margin_top"
-            app:customFont="lato_regular.ttf"/>
+            android:gravity="center"
+            android:textColor="@color/refer_gray"
+            android:visibility="gone"
+            app:customFont="lato_regular.ttf" />
 
         <Button
             android:id="@+id/refer_broker_btn"
@@ -89,11 +108,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/ra_margin_large"
+            android:background="@drawable/round_white"
             android:paddingLeft="@dimen/ra_btn_padding"
             android:paddingRight="@dimen/ra_btn_padding"
-            android:background="@drawable/round_white"
             android:text="Refer a Broker"
-            android:textColor="@color/appColor" />
+            android:textColor="@color/appColor"
+            android:visibility="gone" />
 
     </LinearLayout>
 

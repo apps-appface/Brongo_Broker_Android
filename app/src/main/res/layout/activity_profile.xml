@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/profile_parent_linear"
-    android:background="@color/round_empty_gray"
+    android:background="@color/appColor"
     tools:context="appface.brongo.activity.ProfileActivity">
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -55,7 +55,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+           android:background="@color/round_empty_gray">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -166,7 +167,7 @@
                         </LinearLayout>
                     </RelativeLayout>
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/profile_relative_image1"
@@ -174,11 +175,10 @@
                         android:layout_marginTop="@dimen/pa_margin_large">
 
                         <LinearLayout
-                            android:id="@+id/commission_linear"
+                            android:id="@+id/commission_linear1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
-                            android:layout_below="@+id/linearLayout2"
                             android:orientation="vertical"
                             android:layout_alignParentLeft="true">
 
@@ -190,7 +190,6 @@
                                 android:shadowColor="#73000000"
                                 android:textSize="@dimen/text_size_big"
                                 android:maxLines="1"
-
                                 android:textColor="#ffffff"
                                 app:customFont="lato_regular.ttf"
                                 />
@@ -209,9 +208,11 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/commission_linear"
+                            android:layout_alignTop="@+id/commission_linear1"
                             android:orientation="vertical"
-                            android:layout_marginLeft="@dimen/pa_commission_left_margin">
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="@dimen/pa_margin_large"
+                            android:layout_marginLeft="@dimen/pa_margin_large">
 
                             <appface.brongo.uiwidget.CustomTextView
                                 android:id="@+id/profile_opened_commission_text"
@@ -219,7 +220,6 @@
                                 android:layout_height="wrap_content"
                                 android:shadowColor="#73000000"
                                 android:maxLines="1"
-                                android:text="125345"
                                 android:textSize="@dimen/text_size_big"
                                 android:textColor="#ffffff"
                                 app:customFont="lato_regular.ttf"/>
@@ -233,7 +233,7 @@
                                 android:text="Potential Commission \nFrom Open deals"
                                 app:customFont="lato_regular.ttf"/>
                         </LinearLayout>
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </RelativeLayout>
 

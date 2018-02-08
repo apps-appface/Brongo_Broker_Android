@@ -28,6 +28,7 @@ import appface.brongo.activity.LoginActivity;
 import appface.brongo.activity.MainActivity;
 import appface.brongo.activity.PushAlertActivity;
 import appface.brongo.model.DeviceDetailsModel;
+import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
@@ -41,7 +42,7 @@ import retrofit2.Response;
  * Created by Rohit Kumar on 7/14/2017.
  */
 
-public class RegistrationIntentService extends IntentService {
+public class RegistrationIntentService extends IntentService implements NoInternetTryConnectListener{
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
@@ -88,10 +89,10 @@ public class RegistrationIntentService extends IntentService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(Utils.isNetworkAvailable(getApplicationContext())) {
+        if(Utils.isNetworkAvailable(context)) {
             sendDeviceDetails();
         }else{
-            Toast.makeText(getApplicationContext(),"No Internet",Toast.LENGTH_SHORT).show();
+          Utils.internetDialog(context,this);
         }
         /*if (MobiComUserPreference.getInstance(this).isRegistered()) {
             try {
@@ -144,7 +145,7 @@ public class RegistrationIntentService extends IntentService {
                             JSONObject jsonObject = new JSONObject(responseString);
                             int statusCode = jsonObject.optInt("statusCode");
                             String message = jsonObject.optString("message");
-                            Utils.showToast(context,message,"Failure");
+                            //Utils.showToast(context,message,"Failure");
                         }  catch (IOException e) {
                             e.printStackTrace();
                         }catch (JSONException e) {
@@ -160,5 +161,10 @@ public class RegistrationIntentService extends IntentService {
                 Utils.showToast(context,t.getMessage().toString(),"Failure");
             }
         });
+    }
+
+    @Override
+    public void onTryReconnect() {
+        sendDeviceDetails();
     }
 }

@@ -131,19 +131,33 @@
         </LinearLayout>
     </ScrollView>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/sidemenu_padding_normal"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/patent_text">
+        <appface.brongo.uiwidget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:shadowColor="#c0ffffff"
+            android:id="@+id/menu_version_text"
+            android:textColor="#b3e6c5e8"
+            app:customFont="lato_regular.ttf"
+            />
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/version"
         android:gravity="center"
-        android:layout_marginLeft="@dimen/sidemenu_padding_normal"
-        android:layout_alignParentLeft="true"
         android:shadowColor="#c0ffffff"
         android:textSize="@dimen/text_size_normal"
         android:textColor="#b3e6c5e8"
-        android:layout_above="@+id/patent_text"
         app:customFont="lato_regular.ttf"
         />
+    </LinearLayout>
     <appface.brongo.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

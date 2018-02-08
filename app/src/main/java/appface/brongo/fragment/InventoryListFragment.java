@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +45,7 @@ import appface.brongo.model.BuilderModel;
 import appface.brongo.model.ClientDetailsModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
@@ -57,10 +60,11 @@ import static appface.brongo.util.AppConstants.FRAGMENT_TAGS.ADD_INVENTORY;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InventoryListFragment extends Fragment implements NoInternetTryConnectListener,BuilderAdapter.OnClick,InventoryPersonalAdapter.DeleteInventoryListener{
+public class InventoryListFragment extends Fragment implements NoInternetTryConnectListener,BuilderAdapter.OnClick,InventoryPersonalAdapter.DeleteInventoryListener,NoTokenTryListener,AllUtils.test{
     private RecyclerView inventory_personal_recycle,inventory_builder_recycle;
     private InventoryPersonalAdapter inventoryPersonalAdapter;
     private Toolbar toolbar;
+    int apicode = 0;
     private RelativeLayout parentLayout;
     private ArrayList<ClientDetailsModel.ConnectedClientObject> clientDetails_list;
     private BuilderAdapter inventory_builderAdapter;
@@ -208,11 +212,11 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    fetchList();
-                                } else {
+                                    apicode = 100;
+                                    getToken(context);
+                                }else {
                                     Utils.LoaderUtils.dismissLoader();
-                                    Utils.showToast(context, message,"Error" );
+                                    Utils.setSnackBar(parentLayout, message);
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -282,8 +286,8 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                 String message = jsonObject.optString("message");
                                 builderMessage = message;
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    fetchBuilderList();
+                                    apicode = 200;
+                                    getToken(context);
                                 } else {
                                     shouldMessageShown = true;
                                     //Utils.showToast(context,message,"Error");
@@ -416,10 +420,10 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                 String message = jsonObject.optString("message");
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    builderRejectApi(position,builderObject);
+                                   new AllUtils().getTokenRefresh(context);
+                                   Utils.setSnackBar(parentLayout,"Please try again");
                                 } else {
-                                    Utils.showToast(context, message,"Error" );
+                                    Utils.setSnackBar(parentLayout, message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -471,9 +475,9 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
-                                    accept_builder(position,builderObject);
+                                    Utils.setSnackBar(parentLayout,"Please try again");
                                 }else{
-                                    Utils.showToast(context, message,"Error" );
+                                    Utils.setSnackBar(parentLayout, message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -516,9 +520,26 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
         client_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mobile = client = email="";
                 mobile = clientDetails_list.get(position).getMobileNo();
                 client = clientDetails_list.get(position).getFirstName();
                 email = clientDetails_list.get(position).getEmailId();
+            }
+        });
+        client_mobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mobile = s.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -546,7 +567,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                         Utils.setSnackBar(parentLayout,"Invalid mobile Number");
                     }
                 }else {
-                        Utils.setSnackBar(parentLayout, "data should not be empty");
+                        Utils.setSnackBar(parentLayout, "Data should not be empty");
                 }
                 dialog.dismiss();
             }
@@ -595,9 +616,9 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
-                                    callRegisterApi(builderObject, mobile_no, name, email);
+                                    Utils.setSnackBar(parentLayout,"Please try again");
                                 }else{
-                                    Utils.showToast(context,message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -685,10 +706,10 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                 String message = jsonObject.optString("message");
                                 builderMessage = message;
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    fetchConnectedClient();
+                                    apicode = 300;
+                                    getToken(context);
                                 } else {
-                                    Utils.showToast(context,message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -712,9 +733,111 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
         }
 
     }
+    private void deleteInventory(final ApiModel.InventoryPersoanlList object,final int position){
+        if(Utils.isNetworkAvailable(context)) {
+            Utils.LoaderUtils.showLoader(context);
+            ApiModel.ClientAcceptModel clientAcceptModel = new ApiModel.ClientAcceptModel();
+            //clientAcceptModel.setRentPropertyId(rentPropertyId);
+            clientAcceptModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
+            clientAcceptModel.setPropertyId(object.getPropertyId());
+            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+            Call<ResponseBody> call = retrofitAPIs.dropInventoryApi(tokenaccess, "android", deviceId, clientAcceptModel);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Utils.LoaderUtils.dismissLoader();
+                    if (response != null) {
+                        String responseString = null;
+                        if (response.isSuccessful()) {
+                            try {
+                                responseString = response.body().string();
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                String message = jsonObject.optString("message");
+                                int statusCode = jsonObject.optInt("statusCode");
+                                if (statusCode == 200 && message.equalsIgnoreCase("Property Deleted Successfully")) {
+                                    arraylist.remove(position);
+                                    inventoryPersonalAdapter.notifyDataSetChanged();
+                           Utils.setSnackBar(parentLayout,message);
+                                }
+                            } catch (IOException | JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            try {
+                                responseString = response.errorBody().string();
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                String message = jsonObject.optString("message");
+                                int statusCode = jsonObject.optInt("statusCode");
+                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                    new AllUtils().getTokenRefresh(context);
+                                    Utils.setSnackBar(parentLayout,"Please try again");
+                                } else {
+                                    Utils.setSnackBar(parentLayout, message);
+                                }
+                            } catch (IOException | JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utils.LoaderUtils.dismissLoader();
+                    Utils.showToast(context, t.getMessage().toString(),"Failure");
+                }
+            });
+        }else{
+            Utils.internetDialog(context,this);
+        }
+    }
 
     @Override
-    public void onDelete(String message) {
-        Utils.setSnackBar(parentLayout,message);
+    public void onDelete(ApiModel.InventoryPersoanlList object, int position) {
+     deleteInventory(object,position);
+    }
+
+
+    @Override
+    public void onTryRegenerate() {
+        switch (apicode){
+            case 100:
+                fetchList();
+                break;
+            case 200:
+                fetchBuilderList();
+                break;
+            case 300:
+                fetchConnectedClient();
+                break;
+        }
+    }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
+
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            switch (apicode){
+                case 100:
+                    fetchList();
+                    break;
+                case 200:
+                    fetchBuilderList();
+                    break;
+                case 300:
+                    fetchConnectedClient();
+                    break;
+            }
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
+        }
     }
 }

@@ -319,7 +319,6 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                                 otp_mobile_text.setText(pref.getString(AppConstants.MOBILE_NUMBER, ""));
                                 isOtpVisible = true;
                                 showTimer();
-                                //startService(new Intent(LoginActivity.this, TokenServices.class));
                             }
                         } else {
                             try {
@@ -330,7 +329,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                                     //phone_invalid.setVisibility(View.VISIBLE);
                                     startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
                                 } else {
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -400,7 +399,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                                 if (message.equalsIgnoreCase("Invalid OTP")) {
                                     otp_invalid.setVisibility(View.VISIBLE);
                                 } else {
-                                    Utils.showToast(context, message,"Error" );
+                                    Utils.setSnackBar(parentLayout, message);
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();

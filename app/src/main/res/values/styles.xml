@@ -93,6 +93,7 @@
     </style>
     <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/edit_hint_color</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
     </style>
     <style parent="@android:style/Widget" name="Widget.GifView"/>
     <style name="DialogTheme">

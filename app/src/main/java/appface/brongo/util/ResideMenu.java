@@ -33,6 +33,7 @@ import com.nineoldandroids.view.ViewHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import appface.brongo.BuildConfig;
 import appface.brongo.R;
 import appface.brongo.activity.MainActivity;
 import appface.brongo.activity.Menu_Activity;
@@ -158,10 +159,13 @@ public class ResideMenu extends FrameLayout {
         menuHolder.addView(scrollViewLeftMenu);
     }
     public void setMenuProfile(String uname, String plan, String contact, String imageResources,float rating){
+        String versionName = BuildConfig.VERSION_NAME;
         TextView menu_uaddress = (TextView)scrollViewMenu.findViewById(R.id.drawer_uaddress);
         TextView menu_uplan = (TextView)scrollViewMenu.findViewById(R.id.drawer_plan_text);
         ImageView menu_uimage = (ImageView) scrollViewLeftMenu.findViewById(R.id.drawer_image);
         RatingBar menu_ratingbar = (RatingBar)scrollViewLeftMenu.findViewById(R.id.drawer_ratingBar);
+        TextView menu_version = (TextView)scrollViewLeftMenu.findViewById(R.id.menu_version_text);
+        menu_version.setText("Version "+ versionName+" ");
         menu_uname.setText(uname);
         menu_uaddress.setText(contact);
         menu_uplan.setText(plan);

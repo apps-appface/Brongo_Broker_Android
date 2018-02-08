@@ -50,6 +50,7 @@ import appface.brongo.adapter.ReferAdapter;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
@@ -62,13 +63,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ReferActivity extends AppCompatActivity implements NoInternetTryConnectListener{
+public class ReferActivity extends AppCompatActivity implements NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test{
     private TextView refer_text,referral_plan,referral_code_text,toolbar_title;
     private EditText referee_name,referee_mobile;
     private Button refer_broker_btn,refer_share_btn;
     private LinearLayout parentLayout;
     private ImageView refer_back;
     private Toolbar toolbar;
+    private int apicode=0;
     private Context context;
     public static final int REQUEST_CONTACT = 112;
     private String referee_name_text,referee_mobile_text,shorturl,refer_amount="";
@@ -116,7 +118,9 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
         SpannableString link = makeLinkSpan("Terms & Conditions", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               tc_dialog();
+                Intent intent = new Intent(context,TermsConditionActivity.class);
+                intent.putExtra("fromActivity","refer");
+                startActivity(intent);
             }
         });
         SpannableString referral_plan_link = makeLinkSpan("See Referral plans", new View.OnClickListener() {
@@ -164,6 +168,11 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
 
     @Override
     public void onTryReconnect() {
+        callReferralPlanApi();
+    }
+
+    @Override
+    public void onTryRegenerate() {
         callReferralPlanApi();
     }
 
@@ -299,7 +308,7 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
     }
     private void callReferralPlanApi(){
         if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
+           // Utils.LoaderUtils.showLoader(context);
             RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
             String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
             String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
@@ -338,10 +347,9 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    callReferralPlanApi();
+                                   getToken(context);
                                 } else {
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -456,31 +464,20 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
         /*Intent it = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(it, 1);*/
     }
-    private void tc_dialog(){
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_tc);
-        //dialog.setCanceledOnTouchOutside(false);
-        // dialog.setCancelable(false);
-        final ImageView cross_btn = (ImageView) dialog.findViewById(R.id.tc_close_btn);
-        final Button accept_btn = (Button)dialog.findViewById(R.id.tcDialog_accept);
-        TextView commission_text = (TextView)dialog.findViewById(R.id.tcDialog_commission);
-        commission_text.setVisibility(View.GONE);
-        cross_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        accept_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-        dialog.show();
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
     }
 
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            callReferralPlanApi();
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
+        }
+    }
 }

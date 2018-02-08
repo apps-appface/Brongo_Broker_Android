@@ -39,7 +39,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import appface.brongo.R;
 import appface.brongo.util.Utils;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener,LocationListener,GoogleMap.OnMarkerDragListener{
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener,GoogleMap.OnMarkerDragListener{
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     private Button done_btn;
@@ -58,7 +58,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_picker));
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        autocompleteFragment.setHint("Search For Place");
+        autocompleteFragment.setHint("Search For Meeting Location");
         AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder()
                 .setTypeFilter(Place.TYPE_COUNTRY)
                 .setCountry("IN")
@@ -68,6 +68,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                                             @Override
                                                             public void onPlaceSelected(Place place) {
                                                                LatLng latLng = place.getLatLng();
+                                                                selected_lat = latLng.latitude;
+                                                                selected_lng = latLng.longitude;
                                                                 if(marker != null){
                                                                     marker.remove();
                                                                 }
@@ -120,35 +122,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             setMap();
 
         }
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        LatLng latLng = new LatLng(latitude, longitude);
-        if(marker != null){
-            marker.remove();
-        }
-        marker = map.addMarker(new MarkerOptions().position(latLng).draggable(true));
-        //markerOptions.draggable(true);
-        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        map.animateCamera(CameraUpdateFactory.zoomTo(15));
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
     }
 
     @Override
@@ -207,8 +180,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 //markerOptions.draggable(true);
                 map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 map.animateCamera(CameraUpdateFactory.zoomTo(15));
-                onLocationChanged(location);
-                locationManager.requestLocationUpdates(bestProvider, 20000, 0,this);
             }
     }
 

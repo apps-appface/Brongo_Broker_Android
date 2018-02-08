@@ -155,7 +155,7 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
             startActivity(intent);
             finish();
         }else{
-            Utils.setSnackBar(parentLayout, "click again to back");
+            Utils.setSnackBar(parentLayout, "Click again to back");
         }
 
         this.doubleBackToExitPressedOnce = true;
@@ -262,7 +262,7 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
                             responseString = response.errorBody().string();
                             JSONObject jsonObject = new JSONObject(responseString);
                             String message = jsonObject.optString("message");
-                                Utils.showToast(context, message,"Error");
+                            Utils.setSnackBar(parentLayout,message);
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
                         }
@@ -337,7 +337,7 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
                             responseString = response.errorBody().string();
                             JSONObject jsonObject = new JSONObject(responseString);
                             String message = jsonObject.optString("message");
-                            Utils.showToast(context, message,"Error");
+                            Utils.setSnackBar(parentLayout,message);
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
                         }

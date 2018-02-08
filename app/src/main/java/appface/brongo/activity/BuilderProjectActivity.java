@@ -26,6 +26,7 @@ import appface.brongo.R;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
@@ -34,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BuilderProjectActivity extends Activity implements NoInternetTryConnectListener {
+public class BuilderProjectActivity extends Activity implements NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test{
     private ImageView project_back,three_dot_btn;
     private WebView project_webview;
     Bundle bundle;
@@ -143,6 +144,11 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
         emailLink();
     }
 
+    @Override
+    public void onTryRegenerate() {
+        emailLink();
+    }
+
     private class MyBrowser extends WebViewClient {
         @SuppressWarnings("deprecation")
         @Override
@@ -216,10 +222,9 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
                                 String message = jsonObject.optString("message");
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    emailLink();
+                                    getToken(context);
                                 }else{
-                                    Utils.showToast(context, message,"Error" );
+                                    Utils.setSnackBar(parentLayout, message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -245,6 +250,20 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
             this.context = context;
         }
     }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
 
-
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            emailLink();
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
+        }
+    }
 }

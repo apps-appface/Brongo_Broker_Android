@@ -134,7 +134,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() > 0 && rera_edit.getText().length()>0){
+                if(s.length() > 0){
                    check1.setVisibility(View.VISIBLE);
                 }else{
                     check1.setVisibility(View.GONE);
@@ -146,27 +146,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
 
             }
         });
-        rera_edit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() > 0 && pan_edit.getText().length()>0){
-                    check1.setVisibility(View.VISIBLE);
-                }else{
-                    check1.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-            }
+    }
 
     private void setListener() {
         docu_btn1.setOnClickListener(this);
@@ -392,10 +372,10 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private void uploadAll(){
         if(Utils.isNetworkAvailable(context)) {
             RequestBody mobileNo = RequestBody.create(MediaType.parse("multipart/form-data"), pref.getString(AppConstants.MOBILE_NUMBER, ""));
-            if (reraCertificate != null && IDProof != null && addressProof != null) {
+            if (IDProof != null && addressProof != null) {
                 String panNo = pan_edit.getText().toString();
                 String reraRegistration = rera_edit.getText().toString();
-                if (panNo != null && reraRegistration != null && !panNo.equalsIgnoreCase("") && !reraRegistration.equalsIgnoreCase("")) {
+                if (panNo != null && !panNo.equalsIgnoreCase("") ) {
                     RequestBody panCardNumber = RequestBody.create(MediaType.parse("multipart/form-data"), panNo);
                     RequestBody reraRegistrationNumber = RequestBody.create(MediaType.parse("multipart/form-data"), reraRegistration);
                     RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
@@ -428,7 +408,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                                         JSONObject jsonObject = new JSONObject(responseString);
                                         String message = jsonObject.optString("message");
                                         int statusCode = jsonObject.optInt("statusCode");
-                                        Utils.showToast(context, message,"Error");
+                                        Utils.setSnackBar(parentLayout, message);
                                     } catch (JSONException | IOException e) {
                                         e.printStackTrace();
                                     }
@@ -443,10 +423,10 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                         }
                     });
                 } else {
-                    Utils.setSnackBar(parentLayout, "Either pan no or rera registration is empty");
+                    Utils.setSnackBar(parentLayout, "Pan no is empty");
                 }
             } else {
-                Utils.setSnackBar(parentLayout, "select all file first");
+                Utils.setSnackBar(parentLayout, "Select all file first");
             }
         }else{
             Utils.internetDialog(context,this);

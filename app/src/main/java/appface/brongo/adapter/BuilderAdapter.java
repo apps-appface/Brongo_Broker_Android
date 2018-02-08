@@ -103,6 +103,8 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
                 .diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.invent_builder_image);*/
         if(arrayList.get(position).getImageFiles().size()>0) {
             Glide.with(context).load(arrayList.get(position).getImageFiles().get(0)).apply(CustomApplicationClass.getPropertyImage(true)).into(holder.invent_builder_image);
+        }else{
+            Glide.with(context).load("").apply(CustomApplicationClass.getPropertyImage(true)).into(holder.invent_builder_image);
         }
 
         holder.invent_builder_register.setOnClickListener(new View.OnClickListener() {

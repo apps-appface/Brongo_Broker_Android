@@ -56,7 +56,7 @@ public interface RetrofitAPIs {
     Call<ResponseBody> updateStatusApi(@Header("accessToken") String accessToken,@Header("platform") String platform,@Header("deviceId") String deviceId,@Body ApiModel.UpdateStatusModel updateStatusModel);
 
     @POST("broker/acceptingClient")
-    Call<ResponseBody> ClentAcceptApi(@Header("accessToken") String accessToken,@Header("platform") String platform,@Header("deviceId") String deviceId,@Body ApiModel.ClientAcceptModel clientAcceptModel);
+    Call<ResponseBody> ClentAcceptApi(@Body ApiModel.ClientAcceptModel clientAcceptModel);
 
     @GET("broker/homePage")
     Call<ApiModel.HomeProfileModel> getHomeProfile(@Header("accessToken") String accessToken,@Header("platform") String platform,@Header("deviceId") String deviceId,@Query("mobileNo") String mobileNo);

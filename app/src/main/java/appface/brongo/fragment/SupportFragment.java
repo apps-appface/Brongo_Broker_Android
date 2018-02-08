@@ -31,6 +31,7 @@ import appface.brongo.R;
 import appface.brongo.activity.WalkThroughActivity;
 import appface.brongo.adapter.SubmenuAdapter;
 import appface.brongo.model.ApiModel;
+import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RecyclerItemClickListener;
@@ -162,7 +163,13 @@ public class SupportFragment extends Fragment implements NoInternetTryConnectLis
                                     responseString = response.errorBody().string();
                                     JSONObject jsonObject = new JSONObject(responseString);
                                     String message = jsonObject.optString("message");
-                                    Utils.showToast(context, message,"Error");
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                        new AllUtils().getTokenRefresh(context);
+                                        Utils.setSnackBar(parentLayout,"please try again");
+                                    } else {
+                                        Utils.setSnackBar(parentLayout,message);
+                                    }
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
                                 }

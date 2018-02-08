@@ -139,6 +139,7 @@
             android:id="@+id/comp_type_other"
             android:backgroundTint="@color/edit_hint_color"
             android:hint="please specify"
+            android:inputType="text"
             android:textColor="@color/edit_text_color"
             android:textColorHint="@color/edit_hint_color"
             android:visibility="gone"/>

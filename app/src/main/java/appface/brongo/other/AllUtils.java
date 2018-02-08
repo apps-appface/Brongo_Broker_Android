@@ -1,22 +1,35 @@
 package appface.brongo.other;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
+import appface.brongo.BuildConfig;
 import appface.brongo.R;
 import appface.brongo.model.DeviceDetailsModel;
 import appface.brongo.model.TokenModel;
@@ -32,15 +45,19 @@ import retrofit2.Response;
  * Created by Rohit Kumar on 12/31/2017.
  */
 
-public class AllUtils implements NoInternetTryConnectListener{
+public class AllUtils implements NoInternetTryConnectListener {
     private String newToken;
     private Context context;
+    private int statusCode = 0;
+    private test interfaces;
+
     @Override
     public void onTryReconnect() {
-        if(context != null) {
+        if (context != null) {
             getTokenRefresh(context);
         }
     }
+
 
     public static class DensityUtils {
 
@@ -52,14 +69,17 @@ public class AllUtils implements NoInternetTryConnectListener{
             return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, px, Resources.getSystem().getDisplayMetrics());
         }
     }
-    public String getTokenRefresh(final Context context) {
+
+    public int getTokenRefresh(final Context context) {
         this.context = context;
         final String deviceId = Utils.getDeviceId(context);
+        String versionName = BuildConfig.VERSION_NAME;
         final SharedPreferences pref = context.getSharedPreferences(AppConstants.PREF_NAME, 0);
         DeviceDetailsModel.TokenGeneration tokenGeneration1 = new DeviceDetailsModel.TokenGeneration();
         tokenGeneration1.setPlatform("android");
         tokenGeneration1.setDeviceId(deviceId);
-        tokenGeneration1.setMobileNo(pref.getString(AppConstants.MOBILE_NUMBER,""));
+        tokenGeneration1.setVersion(versionName);
+        tokenGeneration1.setMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
         if (Utils.isNetworkAvailable(context)) {
             RetrofitAPIs apiInstance = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
             Call<TokenModel> call = apiInstance.generateToken(tokenGeneration1);
@@ -68,20 +88,19 @@ public class AllUtils implements NoInternetTryConnectListener{
                 public void onResponse(Call<TokenModel> call, Response<TokenModel> response) {
                     if (response != null && response.isSuccessful()) {
                         TokenModel responseModel = response.body();
-                        if (responseModel.getStatusCode() == 200) {
+                        statusCode = responseModel.getStatusCode();
+                        if (statusCode == 200) {
+                            interfaces.onSuccessRes(true);
 //                            Toast.makeText(context, responseModel.getMessage(), Toast.LENGTH_SHORT).show();
                             List<TokenModel.Data> data = responseModel.getData();
                             newToken = data.get(0).getAccessToken();
                             Log.i("tokenis", newToken);
                             pref.edit().putString(AppConstants.TOKEN_ACCESS, newToken).commit();
-
                             Log.w("POSTMAN", " getTokenRefresh: newToken : " + newToken);
 
-                        } else {
-                            //Toast.makeText(context, responseModel.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                       // Toast.makeText(context, "Please Try Again After Sometime", Toast.LENGTH_SHORT).show();
+                        interfaces.onSuccessRes(false);
                         try {
                             Log.e("error", response.errorBody().string());
                         } catch (IOException e) {
@@ -92,14 +111,21 @@ public class AllUtils implements NoInternetTryConnectListener{
 
                 @Override
                 public void onFailure(Call<TokenModel> call, Throwable t) {
+                    String errormessage = t.getMessage().toString();
+                    interfaces.onSuccessRes(false);
                     //Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
-
+            return statusCode;
         } else {
-           Utils.internetDialog(context,this);
+            Utils.internetDialog(context, this);
+            return statusCode;
         }
-        return newToken;
+
+    }
+
+    public interface test{
+        void onSuccessRes(boolean isSuccess);
     }
     public static void PaymentSuccessDialog(final Context context) {
         final Dialog dialogBlock = new Dialog(context, R.style.MyDialogTheme);
@@ -116,7 +142,7 @@ public class AllUtils implements NoInternetTryConnectListener{
             }
         });
 
-        ImageView close = (ImageView)dialogBlock.findViewById(R.id.close);
+        ImageView close = (ImageView) dialogBlock.findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,7 +159,7 @@ public class AllUtils implements NoInternetTryConnectListener{
         dialogBlock.setCanceledOnTouchOutside(false);
         dialogBlock.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        Button reconnect = (Button)dialogBlock.findViewById(R.id.try_again_payment);
+        Button reconnect = (Button) dialogBlock.findViewById(R.id.try_again_payment);
         reconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,7 +169,7 @@ public class AllUtils implements NoInternetTryConnectListener{
             }
         });
 
-        ImageView close = (ImageView)dialogBlock.findViewById(R.id.close);
+        ImageView close = (ImageView) dialogBlock.findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,7 +186,7 @@ public class AllUtils implements NoInternetTryConnectListener{
         dialogBlock.setCanceledOnTouchOutside(false);
         dialogBlock.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        Button reconnect = (Button)dialogBlock.findViewById(R.id.try_again_payment);
+        Button reconnect = (Button) dialogBlock.findViewById(R.id.try_again_payment);
         reconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,7 +196,7 @@ public class AllUtils implements NoInternetTryConnectListener{
             }
         });
 
-        ImageView close = (ImageView)dialogBlock.findViewById(R.id.close);
+        ImageView close = (ImageView) dialogBlock.findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -181,14 +207,101 @@ public class AllUtils implements NoInternetTryConnectListener{
         dialogBlock.show();
     }
 
-    public static String changeNumberFormat(float amount){
+    public static String changeNumberFormat(float amount) {
         String moneyString = "";
         try {
             NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
             moneyString = formatter.format(amount);
-        }catch (Exception e){
+        } catch (Exception e) {
         }
         return moneyString;
+    }
+    public void getToken(final Context context, final test interfaces) {
+        this.context = context;
+        this.interfaces = interfaces;
+        final String deviceId = Utils.getDeviceId(context);
+        String versionName = BuildConfig.VERSION_NAME;
+        final SharedPreferences pref = context.getSharedPreferences(AppConstants.PREF_NAME, 0);
+        DeviceDetailsModel.TokenGeneration tokenGeneration1 = new DeviceDetailsModel.TokenGeneration();
+        tokenGeneration1.setPlatform("android");
+        tokenGeneration1.setDeviceId(deviceId);
+        tokenGeneration1.setVersion(versionName);
+        tokenGeneration1.setMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
+        if (Utils.isNetworkAvailable(context)) {
+            RetrofitAPIs apiInstance = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+            Call<TokenModel> call = apiInstance.generateToken(tokenGeneration1);
+            call.enqueue(new Callback<TokenModel>() {
+                @Override
+                public void onResponse(Call<TokenModel> call, Response<TokenModel> response) {
+                    String responseString = null;
+                    if (response != null && response.isSuccessful()) {
+                        TokenModel responseModel = response.body();
+                        statusCode = responseModel.getStatusCode();
+                        if (statusCode == 200) {
+                            //updateDialog(context);
+//                            Toast.makeText(context, responseModel.getMessage(), Toast.LENGTH_SHORT).show();
+                            List<TokenModel.Data> data = responseModel.getData();
+                            newToken = data.get(0).getAccessToken();
+                            Log.i("tokenis", newToken);
+                            pref.edit().putString(AppConstants.TOKEN_ACCESS, newToken).commit();
+                            Log.w("POSTMAN", " getTokenRefresh: newToken : " + newToken);
+                            interfaces.onSuccessRes(true);
+                        }
+                    } else {
+                        try {
+                            responseString = response.errorBody().string();JSONObject jsonObject = new JSONObject(responseString);
+                            String message = jsonObject.optString("message");
+                            int statusCode = jsonObject.optInt("statusCode");
+                            if(statusCode == 412){
+                                updateDialog(context);
+                            }
+                            interfaces.onSuccessRes(false);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TokenModel> call, Throwable t) {
+                    String errormessage = t.getMessage().toString();
+                    interfaces.onSuccessRes(false);
+                    //Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Utils.internetDialog(context, this);
+        }
+    }
+
+    public static void updateDialog(final Context context){
+        final Activity activity = (Activity)context ;
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.walkthrough_back);
+        dialog.setContentView(R.layout.update_dialog);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        TextView update_btn = (TextView)dialog.findViewById(R.id.update_dialog_btn);
+        update_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Uri webpage = Uri.parse("https://play.google.com/store");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                    if (intent.resolveActivity(context.getPackageManager()) != null) {
+                        context.startActivity(intent);
+                    }
+                    dialog.dismiss();
+                    activity.finishAndRemoveTask();
+                }catch (Exception e){
+                }
+            }
+        });
+        dialog.show();
     }
 }
 

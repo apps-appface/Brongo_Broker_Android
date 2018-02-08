@@ -32,6 +32,7 @@ import appface.brongo.R;
 import appface.brongo.model.ClientDetailsModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.CustomApplicationClass;
 import appface.brongo.util.RetrofitAPIs;
@@ -44,7 +45,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RequirementFragment extends Fragment implements NoInternetTryConnectListener{
+public class RequirementFragment extends Fragment implements NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test{
     private String posting_type,property_type,deal_id,client_mobile,sub_propertyType;
     private LinearLayout req_linear,req_image_linear;
     private Bundle bundle;
@@ -154,10 +155,9 @@ public class RequirementFragment extends Fragment implements NoInternetTryConnec
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                               populateList();
+                                    getToken(context);
                                 } else {
-                                    Utils.showToast(context,message,"Error" );
+                                   Utils.setSnackBar(parentLayout,message);
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -268,5 +268,26 @@ public class RequirementFragment extends Fragment implements NoInternetTryConnec
         String backColor = Utils.getPostingColor(posting_type);
         req_post.setBackgroundColor(Color.parseColor(backColor));
         req_post.setText(posting_type.toUpperCase()+"/"+property_type.toUpperCase());
+    }
+
+    @Override
+    public void onTryRegenerate() {
+        populateList();
+    }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
+
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            populateList();
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
+        }
     }
 }

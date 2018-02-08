@@ -30,7 +30,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 
 import appface.brongo.R;
-import appface.brongo.services.TokenServices;
+import appface.brongo.other.AllUtils;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RefreshTokenCall;
 import appface.brongo.util.Utils;
@@ -63,6 +63,7 @@ public class SplashActivity extends AppCompatActivity {
         pref = getSharedPreferences(AppConstants.PREF_NAME,0);
         title.setVisibility(View.INVISIBLE);
         subTitle.setVisibility(View.INVISIBLE);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

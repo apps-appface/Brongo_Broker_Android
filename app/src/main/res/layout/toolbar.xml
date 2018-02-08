@@ -9,16 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@color/appColor"
         >
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolBar1"
         android:layout_width="match_parent"
         android:layout_height="@dimen/ha_toolbar_size"
         android:background="@color/appColor"
-        android:elevation="0dp"
         android:minHeight="?attr/actionBarSize"
-        android:paddingBottom="@dimen/ha_padding_small"
         android:paddingRight="@dimen/ha_padding_small"
         android:paddingTop="@dimen/ha_padding_small"
         app:contentInsetStart="0dp"
@@ -139,13 +137,13 @@
             android:layout_weight="1"
             android:id="@+id/main_scrollview"
             android:orientation="vertical"
-            android:background="#e1dde5"
             android:fillViewport="true"
             >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:background="#e1dde5"
                 >
 
                 <RelativeLayout
@@ -257,7 +255,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/linearLayout2"
                         android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/ha_padding_large">
+                        android:layout_marginTop="@dimen/ha_padding_large"
+                        android:paddingBottom="@dimen/ha_padding_normal">
 
                     <LinearLayout
                         android:id="@+id/commission_linear"

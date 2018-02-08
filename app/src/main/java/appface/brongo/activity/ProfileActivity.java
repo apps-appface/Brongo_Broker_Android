@@ -1,5 +1,6 @@
 package appface.brongo.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +17,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.github.chrisbanes.photoview.PhotoView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +29,7 @@ import appface.brongo.R;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.CustomApplicationClass;
 import appface.brongo.util.RetrofitAPIs;
@@ -34,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProfileActivity extends AppCompatActivity implements NoInternetTryConnectListener{
+public class ProfileActivity extends AppCompatActivity implements NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test{
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private Context context;
@@ -54,60 +59,6 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         initialise();
-        profile_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this,MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                finish();
-            }
-        });
-        prof_refer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.setAlphaAnimation(prof_refer,getApplicationContext());
-                Intent i = new Intent(ProfileActivity.this, Menu_Activity.class);
-                i.putExtra("frgToLoad", "ReferFragmentMore");
-                startActivity(i);
-            }
-        });
-        prof_open_deal_count.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.setAlphaAnimation(prof_open_deal_count,context);
-                Intent i = new Intent(ProfileActivity.this, Menu_Activity.class);
-                i.putExtra("frgToLoad", "HistoricalFragment");
-                startActivity(i);
-            }
-        });
-        prof_inventory_count.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.setAlphaAnimation(prof_inventory_count,context);
-                Intent i = new Intent(ProfileActivity.this, Menu_Activity.class);
-                i.putExtra("frgToLoad", "InventoryListFragment");
-                startActivity(i);
-            }
-        });
-        prof_see_plans.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(ProfileActivity.this, Menu_Activity.class);
-                i.putExtra("frgToLoad", "SubscriptionFragment");
-                i.putExtra("activity_name","profile");
-                startActivity(i);
-            }
-        });
-        prof_upgrade_now.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(ProfileActivity.this, Menu_Activity.class);
-                i.putExtra("frgToLoad", "premiumFragment");
-                i.putExtra("activity_name","profile");
-                startActivity(i);
-            }
-        });
     }
     private void initialise(){
         context =this;
@@ -147,6 +98,7 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
         toolbar_title = (TextView)findViewById(R.id.profile_toolbar_title);
         profile_back = (ImageView)findViewById(R.id.profile_toolbar_back);
         callProfileApi();
+        setListener();
     }
     private void setView() {
         toolbar_title.setText("My Profile");
@@ -288,10 +240,9 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    callProfileApi();
+                                    getToken(context);
                                 } else {
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -333,4 +284,82 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
         Utils.LoaderUtils.dismissLoader();
     }
 
+    private void setListener(){
+        profile_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this,MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                finish();
+            }
+        });
+        prof_refer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.setAlphaAnimation(prof_refer,getApplicationContext());
+                Intent i = new Intent(ProfileActivity.this, Menu_Activity.class);
+                i.putExtra("frgToLoad", "ReferFragmentMore");
+                startActivity(i);
+            }
+        });
+        prof_open_deal_count.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.setAlphaAnimation(prof_open_deal_count,context);
+                Intent i = new Intent(ProfileActivity.this, Menu_Activity.class);
+                i.putExtra("frgToLoad", "HistoricalFragment");
+                startActivity(i);
+            }
+        });
+        prof_inventory_count.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.setAlphaAnimation(prof_inventory_count,context);
+                Intent i = new Intent(ProfileActivity.this, Menu_Activity.class);
+                i.putExtra("frgToLoad", "InventoryListFragment");
+                startActivity(i);
+            }
+        });
+        prof_see_plans.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ProfileActivity.this, Menu_Activity.class);
+                i.putExtra("frgToLoad", "SubscriptionFragment");
+                i.putExtra("activity_name","profile");
+                startActivity(i);
+            }
+        });
+        prof_upgrade_now.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ProfileActivity.this, Menu_Activity.class);
+                i.putExtra("frgToLoad", "premiumFragment");
+                i.putExtra("activity_name","profile");
+                startActivity(i);
+            }
+        });
+
+    }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+
+    @Override
+    public void onTryRegenerate() {
+        callProfileApi();
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
+
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            callProfileApi();
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
+        }
+    }
 }

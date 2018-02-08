@@ -92,23 +92,6 @@ public class MyNotificationListener extends FirebaseMessagingService {
 
                             break;
                         case "CLIENT_ACCEPT":
-                      /*  Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                        String message1 = data.getString("message");
-                        NotificationCompat.Builder builder1 =
-                                (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                                        .setSmallIcon(R.drawable.logo)
-                                        .setContentTitle("Brongo")
-                                        .setContentText(message1)
-                                        .setSound(soundUri)
-                                .setAutoCancel(true);
-
-                        Intent notificationIntent = new Intent(MyNotificationListener.this, MainActivity.class);
-                        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
-                                PendingIntent.FLAG_UPDATE_CURRENT);
-                        builder1.setContentIntent(contentIntent);
-                        // Add as notification
-                        NotificationManager manager1 = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                        manager1.notify(0, builder1.build());*/
                             if (!isAppIsInBackground(context)) {
                                 backgroundNotification(remoteMessage);
                             }
@@ -147,6 +130,13 @@ public class MyNotificationListener extends FirebaseMessagingService {
                             //createNotification();
                             break;
                         case "DROP_DEAL":
+                            if (!isAppIsInBackground(MyNotificationListener.this)) {
+                                backgroundNotification(remoteMessage);
+                            }
+                            foregroundNotification(remoteMessage);
+                            //createNotification();
+                            break;
+                        case "ASSIGN_NEW_BROKER":
                             if (!isAppIsInBackground(MyNotificationListener.this)) {
                                 backgroundNotification(remoteMessage);
                             }

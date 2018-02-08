@@ -38,7 +38,9 @@ import java.util.TimeZone;
 import appface.brongo.R;
 import appface.brongo.model.ApiModel;
 import appface.brongo.model.ClientDetailsModel;
+import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
@@ -47,7 +49,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ReminderActivity extends AppCompatActivity implements OnMapReadyCallback,NoInternetTryConnectListener{
+public class ReminderActivity extends AppCompatActivity implements OnMapReadyCallback,NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test{
     private CalendarView calendarView;
     private EditText reminder_edit_note,reminder_edit_area;
     private SupportMapFragment mapfragment;
@@ -68,6 +70,7 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
     private Double preLat,preLong;
     private Date strDate = new Date();
     private Date meetingDate = new Date();
+    private boolean shouldRefresh = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,7 +219,8 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
     public void onBackPressed() {
         /*super.onBackPressed();*/
         Intent intent = new Intent(context,MainActivity.class);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        intent.putExtra("shouldRefresh",shouldRefresh);
         startActivity(intent);
         finish();
     }
@@ -242,7 +246,7 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
         area_name = reminder_edit_area.getText().toString();
         if(isFutureDate(selected_date,selected_time)) {
             if (selected_date.length() == 0 || selected_time.length() == 0 || arrayList.size() < 2 || prop_id.length() == 0 || client_mobile.length() == 0) {
-                Utils.setSnackBar(parentLayout, "data shouldn't be empty");
+                Utils.setSnackBar(parentLayout, "Data shouldn't be empty");
             } else {
                 if (Utils.isNetworkAvailable(context)) {
                     Utils.LoaderUtils.showLoader(context);
@@ -270,16 +274,23 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
                                     int statusCode = responseModel.getStatusCode();
                                     String message = responseModel.getMessage();
                                     if (statusCode == 200) {
+                                        shouldRefresh = true;
                                         Utils.setSnackBar(parentLayout,message);
                                         onBackPressed();
                                     }
                                 } else {
+                                    shouldRefresh = false;
                                     String responseString = null;
                                     try {
                                         responseString = response.errorBody().string();
                                         JSONObject jsonObject = new JSONObject(responseString);
                                         String message = jsonObject.optString("message");
-                                        Utils.showToast(context, message,"Error");
+                                        int statusCode = jsonObject.optInt("statusCode");
+                                        if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                            getToken(context);
+                                        } else {
+                                            Utils.setSnackBar(parentLayout,message);
+                                        }
                                     } catch (IOException | JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -289,6 +300,7 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
 
                         @Override
                         public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
+                            shouldRefresh = false;
                             Utils.LoaderUtils.dismissLoader();
                             Utils.showToast(context, t.getMessage().toString(),"Failure");
                         }
@@ -298,7 +310,7 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
                 }
             }
         }else{
-            Utils.setSnackBar(parentLayout,"select valid Time");
+            Utils.setSnackBar(parentLayout,"Select future time");
         }
     }
 
@@ -405,7 +417,23 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
     private void setDatePicker(){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        datePicker.setMinDate(System.currentTimeMillis()-1000);
+        try {
+            datePicker.setMinDate(System.currentTimeMillis() - 5000);
+        }catch(Exception e){
+        }
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH); //Day of the month :)
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+               month = month+1;
+        String month1 = month+"";
+        String day = dayOfMonth+"";
+        if(month < 10){
+            month1 = "0"+month;
+        }
+        if(dayOfMonth < 10){
+            day = "0"+dayOfMonth;
+        }
+        selected_date = year+"-"+month1+"-"+day;
         datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
 
             @Override
@@ -422,5 +450,26 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
                 selected_date = year+"-"+month1+"-"+day;
             }
         });
+    }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+
+    @Override
+    public void onTryRegenerate() {
+        submitMeetingDetails();
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
+
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            submitMeetingDetails();
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
+        }
     }
 }

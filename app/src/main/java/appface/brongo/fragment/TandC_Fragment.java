@@ -73,6 +73,16 @@ private  PDFView pdfView;
                         .load();
             } catch (Exception e) {
             }
+        }else if(position == 1){
+            try {
+                pdfView.fromAsset("privacy_policy.pdf")
+                        .defaultPage(1)
+                        .onPageChange(this)
+                        .swipeVertical(true)
+                        .showMinimap(false)
+                        .load();
+            } catch (Exception e) {
+            }
         }
     }
 

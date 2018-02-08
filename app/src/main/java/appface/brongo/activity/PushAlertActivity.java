@@ -49,6 +49,7 @@ import appface.brongo.model.DeviceDetailsModel;
 import appface.brongo.model.TokenModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.services.MusicService;
 import appface.brongo.uiwidget.FlowLayout;
 import appface.brongo.util.AppConstants;
@@ -66,8 +67,9 @@ import retrofit2.Response;
 /**
  * Created by panka_000 on 14-03-2016.
  */
-public class PushAlertActivity extends Activity implements NoInternetTryConnectListener/*implements View.OnTouchListener */{
+public class PushAlertActivity extends Activity implements NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test/*implements View.OnTouchListener */{
     Bundle data;
+    private int apicode = 0;
     int currentTime,matchedProperties;
     private TextView noti_commission,noti_client_name,noti_reject,noti_progress,noti_client_type,noti_matching,plan_textview;
    private ImageView noti_client_pic;
@@ -111,8 +113,8 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
             posting_type = data.getString("postingType","");
             budget = data.getString("budget","");
             impFields = data.getString("impFields","");
-            //plantype = data.getString("planType");
-            plantype = "PREMIUM";
+            plantype = data.getString("planType");
+            //plantype = "PREMIUM";
             sub_property_type = data.getString("subPropertyType","");
             String matchedProperties1 = data.getString("matchedProperties","");
             //matchedProperties = Integer.parseInt(matchedProperties1);
@@ -223,9 +225,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
             clientAcceptModel.setPostingType(posting_type.toUpperCase());
             clientAcceptModel.setPropertyId(prop_id);
             RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            Call<ResponseBody> call = retrofitAPIs.ClentAcceptApi(tokenaccess, "android", deviceId, clientAcceptModel);
+            Call<ResponseBody> call = retrofitAPIs.ClentAcceptApi(clientAcceptModel);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -257,8 +257,8 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                                 String message = jsonObject.optString("message");
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    clientAccept();
+                                    apicode =100;
+                                   getToken(context);
                                 } else {
                                     Utils.setSnackBar(parentLayout,message);
                                     Intent intent = new Intent(PushAlertActivity.this, MainActivity.class);
@@ -422,7 +422,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         //dialog.setCanceledOnTouchOutside(false);
         // dialog.setCancelable(false);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -473,7 +473,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
             @Override
             public void onClick(View v) {
                 if(reject_reason == null || reject_reason.equalsIgnoreCase("")){
-                    Utils.setSnackBar(parentLayout,"select the reason first");
+                    Utils.setSnackBar(parentLayout,"Select the reason first");
                 }else {
                         leadRejectApi();
                     dialog.dismiss();
@@ -531,8 +531,8 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                                 String message = jsonObject.optString("message");
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    leadRejectApi();
+                                    apicode =200;
+                                    getToken(context);
                                 } else {
                                     goToMainPage();
                                     Utils.setSnackBar(parentLayout, message);
@@ -592,70 +592,6 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         }
         return count;
     }
-    private void generateToken(final int i){
-            final String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            final SharedPreferences pref = context.getSharedPreferences(AppConstants.PREF_NAME,0);
-            final SharedPreferences.Editor editor = pref.edit();
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            DeviceDetailsModel.TokenGeneration tokenGeneration = new DeviceDetailsModel.TokenGeneration();
-         tokenGeneration.setPlatform("android");
-         tokenGeneration.setDeviceId(deviceId);
-         tokenGeneration.setMobileNo(pref.getString(AppConstants.MOBILE_NUMBER,""));
-            Call<TokenModel> call = retrofitAPIs.generateToken(tokenGeneration);
-            call.enqueue(new Callback<TokenModel>() {
-                @Override
-                public void onResponse(Call<TokenModel> call, Response<TokenModel> response) {
-                    if (response != null && response.isSuccessful()) {
-                        if (response.body() != null) {
-                            if (response.isSuccessful()) {
-                                try {
-                                    TokenModel tokenModel1 = response.body();
-                                    int statusCode = tokenModel1.getStatusCode();
-                                    String message = tokenModel1.getMessage();
-                                    if (statusCode == 200 && message.equalsIgnoreCase("")) {
-                                        // Utils.showToast(context,"Token is generated");
-                                        String mobileNo = tokenModel1.getData().get(0).getMobileNo();
-                                        String tokenAccess = tokenModel1.getData().get(0).getAccessToken();
-                                        editor.putString(AppConstants.DEVICE_ID, deviceId);
-                                        editor.putString(AppConstants.TOKEN_ACCESS, tokenAccess);
-                                        editor.commit();
-                                        if(i == 0){
-                                            leadRejectApi();
-                                        }else if(i == 1){
-                                            clientAccept();
-                                        }
-                                    }
-                                } catch (Exception e) {
-                                }
-                            } else {
-
-                            }
-                        }
-                    }else{
-                        String responseString = null;
-                        try {
-                            responseString = response.errorBody().string();
-                            JSONObject jsonObject = new JSONObject(responseString);
-                            int statusCode = jsonObject.optInt("statusCode");
-                            String message = jsonObject.optString("message");
-                            if(statusCode == 503){
-                                Utils.setSnackBar(parentLayout,message);
-                            }
-                        }  catch (IOException e) {
-                            e.printStackTrace();
-                        }catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-
-                @Override
-                public void onFailure(Call<TokenModel> call, Throwable t) {
-                    Utils.setSnackBar(parentLayout, t.getMessage().toString());
-                }
-            });
-    }
 
     @Override
     public void onTryReconnect() {
@@ -693,10 +629,29 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                }
+                    if (response != null) {
+                        String responseString = null;
+                        if (response.isSuccessful()) {
 
+                        } else {
+                            try {
+                                responseString = response.errorBody().string();
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                String message = jsonObject.optString("message");
+                                int statusCode = jsonObject.optInt("statusCode");
+                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                    apicode =1000;
+                                    getToken(context);
+                                }
+                            } catch (IOException | JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
+
                 }
             });
         }else{
@@ -788,4 +743,44 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         }
     }
 
+    @Override
+    public void onTryRegenerate() {
+        switch (apicode){
+            case 100:
+                clientAccept();
+                break;
+            case 200:
+                leadRejectApi();
+                break;
+            case 1000:
+                callNotificationApi();
+                break;
+        }
+    }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
+
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            switch (apicode){
+                case 100:
+                    clientAccept();
+                    break;
+                case 200:
+                    leadRejectApi();
+                    break;
+                case 1000:
+                    callNotificationApi();
+                    break;
+            }
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
+        }
+    }
 }

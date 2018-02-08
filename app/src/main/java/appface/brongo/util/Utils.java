@@ -50,8 +50,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import appface.brongo.BuildConfig;
 import appface.brongo.R;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.uiwidget.GifView;
 
 /**
@@ -139,7 +141,7 @@ public class Utils {
         } catch (PackageManager.NameNotFoundException e1) {
             e1.printStackTrace();
         }
-        String appVersion = pInfo.versionName;
+        String appVersion =  BuildConfig.VERSION_NAME;;
         String os_version = Build.VERSION.RELEASE;
         final String manufacturer = Build.MANUFACTURER;
         final String model_no = Build.MODEL;
@@ -575,7 +577,26 @@ public class Utils {
         }
     }
 
-
+    public static void tokenDialog(final Context context,final NoTokenTryListener tokenTryListener) {
+        // final Activity  activity = (Activity)context;
+        dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_internet);
+        dialog.setCanceledOnTouchOutside(false);
+        final Button try_again_btn = (Button) dialog.findViewById(R.id.internet_dialog_btn);
+        try_again_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isNetworkAvailable(context)) {
+                    dialog.dismiss();
+                    if (tokenTryListener != null)
+                        tokenTryListener.onTryRegenerate();
+                }
+            }
+        });
+        dialog.show();
+    }
 }
 
 

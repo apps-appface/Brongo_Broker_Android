@@ -54,6 +54,7 @@ import appface.brongo.model.ApiModel;
 import appface.brongo.model.ClientDetailsModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.uiwidget.FlowLayout;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.CustomApplicationClass;
@@ -69,11 +70,13 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ItemFragment extends Fragment implements NoInternetTryConnectListener {
+public class ItemFragment extends Fragment implements NoInternetTryConnectListener{
 
     private static final String POSITON = "position";
     private static final String SCALE = "scale";
     private int status = 50;
+    private int apiCode=0;
+    private String lead_mobile,propertyId;
     private static ArrayList<ApiModel.BuyAndRentModel> itemList = new ArrayList<>();
     private static ViewListener viewListener1;
     private int screenWidth,screenHeight,remaining=10;
@@ -162,18 +165,18 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         }
         final int position = this.getArguments().getInt(POSITON);
         float scale = this.getArguments().getFloat(SCALE);
-       final String propertyId = getArguments().getString("propertyId");
-        final String lead_name = getArguments().getString("lead_name");
-        String lead_plan = getArguments().getString("lead_plan");
-        String lead_image = getArguments().getString("lead_image");
-       // int lead_matched = getArguments().getInt("lead_matched");
-        final String  lead_prop_type = getArguments().getString("lead_prop_type");
-        final String lead_posting_type = getArguments().getString("lead_posting_type");
+      propertyId = getArguments().getString("propertyId","");
+        final String lead_name = getArguments().getString("lead_name","");
+        String lead_plan = getArguments().getString("lead_plan","");
+        String lead_image = getArguments().getString("lead_image","");
+       // int lead_matched = getArguments().getInt("lead_matched","");
+        final String  lead_prop_type = getArguments().getString("lead_prop_type","");
+        final String lead_posting_type = getArguments().getString("lead_posting_type","");
         int lead_matched =matchList(lead_posting_type,lead_prop_type);
         //String lead_site = getArguments().getString("lead_site");
-        final String lead_mobile = getArguments().getString("lead_mobile");
-      float lead_rating = getArguments().getFloat("lead_rating");
-        double lead_commission = getArguments().getDouble("lead_commission");
+     lead_mobile = getArguments().getString("lead_mobile","");
+      float lead_rating = getArguments().getFloat("lead_rating",0.0f);
+        double lead_commission = getArguments().getDouble("lead_commission",0.0d);
         //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((screenWidth), (screenHeight*2));
        // RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams((screenWidth), ((screenHeight*2)));
        /* ScrollView linearLayout = (ScrollView) inflater.inflate(R.layout.fragment_item1, container, false);
@@ -190,6 +193,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         TextView open_deal_name = (TextView) linearLayout.findViewById(R.id.opendeal_client_name);
         TextView open_deal_commission = (TextView) linearLayout.findViewById(R.id.open_deal_commission);
         TextView open_deal_clienttype = (TextView) linearLayout.findViewById(R.id.open_deal_client_type);
+        TextView open_deal_plan = (TextView)linearLayout.findViewById(R.id.lead_plan);
         TextView view_all = (TextView)linearLayout.findViewById(R.id.landing_viewall);
         foo(view_all,bundle);
         //feedBackBtn.setVisibility(View.GONE);
@@ -209,6 +213,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         matching_properties.setText(lead_matched + " matching properties");
         open_deal_id.setText("DEAL ID : "+propertyId);
         open_deal_name.setText(lead_name);
+        open_deal_plan.setText(lead_plan.toUpperCase());
         open_deal_commission.setText(lead_commission + "%");
         open_deal_clienttype.setText(lead_posting_type.toUpperCase()+"/"+lead_prop_type.toUpperCase());
        String color_back = Utils.getPostingColor(lead_posting_type);
@@ -438,9 +443,9 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
-                                    callClient(lead_mobile, propertyId);
+                                    viewListener1.alert("please try again");
                                 } else {
-                                    Utils.showToast(context, message,"Error");
+                                    viewListener1.alert(message);
                                 }
 
                             } catch (IOException | JSONException e) {
@@ -470,6 +475,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         void clickBtn(int position,Bundle bundle);
         void feedBackClick(int position,Bundle bundle);
         void alert(String message);
+        void refreshData();
     }
 
     private void updateLeadStatus(final int position1){
@@ -511,11 +517,12 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 200 && message.equalsIgnoreCase("Lead Status Updated Successfully")) {
                                    viewListener1.alert(message);
-                                    status = position1;
+                                   viewListener1.refreshData();
+                                   /* status = position1;
                                     timeList.add("NOW");
                                     mLinearLayout.removeAllViews();
                                     addLayout(arrayList);
-                                    //setView();
+                                    //setView();*/
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -528,9 +535,9 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
-                                    updateLeadStatus(position1);
+                                    viewListener1.alert("please try again");
                                 } else {
-                                    Utils.showToast(context, message,"Error" );
+                                    viewListener1.alert(message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -666,5 +673,4 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
     }
-
 }

@@ -31,6 +31,7 @@ import appface.brongo.R;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
@@ -42,7 +43,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingFragment extends Fragment implements NoInternetTryConnectListener{
+public class SettingFragment extends Fragment implements NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test{
     private SwitchButton offer_noti_switch,builder_noti_switch,noti_sound_switch;
     private static SeekBar sound_seekbar;
     private int i=0;
@@ -255,10 +256,9 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    fetchSettings();
+                                   getToken(context);
                                 } else {
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -323,17 +323,17 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                             }
                         } else {
                             try {
+                                isUpdateRequired = false;
+                                setView();
                                 responseString = response.errorBody().string();
                                 JSONObject jsonObject = new JSONObject(responseString);
                                 String message = jsonObject.optString("message");
                                 int statusCode = jsonObject.optInt("statusCode");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                     new AllUtils().getTokenRefresh(context);
-                                    updateSetings(offerNoti, builderNoti, notiSound);
+                                    Utils.setSnackBar(parentLayout,"Please try again");
                                 } else {
-                                    isUpdateRequired = false;
-                                    setView();
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -408,5 +408,26 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
         super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
         isLoader = false;
+    }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+
+    @Override
+    public void onTryRegenerate() {
+        fetchSettings();
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
+
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            fetchSettings();
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
+        }
     }
 }

@@ -36,6 +36,7 @@ import appface.brongo.adapter.ReferMoreAdapter;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
@@ -47,7 +48,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReferFragmentMore extends Fragment implements NoInternetTryConnectListener {
+public class ReferFragmentMore extends Fragment implements NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test{
     private TextView refer_credit,refer_count,refer_viewall,no_referee_text;
     private RecyclerView refer_recycle;
     private TextView toolbar_title;
@@ -170,6 +171,11 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
         referApi();
     }
 
+    @Override
+    public void onTryRegenerate() {
+        referApi();
+    }
+
 /*
  * ClickableString class
  */
@@ -239,10 +245,9 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    referApi();
+                                    getToken(context);
                                 } else {
-                                    Utils.showToast(context, message,"Error");
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
                            /* if(pd.isShowing()) {
                                 pd.dismiss();
@@ -277,5 +282,20 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
     public void onDestroy() {
         super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
+    }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+            referApi();
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
+        }
     }
 }

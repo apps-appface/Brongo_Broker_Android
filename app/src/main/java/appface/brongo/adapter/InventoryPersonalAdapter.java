@@ -79,7 +79,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
     @Override
     public void onBindViewHolder(final InventoryPersonalAdapter.EmployeeViewHolder holder, final int position) {
         holder.setIsRecyclable(false);
-        ApiModel.InventoryPersoanlList object1 = arrayList.get(position);
+        final ApiModel.InventoryPersoanlList object1 = arrayList.get(position);
         String budget = arrayList.get(position).getBudget()+"";
         budget = Utils.stringToInt(budget);
         /*holder.statename.setText(object1.getMicroMarketState());
@@ -117,7 +117,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
             @Override
             public void onClick(View v) {
 
-                inventory_delete_dialog(position);
+                inventory_delete_dialog(object1,position);
             }
         });
         holder.recycle_item_linear.setOnClickListener(new View.OnClickListener() {
@@ -170,67 +170,8 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
             recycle_item_linear = (LinearLayout)itemView.findViewById(R.id.linear_item);
         }
     }
-    private void deleteInventory(final int position){
-        if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
-            ApiModel.ClientAcceptModel clientAcceptModel = new ApiModel.ClientAcceptModel();
-            //clientAcceptModel.setRentPropertyId(rentPropertyId);
-            clientAcceptModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
-            clientAcceptModel.setPropertyId(arrayList.get(position).getPropertyId());
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            Call<ResponseBody> call = retrofitAPIs.dropInventoryApi(tokenaccess, "android", deviceId, clientAcceptModel);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        String responseString = null;
-                        if (response.isSuccessful()) {
-                            try {
-                                responseString = response.body().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 200 && message.equalsIgnoreCase("Property Deleted Successfully")) {
-                                    arrayList.remove(position);
-                                    notifyDataSetChanged();
-                                    deleteInventoryListener.onDelete(message);
-                                }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    deleteInventory(position);
-                                } else {
-                                    Utils.showToast(context, message,"Error" );
-                                }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, t.getMessage().toString(),"Failure");
-                }
-            });
-        }else{
-            Utils.internetDialog(context,this);
-        }
-    }
-    private void inventory_delete_dialog(final int position){
+    private void inventory_delete_dialog(final  ApiModel.InventoryPersoanlList object,final int position){
             final Dialog dialog = new Dialog(context);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -242,7 +183,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
             TextView delete_client_message = (TextView) dialog.findViewById(R.id.delete_inventory_client_name);
             Button delete_client_cancel = (Button) dialog.findViewById(R.id.inventory_delete_cancel);
             Button delete_client_delete = (Button) dialog.findViewById(R.id.inventory_delete_delete);
-            String message = "Are you sure you want to delete the inventory details of '" + arrayList.get(position).getClientName() + "'?";
+            String message = "Are you sure you want to delete the inventory details of '" + object.getClientName() + "'?";
             delete_client_message.setText(message);
             delete_client_cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -253,7 +194,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
             delete_client_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        deleteInventory(position);
+                    deleteInventoryListener.onDelete(object,position);
                     dialog.dismiss();
                 }
             });
@@ -308,7 +249,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
         Utils.replaceFragment(fragmentManager,individualInventoryFragment,R.id.inventory_frag_container,INDIVIDUAL_INVENTORY);
     }
     public interface DeleteInventoryListener{
-        void onDelete(String message);
+        void onDelete(ApiModel.InventoryPersoanlList object,int position);
     }
 
 }

@@ -45,7 +45,7 @@
     <dimen name="ha_logo_height">35dp</dimen>
     <dimen name="icon_size">45dp</dimen>
     <dimen name="noti_text_margin">7dp</dimen>
-    <dimen name="curve_height">200dp</dimen>
+    <dimen name="curve_height">220dp</dimen>
     <dimen name="curve_padding">33dp</dimen>
     <dimen name="ha_refer_width">80dp</dimen>
     <dimen name="ha_refer_height">40dp</dimen>
@@ -86,6 +86,8 @@
     <dimen name="ra_btn_padding">30dp</dimen>
     <dimen name="ra_margin_top">40dp</dimen>
     <dimen name="ra_green_tick">10dp</dimen>
+    <dimen name="ra_image_height">150dp</dimen>
+    <dimen name="ra_image_width">280dp</dimen>
     <!--ReminderActivity-->
     <dimen name="rea_padding_small">5dp</dimen>
     <dimen name="rea_padding_normal">10dp</dimen>
@@ -121,6 +123,7 @@
     <!--PushActivity-->
     <dimen name="pua_padding_small">5dp</dimen>
     <dimen name="pua_padding_normal">10dp</dimen>
+    <dimen name="pua_plan_margin">5dp</dimen>
     <dimen name="pua_padding_large">20dp</dimen>
     <dimen name="pua_logo_width">40dp</dimen>
     <dimen name="pua_logo_height">35dp</dimen>
@@ -202,6 +205,7 @@
     <dimen name="hof_margin_small">5dp</dimen>
     <dimen name="hof_margin_normal">10dp</dimen>
     <dimen name="hof_margin_big">15dp</dimen>
+    <dimen name="hof_plan_margin">13dp</dimen>
     <dimen name="hof_margin_large">20dp</dimen>
     <dimen name="hof_margin_sixty">60dp</dimen>
     <dimen name="hof_margin_thirty">30dp</dimen>

@@ -27,6 +27,7 @@ import appface.brongo.adapter.HistoricalAdapter;
 import appface.brongo.model.ApiModel;
 import appface.brongo.other.AllUtils;
 import appface.brongo.other.NoInternetTryConnectListener;
+import appface.brongo.other.NoTokenTryListener;
 import appface.brongo.util.AppConstants;
 import appface.brongo.util.RetrofitAPIs;
 import appface.brongo.util.RetrofitBuilders;
@@ -38,7 +39,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HistoricalDealFragment extends Fragment implements NoInternetTryConnectListener {
+public class HistoricalDealFragment extends Fragment implements NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test {
     private Context context;
    private Button his_open_btn,his_close_btn;
    private RecyclerView his_recycle1,his_recycle2;
@@ -155,10 +156,9 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    populateList();
+                                   getToken(context);
                                 } else {
-                                    Utils.showToast(context, message,"Error" );
+                                    Utils.setSnackBar(parentLayout, message);
                                 }
                             } catch (IOException | JSONException e) {
                                 e.printStackTrace();
@@ -191,5 +191,26 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
     public void onDestroy() {
         super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
+    }
+
+    @Override
+    public void onTryRegenerate() {
+        populateList();
+    }
+    private void openTokenDialog(Context context){
+        Utils.tokenDialog(context,this);
+    }
+    private void getToken(Context context){
+        new AllUtils().getToken(context,this);
+    }
+
+    @Override
+    public void onSuccessRes(boolean isSuccess) {
+        if(isSuccess){
+         populateList();
+        }else{
+            Utils.LoaderUtils.dismissLoader();
+            openTokenDialog(context);
+        }
     }
 }

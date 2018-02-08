@@ -195,7 +195,7 @@
         android:background="@drawable/premium_back"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/pua_plan_margin_top"
-        android:layout_marginRight="@dimen/pua_padding_normal"
+        android:layout_marginRight="@dimen/pua_plan_margin"
         android:id="@+id/push_plan_text"
         android:gravity="center"
         android:padding="@dimen/pua_padding_small"

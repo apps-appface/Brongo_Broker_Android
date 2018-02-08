@@ -1,6 +1,7 @@
 package appface.brongo.services;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import com.applozic.mobicomkit.Applozic;
 import com.applozic.mobicomkit.api.account.register.RegisterUserClientService;
@@ -9,13 +10,20 @@ import com.google.android.gms.iid.InstanceIDListenerService;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import appface.brongo.util.AppConstants;
+
 /**
  * Created by Rohit Kumar on 7/14/2017.
  */
 
 public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
     @Override
     public void onTokenRefresh() {
+        pref = getSharedPreferences(AppConstants.PREF_NAME,0);
+        editor = pref.edit();
+        editor.putBoolean(AppConstants.DEVICE_TOKEN_UPDATED,false).commit();
         System.out.println("InstanceIDListenerService called");
         String tkn = FirebaseInstanceId.getInstance().getToken();
         Applozic.getInstance(this).setDeviceRegistrationId(tkn);
