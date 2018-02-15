@@ -22,7 +22,7 @@
         android:numStars="5"
         android:progressTint="@color/star_yellow"
         android:stepSize="0.5"  />
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/review_child_ratingbar"
@@ -37,13 +37,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/review_header_normal">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="By"
             android:layout_centerVertical="true"
             android:id="@+id/review_by"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/review_header_normal"
@@ -53,7 +53,7 @@
             android:text="Brongo Customer"
             android:textColor="@color/appColor"
             app:customFont="lato_bold.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_normal"
@@ -64,7 +64,7 @@
             android:id="@+id/review_child_time"
             app:customFont="lato_regular.ttf"/>
     </RelativeLayout>
-    <appface.brongo.uiwidget.FlowLayout
+    <in.brongo.brongo_broker.uiwidget.FlowLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/review_header_small"
@@ -72,7 +72,7 @@
         app:elementSpacing="@dimen/element_spacing"
         app:lineSpacing="@dimen/review_header_small"
         android:id="@+id/review_flowlayout"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/review_comment"

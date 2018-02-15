@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#fff"
     android:id="@+id/login_parent_linear"
-    tools:context="appface.brongo.activity.LoginActivity">
+    tools:context=".brongo_broker.activity.LoginActivity">
     <include
         layout="@layout/other_toolbar"
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
         android:paddingRight="@dimen/la_margin_large"
         android:visibility="gone">
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:id="@+id/otp_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
             android:textSize="@dimen/text_size_big"
             app:customFont="lato_regular.ttf"/>
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:id="@+id/otp_mobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
             android:textSize="@dimen/text_size_large"
             app:customFont="lato_regular.ttf"/>
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -109,7 +109,7 @@
                 android:textSize="@dimen/text_size_normal" />
 
         </LinearLayout>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/invalid_otp"
@@ -141,7 +141,7 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -149,7 +149,7 @@
                 android:textColor="#000"
                 app:customFont="lato_regular.ttf"/>
 
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:id="@+id/resened_otp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -185,7 +185,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/la_topmargin">
 
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:id="@+id/register_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -195,7 +195,7 @@
                 android:text="Already Registered?"
                 android:visibility="gone"
                 app:customFont="lato_bold.ttf"/>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+91"
@@ -233,7 +233,7 @@
                     android:textColor="@color/edit_text_color"
                     android:textSize="@dimen/text_size_normal" />
             </android.support.design.widget.TextInputLayout>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/invalid_phone"
@@ -282,7 +282,7 @@
             android:layout_centerHorizontal="true"
             android:clickable="true">
 
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_normal"
@@ -292,7 +292,7 @@
                 app:customFont="lato_regular.ttf"
                 />
 
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:shadowColor="#73000000"
@@ -315,7 +315,7 @@
         android:visibility="gone"
         android:layout_margin="@dimen/la_margin_large"
         android:padding="@dimen/la_margin_normal">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_small"
@@ -326,7 +326,7 @@
             app:customFont="lato_regular.ttf"
             android:layout_marginTop="@dimen/cf_margin_normal"
             />
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_normal"

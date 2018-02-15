@@ -12,7 +12,7 @@
     android:padding="@dimen/loader_padding_layout"
     android:alpha="0.7"
     android:background="@drawable/edit_border">
-    <appface.brongo.uiwidget.GifView
+    <in.brongo.brongo_broker.uiwidget.GifView
         android:id="@+id/check_mark_GV"
         android:layout_width="@dimen/loader_size"
         android:layout_height="@dimen/loader_size"

@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/profile_parent_linear"
-    android:background="@color/appColor"
-    tools:context="appface.brongo.activity.ProfileActivity">
+    android:background="@color/appColor">
     <android.support.v7.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,17 +26,18 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
+                android:id="@+id/profile_toolbar_back"
                 android:layout_width="@dimen/back_icon_size"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_back_white"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/pa_margin_normal"
-                android:padding="@dimen/pa_margin_big"
-                android:id="@+id/profile_toolbar_back"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"/>
-            <appface.brongo.uiwidget.CustomTextView
+                android:clickable="true"
+                android:padding="@dimen/pa_margin_big"
+                android:src="@drawable/ic_back_white" />
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -60,7 +60,7 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="330dp">
+                android:layout_height="@dimen/pa_curve_parent_height">
 
                 <RelativeLayout
                     android:id="@+id/profile_main_relative"
@@ -84,7 +84,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true" />
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/profile_username"
@@ -94,7 +94,7 @@
                             android:layout_toRightOf="@+id/profile_image"
                             app:customFont="lato_regular.ttf"/>
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/round_white"
@@ -121,7 +121,7 @@
                             android:layout_alignLeft="@+id/profile_username"
                             android:layout_below="@+id/profile_username">
 
-                            <appface.brongo.uiwidget.CustomTextView
+                            <in.brongo.brongo_broker.uiwidget.CustomTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:shadowColor="#73000000"
@@ -153,7 +153,7 @@
                                 android:progressTint="@color/star_yellow"
                                 android:stepSize="0.5" />
 
-                            <appface.brongo.uiwidget.CustomTextView
+                            <in.brongo.brongo_broker.uiwidget.CustomTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:shadowColor="#73000000"
@@ -183,7 +183,7 @@
                             android:layout_alignParentLeft="true">
 
 
-                            <appface.brongo.uiwidget.CustomTextView
+                            <in.brongo.brongo_broker.uiwidget.CustomTextView
                                 android:id="@+id/profile_closed_commission_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
                                 android:textColor="#ffffff"
                                 app:customFont="lato_regular.ttf"
                                 />
-                            <appface.brongo.uiwidget.CustomTextView
+                            <in.brongo.brongo_broker.uiwidget.CustomTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:shadowColor="#73000000"
@@ -214,7 +214,7 @@
                             android:layout_marginRight="@dimen/pa_margin_large"
                             android:layout_marginLeft="@dimen/pa_margin_large">
 
-                            <appface.brongo.uiwidget.CustomTextView
+                            <in.brongo.brongo_broker.uiwidget.CustomTextView
                                 android:id="@+id/profile_opened_commission_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -224,7 +224,7 @@
                                 android:textColor="#ffffff"
                                 app:customFont="lato_regular.ttf"/>
 
-                            <appface.brongo.uiwidget.CustomTextView
+                            <in.brongo.brongo_broker.uiwidget.CustomTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:shadowColor="#73000000"
@@ -253,7 +253,7 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:id="@+id/profile_total_deal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -262,7 +262,7 @@
                             android:textSize="@dimen/text_size_elarge"
                             app:customFont="lato_regular.ttf"/>
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/text_size_small"
@@ -280,7 +280,7 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:id="@+id/profile_closed_deal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -288,7 +288,7 @@
                             android:textColor="@color/appColor"
                             android:textSize="@dimen/text_size_elarge"
                             app:customFont="lato_regular.ttf"/>
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/text_size_small"
@@ -306,7 +306,7 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:id="@+id/profile_open_deal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -315,10 +315,10 @@
                             android:textSize="@dimen/text_size_elarge"
                             app:customFont="lato_regular.ttf"/>
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/text_size_normal"
+                            android:textSize="@dimen/text_size_small"
                             android:textColor="#707070"
                             android:gravity="center"
                             android:text="Open Deals"
@@ -332,7 +332,7 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:id="@+id/profile_inventory"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -341,10 +341,10 @@
                             android:textSize="@dimen/text_size_elarge"
                             app:customFont="lato_regular.ttf"/>
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/text_size_normal"
+                            android:textSize="@dimen/text_size_small"
                             android:textColor="#707070"
                             android:gravity="center"
                             android:text="Inventory"
@@ -364,7 +364,7 @@
                 android:layout_marginRight="@dimen/pa_margin_normal"
                 android:elevation="@dimen/pa_margin_normal">
 
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_big"
@@ -374,7 +374,7 @@
                     android:text="Your Details"
                     app:customFont="lato_bold.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -384,7 +384,7 @@
                    android:text="EMAIL ID"
                     app:customFont="lato_regular.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -394,7 +394,7 @@
                     android:id="@+id/profile_email"
                     app:customFont="lato_regular.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -404,7 +404,7 @@
                     android:text="TYPE OF COMPANY"
                     app:customFont="lato_regular.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -414,7 +414,7 @@
                     android:id="@+id/profile_comp_type"
                     app:customFont="lato_regular.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -424,7 +424,7 @@
                     android:text="REAL ESTATE TYPE"
                     app:customFont="lato_regular.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -434,7 +434,7 @@
                     android:id="@+id/profile_real_estate"
                     app:customFont="lato_regular.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -445,7 +445,7 @@
                     app:customFont="lato_regular.ttf"
                     />
 
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -455,7 +455,7 @@
                     android:id="@+id/profile_micromarket"
                     app:customFont="lato_regular.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -466,7 +466,7 @@
                     app:customFont="lato_regular.ttf"
                     />
 
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -487,7 +487,7 @@
                 android:padding="@dimen/pa_margin_normal"
                 android:elevation="@dimen/pa_margin_normal"
                 android:background="@drawable/edit_border">
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_big"
@@ -513,7 +513,7 @@
                             android:layout_height="@dimen/pa_deal_linear_height"
                             android:id="@+id/profile_rera_certificate"
                             android:scaleType="fitXY"/>
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:shadowColor="#73000000"
@@ -536,7 +536,7 @@ Certificate"
                             android:layout_height="@dimen/pa_deal_linear_height"
                             android:id="@+id/profile_id_proof"
                             android:scaleType="fitXY"/>
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:shadowColor="#73000000"
@@ -561,7 +561,7 @@ Certificate"
                             android:layout_height="@dimen/pa_deal_linear_height"
                             android:scaleType="fitXY"/>
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:shadowColor="#73000000"
@@ -583,7 +583,7 @@ Certificate"
                 android:background="@drawable/edit_border"
                 android:orientation="vertical"
                 android:elevation="@dimen/pa_margin_normal">
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_big"
@@ -592,7 +592,7 @@ Certificate"
                     android:text="Your Brongo Credits"
                     app:customFont="lato_bold.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/pa_margin_normal"
@@ -602,7 +602,7 @@ Certificate"
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <appface.brongo.uiwidget.CustomTextView
+                    <in.brongo.brongo_broker.uiwidget.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_vsmall"
@@ -616,7 +616,7 @@ Certificate"
                         app:customFont="lato_regular.ttf"
                         />
 
-                    <appface.brongo.uiwidget.CustomTextView
+                    <in.brongo.brongo_broker.uiwidget.CustomTextView
                         android:id="@+id/profile_credit"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -651,7 +651,7 @@ Certificate"
                 android:elevation="@dimen/pa_margin_normal"
                 android:background="@drawable/edit_border"
                 >
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_big"
@@ -663,7 +663,7 @@ Certificate"
                    android:text="Your Subscription Plan"
                     app:customFont="lato_bold.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -684,7 +684,7 @@ Certificate"
                     android:layout_alignLeft="@+id/profile_see_plans"
                     android:layout_alignRight="@+id/profile_see_plans"/>
 
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -699,7 +699,7 @@ Certificate"
                     android:textAllCaps="true"
                     app:customFont="lato_bold.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -712,7 +712,7 @@ Certificate"
                     android:layout_below="@+id/profile_subscription"
                     app:customFont="lato_regular.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"
@@ -723,7 +723,7 @@ Certificate"
                     android:id="@+id/profile_plan_expiry"
                     app:customFont="lato_regular.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#73000000"

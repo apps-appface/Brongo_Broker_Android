@@ -14,7 +14,7 @@
         android:paddingBottom="@dimen/deal_normal"
         android:id="@+id/child_linear"
         >
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:id="@+id/expandedListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    tools:context="appface.brongo.fragment.ReferFragmentMore">
+    tools:context=".brongo_broker.fragment.ReferFragmentMore">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,7 +28,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:id="@+id/refer_back2"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Refer a Broker"
@@ -57,7 +57,7 @@
             android:layout_below="@+id/refer_image"
             android:layout_alignParentBottom="true"
             android:padding="@dimen/rmf_padding_large">
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Your Credit"
@@ -65,12 +65,12 @@
                 android:textSize="@dimen/text_size_normal"
                 android:textColor="#99ffffff"
                 app:customFont="lato_regular.ttf"/>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:layout_marginLeft="@dimen/rmf_padding_large"/>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/refer_credit_value"
@@ -86,7 +86,7 @@
             android:background="@color/white"
             android:layout_alignParentBottom="true"
             android:layout_below="@+id/refree_relative">
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -104,7 +104,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/referee_recycle"
                 android:visibility="invisible"></android.support.v7.widget.RecyclerView>
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                    android:layout_centerInParent="true"
@@ -115,7 +115,7 @@
                     android:textColor="@color/appColor"
                     android:textSize="@dimen/text_size_big"/>
             </RelativeLayout>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="View all"

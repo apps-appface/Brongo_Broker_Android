@@ -20,7 +20,7 @@
             android:src="@drawable/logo_colored"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/pua_padding_small"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Incoming Request"
@@ -54,7 +54,7 @@
                 android:background="@color/transparent"
                 />
 
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:id="@+id/notification_client_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,11 +73,10 @@
                     android:numStars="5"
                     android:layout_gravity="center_horizontal"
                     android:progressTint="@color/star_yellow"
-
                     android:stepSize="0.5"
                     android:layout_below="@+id/notification_client_name"/>
 
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:id="@+id/noti_client_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -89,7 +88,7 @@
                 android:textColor="#ffffff"
                 app:customFont="lato_bold.ttf"/>
 
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:id="@+id/noti_commission"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,7 +98,7 @@
                 android:textColor="#ffffff"
                 app:customFont="lato_regular.ttf"/>
 
-            <appface.brongo.uiwidget.FlowLayout
+            <in.brongo.brongo_broker.uiwidget.FlowLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/pua_padding_small"
@@ -108,7 +107,7 @@
                 app:elementSpacing="@dimen/element_spacing"
                 app:lineSpacing="@dimen/pua_padding_small"
                 android:gravity="center">
-            </appface.brongo.uiwidget.FlowLayout>
+            </in.brongo.brongo_broker.uiwidget.FlowLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -128,7 +127,7 @@
                     app:slideTextColor="@color/appColor"/>
             </RelativeLayout>
 
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:id="@+id/noti_reject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -145,7 +144,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"/>
         </LinearLayout>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/pua_padding_normal"
@@ -176,7 +175,7 @@
             android:max="120"
             android:progress="0" />
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:id="@+id/progress_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -189,7 +188,7 @@
             app:customFont="lato_bold.ttf"/>
     </RelativeLayout>
     </LinearLayout>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/premium_back"

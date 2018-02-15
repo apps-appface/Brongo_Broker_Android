@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#ededed"
-    tools:context="appface.brongo.fragment.IndividualInventoryFragment">
+    tools:context=".brongo_broker.fragment.IndividualInventoryFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -45,7 +45,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/if_margin_large"
         >
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -54,7 +54,7 @@
             android:textColor="#163d70"
             android:id="@+id/inventory_individual_name"
             app:customFont="lato_bold.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -77,7 +77,7 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_call_icon"
             android:layout_alignParentLeft="true" />
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/inventory_individual_mobile"
@@ -93,7 +93,7 @@
         android:layout_height="@dimen/view_small"
         android:background="@color/round_empty_gray"
         android:layout_marginTop="@dimen/if_margin_normal"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/if_margin_big"
@@ -109,7 +109,7 @@
         android:background="@color/round_empty_gray"
         android:id="@+id/email_view"
         android:layout_marginTop="@dimen/if_margin_big"/>
-        <appface.brongo.uiwidget.FlowLayout
+        <in.brongo.brongo_broker.uiwidget.FlowLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/individual_inven_flowlayout"
@@ -118,20 +118,20 @@
             app:elementSpacing="@dimen/element_spacing"
             app:lineSpacing="@dimen/if_margin_normal">
 
-        </appface.brongo.uiwidget.FlowLayout>
+        </in.brongo.brongo_broker.uiwidget.FlowLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_small"
         android:background="@color/round_empty_gray"
         android:layout_marginTop="@dimen/if_margin_normal"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Notes"
         android:layout_marginTop="@dimen/if_margin_big"
         android:textColor="#64687f"
         app:customFont="lato_bold.ttf"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/if_margin_big"

@@ -14,7 +14,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:id="@+id/his_deal_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:text=""
             android:textColor="@color/edit_hint_color"
             app:customFont="lato_bold.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#c0ffffff"
@@ -35,7 +35,7 @@
             android:id="@+id/his_lead_name"
             app:customFont="lato_bold.ttf"
             />
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#73000000"
@@ -59,7 +59,7 @@
         android:orientation="horizontal"
       >
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#73000000"
@@ -74,7 +74,7 @@
             android:background="@color/round_empty_gray"
            android:layout_margin="@dimen/deal_small"/>
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#73000000"
@@ -90,7 +90,7 @@
         android:layout_height="@dimen/view_esmall"
         android:background="@color/round_empty_gray"
        android:layout_margin="@dimen/deal_small"/>
-    <appface.brongo.uiwidget.FlowLayout
+    <in.brongo.brongo_broker.uiwidget.FlowLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/his_flow"
@@ -98,6 +98,6 @@
         app:flowDirection="leftToRight"
         app:elementSpacing="@dimen/element_spacing"
         app:lineSpacing="@dimen/deal_normal">
-    </appface.brongo.uiwidget.FlowLayout>
+    </in.brongo.brongo_broker.uiwidget.FlowLayout>
 
 </LinearLayout>

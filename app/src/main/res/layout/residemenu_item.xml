@@ -4,7 +4,6 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/sidemenu_padding_small"
     android:paddingTop="@dimen/sidemenu_padding_small"
     android:paddingBottom="@dimen/sidemenu_padding_small"
     android:background="?attr/selectableItemBackground">
@@ -16,11 +15,12 @@
         android:layout_centerVertical="true"
         android:padding="@dimen/sidemenu_padding_small"/>
 
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/round_empty_gray"
       android:layout_toRightOf="@+id/iv_icon"
+        android:textSize="@dimen/text_size_normal"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/sidemenu_padding_normal"
         android:id="@+id/tv_title"

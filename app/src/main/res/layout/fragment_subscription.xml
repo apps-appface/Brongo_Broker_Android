@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:background="#ededed"
-    tools:context="appface.brongo.fragment.SubscriptionFragment">
+    tools:context=".brongo_broker.fragment.SubscriptionFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,12 +38,13 @@
                 android:id="@+id/subscription_image"/>
 
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:id="@+id/subscription_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_normal"
             android:textColor="#33609c"
+            android:layout_marginLeft="@dimen/suf_padding_small"
             android:layout_toRightOf="@+id/subscription_image"
             android:gravity="center_horizontal"
             app:customFont="lato_bold.ttf"
@@ -57,7 +58,7 @@
             android:layout_alignLeft="@+id/subscription_username"
             android:layout_toRightOf="@+id/subscription_image"
             android:layout_below="@+id/subscription_username">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#73000000"
@@ -70,7 +71,7 @@
             android:textAllCaps="true"
             app:customFont="lato_bold.ttf"
             />
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/suf_thirty"
             android:id="@+id/subscription_tc"
@@ -90,7 +91,7 @@
         android:layout_height="@dimen/view_small"
         android:layout_marginTop="@dimen/suf_padding_large"
         android:background="#6a6a6a"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/subscription_expiry"
@@ -111,7 +112,7 @@
         android:layout_marginLeft="@dimen/suf_thirty"
         android:layout_marginRight="@dimen/suf_thirty"
         android:gravity="center_horizontal">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_big"
@@ -127,7 +128,7 @@
             android:layout_marginTop="@dimen/suf_padding_normal"
             android:id="@+id/trial_linear_parent"
           >
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:shadowColor="#c0ffffff"
@@ -141,7 +142,7 @@
                     android:id="@+id/subscription_plan2"
                     app:customFont="lato_regular.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:shadowColor="#c0ffffff"
@@ -166,7 +167,7 @@
                     android:id="@+id/subs_trial_listview"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
         </LinearLayout>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#73000000"
@@ -177,7 +178,7 @@
             android:id="@+id/sub_cur_expiry2"
             app:customFont="lato_regular.ttf"
             />
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_normal"
@@ -196,7 +197,7 @@
             android:visibility="gone"
             android:paddingBottom="@dimen/suf_padding_large"
             >
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:shadowColor="#c0ffffff"
@@ -210,7 +211,7 @@
                     android:id="@+id/subscription_basic_plan"
                     app:customFont="lato_regular.ttf"
                     />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:shadowColor="#c0ffffff"
@@ -235,7 +236,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/subs_basic_listview"></android.support.v7.widget.RecyclerView></LinearLayout>
         </LinearLayout>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_big"
@@ -257,7 +258,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/suf_padding_normal"
                 android:background="#1d4f91">
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:shadowColor="#c0ffffff"
@@ -277,7 +278,7 @@
                 android:paddingTop="@dimen/suf_padding_small"
                 android:id="@+id/premium_linear_rate"
                 android:layout_below="@+id/subscription_premium_plan">
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#c0ffffff"
@@ -300,7 +301,7 @@
                     android:includeFontPadding="false"
                     android:layout_centerInParent="true"/>
 
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#c0ffffff"
@@ -315,7 +316,7 @@
                     />
             </RelativeLayout>
             </RelativeLayout>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_extra_small"
@@ -340,7 +341,7 @@
                     android:id="@+id/subs_premium_listview"></android.support.v7.widget.RecyclerView>
             </LinearLayout>
         </LinearLayout>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#c0ffffff"

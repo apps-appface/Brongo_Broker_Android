@@ -16,7 +16,7 @@
             android:layout_height="@dimen/cf_big_image"
             android:src="@drawable/contact_us"
             />
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:customFont="lato_regular.ttf"
@@ -41,7 +41,7 @@
             android:id="@+id/contact_call_relative"
             android:background="?attr/selectableItemBackground"
             android:clickable="true">
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_small"
@@ -52,7 +52,7 @@
                 app:customFont="lato_regular.ttf"
                 android:layout_marginTop="@dimen/cf_margin_normal"
                 />
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_normal"
@@ -87,8 +87,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/contact_email_relative"
             android:background="?attr/selectableItemBackground"
-            android:clickable="true">
-            <appface.brongo.uiwidget.CustomTextView
+            android:clickable="true"
+            >
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/cf_margin_normal"
@@ -99,7 +100,7 @@
                 android:id="@+id/emailus_text"
                 app:customFont="lato_regular.ttf"
                 />
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/cf_margin_normal"
@@ -125,6 +126,53 @@
                 android:layout_below="@+id/email_text"
                 android:layout_marginTop="@dimen/cf_margin_normal"
 
+                />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/contact_whatsapp_relative"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:visibility="gone">
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small"
+                android:layout_marginLeft="@dimen/cf_margin_normal"
+                android:textColor="#58595b"
+                android:text="Text Us"
+                android:id="@+id/textus_text"
+                app:customFont="lato_regular.ttf"
+                android:layout_marginTop="@dimen/cf_margin_normal"
+                />
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_normal"
+                android:layout_marginLeft="@dimen/cf_margin_normal"
+                android:layout_marginTop="@dimen/cf_margin_normal"
+                android:textColor="@color/appColor"
+                android:text="Whatsapp"
+                android:id="@+id/whatsapp_text"
+                android:layout_below="@+id/textus_text"
+                app:customFont="lato_regular.ttf"
+                />
+            <ImageView
+                android:layout_width="@dimen/cf_small_image"
+                android:layout_height="@dimen/cf_small_image"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/contact_us_whatsapp_btn"
+                android:background="@drawable/ic_whatsapp"
+                android:padding="@dimen/cf_margin_small"
+                android:clickable="true"/>
+            <View android:layout_width="match_parent"
+                android:layout_height="@dimen/view_small"
+                android:background="#33000000"
+                android:layout_below="@+id/whatsapp_text"
+                android:layout_marginTop="@dimen/cf_margin_normal"
                 />
 
         </RelativeLayout>

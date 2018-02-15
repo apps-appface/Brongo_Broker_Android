@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ededed"
-    android:id="@+id/menu_parent_relative"
-    tools:context="appface.brongo.activity.Menu_Activity">
+    android:id="@+id/menu_parent_relative">
     <android.support.v7.widget.Toolbar
         android:id="@+id/inventory_toolbar"
         android:layout_width="match_parent"
@@ -35,7 +34,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:visibility="visible"/>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#cc000000"

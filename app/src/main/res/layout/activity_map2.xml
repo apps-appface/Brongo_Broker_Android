@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/map_parent_relative"
-    tools:context="appface.brongo.activity.MapActivity">
+    tools:context=".brongo_broker.activity.MapActivity">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

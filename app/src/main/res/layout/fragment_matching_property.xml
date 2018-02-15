@@ -6,7 +6,7 @@
     android:paddingRight="@dimen/mf_margin_normal"
     android:paddingLeft="@dimen/mf_margin_normal"
     android:background="#ededed"
-    tools:context="appface.brongo.fragment.MatchingPropertyFragment">
+    tools:context=".brongo_broker.fragment.MatchingPropertyFragment">
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -32,7 +32,7 @@
             android:background="@drawable/network_error"
             android:scaleType="fitXY" />
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_margin_layout"
@@ -42,7 +42,7 @@
             android:textSize="@dimen/dialog_title_size"
             android:textStyle="bold" />
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_margin_layout"

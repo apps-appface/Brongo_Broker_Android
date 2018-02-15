@@ -16,7 +16,7 @@
         android:paddingLeft="@dimen/dialog_margin_large"
         android:paddingRight="@dimen/dialog_margin_large"
         android:background="@drawable/edit_border">
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:shadowColor="#c0ffffff"
@@ -26,7 +26,7 @@
         android:text="You missed a Deal :("
         app:customFont="lato_bold.ttf"
         />
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dialog_margin_normal"

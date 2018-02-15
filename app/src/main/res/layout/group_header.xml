@@ -13,7 +13,7 @@
         android:layout_marginRight="@dimen/deal_normal"
         android:layout_marginTop="@dimen/deal_normal"
         android:background="@drawable/edit_border">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:id="@+id/listTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -8,14 +8,14 @@
     android:paddingBottom="@dimen/spinner_small"
     android:paddingLeft="@dimen/spinner_normal"
     android:paddingRight="@dimen/spinner_normal">
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinner_header"
         android:textColor="#64687f"
         android:textSize="@dimen/text_size_normal"
         app:customFont="lato_bold.ttf"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spinner_small"

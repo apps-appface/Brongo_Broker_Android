@@ -30,18 +30,22 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/ha_padding_normal"
+                android:layout_centerVertical="true"
+                android:id="@+id/side_navi_bar"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true">
 
             <ImageView
-                android:id="@+id/side_navi_bar"
-                android:layout_width="@dimen/ha_toolbar_size"
-                android:layout_height="match_parent"
-                android:padding="@dimen/ha_padding_big"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="@dimen/ha_padding_normal"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_burger_menu"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"/>
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_burger_menu" />
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/toolbar_logo"
@@ -51,14 +55,15 @@
                 android:src="@drawable/logowhite2" />
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:layout_marginLeft="20dp"
                 android:layout_toRightOf="@+id/toolbar_logo">
 
             <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/message_relative"
                 android:layout_marginRight="@dimen/ha_padding_normal"
@@ -68,12 +73,12 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_bchat_topbar"
-            android:padding="@dimen/ha_padding_normal"
+            android:layout_margin="@dimen/ha_padding_normal"
                 android:layout_centerInParent="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                  />
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:id="@+id/message_count"
                     android:layout_width="@dimen/ha_padding_large"
                     android:layout_height="@dimen/ha_padding_large"
@@ -82,7 +87,8 @@
                     android:textSize="@dimen/ha_padding_normal"
                     android:gravity="center"
                     android:textColor="@color/appColor"
-                android:layout_alignParentRight="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
                     android:visibility="gone"
                     android:layout_marginLeft="@dimen/ha_padding_small"
                     android:background="@drawable/text_circular_white"
@@ -90,22 +96,23 @@
             </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:id="@+id/notificaton_relative"
                     android:layout_toRightOf="@+id/message_relative"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/ha_padding_normal">
+
                     <ImageView
                         android:id="@+id/toolbar_notification_icon"
                         android:layout_width="@dimen/icon_size"
                         android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                       android:padding="@dimen/ha_padding_normal"
-                        android:src="@drawable/ic_notification"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:clickable="true"/>
-                    <appface.brongo.uiwidget.CustomTextView
+                        android:clickable="true"
+                        android:src="@drawable/ic_notification" />
+                    <in.brongo.brongo_broker.uiwidget.CustomTextView
                         android:id="@+id/notification_count"
                         android:layout_width="@dimen/ha_padding_large"
                         android:layout_height="@dimen/ha_padding_large"
@@ -115,7 +122,7 @@
                         android:gravity="center"
                         android:layout_marginRight="@dimen/noti_text_margin"
                         android:textColor="@color/appColor"
-                        android:layout_alignParentRight="true"
+                     android:layout_alignParentRight="true"
                         android:background="@drawable/text_circular_white"
                         android:visibility="gone"
                         app:customFont="lato_bold.ttf"
@@ -176,7 +183,7 @@
                         android:orientation="horizontal"
                         android:layout_alignParentLeft="true">
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:id="@+id/main_user_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -184,26 +191,22 @@
                             android:textSize="@dimen/text_size_normal"
                             app:customFont="lato_regular.ttf"/>
                         <ImageView
-                            android:layout_width="@dimen/ha_padding_big"
-                            android:layout_height="@dimen/ha_padding_big"
+                            android:layout_width="@dimen/ha_medal_size"
+                            android:layout_height="@dimen/ha_medal_size"
                             android:layout_marginLeft="@dimen/ha_padding_small"
                             android:layout_marginRight="@dimen/ha_padding_small"
                             android:background="@drawable/bronze_medal_copy"
                             android:layout_gravity="center"
                             />
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:shadowColor="#73000000"
-                            android:shadowDx="6.123233995736766e-17"
-                            android:shadowDy="1"
                             android:layout_marginLeft="@dimen/ha_padding_small"
-                            android:shadowRadius="3"
                             android:textSize="@dimen/text_size_vsmall"
                             android:textColor="#000000"
                             android:gravity="center_horizontal"
-                            android:text="PLAN 1"
                             android:paddingRight="@dimen/ha_padding_small"
                             android:paddingLeft="@dimen/ha_padding_small"
                             android:paddingBottom="@dimen/ha_plan_top_padding"
@@ -236,7 +239,7 @@
                             android:progressTint="@color/star_yellow"
                             android:stepSize="0.5" />
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:id="@+id/main_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -267,7 +270,7 @@
                         android:layout_alignParentLeft="true">
 
 
-                            <appface.brongo.uiwidget.CustomTextView
+                            <in.brongo.brongo_broker.uiwidget.CustomTextView
                                 android:id="@+id/closed_commission_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -277,7 +280,7 @@
                                 android:textColor="#ffffff"
                                 app:customFont="lato_regular.ttf"
                                 />
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:shadowColor="#73000000"
@@ -297,7 +300,7 @@
                         android:layout_marginRight="@dimen/curve_padding"
                         android:layout_marginLeft="@dimen/ha_logo_width">
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:id="@+id/opened_commission_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -307,7 +310,7 @@
                             android:textColor="#ffffff"
                             app:customFont="lato_regular.ttf"/>
 
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:shadowColor="#73000000"
@@ -333,7 +336,7 @@
                         android:layout_height="@dimen/main_house_height"
                         android:src="@drawable/mainimagehouseonly1"
                         />
-                    <appface.brongo.uiwidget.CustomTextView
+                    <in.brongo.brongo_broker.uiwidget.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:shadowColor="#73000000"
@@ -360,7 +363,7 @@
                         android:layout_gravity="center_horizontal"
                         android:gravity="center"
                         android:orientation="horizontal">
-                    <appface.brongo.uiwidget.CustomTextView
+                    <in.brongo.brongo_broker.uiwidget.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_big"
@@ -380,7 +383,7 @@
                             android:layout_marginLeft="@dimen/ha_padding_small"
                             android:layout_marginRight="@dimen/ha_padding_small"
                             android:id="@+id/cutoff_view" />
-                        <appface.brongo.uiwidget.CustomTextView
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/text_size_small"
@@ -434,12 +437,12 @@
                             android:layout_alignParentBottom="true"
                             android:background="@drawable/ic_landing_back"
                             />
-                        <appface.brongo.uiwidget.WrapContentViewPager
+                        <in.brongo.brongo_broker.uiwidget.WrapContentViewPager
                             android:id="@+id/myviewpager"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center" />
-                        <appface.brongo.uiwidget.WrapContentViewPager
+                        <in.brongo.brongo_broker.uiwidget.WrapContentViewPager
                             android:id="@+id/myviewpager1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -475,7 +478,7 @@
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/icon_size"
+        android:layout_height="@dimen/ha_mode_height"
         android:orientation="horizontal"
         android:id="@+id/linear2"
         android:gravity="center"
@@ -484,7 +487,7 @@
         android:paddingLeft="@dimen/ha_padding_large"
         android:paddingRight="@dimen/ha_padding_large"
         android:layout_alignParentBottom="true">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Change the mode"
@@ -496,7 +499,7 @@
             android:textSize="@dimen/text_size_normal"
             android:textColor="#ffffff"
             app:customFont="lato_regular.ttf" />
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#73000000"

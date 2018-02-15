@@ -12,7 +12,8 @@
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:titleTextColor="@android:color/white"
     android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true">
+    android:layout_alignParentStart="true"
+    android:background="@color/white">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -26,7 +27,7 @@
             android:clickable="true"
             android:padding="@dimen/toolbar_big"
             android:id="@+id/other_toolbar_back"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -34,7 +35,7 @@
             android:textColor="@color/round_empty_gray"
             android:id="@+id/other_toolbar_title"
             app:customFont="lato_regular.ttf"/>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -44,6 +45,19 @@
                 android:visibility="gone"
                 android:textColor="@color/edit_text_color"
                 android:id="@+id/other_toolbar_otp_timer"
+                app:customFont="lato_bold.ttf"/>
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/toolbar_right_margin"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/text_size_big"
+                android:visibility="gone"
+                android:text="SKIP"
+                android:padding="@dimen/sa_padding_small"
+                android:textColor="@color/round_empty_gray"
+                android:id="@+id/other_toolbar_skip"
                 app:customFont="lato_bold.ttf"/>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>

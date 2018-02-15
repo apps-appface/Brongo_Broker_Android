@@ -27,7 +27,7 @@
         android:layout_marginLeft="@dimen/walkthrough_layout_margin"
         android:layout_marginRight="@dimen/walkthrough_layout_margin"
         android:layout_marginBottom="@dimen/walkthrough_bottom_padding">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/walk_title"
@@ -38,7 +38,7 @@
             android:gravity="center_vertical"
             app:customFont="lato_bold.ttf"
             />
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/walk_sub_title"

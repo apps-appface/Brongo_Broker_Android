@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--TextSize-->
+    <dimen name="text_size_big">17sp</dimen>
+    <dimen name="text_size_ebig">19sp</dimen>
+    <dimen name="text_size_vsmall">11sp</dimen>
+    <dimen name="text_extra_small">9sp</dimen>
+    <dimen name="text_size_normal">14sp</dimen>
+    <dimen name="text_size_small">11sp</dimen>
+    <dimen name="text_size_large">21sp</dimen>
+    <dimen name="text_size_elarge">24sp</dimen>
+    <dimen name="back_icon_size">48dp</dimen>
+    <dimen name="btn_padding">60dp</dimen>
+    <dimen name="element_spacing">4dp</dimen>
+    <dimen name="prof_pic_size">75dp</dimen>
+    <dimen name="view_small">1dp</dimen>
+    <dimen name="view_large">2dp</dimen>
+    <dimen name="view_esmall">0.5dp</dimen>
+    <!--builderProjectActivity-->
+    <dimen name="bp_back_size">60dp</dimen>
+    <dimen name="bp_five_dp">5dp</dimen>
+    <dimen name="bp_ten_dp">10dp</dimen>
+    <dimen name="bp_back_padding">20dp</dimen>
+    <dimen name="bp_three_dot">50dp</dimen>
+    <!--DocumentACtivity-->
+    <dimen name="da_big_margin">20dp</dimen>
+    <dimen name="da_btn_size">60dp</dimen>
+    <dimen name="da_round_textviewsize">30dp</dimen>
+    <dimen name="da_check_size">24dp</dimen>
+    <dimen name="da_normal_margin">10dp</dimen>
+    <dimen name="da_btn_padding">60dp</dimen>
+    <dimen name="da_small_margin">5dp</dimen>
+    <dimen name="da_document_height">120dp</dimen>
+    <dimen name="da_gallery_height">40dp</dimen>
+    <dimen name="da_gallery_padding">3dp</dimen>
+    <dimen name="da_text_drawable_size">20dp</dimen>
+    <!--HomeActivity_toolbar-->
+    <dimen name="ha_toolbar_size">60dp</dimen>
+    <dimen name="ha_padding_small">5dp</dimen>
+    <dimen name="ha_padding_normal">10dp</dimen>
+    <dimen name="ha_padding_big">15dp</dimen>
+    <dimen name="ha_padding_large">20dp</dimen>
+    <dimen name="ha_logo_width">40dp</dimen>
+    <dimen name="ha_logo_height">35dp</dimen>
+    <dimen name="ha_medal_size">15dp</dimen>
+    <dimen name="ha_mode_height">45dp</dimen>
+    <dimen name="icon_size">25dp</dimen>
+    <dimen name="noti_text_margin">7dp</dimen>
+    <dimen name="curve_height">220dp</dimen>
+    <dimen name="curve_padding">33dp</dimen>
+    <dimen name="ha_refer_width">80dp</dimen>
+    <dimen name="ha_refer_height">40dp</dimen>
+    <dimen name="ha_plan_top_padding">3dp</dimen>
+    <dimen name="main_house_height">116dp</dimen>
+    <dimen name="main_house_width">242dp</dimen>
+    <dimen name="view_width">2dp</dimen>
+    <!--LoginActivity-->
+    <dimen name="la_layout_margin">30dp</dimen>
+    <dimen name="la_margin_large">20dp</dimen>
+    <dimen name="la_margin_normal">10dp</dimen>
+    <dimen name="la_logo_height">100dp</dimen>
+    <dimen name ="la_topmargin">50dp</dimen>
+    <dimen name="la_phone_left_margin">25dp</dimen>
+    <!--MapActivity-->
+    <dimen name="ma_margin_large">20dp</dimen>
+    <dimen name="ma_margin_normal">10dp</dimen>
+    <!--MenuActivity-->
+    <dimen name="menu_icon_width">50dp</dimen>
+    <dimen name="menu_margin_big">15dp</dimen>
+    <dimen name="menu_margin_normal">10dp</dimen>
+    <!--ProfileActivity-->
+    <dimen name="pa_margin_large">20dp</dimen>
+    <dimen name="pa_margin_normal">10dp</dimen>
+    <dimen name="pa_margin_big">15dp</dimen>
+    <dimen name="pa_margin_small">5dp</dimen>
+    <dimen name="pa_curve_height">250dp</dimen>
+    <dimen name="pa_curve_parent_height">330dp</dimen>
+    <dimen name="pa_prof_image_height">50dp</dimen>
+    <dimen name="pa_prof_image_width">60dp</dimen>
+    <dimen name="pa_medal_text">10sp</dimen>
+    <dimen name="pa_medal_padding">2dp</dimen>
+    <dimen name="pa_commission_left_margin">63dp</dimen>
+    <dimen name="pa_deal_linear_height">80dp</dimen>
+    <!--ReferActivity-->
+    <dimen name="ra_back_height">60dp</dimen>
+    <dimen name="ra_margin_normal">10dp</dimen>
+    <dimen name="ra_margin_large">20dp</dimen>
+    <dimen name="ra_btn_padding">30dp</dimen>
+    <dimen name="ra_margin_top">40dp</dimen>
+    <dimen name="ra_green_tick">10dp</dimen>
+    <dimen name="ra_image_height">150dp</dimen>
+    <dimen name="ra_image_width">280dp</dimen>
+    <!--ReminderActivity-->
+    <dimen name="rea_padding_small">5dp</dimen>
+    <dimen name="rea_padding_normal">10dp</dimen>
+    <dimen name="rea_padding_large">20dp</dimen>
+    <dimen name="rea_map_height">200dp</dimen>
+    <dimen name="rea_padding_big">15dp</dimen>
+    <dimen name="rea_btn_height">50dp</dimen>
+    <!--SignUpActivity-->
+    <dimen name="sa_padding_small">5dp</dimen>
+    <dimen name="sa_padding_normal">10dp</dimen>
+    <dimen name="sa_padding_large">20dp</dimen>
+    <dimen name="sa_layout_margin">30dp</dimen>
+    <dimen name="sa_top_margin">5dp</dimen>
+    <!--SplashActivity-->
+    <dimen name="spa_animation_size">200dp</dimen>
+    <dimen name="spa_title_text">30sp</dimen>
+    <dimen name="spa_top_margin">40dp</dimen>
+    <!--TCActivity-->
+    <dimen name="tc_btn_size">50dp</dimen>
+    <dimen name="tc_btn_padding">3dp</dimen>
+    <!--WalkThroughActivity-->
+    <dimen name="wa_indicator_height">55dp</dimen>
+    <dimen name="wa_margin_large">20dp</dimen>
+    <dimen name="wa_margin_small">5dp</dimen>
+    <dimen name="wa_margin_layout">30dp</dimen>
+    <!--VenueActivity-->
+    <dimen name="va_padding_small">5dp</dimen>
+    <dimen name="va_padding_normal">10dp</dimen>
+    <dimen name="va_padding_large">20dp</dimen>
+    <dimen name="va_map_size">160dp</dimen>
+    <dimen name="va_success_size">80dp</dimen>
+    <dimen name="va_spinner_left_padding">30dp</dimen>
+    <!--PushActivity-->
+    <dimen name="pua_padding_small">5dp</dimen>
+    <dimen name="pua_padding_normal">10dp</dimen>
+    <dimen name="pua_plan_margin">5dp</dimen>
+    <dimen name="pua_padding_large">20dp</dimen>
+    <dimen name="pua_logo_width">40dp</dimen>
+    <dimen name="pua_logo_height">35dp</dimen>
+    <dimen name="pua_progress_bar_size">130dp</dimen>
+    <dimen name="pua_plan_margin_top">130dp</dimen>
+
+    <!--AboutUsFragment-->
+    <dimen name="af_logo_size">75dp</dimen>
+    <dimen name = "af_margin_large">20dp</dimen>
+    <dimen name="af_margin_small">5dp</dimen>
+    <!--AddInventory-->
+    <dimen name="aif_margin_vsmall">2dp</dimen>
+    <dimen name="aif_margin_small">5dp</dimen>
+    <dimen name="aif_margin_large">20dp</dimen>
+    <dimen name="aif_margin_layout">40dp</dimen>
+    <dimen name="aif_margin_normal">10dp</dimen>
+    <dimen name="aif_gallery_height">11dp</dimen>
+    <dimen name="aif_gallery_width">14dp</dimen>
+    <dimen name="aif_attachment_icon_size">20dp</dimen>
+    <dimen name="aif_gallery_padding">1dp</dimen>
+    <dimen name="aif_margin_top">5dp</dimen>
+    <!--contactFragment-->
+    <dimen name="cf_big_image">120dp</dimen>
+    <dimen name="cf_small_image">45dp</dimen>
+    <dimen name="cf_margin_large">20dp</dimen>
+    <dimen name="cf_margin_normal">10dp</dimen>
+    <dimen name="cf_margin_small">5dp</dimen>
+    <!--IndividualFragment-->
+    <dimen name="if_margin_small">5dp</dimen>
+    <dimen name="if_margin_normal">10dp</dimen>
+    <dimen name="if_margin_big">15dp</dimen>
+    <dimen name="if_margin_large">20dp</dimen>
+    <dimen name="if_phone_icon_size">16dp</dimen>
+    <!--InventoryListFragment-->
+    <dimen name="ilf_padding_small">5dp</dimen>
+    <dimen name="ilf_padding_normal">10dp</dimen>
+    <dimen name="ilf_padding_large">20dp</dimen>
+    <dimen name="ilf_round_text_size">20dp</dimen>
+    <!--premiumFragment-->
+    <dimen name="pf_padding_normal">10dp</dimen>
+    <dimen name="pf_padding_large">20dp</dimen>
+    <dimen name="pf_layout_margin">20dp</dimen>
+    <!--RatingFragment-->
+    <dimen name="rf_padding_normal">10dp</dimen>
+    <dimen name="rf_padding_large">20dp</dimen>
+    <dimen name="rf_image_size">75dp</dimen>
+    <!--RequirementFragment-->
+    <dimen name="reqf_padding_normal">10dp</dimen>
+    <dimen name="reqf_padding_large">20dp</dimen>
+    <dimen name="reqf_padding_small">5dp</dimen>
+    <!--ReviewFragment-->
+    <dimen name="revf_padding_normal">10dp</dimen>
+    <dimen name="revf_padding_large">20dp</dimen>
+    <dimen name="revf_prof_image">60dp</dimen>
+    <!--SettingFragment-->
+    <dimen name="sf_padding_normal">10dp</dimen>
+    <dimen name="sf_padding_large">20dp</dimen>
+    <dimen name="sf_margin_top">40dp</dimen>
+    <dimen name="sf_switch_width">46dp</dimen>
+    <dimen name="sf_switch_height">27dp</dimen>
+    <dimen name="sf_layout_margin">65dp</dimen>
+    <!--SubscriptionFragment-->
+    <dimen name="suf_padding_normal">10dp</dimen>
+    <dimen name="suf_padding_large">20dp</dimen>
+    <dimen name="suf_image_size">60dp</dimen>
+    <dimen name="suf_padding_small">5dp</dimen>
+    <dimen name="suf_padding_big">15dp</dimen>
+    <dimen name="suf_thirty">30dp</dimen>
+    <!--ReferMoreFragment-->
+    <dimen name="rmf_padding_normal">10dp</dimen>
+    <dimen name="rmf_padding_large">20dp</dimen>
+    <dimen name="rmf_back_height">60dp</dimen>
+    <dimen name="rmf_padding_small">5dp</dimen>
+    <dimen name="rmf_relative_height">200dp</dimen>
+    <dimen name="rmf_illustration_height">150dp</dimen>
+    <dimen name="rmf_illustration_width">200dp</dimen>
+    <dimen name="rmf_plan_pic">40dp</dimen>
+    <!--ItemFragment-->
+    <dimen name="hof_margin_small">5dp</dimen>
+    <dimen name="hof_margin_normal">10dp</dimen>
+    <dimen name="hof_margin_big">15dp</dimen>
+    <dimen name="hof_plan_margin">13dp</dimen>
+    <dimen name="hof_margin_large">20dp</dimen>
+    <dimen name="hof_margin_sixty">60dp</dimen>
+    <dimen name="hof_margin_thirty">30dp</dimen>
+    <dimen name="hof_drop_size">35dp</dimen>
+    <dimen name="hof_margin_eight">8dp</dimen>
+    <!--OtherFragment-->
+    <dimen name="faq_btn_margin">5dp</dimen>
+    <dimen name="hf_margin_normal">10dp</dimen>
+    <dimen name="hif_margin_large">20dp</dimen>
+    <dimen name="hif_margin_small">5dp</dimen>
+    <dimen name="lf_margin_normal">10dp</dimen>
+    <dimen name="mf_margin_normal">10dp</dimen>
+    <dimen name="nf_icon_width">150dp</dimen>
+    <dimen name="nf_icon_height">120dp</dimen>
+    <dimen name="supf_margin_normal">10dp</dimen>
+    <dimen name="tcf_scrollwidth">3dp</dimen>
+    <!--Dialog-->
+    <dimen name="dialog_title_size">24sp</dimen>
+    <dimen name="dialog_margin_small">5dp</dimen>
+    <dimen name="dialog_margin_normal">10dp</dimen>
+    <dimen name="dialog_margin_big">15dp</dimen>
+    <dimen name="dialog_margin_large">20dp</dimen>
+    <dimen name="dialog_margin_sixty">60dp</dimen>
+    <dimen name="dialog_margin_layout">30dp</dimen>
+    <dimen name="dialog_round_icon_size">60dp</dimen>
+    <!--childLayout-->
+    <dimen name="deal_large">20dp</dimen>
+    <dimen name="deal_normal">10dp</dimen>
+    <dimen name="deal_small">5dp</dimen>
+    <dimen name="deal_image_size">60dp</dimen>
+    <dimen name="table_height">50dp</dimen>
+    <dimen name="faq_plus_size">20dp</dimen>
+    <dimen name="fwd_arrow_width">10dp</dimen>
+    <dimen name="fwd_arrow_height">20dp</dimen>
+    <dimen name="noti_left_margin">2dp</dimen>
+    <dimen name="noti_right_margin">8dp</dimen>
+    <!--builderChild and InventoryChild,notificationChild-->
+    <dimen name="builder_large">20dp</dimen>
+    <dimen name="builder_normal">10dp</dimen>
+    <dimen name="builder_small">5dp</dimen>
+    <dimen name="builder_big">15dp</dimen>
+    <dimen name="builder_icon_size">30dp</dimen>
+    <dimen name="builder_image_size">60dp</dimen>
+    <dimen name="noti_bottom_progress_height">20dp</dimen>
+    <!--status-->
+    <dimen name="status_tick_size">16dp</dimen>
+    <dimen name="status_round_size">20dp</dimen>
+    <dimen name="staus_calender_icon_size">16dp</dimen>
+    <dimen name="status_margin_normal">10dp</dimen>
+    <dimen name="status_margin_small">5dp</dimen>
+    <dimen name="status_relative_size">50dp</dimen>
+    <dimen name="status_margin_large">20dp</dimen>
+    <dimen name="status_view_size">2dp</dimen>
+    <dimen name="status_height">60dp</dimen>
+    <dimen name="toolbar_normal">10dp</dimen>
+    <dimen name="toolbar_right_margin">40dp</dimen>
+    <dimen name="toolbar_big">15dp</dimen>
+    <dimen name="walkthrough_bottom_padding">80dp</dimen>
+    <dimen name="walkthrough_layout_margin">30dp</dimen>
+    <dimen name="spinner_normal">10dp</dimen>
+    <dimen name="spinner_small">5dp</dimen>
+    <dimen name="review_header_normal">10dp</dimen>
+    <dimen name="review_header_small">5dp</dimen>
+    <dimen name="sidemenu_pic_size">60dp</dimen>
+    <dimen name="sidemenu_padding_small">5dp</dimen>
+    <dimen name="sidemenu_padding_normal">10dp</dimen>
+    <dimen name="sidemenu_image_size">28dp</dimen>
+    <dimen name="sidemenu_padding_large">20dp</dimen>
+    <dimen name="sidemenu_padding_vsmall">3dp</dimen>
+    <dimen name="sidemenu_layout_margin">30dp</dimen>
+    <dimen name="loader_size">100dp</dimen>
+    <dimen name="loader_padding_layout">15dp</dimen>
+    <!--PremiumSubplan-->
+    <dimen name="subplan_margin_small">5dp</dimen>
+    <dimen name="subplan_margin_normal">10dp</dimen>
+    <dimen name="subplan_btn_height">30dp</dimen>
+</resources>

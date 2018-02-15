@@ -13,7 +13,7 @@
         android:gravity="center"
         android:padding="@dimen/dialog_margin_layout">
 
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
         android:textColor="@color/white"
         android:text="Submit"
         android:id="@+id/refer_submit_btn"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="OR CHOOSE FROM"
@@ -93,7 +93,7 @@
                 android:src="@drawable/ic_phonebook"
                 android:id="@+id/refer_phone_imageview"
                 android:layout_centerHorizontal="true"/>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/refer_phone_imageview"
@@ -115,7 +115,7 @@
                 android:src="@drawable/ic_whatsapp"
                 android:id="@+id/refer_whatsapp_imageview"
                 android:layout_centerHorizontal="true"/>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/refer_whatsapp_imageview"

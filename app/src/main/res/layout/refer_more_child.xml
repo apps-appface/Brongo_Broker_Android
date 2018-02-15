@@ -22,14 +22,14 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/refer_more_image"
             android:layout_marginLeft="@dimen/rmf_padding_normal">
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/refree_name"
         android:textSize="@dimen/text_size_normal"
         android:textColor="#e6000000"
         app:customFont="lato_regular.ttf"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/refree_name"

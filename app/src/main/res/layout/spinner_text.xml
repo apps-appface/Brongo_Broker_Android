@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<appface.brongo.uiwidget.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<in.brongo.brongo_broker.uiwidget.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:textColor="@color/edit_hint_color"
     android:padding="@dimen/spinner_normal"
     app:customFont="lato_regular.ttf">
-</appface.brongo.uiwidget.CustomTextView>
+</in.brongo.brongo_broker.uiwidget.CustomTextView>

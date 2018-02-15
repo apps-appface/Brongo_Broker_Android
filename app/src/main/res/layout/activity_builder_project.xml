@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#ededed"
-    android:id="@+id/builder_activity_linear"
-    tools:context="appface.brongo.activity.BuilderProjectActivity">
+    android:id="@+id/builder_activity_linear">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -52,7 +51,7 @@
             android:padding="@dimen/bp_back_padding"
             android:layout_centerVertical="true"
             android:id="@+id/toolbar_project_back"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/project_title"

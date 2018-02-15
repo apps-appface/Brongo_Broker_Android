@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/drawer_background"
     android:padding="@dimen/dialog_margin_large">
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Reason for Rejection"
@@ -37,7 +37,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dialog_margin_large" />
 
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:id="@+id/reject_client_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                 android:textColor="#163d70"
                 app:customFont="lato_bold.ttf"/>
 
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:id="@+id/reject_client_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -119,16 +119,15 @@
                 android:text="Submit" />
 
         </LinearLayout>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/premium_back"
             android:layout_alignParentEnd="true"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/dialog_margin_layout"
-            android:text="PREMIUM"
             android:gravity="center"
-            android:id="@+id/drop_plan"
+            android:id="@+id/drop_plan_call"
             android:padding="@dimen/dialog_margin_small"
             android:layout_marginRight="@dimen/dialog_margin_small"
             android:layout_alignParentRight="true"

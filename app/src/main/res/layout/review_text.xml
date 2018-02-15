@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<appface.brongo.uiwidget.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<in.brongo.brongo_broker.uiwidget.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/review_text_review"
@@ -11,4 +11,4 @@
         android:textAllCaps="false"
         android:textColor="@color/edit_hint_color"
     >
-</appface.brongo.uiwidget.CustomTextView>
+</in.brongo.brongo_broker.uiwidget.CustomTextView>

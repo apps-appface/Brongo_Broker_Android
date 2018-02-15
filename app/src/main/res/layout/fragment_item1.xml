@@ -35,7 +35,7 @@
                 android:paddingBottom="@dimen/hof_margin_large"
                 android:paddingTop="@dimen/hof_margin_normal">
 
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:id="@+id/text_matching_properties"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                 android:layout_toRightOf="@+id/main_relative_image"
                     android:layout_marginLeft="@dimen/hof_margin_normal"
                     android:orientation="vertical">
-                    <appface.brongo.uiwidget.CustomTextView
+                    <in.brongo.brongo_broker.uiwidget.CustomTextView
                         android:id="@+id/opendeal_client_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -123,35 +123,55 @@
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/hof_margin_thirty"
                     android:paddingRight="@dimen/hof_margin_thirty">
-
-                    <Button
+                    <LinearLayout
                         android:id="@+id/client_chat"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/hof_margin_small"
-                        android:layout_marginRight="@dimen/hof_margin_small"
                         android:layout_weight="1"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:drawableTop="@drawable/bchat_icon"
-                        android:paddingTop="@dimen/hof_margin_normal"
-                        android:text="B-CHAT"
-                        android:textColor="@color/appColor" />
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/hof_margin_normal"
+                        android:layout_marginBottom="@dimen/hof_margin_large">
 
-                    <Button
+                        <ImageView
+                            android:layout_width="@dimen/hof_drop_size"
+                            android:layout_height="@dimen/hof_drop_size"
+                            android:src="@drawable/bchat_icon" />
+
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/hof_margin_eight"
+                            android:text="B-CHAT"
+                            android:textColor="@color/appColor"
+                            android:textSize="@dimen/text_size_small"
+                            android:textStyle="normal" />
+                    </LinearLayout>
+                    <LinearLayout
                         android:id="@+id/client_call"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/hof_margin_small"
-                        android:layout_marginRight="@dimen/hof_margin_small"
                         android:layout_weight="1"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:drawableTop="@drawable/call_client_icon"
-                        android:paddingTop="@dimen/hof_margin_normal"
-                        android:textColor="@color/appColor"
-                        android:text="CALL"
-                       />
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/hof_margin_normal"
+                        android:layout_marginBottom="@dimen/hof_margin_large">
+
+                        <ImageView
+                            android:layout_width="@dimen/hof_drop_size"
+                            android:layout_height="@dimen/hof_drop_size"
+                            android:src="@drawable/call_client_icon" />
+
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/hof_margin_eight"
+                            android:text="CALL"
+                            android:textColor="@color/appColor"
+                            android:textSize="@dimen/text_size_small"
+                            android:textStyle="normal" />
+                    </LinearLayout>
+
 
 
 
@@ -164,7 +184,7 @@
                 android:padding="@dimen/hof_margin_normal"
                 android:layout_marginBottom="@dimen/hof_margin_large"
                 android:elevation="@dimen/hof_margin_normal">
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
@@ -175,7 +195,7 @@
                     android:textSize="@dimen/text_size_small"
                     app:customFont="lato_bold.ttf" />
 
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:id="@+id/open_deal_commission"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -202,7 +222,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/hof_margin_normal">
-                    <appface.brongo.uiwidget.CustomTextView
+                    <in.brongo.brongo_broker.uiwidget.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:customFont="lato_bold.ttf"
@@ -211,7 +231,7 @@
                         android:id="@+id/landing_requirement"
                         />
 
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:id="@+id/open_deal_client_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -224,7 +244,7 @@
                     android:textSize="@dimen/text_size_small"
                     app:customFont="lato_bold.ttf" />
                 </RelativeLayout>
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:id="@+id/deal_id"
                     android:layout_marginLeft="@dimen/hof_margin_normal"
                     android:layout_width="wrap_content"
@@ -237,7 +257,7 @@
                     android:textColor="@color/edit_hint_color"
                     app:customFont="lato_bold.ttf"/>
 
-                <appface.brongo.uiwidget.FlowLayout
+                <in.brongo.brongo_broker.uiwidget.FlowLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/main_deal_flowlayout"
@@ -247,8 +267,8 @@
                     android:layout_marginRight="@dimen/hof_margin_normal"
                     app:elementSpacing="@dimen/element_spacing"
                     app:lineSpacing="@dimen/hof_margin_normal">
-                </appface.brongo.uiwidget.FlowLayout>
-                <appface.brongo.uiwidget.CustomTextView
+                </in.brongo.brongo_broker.uiwidget.FlowLayout>
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/landing_viewall"
@@ -269,7 +289,7 @@
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/hof_margin_large">
 
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/hof_margin_large"
@@ -314,7 +334,7 @@
                     android:padding="@dimen/hof_margin_eight"
                     android:src="@drawable/drop_deal_icon" />
 
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/hof_margin_eight"
@@ -325,7 +345,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:id="@+id/lead_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

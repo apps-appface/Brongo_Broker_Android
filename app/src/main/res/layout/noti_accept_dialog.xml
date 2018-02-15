@@ -25,7 +25,7 @@
         android:layout_gravity="right"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:shadowColor="#c0ffffff"
@@ -36,7 +36,7 @@
         android:text="Thank You!"
         app:customFont="lato_bold.ttf"
         />
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:shadowColor="#c0ffffff"

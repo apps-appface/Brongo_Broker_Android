@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#ededed"
-    android:id="@+id/venue_parent_scroll"
-    tools:context="appface.brongo.activity.VenueActivity">
+    android:id="@+id/venue_parent_scroll">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,7 +18,7 @@
         android:layout_marginTop="@dimen/va_padding_large"
         android:layout_gravity="center"
         android:src="@drawable/success"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign up Successful"
@@ -34,7 +33,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/sign_pop_message"
@@ -74,7 +73,7 @@
         android:layout_marginRight="@dimen/va_padding_large"
         android:layout_marginLeft="@dimen/va_padding_large"
         android:layout_marginTop="@dimen/va_padding_normal">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Venue Details"
@@ -125,7 +124,7 @@
                 android:layout_centerVertical="true"/>
     </RelativeLayout>
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

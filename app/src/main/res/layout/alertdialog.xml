@@ -13,7 +13,7 @@
         android:elevation="@dimen/dialog_margin_normal"
         android:background="@drawable/edit_border"
         android:gravity="center">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/alert_title"
@@ -28,7 +28,7 @@
             android:layout_marginLeft="@dimen/dialog_margin_small"
             android:layout_marginRight="@dimen/dialog_margin_small"
             android:layout_marginTop="@dimen/dialog_margin_small"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/alert_message"
@@ -45,7 +45,7 @@
             android:id="@+id/alert_ok_btn"
             android:elevation="@dimen/dialog_margin_normal"
             android:layout_marginTop="@dimen/dialog_margin_normal"
-            android:background="@color/appColor"
+            android:background="#cac2ca"
             />
     </LinearLayout>
 

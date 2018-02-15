@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="appface.brongo.fragment.AboutUsFragment"
+    tools:context=".brongo_broker.fragment.AboutUsFragment"
     android:background="#ededed"
     android:orientation="vertical">
     <LinearLayout
@@ -18,7 +18,7 @@
         android:src="@drawable/logo"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/af_margin_large"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -27,7 +27,7 @@
         android:textColor="#6e6e6e"
         android:textSize="@dimen/text_size_normal"
         app:customFont="lato_regular.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -35,7 +35,7 @@
             android:textColor="#6e6e6e"
             android:textSize="@dimen/text_size_normal"
             app:customFont="lato_regular.ttf"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

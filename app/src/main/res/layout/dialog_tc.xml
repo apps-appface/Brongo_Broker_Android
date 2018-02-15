@@ -34,7 +34,7 @@
         android:paddingRight="@dimen/dialog_margin_large"
         android:paddingLeft="@dimen/dialog_margin_large"
        >
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#c0ffffff"
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp">
 
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:id="@+id/bid_accepted_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
 
                 app:customFont="lato_regular.ttf" />
         </ScrollView>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_margin_large"

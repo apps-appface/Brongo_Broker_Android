@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="appface.brongo">
+    package="in.brongo.brongo_broker">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <permission
-        android:name="appface.brongo.permission.MAPS_RECEIVE"
+        android:name="in.brongo.brongo_broker.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
     <!-- <uses-permission android:name="appface.brongo.permission.MAPS_RECEIVE" /> -->
@@ -20,7 +20,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -31,12 +31,9 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-
-    <permission
-        android:name="appface.brongo.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-
     <!-- <uses-permission android:name="appface.brongo.permission.C2D_MESSAGE" /> -->
+    <permission android:name="in.brongo.brongo_broker.permission.C2D_MESSAGE"
+        android:protectionLevel="signature"/>
     <application
         android:name=".util.CustomApplicationClass"
         android:allowBackup="true"
@@ -49,7 +46,7 @@
         tools:replace="android:theme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAydpReLqvhcy9RnJu1HsC8RDAsxsrzVDQ" />
+            android:value="AIzaSyC7MJ6_3X-SBkRQjEMLSe72T1j35k7hEiY" />
 
         <activity
             android:name=".activity.SplashActivity"
@@ -83,7 +80,9 @@
         <activity
             android:name=".activity.PushAlertActivity"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"/>
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
@@ -327,26 +326,37 @@
 
         <service
             android:name="com.applozic.mobicomkit.api.conversation.MessageIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false" />
         <service android:name="org.eclipse.paho.android.service.MqttService" />
         <service
             android:name="com.applozic.mobicomkit.api.conversation.ApplozicIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false" />
         <service
             android:name="com.applozic.mobicomkit.api.conversation.ApplozicMqttIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false" />
         <service
             android:name="com.applozic.mobicomkit.api.people.UserIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false" />
         <service
             android:name="com.applozic.mobicomkit.api.conversation.ConversationIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false" />
         <service
             android:name="com.applozic.mobicomkit.api.conversation.ConversationReadService"
             android:exported="false" />
         <service
             android:name="com.applozic.mobicomkit.uiwidgets.notification.NotificationIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="false" />
+        <service android:exported="false"       android:name="com.applozic.mobicomkit.uiwidgets.notification.PushNotificationJobService">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
 
         <receiver android:name="com.applozic.mobicomkit.broadcast.TimeChangeBroadcastReceiver">
             <intent-filter>

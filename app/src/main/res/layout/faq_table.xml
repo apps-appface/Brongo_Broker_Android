@@ -12,7 +12,7 @@
         android:layout_marginLeft="@dimen/deal_normal"
         android:paddingBottom="@dimen/deal_normal"
         android:background="@drawable/expand_group_child">
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/table_text"
@@ -32,7 +32,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         >
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:text="@string/broker_tag"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             android:layout_weight="1"
             android:padding="@dimen/deal_small"
             />
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:text="@string/criteria"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
         android:background="#dddddd"
         android:layout_marginTop="@dimen/deal_small">
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:text="@string/bronze"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
             app:customFont="lato_regular"
             android:padding="@dimen/deal_small"
             />
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:text="@string/bronze_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
         android:layout_height="@dimen/table_height"
         android:layout_marginTop="@dimen/deal_small">
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:text="@string/silver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
             app:customFont="lato_regular"
             android:padding="@dimen/deal_small"
             />
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="2"
@@ -107,7 +107,7 @@
         android:background="#dddddd"
         android:layout_marginTop="@dimen/deal_small">
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:text="@string/gold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
             app:customFont="lato_regular"
             android:padding="@dimen/deal_small"
             />
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:text="@string/gold_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
             android:padding="@dimen/deal_small"/>
     </TableRow>
     </TableLayout>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:id="@+id/table_text_note"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

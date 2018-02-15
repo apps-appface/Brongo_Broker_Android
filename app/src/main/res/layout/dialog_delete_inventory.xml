@@ -11,7 +11,7 @@
         android:padding="@dimen/dialog_margin_large"
         android:background="@drawable/edit_border"
         android:orientation="vertical">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Delete Inventory"
@@ -19,7 +19,7 @@
             android:textSize="@dimen/dialog_title_size"
             android:gravity="center"
             app:customFont="lato_bold.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=""

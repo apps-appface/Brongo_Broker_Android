@@ -7,7 +7,7 @@
     android:layout_marginRight="@dimen/aif_margin_layout"
     android:scrollbars="none"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="appface.brongo.fragment.AddInventoryFragment">
+    tools:context=".brongo_broker.fragment.AddInventoryFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -140,7 +140,7 @@
             android:textColor="@color/edit_text_color"
             app:backgroundTint="@color/edit_line" />
     </android.support.design.widget.TextInputLayout>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="(Optional)"
@@ -187,7 +187,7 @@
             android:textColor="@color/edit_text_color"
             app:backgroundTint="@color/edit_line" />
     </android.support.design.widget.TextInputLayout>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="(Optional)"
@@ -214,7 +214,7 @@
             android:textColor="@color/edit_text_color"
             app:backgroundTint="@color/edit_line" />
     </android.support.design.widget.TextInputLayout>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="(Optional)"
@@ -227,7 +227,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/inventory_image_relative"
             android:visibility="gone">
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:textColor="@color/edit_hint_color"
@@ -251,7 +251,7 @@
                 android:src="@drawable/paper_clip"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/inventory_upload_image"/>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:textColor="#103c76"
@@ -287,7 +287,7 @@
                     android:padding="@dimen/aif_gallery_padding"
                     android:id="@+id/invent_gallery1"
                     android:src="@drawable/ic_image_icon"/>
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/aif_margin_vsmall"
@@ -298,7 +298,7 @@
                     android:id="@+id/inventory_image_name1"
                     android:textColor="@color/black"
                     app:customFont="lato_regular.ttf"/>
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -345,7 +345,7 @@
                     android:padding="@dimen/aif_gallery_padding"
                     android:id="@+id/invent_gallery2"
                     android:src="@drawable/ic_image_icon"/>
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/aif_margin_vsmall"
@@ -356,7 +356,7 @@
                     android:gravity="center"
                     android:textColor="@color/black"
                     app:customFont="lato_regular.ttf"/>
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -404,7 +404,7 @@
                 android:padding="@dimen/aif_gallery_padding"
                 android:id="@+id/invent_gallery3"
                 android:src="@drawable/ic_image_icon"/>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/aif_margin_vsmall"
@@ -414,7 +414,7 @@
             android:id="@+id/inventory_image_name3"
                 android:textColor="@color/black"
                 app:customFont="lato_regular.ttf"/>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/aif_margin_vsmall"
@@ -442,7 +442,7 @@
                 android:textColor="#103c76"/>
 
         </LinearLayout>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="+ Add More"

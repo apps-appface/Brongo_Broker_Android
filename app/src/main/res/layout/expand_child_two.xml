@@ -20,7 +20,7 @@
        android:layout_marginTop="@dimen/deal_normal"
        android:id="@+id/dot_image"/>
 
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/child_text"

@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/ra_margin_normal"
         android:paddingBottom="@dimen/ra_margin_normal">
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/refer_broker_no"
@@ -17,7 +17,7 @@
         android:textColor="#b3000000"
         android:layout_alignParentLeft="true"
         app:customFont="lato_regular.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/refer_rate"

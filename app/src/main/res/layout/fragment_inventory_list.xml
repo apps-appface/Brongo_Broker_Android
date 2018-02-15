@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context="appface.brongo.fragment.InventoryListFragment">
+    tools:context=".brongo_broker.fragment.InventoryListFragment">
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             android:textAllCaps="false"
             android:textColor="@color/appColor" />
     </LinearLayout>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="@dimen/ilf_round_text_size"
             android:layout_height="@dimen/ilf_round_text_size"
             android:gravity="center"

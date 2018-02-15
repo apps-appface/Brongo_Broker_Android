@@ -7,7 +7,7 @@
     android:gravity="center_vertical"
     android:paddingLeft="@dimen/deal_small"
     android:paddingRight="@dimen/deal_small">
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/hori_micromarket_name"

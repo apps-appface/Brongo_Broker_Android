@@ -13,7 +13,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/personal_invent_tag"
@@ -41,14 +41,13 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/invent_personal_image"
             android:layout_width="@dimen/prof_pic_size"
             android:layout_height="@dimen/prof_pic_size"
-            android:id="@+id/invent_personal_image"
-            android:scaleType="fitXY"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-        <appface.brongo.uiwidget.CustomTextView
+            android:scaleType="fitXY" />
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#c0ffffff"
@@ -69,7 +68,7 @@
             android:src="@drawable/ic_call_icon"
             android:layout_below="@+id/invent_personal_name"
             android:id="@+id/per_inven_phone"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#c0ffffff"
@@ -83,7 +82,7 @@
             android:id="@+id/invent_pesonal_mobile"
             android:layout_below="@+id/invent_personal_name"
             app:customFont="lato_regular.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#73000000"
@@ -105,7 +104,7 @@
          android:layout_below="@+id/invent_pesonal_postingtype"
             android:layout_alignLeft="@+id/invent_pesonal_postingtype"/>
     </RelativeLayout>
-        <appface.brongo.uiwidget.FlowLayout
+        <in.brongo.brongo_broker.uiwidget.FlowLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/invent_personal_flowlayout"
@@ -113,7 +112,7 @@
             app:flowDirection="leftToRight"
             app:elementSpacing="@dimen/element_spacing"
             app:lineSpacing="@dimen/builder_normal">
-        </appface.brongo.uiwidget.FlowLayout>
+        </in.brongo.brongo_broker.uiwidget.FlowLayout>
     </LinearLayout>
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -138,7 +137,7 @@
                     android:src="@drawable/ic_edit_icon"
                     android:padding="@dimen/builder_small"
                     android:id="@+id/edit_imageview"/>
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Edit"
@@ -168,7 +167,7 @@
                     android:src="@drawable/ic_delete_icon"
                     android:padding="@dimen/builder_small"
                     android:id="@+id/delete_imageview"/>
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Delete"

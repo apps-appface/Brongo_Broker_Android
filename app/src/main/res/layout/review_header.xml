@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Customer Reviews "
@@ -12,42 +12,43 @@
         app:customFont="lato_bold.ttf"/>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/review_header_small">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/star_count_linear"
         android:layout_alignParentRight="true">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/five_star_count"
             android:paddingTop="@dimen/review_header_small"
             android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/four_star_count"
             android:paddingTop="@dimen/review_header_small"
             android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/three_star_count"
             android:paddingTop="@dimen/review_header_small"
             android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/two_star_count"
             android:paddingTop="@dimen/review_header_small"
             android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/one_star_count"
@@ -68,7 +69,7 @@
         android:gravity="center_vertical"
         android:paddingTop="@dimen/review_header_small"
         android:paddingBottom="@dimen/review_header_small">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5 stars"
@@ -91,7 +92,7 @@
         android:gravity="center_vertical"
         android:paddingTop="@dimen/review_header_small"
         android:paddingBottom="@dimen/review_header_small">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4 stars"
@@ -113,7 +114,7 @@
         android:gravity="center_vertical"
         android:paddingTop="@dimen/review_header_small"
         android:paddingBottom="@dimen/review_header_small">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3 stars"
@@ -135,7 +136,7 @@
         android:gravity="center_vertical"
         android:paddingTop="@dimen/review_header_small"
         android:paddingBottom="@dimen/review_header_small">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2 stars"
@@ -157,7 +158,7 @@
         android:gravity="center_vertical"
         android:paddingTop="@dimen/review_header_small"
         android:paddingBottom="@dimen/review_header_small">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1 stars"

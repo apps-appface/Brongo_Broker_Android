@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/client_register_linear">
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Register Client"
@@ -38,7 +38,7 @@
         app:met_floatingLabelTextColor="@color/edit_hint_color"
         app:met_floatingLabel="normal"
         android:visibility="visible"/>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="OR"
@@ -52,7 +52,7 @@
         android:visibility="visible"
         />
         </LinearLayout>
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="+ADD NEW CLIENT"

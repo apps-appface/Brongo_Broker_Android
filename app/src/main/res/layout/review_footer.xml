@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<appface.brongo.uiwidget.CustomTextView
+<in.brongo.brongo_broker.uiwidget.CustomTextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/footer_text"

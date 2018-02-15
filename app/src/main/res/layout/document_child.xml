@@ -21,7 +21,7 @@
                     android:padding="@dimen/da_gallery_padding"
                     android:layout_centerHorizontal="true"
                     android:id="@+id/docu_gallery_imageview"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Choose from \n Gallery"
@@ -48,7 +48,7 @@
                     android:src="@drawable/ic_camera"
                     android:layout_centerHorizontal="true"
                     android:id="@+id/docu_camera_imageview"/>
-                <appface.brongo.uiwidget.CustomTextView
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Capture \n Image"

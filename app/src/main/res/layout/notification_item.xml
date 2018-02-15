@@ -35,7 +35,7 @@
                     style="@style/CustomProgressDialog"
                     />
             </RelativeLayout>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:shadowColor="#c0ffffff"
@@ -47,7 +47,7 @@
                 android:textColor="#2c2c2c"
                 app:customFont="lato_regular.ttf"
                 />
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_small"
@@ -63,7 +63,7 @@
                 android:visibility="gone"
                 app:customFont="lato_regular.ttf"
                 />
-            <appface.brongo.uiwidget.FlowLayout
+            <in.brongo.brongo_broker.uiwidget.FlowLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/noti_flowlayout"
@@ -129,7 +129,7 @@
                 android:layout_below="@+id/builder_view_linear"/>
 
 
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/builder_small"

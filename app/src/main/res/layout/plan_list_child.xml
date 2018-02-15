@@ -11,7 +11,7 @@
         android:background="@drawable/green_tick_second"
         android:id="@+id/plan_green_tick"
         />
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#b3000000"

@@ -64,7 +64,7 @@
                 android:layout_alignTop="@+id/status_text1"
                 android:layout_marginRight="@dimen/status_margin_small"
                 android:visibility="gone"/>
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_small"
@@ -73,7 +73,7 @@
                 android:id="@+id/status_text1"
                 app:customFont="lato_regular.ttf"
                 />
-            <appface.brongo.uiwidget.CustomTextView
+            <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/status_text1"
@@ -95,7 +95,7 @@
             android:id="@+id/status_reminder_imageview"
             android:visibility="visible"/>
 
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:id="@+id/status_reminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

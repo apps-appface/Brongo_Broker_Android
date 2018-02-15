@@ -18,7 +18,7 @@
     </string-array>
     <string-array name="faq_child1">
         <item>Brongo is a technical platform which helps people to connect with the best local and curated broker and fulfil their real estate needs.</item>
-        <item>Download the brongo app and register yourself by submitting all the mentioned documents. After submitting the documents, the app will will ask you to select your preferred date and time. Below it the location of your nearest brongo office is shown, where you need to complete the background verification with original documents. At the brongo office, your documents are cross checked and will take 20 days for background verification. Once the background verification is completed, you will be informed to use the app and become a part of Brongo.
+        <item>Download the brongo app and register yourself by submitting all the mentioned documents. After submitting the documents, the app will ask you to select your preferred date and time. Below it the location of your nearest brongo office is shown, where you need to complete the background verification with original documents. At the brongo office, your documents are cross checked and will take 20 days for background verification. Once the background verification is completed, you will be informed to use the app and become a part of Brongo.
 </item>
         <item>Brongo generates leads using a different marketing strategy and these leads are passed to you and to other brokers based on the micromarket. Once a lead is passed, you will receive an alert on your phone, if you are confident of closing the requirement, you accept it and get connected with the client.\n
 
@@ -48,7 +48,7 @@ Inactive mode to Active mode:- You will start receiving leads from brongo.
 </item>
         <item>To find builder inventor, click on \'menu\' to the top left side of the screen and then click on inventory. It will lead you to \'inventory list\' where your personal and builder inventory will be listed. Click on \'builder inventory\' and you will be able to see all the details in the builder inventory.
 </item>
-        <item>You can register a client by going to the \'builder inventory\' under which you will find an option to register client. Click on \'Register Client\' and it will promt you to fill details of the client. Once you fill these details, click on register and your registration process is done. The benefits are, once you register your client, the data of your client will be passed to the builder database. Once you complete this process, no other broker can take your client and hold business deals with that builder.
+        <item>You can register a client by going to the \'builder inventory\' under which you will find an option to register client. Click on \'Register Client\' and it will prompt you to fill details of the client. Once you fill these details, click on register and your registration process is done. The benefits are, once you register your client, the data of your client will be passed to the builder database. Once you complete this process, no other broker can take your client and hold business deals with that builder.
 </item>
     </string-array>
     
@@ -86,7 +86,7 @@ Inactive mode to Active mode:- You will start receiving leads from brongo.
 </item>
     </string-array>
     <string-array name="faq_two_child">
-        <item>You can change the deal status by clicking on the clients profile on your home screen. It will lead you to complete the clients details with all different statuses where you can change the status of the particular deal.
+        <item>You can change the deal status by clicking on the clients profile on your home screen. It will lead you to complete the clients details with all different status where you can change the status of the particular deal.
 </item>
         <item>Click on clients profile on your home screen which will lead you to complete clients\' details. At the bottom of this screen click on \'drop out\' ,followed by feedback process you can drop the client.</item>
         <item>If you have already reached 3 sell/rent your property+ 3 buy/ looking for rent leads then you can\'t get more. The only way to receive more leads is by closing them. Once you close one, you will be eligible to receive one more and likewise.
@@ -129,7 +129,7 @@ Once you close the deal, a feedback form will pop up with 5 star rating where yo
     </string-array>
     <string-array name="faq_after_execution">
         <item>If it is selling/buying the property: Receive the commission from the client. For renting: commission should be collected from brongo.</item>
-        <item>Next you give genuine feedback and ratin the client so other brokers and Brongo will get to know more about the client and take the right action accordingly.
+        <item>Next you give genuine feedback and rating to the client so other brokers and Brongo will get to know more about the client and take the right action accordingly.
 </item>
     </string-array>
     <string-array name="walkthrough_title">

@@ -43,7 +43,9 @@
     <dimen name="ha_padding_large">20dp</dimen>
     <dimen name="ha_logo_width">40dp</dimen>
     <dimen name="ha_logo_height">35dp</dimen>
-    <dimen name="icon_size">45dp</dimen>
+    <dimen name="icon_size">25dp</dimen>
+    <dimen name="ha_mode_height">45dp</dimen>
+    <dimen name="ha_medal_size">15dp</dimen>
     <dimen name="noti_text_margin">7dp</dimen>
     <dimen name="curve_height">220dp</dimen>
     <dimen name="curve_padding">33dp</dimen>
@@ -73,6 +75,7 @@
     <dimen name="pa_margin_big">15dp</dimen>
     <dimen name="pa_margin_small">5dp</dimen>
     <dimen name="pa_curve_height">250dp</dimen>
+    <dimen name="pa_curve_parent_height">330dp</dimen>
     <dimen name="pa_prof_image_height">50dp</dimen>
     <dimen name="pa_prof_image_width">60dp</dimen>
     <dimen name="pa_medal_text">10sp</dimen>
@@ -165,7 +168,7 @@
     <!--premiumFragment-->
     <dimen name="pf_padding_normal">10dp</dimen>
     <dimen name="pf_padding_large">20dp</dimen>
-    <dimen name="pf_layout_margin">30dp</dimen>
+    <dimen name="pf_layout_margin">20dp</dimen>
     <!--RatingFragment-->
     <dimen name="rf_padding_normal">10dp</dimen>
     <dimen name="rf_padding_large">20dp</dimen>
@@ -275,7 +278,7 @@
     <dimen name="sidemenu_image_size">30dp</dimen>
     <dimen name="sidemenu_padding_large">20dp</dimen>
     <dimen name="sidemenu_padding_vsmall">3dp</dimen>
-    <dimen name="sidemenu_layout_margin">30dp</dimen>
+    <dimen name="sidemenu_layout_margin">25dp</dimen>
     <dimen name="loader_size">100dp</dimen>
     <dimen name="loader_padding_layout">15dp</dimen>
     <!--PremiumSubplan-->

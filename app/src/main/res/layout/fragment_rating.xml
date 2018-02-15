@@ -5,14 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#ededed"
     android:padding="@dimen/rf_padding_large"
-    tools:context="appface.brongo.fragment.RatingFragment">
+    tools:context=".brongo_broker.fragment.RatingFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="@dimen/rf_padding_large"
         android:background="@drawable/edit_border">
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_big"
@@ -26,7 +26,7 @@
             android:layout_marginTop="@dimen/rf_padding_large"
             android:background="@drawable/ic_user_rating"
             android:layout_gravity="center_horizontal"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/rf_padding_large"
@@ -41,7 +41,7 @@
             android:layout_height="@dimen/view_small"
             android:layout_marginTop="@dimen/rf_padding_normal"
             android:background="#64687f"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_big"
@@ -56,7 +56,7 @@
             android:layout_marginTop="@dimen/rf_padding_large"
             android:background="@drawable/ic_hand"
             android:layout_gravity="center_horizontal"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/rf_padding_large"
@@ -71,7 +71,7 @@
             android:layout_height="@dimen/view_small"
             android:layout_marginTop="@dimen/rf_padding_normal"
             android:background="#64687f"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_big"
@@ -86,7 +86,7 @@
             android:layout_marginTop="@dimen/rf_padding_large"
             android:background="@drawable/ic_qualities"
             android:layout_gravity="center_horizontal"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/rf_padding_large"
@@ -101,7 +101,7 @@
             android:layout_height="@dimen/view_small"
             android:layout_marginTop="@dimen/rf_padding_normal"
             android:background="#64687f"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_big"
@@ -116,7 +116,7 @@
             android:layout_marginTop="@dimen/rf_padding_large"
             android:background="@drawable/ic_rating_matters"
             android:layout_gravity="center_horizontal"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/rf_padding_large"

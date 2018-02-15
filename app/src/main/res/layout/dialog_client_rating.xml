@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
 android:padding="@dimen/dialog_margin_large"
     android:background="@drawable/drawer_background">
-    <appface.brongo.uiwidget.CustomTextView
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
@@ -40,7 +40,7 @@ android:padding="@dimen/dialog_margin_large"
             android:layout_height="@dimen/dialog_margin_sixty"
             android:scaleType="fitXY"
             android:layout_gravity="center" />
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_big"
@@ -49,7 +49,7 @@ android:padding="@dimen/dialog_margin_large"
             android:gravity="center"
             android:id="@+id/client_name_rating"
             app:customFont="lato_bold.ttf"/>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_margin_normal"
@@ -134,18 +134,17 @@ android:padding="@dimen/dialog_margin_large"
             android:textColor="@color/white"/>
         </LinearLayout>
     </LinearLayout>
-        <appface.brongo.uiwidget.CustomTextView
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/premium_back"
             android:layout_alignParentEnd="true"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/dialog_margin_layout"
-            android:text="PREMIUM"
             android:gravity="center"
             android:id="@+id/client_rating_plan"
             android:padding="@dimen/dialog_margin_small"
-            android:layout_marginRight="@dimen/dialog_margin_small"
+            android:layout_marginRight="@dimen/dialog_margin_normal"
             android:layout_alignParentRight="true"
             app:customFont="lato_bold.ttf"
              />
