@@ -39,6 +39,7 @@
     <dimen name="ha_padding_small">5dp</dimen>
     <dimen name="ha_padding_normal">10dp</dimen>
     <dimen name="ha_padding_big">15dp</dimen>
+    <dimen name="ha_round_count">20dp</dimen>
     <dimen name="ha_padding_large">20dp</dimen>
     <dimen name="ha_logo_width">40dp</dimen>
     <dimen name="ha_logo_height">35dp</dimen>
@@ -47,7 +48,7 @@
     <dimen name="icon_size">25dp</dimen>
     <dimen name="noti_text_margin">7dp</dimen>
     <dimen name="curve_height">220dp</dimen>
-    <dimen name="curve_padding">33dp</dimen>
+    <dimen name="curve_padding">31dp</dimen>
     <dimen name="ha_refer_width">80dp</dimen>
     <dimen name="ha_refer_height">40dp</dimen>
     <dimen name="ha_plan_top_padding">3dp</dimen>
@@ -128,6 +129,7 @@
     <dimen name="pua_plan_margin">5dp</dimen>
     <dimen name="pua_padding_large">20dp</dimen>
     <dimen name="pua_logo_width">40dp</dimen>
+    <dimen name="pua_margin_top">10dp</dimen>
     <dimen name="pua_logo_height">35dp</dimen>
     <dimen name="pua_progress_bar_size">130dp</dimen>
     <dimen name="pua_plan_margin_top">130dp</dimen>
@@ -249,7 +251,7 @@
     <dimen name="builder_normal">10dp</dimen>
     <dimen name="builder_small">5dp</dimen>
     <dimen name="builder_big">15dp</dimen>
-    <dimen name="builder_icon_size">30dp</dimen>
+    <dimen name="builder_icon_size">28dp</dimen>
     <dimen name="builder_image_size">60dp</dimen>
     <dimen name="noti_bottom_progress_height">20dp</dimen>
     <!--status-->

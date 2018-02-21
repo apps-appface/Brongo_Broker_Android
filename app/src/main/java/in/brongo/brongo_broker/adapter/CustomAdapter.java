@@ -40,12 +40,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(final CustomAdapter.MyViewHolder holder, final int position) {
-        holder.conditon_text.setText(arraylist.get(position));
-      if(position == arraylist.size()-1){
-          holder.plan_view.setVisibility(View.INVISIBLE);
-      }else{
-          holder.plan_view.setVisibility(View.VISIBLE);
-      }
+        try {
+            holder.conditon_text.setText(arraylist.get(position));
+            if(position == arraylist.size()-1){
+                holder.plan_view.setVisibility(View.INVISIBLE);
+            }else{
+                holder.plan_view.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public int getItemCount()

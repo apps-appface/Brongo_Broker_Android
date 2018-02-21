@@ -62,53 +62,61 @@ public class HelpFaqFragment extends Fragment {
         return view;
     }
     private void initialise(View view){
-        context = getActivity();
-        help_recycle = (RecyclerView)view.findViewById(R.id.help_reycleview);
-        arrayList = new ArrayList<String>(Arrays.asList("ABOUT US", "CONTACT US", "FAQ's","REFER BROKER","SUPPORT","LEGAL"));
-        LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
-        verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
-        help_recycle.setLayoutManager(verticalmanager);
-        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
-        helpAdapter = new SubmenuAdapter(context,arrayList);
-        help_recycle.setAdapter(helpAdapter);
-        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
-        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        toolbar_title.setText("Help & FAQ's");
-        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
-        delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
-        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
-        edit_icon.setVisibility(View.GONE);
-        delete_icon.setVisibility(View.GONE);
-        add_icon.setVisibility(View.GONE);
+        try {
+            context = getActivity();
+            help_recycle = view.findViewById(R.id.help_reycleview);
+            arrayList = new ArrayList<String>(Arrays.asList("ABOUT US", "CONTACT US", "FAQ's","REFER BROKER","SUPPORT","LEGAL"));
+            LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
+            verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
+            help_recycle.setLayoutManager(verticalmanager);
+            parentLayout = getActivity().findViewById(R.id.menu_parent_relative);
+            helpAdapter = new SubmenuAdapter(context,arrayList);
+            help_recycle.setAdapter(helpAdapter);
+            toolbar_title = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+            toolbar = getActivity().findViewById(R.id.inventory_toolbar);
+            toolbar.setVisibility(View.VISIBLE);
+            toolbar_title.setText("Help & FAQ's");
+            edit_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+            delete_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+            add_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+            edit_icon.setVisibility(View.GONE);
+            delete_icon.setVisibility(View.GONE);
+            add_icon.setVisibility(View.GONE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void changeFragment(int position){
-        switch (position){
-            case 0:
-                AboutUsFragment aboutUsFragment = new AboutUsFragment();
-                Utils.replaceFragment(getFragmentManager(),aboutUsFragment,R.id.inventory_frag_container,ABOUTUS);
-                break;
-            case 1:
-                ContactFragment contactFragment = new ContactFragment();
-                Utils.replaceFragment(getFragmentManager(),contactFragment,R.id.inventory_frag_container,CONTACT);
-                break;
-            case 2:
-                FaqFragment faqFragment = new FaqFragment();
-                Utils.replaceFragment(getFragmentManager(),faqFragment,R.id.inventory_frag_container,FAQ);
-                break;
-            case 3:
-                Intent i = new Intent(context, ReferActivity.class);
-                startActivity(i);
-                break;
-            case 4:
-                SupportFragment supportFragment = new SupportFragment();
-                Utils.replaceFragment(getFragmentManager(),supportFragment,R.id.inventory_frag_container,SUPPORT);
-                break;
-            case 5:
-                LegalFragment legalFragment = new LegalFragment();
-                Utils.replaceFragment(getFragmentManager(),legalFragment,R.id.inventory_frag_container,LEGAL);
-                break;
+        try {
+            switch (position){
+                case 0:
+                    AboutUsFragment aboutUsFragment = new AboutUsFragment();
+                    Utils.replaceFragment(getFragmentManager(),aboutUsFragment,R.id.inventory_frag_container,ABOUTUS);
+                    break;
+                case 1:
+                    ContactFragment contactFragment = new ContactFragment();
+                    Utils.replaceFragment(getFragmentManager(),contactFragment,R.id.inventory_frag_container,CONTACT);
+                    break;
+                case 2:
+                    FaqFragment faqFragment = new FaqFragment();
+                    Utils.replaceFragment(getFragmentManager(),faqFragment,R.id.inventory_frag_container,FAQ);
+                    break;
+                case 3:
+                    Intent i = new Intent(context, ReferActivity.class);
+                    startActivity(i);
+                    break;
+                case 4:
+                    SupportFragment supportFragment = new SupportFragment();
+                    Utils.replaceFragment(getFragmentManager(),supportFragment,R.id.inventory_frag_container,SUPPORT);
+                    break;
+                case 5:
+                    LegalFragment legalFragment = new LegalFragment();
+                    Utils.replaceFragment(getFragmentManager(),legalFragment,R.id.inventory_frag_container,LEGAL);
+                    break;
 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

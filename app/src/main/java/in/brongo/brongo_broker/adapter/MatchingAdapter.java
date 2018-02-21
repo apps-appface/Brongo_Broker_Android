@@ -68,15 +68,13 @@ public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType
 
 @Override
 public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-       /* if (viewHolder instanceof PersonalViewHolder) {
+    try {
+        if (viewHolder instanceof PersonalViewHolder) {
             PersonalViewHolder holder = (PersonalViewHolder) viewHolder;
             holder.invent_tag.setVisibility(View.VISIBLE);
             String budget = arrayList.get(position).getBudget() + "";
             budget = Utils.stringToInt(budget);
             String image = arrayList.get(position).getPropertyImage1();
-           *//* Glide.with(context)
-                    .load(arrayList.get(position).getPropertyImage1())
-                    .into(holder.prop_image);*//*
             Glide.with(context)
                     .load(arrayList.get(position).getPropertyImage1())
                     .apply(CustomApplicationClass.getPropertyImage(true))
@@ -93,20 +91,14 @@ public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
             holder.invent_child_client.setBackgroundColor(Color.parseColor(backColor));
             holder.invent_child_editBtn.setVisibility(View.GONE);
             holder.invent_child_deleteBtn.setVisibility(View.GONE);
-        }else{
+        }else if (viewHolder instanceof BuilderViewHolder) {
             BuilderViewHolder holder = (BuilderViewHolder)viewHolder;
             holder.invent_builder_name.setText(arrayList.get(position).getClientName());
             holder.invent_builder_address.setText(arrayList.get(position).getMicroMarketName());
             String budget = arrayList.get(position).getBudget() + "";
             budget = Utils.stringToInt(budget);
+            holder.invent_builder_tag.setVisibility(View.VISIBLE);
            // holder.invent_builder_commission.setText(arrayList.get(position).getCommission()+"% Commission");
-            String imageUrl = "";
-        *//*if(arrayList.get(position).getImageFiles().size()>0){
-            imageUrl = arrayList.get(position).getImageFiles().get(0);
-           imageUrl = Utils.getImageUrl(imageUrl,pref);
-            }*//*
-       *//* Glide.with(context).load(arrayList.get(position).getImageFiles()).placeholder(R.drawable.no_image)
-                .diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.invent_builder_image);*//*
             if(arrayList.get(position).getPropertyImage1() != null) {
                 Glide.with(context).load(arrayList.get(position).getPropertyImage1()).apply(CustomApplicationClass.getPropertyImage(true)).into(holder.invent_builder_image);
             }
@@ -114,16 +106,19 @@ public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
             holder.invent_builder_reject.setVisibility(View.GONE);
             holder.invent_builder_proceed.setVisibility(View.GONE);
             holder.invent_builder_tc.setVisibility(View.GONE);
-            holder.builder_web_linear.setVisibility(View.GONE);
+            holder.builder_web_linear.setVisibility(View.VISIBLE);
             holder.builder_flowLayout.removeAllViews();
             addView(budget,holder.builder_flowLayout);
             addView((arrayList.get(position).getBedRoomType()),holder.builder_flowLayout);
             //addView(arrayList.get(position).getLandArea()+" "+arrayList.get(position).getLandAreaUnits(),holder.builder_flowLayout);
             addView(arrayList.get(position).getPropertyStatus(),holder.builder_flowLayout);
-            addView(arrayList.get(position).getPropertyType(),holder.builder_flowLayout);
+           // addView(arrayList.get(position).getPropertyType(),holder.builder_flowLayout);
            // addView(arrayList.get(position).getDimensionsOfBedRoom()+" Sqft",holder.builder_flowLayout);
-        }*/
         }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
 
 
 @Override
@@ -132,7 +127,7 @@ public int getItemCount() {
         }
 private class BuilderViewHolder extends RecyclerView.ViewHolder {
 
-    TextView invent_builder_name,invent_builder_address,invent_builder_commission;
+    TextView invent_builder_name,invent_builder_address,invent_builder_commission,invent_builder_tag;
     ImageView invent_builder_image;
     LinearLayout recycle_item_linear,build_linear,builder_web_linear;
     RelativeLayout invent_builder_tc,invent_builder_register,invent_TC_relative;
@@ -141,18 +136,19 @@ private class BuilderViewHolder extends RecyclerView.ViewHolder {
 
     public BuilderViewHolder(View itemView) {
         super(itemView);
-       /* builder_flowLayout = (FlowLayout)itemView.findViewById(R.id.builder_flowLayout);
-        invent_builder_name = (TextView) itemView.findViewById(R.id.invent_builder_project);
-        invent_builder_address = (TextView) itemView.findViewById(R.id.invent_builder_addresss);
-        invent_builder_commission = (TextView) itemView.findViewById(R.id.invent_builder_commission);;
-        invent_builder_image = (ImageView) itemView.findViewById(R.id.invent_builder_image);
-        invent_builder_tc = (RelativeLayout) itemView.findViewById(R.id.invent_builder_tc);
-        invent_TC_relative = (RelativeLayout)itemView.findViewById(R.id.invent_TC_relative);
-        invent_builder_register = (RelativeLayout) itemView.findViewById(R.id.invent_builder_register);
-        build_linear = (LinearLayout)itemView.findViewById(R.id.invent_builder_linear);
-        builder_web_linear = (LinearLayout)itemView.findViewById(R.id.builder_web_linear);
-        invent_builder_proceed = (Button) itemView.findViewById(R.id.invent_builder_proceed);
-        invent_builder_reject = (Button) itemView.findViewById(R.id.invent_builder_reject);*/
+        builder_flowLayout =itemView.findViewById(R.id.builder_flowLayout);
+        invent_builder_name = itemView.findViewById(R.id.invent_builder_project);
+        invent_builder_address = itemView.findViewById(R.id.invent_builder_addresss);
+        invent_builder_commission = itemView.findViewById(R.id.invent_builder_commission);;
+        invent_builder_image = itemView.findViewById(R.id.invent_builder_image);
+        invent_builder_tc = itemView.findViewById(R.id.invent_builder_tc);
+        invent_TC_relative = itemView.findViewById(R.id.invent_TC_relative);
+        invent_builder_register =  itemView.findViewById(R.id.invent_builder_register);
+        build_linear = itemView.findViewById(R.id.invent_builder_linear);
+        builder_web_linear = itemView.findViewById(R.id.builder_web_linear);
+        invent_builder_proceed = itemView.findViewById(R.id.invent_builder_proceed);
+        invent_builder_reject = itemView.findViewById(R.id.invent_builder_reject);
+        invent_builder_tag = itemView.findViewWithTag(R.id.builder_tag);
     }
 }
 
@@ -164,15 +160,15 @@ private class PersonalViewHolder extends RecyclerView.ViewHolder {
 
     public PersonalViewHolder(View itemView) {
         super(itemView);
-       /* flowLayout = (FlowLayout)itemView.findViewById(R.id.invent_personal_flowlayout);
-        invent_child_clientName = (TextView) itemView.findViewById(R.id.invent_personal_name);
-        invent_child_client = (TextView) itemView.findViewById(R.id.invent_pesonal_postingtype);
-        invent_child_mobile = (TextView) itemView.findViewById(R.id.invent_pesonal_mobile);
-        prop_image = (ImageView) itemView.findViewById(R.id.invent_personal_image);
-        invent_tag = (TextView)itemView.findViewById(R.id.personal_tag);
-        invent_child_editBtn = (LinearLayout) itemView.findViewById(R.id.edit_image);
-        invent_child_deleteBtn = (LinearLayout) itemView.findViewById(R.id.delete_image);
-        recycle_item_linear = (LinearLayout)itemView.findViewById(R.id.linear_item);*/
+        flowLayout = itemView.findViewById(R.id.invent_personal_flowlayout);
+        invent_child_clientName =itemView.findViewById(R.id.invent_personal_name);
+        invent_child_client = itemView.findViewById(R.id.invent_pesonal_postingtype);
+        invent_child_mobile = itemView.findViewById(R.id.invent_pesonal_mobile);
+        prop_image = itemView.findViewById(R.id.invent_personal_image);
+        invent_tag = itemView.findViewById(R.id.personal_tag);
+        invent_child_editBtn = itemView.findViewById(R.id.edit_image);
+        invent_child_deleteBtn = itemView.findViewById(R.id.delete_image);
+        recycle_item_linear = itemView.findViewById(R.id.linear_item);
     }
 }
     @Override
@@ -194,6 +190,7 @@ private class PersonalViewHolder extends RecyclerView.ViewHolder {
                     deal_textview.setText(text);
                     flowLayout.addView(layout2);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     String error = e.toString();
                 }
             }

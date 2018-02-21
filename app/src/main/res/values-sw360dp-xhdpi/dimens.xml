@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!--TextSize-->
     <dimen name="text_size_big">18sp</dimen>
     <dimen name="text_size_ebig">20sp</dimen>
@@ -17,13 +16,13 @@
     <dimen name="view_small">1dp</dimen>
     <dimen name="view_large">2dp</dimen>
     <dimen name="view_esmall">0.5dp</dimen>
-<!--builderProjectActivity-->
+    <!--builderProjectActivity-->
     <dimen name="bp_back_size">60dp</dimen>
     <dimen name="bp_five_dp">5dp</dimen>
     <dimen name="bp_ten_dp">10dp</dimen>
     <dimen name="bp_back_padding">20dp</dimen>
     <dimen name="bp_three_dot">50dp</dimen>
-<!--DocumentACtivity-->
+    <!--DocumentACtivity-->
     <dimen name="da_big_margin">20dp</dimen>
     <dimen name="da_btn_size">60dp</dimen>
     <dimen name="da_round_textviewsize">30dp</dimen>
@@ -39,14 +38,14 @@
     <dimen name="ha_toolbar_size">60dp</dimen>
     <dimen name="ha_padding_small">5dp</dimen>
     <dimen name="ha_padding_normal">10dp</dimen>
-    <dimen name="ha_round_count">20dp</dimen>
     <dimen name="ha_padding_big">15dp</dimen>
     <dimen name="ha_padding_large">20dp</dimen>
+    <dimen name="ha_round_count">20dp</dimen>
     <dimen name="ha_logo_width">40dp</dimen>
     <dimen name="ha_logo_height">35dp</dimen>
-    <dimen name="icon_size">25dp</dimen>
-    <dimen name="ha_mode_height">45dp</dimen>
     <dimen name="ha_medal_size">15dp</dimen>
+    <dimen name="ha_mode_height">45dp</dimen>
+    <dimen name="icon_size">25dp</dimen>
     <dimen name="noti_text_margin">7dp</dimen>
     <dimen name="curve_height">220dp</dimen>
     <dimen name="curve_padding">33dp</dimen>
@@ -280,12 +279,11 @@
     <dimen name="sidemenu_image_size">30dp</dimen>
     <dimen name="sidemenu_padding_large">20dp</dimen>
     <dimen name="sidemenu_padding_vsmall">3dp</dimen>
-    <dimen name="sidemenu_layout_margin">25dp</dimen>
+    <dimen name="sidemenu_layout_margin">30dp</dimen>
     <dimen name="loader_size">100dp</dimen>
     <dimen name="loader_padding_layout">15dp</dimen>
     <!--PremiumSubplan-->
     <dimen name="subplan_margin_small">5dp</dimen>
     <dimen name="subplan_margin_normal">10dp</dimen>
     <dimen name="subplan_btn_height">30dp</dimen>
-
 </resources>

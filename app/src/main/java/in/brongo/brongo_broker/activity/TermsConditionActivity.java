@@ -29,36 +29,40 @@ public class TermsConditionActivity extends AppCompatActivity implements OnPageC
             activityName = bundle.getString("fromActivity","");
         }
         setContentView(R.layout.activity_terms_condition);
+        try {
         context = TermsConditionActivity.this;
-        parentLayout = (LinearLayout)findViewById(R.id.tc_parent_linear);
-        PDFView pdfView = (PDFView)findViewById(R.id.start_pdfView);
-        ScrollBar scrollBar = (ScrollBar)findViewById(R.id.start_pdf_scrollBar);
-        Button accept_btn = (Button)findViewById(R.id.tc_accept_btn);
+        parentLayout = findViewById(R.id.tc_parent_linear);
+        PDFView pdfView = findViewById(R.id.start_pdfView);
+        ScrollBar scrollBar = findViewById(R.id.start_pdf_scrollBar);
+        Button accept_btn = findViewById(R.id.tc_accept_btn);
+
         final SharedPreferences pref = getSharedPreferences(AppConstants.PREF_NAME,0);
         pdfView.setScrollBar(scrollBar);
         if(activityName.equalsIgnoreCase("signup") || activityName.equalsIgnoreCase("refer")){
             accept_btn.setVisibility(View.GONE);
         }
-        try {
             pdfView.fromAsset("tc_brokers.pdf")
                     .defaultPage(1)
                     .onPageChange(this)
                     .swipeVertical(true)
                     .showMinimap(false)
                     .load();
-        } catch (Exception e) {
-        }
+
+
         accept_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pref.edit().putBoolean(AppConstants.IS_TERMS_ACCEPTED,true).commit();
-                Intent intent = new Intent(TermsConditionActivity.this, WalkThroughActivity.class);
+                Intent intent = new Intent(context, WalkThroughActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("from_activity", "terms");
                 startActivity(intent);
                 finish();
             }
         });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -68,16 +72,20 @@ public class TermsConditionActivity extends AppCompatActivity implements OnPageC
 
     @Override
     public void onBackPressed() {
-        if(activityName.equalsIgnoreCase("signup")){
-            Intent intent = new Intent(context,SignUpActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
-            finish();
-        }else if(activityName.equalsIgnoreCase("refer")){
-            Intent intent = new Intent(context,ReferActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
-            finish();
+        try {
+            if(activityName.equalsIgnoreCase("signup")){
+                Intent intent = new Intent(context,SignUpActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                finish();
+            }else if(activityName.equalsIgnoreCase("refer")){
+                Intent intent = new Intent(context,ReferActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                finish();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

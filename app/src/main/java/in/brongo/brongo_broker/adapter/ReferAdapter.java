@@ -37,8 +37,12 @@ public class ReferAdapter extends RecyclerView.Adapter<ReferAdapter.EmployeeView
 
     @Override
     public void onBindViewHolder(final ReferAdapter.EmployeeViewHolder holder, int position) {
-        holder.broker_rate.setText(arrayList2.get(position));
-        holder.broker_no.setText(arrayList1.get(position));
+        try {
+            holder.broker_rate.setText(arrayList2.get(position));
+            holder.broker_no.setText(arrayList1.get(position));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

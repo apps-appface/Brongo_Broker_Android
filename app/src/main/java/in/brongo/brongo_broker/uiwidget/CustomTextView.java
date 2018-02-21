@@ -43,6 +43,7 @@ public class CustomTextView extends android.support.v7.widget.AppCompatTextView 
             try {
                 typeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/" + asset);
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.e(TAG, "Unable to load typeface: " + e.getMessage());
                 return false;
             }

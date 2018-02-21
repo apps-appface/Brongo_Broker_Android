@@ -103,7 +103,7 @@
               android:layout_marginTop="@dimen/rea_padding_normal"
               android:background="@color/transparent"
               android:hint="Write here..."
-              android:inputType="text"
+              android:inputType="textCapSentences"
               android:textColorHint="@color/round_empty_gray"
               android:focusableInTouchMode="true"
               android:focusedByDefault="false"/>
@@ -130,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/rea_padding_normal"
                 android:background="@color/transparent"
-                android:inputType="text"
+                android:inputType="textCapSentences"
                 android:hint="Write here..."
                 android:textColorHint="@color/round_empty_gray"
                 android:focusableInTouchMode="true"

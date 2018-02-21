@@ -68,53 +68,48 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
     @Override
     public void onBindViewHolder(final InventoryPersonalAdapter.EmployeeViewHolder holder, final int position) {
         holder.setIsRecyclable(false);
-        final ApiModel.InventoryPersoanlList object1 = arrayList.get(position);
-        String budget = arrayList.get(position).getBudget()+"";
-        budget = Utils.stringToInt(budget);
-        /*holder.statename.setText(object1.getMicroMarketState());
-        holder.cityname.setText(object1.getMicroMarketCity());
-        holder.microname.setText(object1.getMicroMarketName());*/
-       // Glide.with(context).load(arrayList.get(position).getPropertyImage1()).into(holder.prop_image);
-       /* Glide.with(context).load(arrayList.get(position).getPropertyImage1()).skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.prop_image);*/
-        String image = arrayList.get(position).getPropertyImage1();
-           /* Glide.with(context)
-                    .load(arrayList.get(position).getPropertyImage1())
-                    .into(holder.prop_image);*/
+        try {
+            final ApiModel.InventoryPersoanlList object1 = arrayList.get(position);
+            String budget = arrayList.get(position).getBudget()+"";
+            budget = Utils.stringToInt(budget);
+            String image = arrayList.get(position).getPropertyImage1();
             Glide.with(context)
                     .load(arrayList.get(position).getPropertyImage1())
                     .apply(CustomApplicationClass.getPropertyImage(true))
                     .into(holder.prop_image);
-        holder.invent_child_clientName.setText(arrayList.get(position).getClientName());
-        holder.invent_child_client.setText(arrayList.get(position).getPostingType().toUpperCase()+"/"+arrayList.get(position).getPropertyType().toUpperCase());
-        holder.invent_child_mobile.setText(arrayList.get(position).getClientMobileNo());
-       addView(arrayList.get(position).getMicroMarketName(),holder.flowLayout);
-        addView(arrayList.get(position).getBedRoomType(),holder.flowLayout);
-        addView(arrayList.get(position).getPropertyStatus(),holder.flowLayout);
-        addView(budget,holder.flowLayout);
-        addView(arrayList.get(position).getSubPropertyType(),holder.flowLayout);
-        String backColor = Utils.getPostingColor(arrayList.get(position).getPostingType());
+            holder.invent_child_clientName.setText(arrayList.get(position).getClientName());
+            holder.invent_child_client.setText(arrayList.get(position).getPostingType().toUpperCase()+"/"+arrayList.get(position).getPropertyType().toUpperCase());
+            holder.invent_child_mobile.setText(arrayList.get(position).getClientMobileNo());
+            addView(arrayList.get(position).getMicroMarketName(),holder.flowLayout);
+            addView(arrayList.get(position).getBedRoomType(),holder.flowLayout);
+            addView(arrayList.get(position).getPropertyStatus(),holder.flowLayout);
+            addView(budget,holder.flowLayout);
+            addView(arrayList.get(position).getSubPropertyType(),holder.flowLayout);
+            String backColor = Utils.getPostingColor(arrayList.get(position).getPostingType());
             holder.invent_child_client.setBackgroundColor(Color.parseColor(backColor));
-        holder.invent_child_editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                inventoryEdit(position);
+            holder.invent_child_editBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    inventoryEdit(position);
 
-            }
-        });
-        holder.invent_child_deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                }
+            });
+            holder.invent_child_deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                inventory_delete_dialog(object1,position);
-            }
-        });
-        holder.recycle_item_linear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeFragment(position);
-            }
-        });
+                    inventory_delete_dialog(object1,position);
+                }
+            });
+            holder.recycle_item_linear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changeFragment(position);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void addView(String text, FlowLayout flowLayout) {
@@ -126,6 +121,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
                     deal_textview.setText(text);
                     flowLayout.addView(layout2);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     String error = e.toString();
                 }
             }
@@ -161,6 +157,7 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
     }
 
     private void inventory_delete_dialog(final  ApiModel.InventoryPersoanlList object,final int position){
+        try {
             final Dialog dialog = new Dialog(context);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -188,54 +185,65 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
                 }
             });
             dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void inventoryEdit(int position){
-        Bundle bundle = new Bundle();
-        bundle.putString("bedRoomType",arrayList.get(position).getBedRoomType());
-        bundle.putLong("budget",arrayList.get(position).getBudget());
-        bundle.putString("propertyImage1",arrayList.get(position).getPropertyImage1());
-        bundle.putString("note",arrayList.get(position).getNote());
-        bundle.putString("emailId",arrayList.get(position).getEmailId());
-        bundle.putString("clientMobileNo",arrayList.get(position).getClientMobileNo());
-        bundle.putString("clientName",arrayList.get(position).getClientName());
-        bundle.putString("propertyStatus",arrayList.get(position).getPropertyStatus());
-        bundle.putString("propertyType",arrayList.get(position).getPropertyType());
-        bundle.putString("microMarketState",arrayList.get(position).getMicroMarketState());
-        bundle.putString("microMarketCity",arrayList.get(position).getMicroMarketCity());
-        bundle.putString("microMarketName",arrayList.get(position).getMicroMarketName());
-        bundle.putString("postingType",arrayList.get(position).getPostingType());
-        bundle.putString("propertyId",arrayList.get(position).getPropertyId());
-        bundle.putString("propertyImage3",arrayList.get(position).getPropertyImage3());
-        bundle.putString("propertyImage2",arrayList.get(position).getPropertyImage2());
-        bundle.putString("edit_inventory","edit_inventory");
-        bundle.putString("subPropertyType",arrayList.get(position).getSubPropertyType());
-        AddInventoryFragment addInventoryFragment = new AddInventoryFragment();
-        addInventoryFragment.setArguments(bundle);
-        Utils.replaceFragment(fragmentManager,addInventoryFragment,R.id.inventory_frag_container,ADD_INVENTORY);
+        try {
+            Bundle bundle = new Bundle();
+            bundle.putString("bedRoomType",arrayList.get(position).getBedRoomType());
+            bundle.putLong("budget",arrayList.get(position).getBudget());
+            bundle.putString("propertyImage1",arrayList.get(position).getPropertyImage1());
+            bundle.putString("note",arrayList.get(position).getNote());
+            bundle.putString("emailId",arrayList.get(position).getEmailId());
+            bundle.putString("clientMobileNo",arrayList.get(position).getClientMobileNo());
+            bundle.putString("clientName",arrayList.get(position).getClientName());
+            bundle.putString("propertyStatus",arrayList.get(position).getPropertyStatus());
+            bundle.putString("propertyType",arrayList.get(position).getPropertyType());
+            bundle.putString("microMarketState",arrayList.get(position).getMicroMarketState());
+            bundle.putString("microMarketCity",arrayList.get(position).getMicroMarketCity());
+            bundle.putString("microMarketName",arrayList.get(position).getMicroMarketName());
+            bundle.putString("postingType",arrayList.get(position).getPostingType());
+            bundle.putString("propertyId",arrayList.get(position).getPropertyId());
+            bundle.putString("propertyImage3",arrayList.get(position).getPropertyImage3());
+            bundle.putString("propertyImage2",arrayList.get(position).getPropertyImage2());
+            bundle.putString("edit_inventory","edit_inventory");
+            bundle.putString("subPropertyType",arrayList.get(position).getSubPropertyType());
+            AddInventoryFragment addInventoryFragment = new AddInventoryFragment();
+            addInventoryFragment.setArguments(bundle);
+            Utils.replaceFragment(fragmentManager,addInventoryFragment,R.id.inventory_frag_container,ADD_INVENTORY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void changeFragment(int position){
-        Bundle bundle = new Bundle();
-        bundle.putString("bedRoomType",arrayList.get(position).getBedRoomType());
-        bundle.putLong("budget",arrayList.get(position).getBudget());
-        bundle.putString("propertyImage1",arrayList.get(position).getPropertyImage1());
-        bundle.putString("note",arrayList.get(position).getNote());
-        bundle.putString("emailId",arrayList.get(position).getEmailId());
-        bundle.putString("clientMobileNo",arrayList.get(position).getClientMobileNo());
-        bundle.putString("clientName",arrayList.get(position).getClientName());
-        bundle.putString("propertyStatus",arrayList.get(position).getPropertyStatus());
-        bundle.putString("propertyType",arrayList.get(position).getPropertyType());
-        bundle.putString("microMarketState",arrayList.get(position).getMicroMarketState());
-        bundle.putString("microMarketCity",arrayList.get(position).getMicroMarketCity());
-        bundle.putString("microMarketName",arrayList.get(position).getMicroMarketName());
-        bundle.putString("postingType",arrayList.get(position).getPostingType());
-        bundle.putString("propertyId",arrayList.get(position).getPropertyId());
-        bundle.putString("propertyImage3",arrayList.get(position).getPropertyImage3());
-        bundle.putString("propertyImage2",arrayList.get(position).getPropertyImage2());
-        bundle.putString("edit_inventory","edit_inventory");
-        bundle.putString("subPropertyType",arrayList.get(position).getSubPropertyType());
-        IndividualInventoryFragment individualInventoryFragment = new IndividualInventoryFragment();
-        individualInventoryFragment.setArguments(bundle);
-        Utils.replaceFragment(fragmentManager,individualInventoryFragment,R.id.inventory_frag_container,INDIVIDUAL_INVENTORY);
+        try {
+            Bundle bundle = new Bundle();
+            bundle.putString("bedRoomType",arrayList.get(position).getBedRoomType());
+            bundle.putLong("budget",arrayList.get(position).getBudget());
+            bundle.putString("propertyImage1",arrayList.get(position).getPropertyImage1());
+            bundle.putString("note",arrayList.get(position).getNote());
+            bundle.putString("emailId",arrayList.get(position).getEmailId());
+            bundle.putString("clientMobileNo",arrayList.get(position).getClientMobileNo());
+            bundle.putString("clientName",arrayList.get(position).getClientName());
+            bundle.putString("propertyStatus",arrayList.get(position).getPropertyStatus());
+            bundle.putString("propertyType",arrayList.get(position).getPropertyType());
+            bundle.putString("microMarketState",arrayList.get(position).getMicroMarketState());
+            bundle.putString("microMarketCity",arrayList.get(position).getMicroMarketCity());
+            bundle.putString("microMarketName",arrayList.get(position).getMicroMarketName());
+            bundle.putString("postingType",arrayList.get(position).getPostingType());
+            bundle.putString("propertyId",arrayList.get(position).getPropertyId());
+            bundle.putString("propertyImage3",arrayList.get(position).getPropertyImage3());
+            bundle.putString("propertyImage2",arrayList.get(position).getPropertyImage2());
+            bundle.putString("edit_inventory","edit_inventory");
+            bundle.putString("subPropertyType",arrayList.get(position).getSubPropertyType());
+            IndividualInventoryFragment individualInventoryFragment = new IndividualInventoryFragment();
+            individualInventoryFragment.setArguments(bundle);
+            Utils.replaceFragment(fragmentManager,individualInventoryFragment,R.id.inventory_frag_container,INDIVIDUAL_INVENTORY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public interface DeleteInventoryListener{
         void onDelete(ApiModel.InventoryPersoanlList object,int position);

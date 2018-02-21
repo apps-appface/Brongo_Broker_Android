@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.BottomSheetDialog;
@@ -95,168 +96,177 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     }
 
     private void initialise() {
-        microMarket1 = microMarket2 = microMarket3 ="";
-        context = SignUpActivity.this;
-        parentLayout = (LinearLayout)findViewById(R.id.sign_parent_linear);
-        dialog = new BottomSheetDialog (context);
-        pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
-        poc_list = new ArrayList<>();
-        marketlist = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(this, R.layout.spinner_text,poc_list);
-        fetchMicromarket();
-        marketIdList = new ArrayList<>();
-        emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        phone_signup_layout = (TextInputLayout) findViewById(R.id.input_layout_sign_phone);
-        email_signup_layout = (TextInputLayout) findViewById(R.id.input_layout_email);
-        signup_back_image = (ImageView) findViewById(R.id.signup_toolbar).findViewById(R.id.other_toolbar_back);
-        sign_title = (TextView) findViewById(R.id.signup_toolbar).findViewById(R.id.other_toolbar_title);
-        docu_skip = (TextView)findViewById(R.id.signup_toolbar).findViewById(R.id.other_toolbar_skip);
-        docu_skip.setVisibility(View.GONE);
-        sign_title.setText("Sign Up");
-        microMarketModel1 = new ApiModel.MicroMarketModel();
-        microMarketModel2 = new ApiModel.MicroMarketModel();
-        microMarketModel3 = new ApiModel.MicroMarketModel();
-        comp_type_edit = (EditText) findViewById(R.id.comp_type_other);
-        comp_type_spinner = (MaterialBetterSpinner) findViewById(R.id.comp_type_spinner);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
-                R.layout.spinner_text, comp_type_list);
-        comp_type_spinner.setAdapter(dataAdapter);
-        fname_edit = (EditText) findViewById(R.id.sign_fname);
-        lname_edit = (EditText) findViewById(R.id.sign_lname);
-        real_estate_type_list = new ArrayList<>();
-        micromarketlist = new ArrayList<>();
-        email_edit = (EditText) findViewById(R.id.sign_email);
-        mobile_edit = (EditText) findViewById(R.id.sign_phone);
-        micro_recycle = (RecyclerView) findViewById(R.id.hori_micromarket_recycle);
-        register_btn = (Button) findViewById(R.id.signup_btn);
-        real_estate_commer_btn = (Button) findViewById(R.id.real_estate_commercial);
-        real_estate_resi_btn = (Button) findViewById(R.id.real_estate_resi);
-        addmore_text = (TextView) findViewById(R.id.add_more_text);
-        city_edit = (EditText) findViewById(R.id.sign_city);
-        micromarket_reset = (ImageView) findViewById(R.id.micromarketlist_reset);
-        resi_line1_edit = (EditText) findViewById(R.id.sign_residential_line1);
-        resi_line2_edit = (EditText) findViewById(R.id.sign_residential_line2);
-        office_line1_edit = (EditText) findViewById(R.id.sign_office_line1);
-        office_line2_edit = (EditText) findViewById(R.id.sign_office_line2);
-        editor = pref.edit();
-        signUp_tc = (TextView)findViewById(R.id.signup_tc);
-        referredBy = (EditText) findViewById(R.id.sign_referredby);
-        String refer_code = pref.getString(AppConstants.REFERREDBY, "");
-        mobile_edit.setText(pref.getString(AppConstants.MOBILE_NUMBER,""));
-        mobile = mobile_edit.getText().toString();
-        if (refer_code.length() > 0) {
-            referredBy.setText(refer_code);
-            referredBy.setEnabled(false);
-        }
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        micro_recycle.setLayoutManager(horizontalLayoutManager);
-        horizontalAdapter = new HorizontalAdapter(micromarketlist, context);
-        micro_recycle.setAdapter(horizontalAdapter);
+        try {
+            microMarket1 = microMarket2 = microMarket3 ="";
+            context = SignUpActivity.this;
+            parentLayout = (LinearLayout)findViewById(R.id.sign_parent_linear);
+            dialog = new BottomSheetDialog (context);
+            pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
+            poc_list = new ArrayList<>();
+            marketlist = new ArrayList<>();
+            adapter = new ArrayAdapter<String>(this, R.layout.spinner_text,poc_list);
+            fetchMicromarket();
+            marketIdList = new ArrayList<>();
+            emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+            phone_signup_layout = (TextInputLayout) findViewById(R.id.input_layout_sign_phone);
+            email_signup_layout = (TextInputLayout) findViewById(R.id.input_layout_email);
+            signup_back_image = (ImageView) findViewById(R.id.signup_toolbar).findViewById(R.id.other_toolbar_back);
+            sign_title = (TextView) findViewById(R.id.signup_toolbar).findViewById(R.id.other_toolbar_title);
+            docu_skip = (TextView)findViewById(R.id.signup_toolbar).findViewById(R.id.other_toolbar_skip);
+            docu_skip.setVisibility(View.GONE);
+            sign_title.setText("Sign Up");
+            microMarketModel1 = new ApiModel.MicroMarketModel();
+            microMarketModel2 = new ApiModel.MicroMarketModel();
+            microMarketModel3 = new ApiModel.MicroMarketModel();
+            comp_type_edit = (EditText) findViewById(R.id.comp_type_other);
+            comp_type_spinner = (MaterialBetterSpinner) findViewById(R.id.comp_type_spinner);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
+                    R.layout.spinner_text, comp_type_list);
+            comp_type_spinner.setAdapter(dataAdapter);
+            fname_edit = (EditText) findViewById(R.id.sign_fname);
+            lname_edit = (EditText) findViewById(R.id.sign_lname);
+            real_estate_type_list = new ArrayList<>();
+            micromarketlist = new ArrayList<>();
+            email_edit = (EditText) findViewById(R.id.sign_email);
+            mobile_edit = (EditText) findViewById(R.id.sign_phone);
+            micro_recycle = (RecyclerView) findViewById(R.id.hori_micromarket_recycle);
+            register_btn = (Button) findViewById(R.id.signup_btn);
+            real_estate_commer_btn = (Button) findViewById(R.id.real_estate_commercial);
+            real_estate_resi_btn = (Button) findViewById(R.id.real_estate_resi);
+            addmore_text = (TextView) findViewById(R.id.add_more_text);
+            city_edit = (EditText) findViewById(R.id.sign_city);
+            micromarket_reset = (ImageView) findViewById(R.id.micromarketlist_reset);
+            resi_line1_edit = (EditText) findViewById(R.id.sign_residential_line1);
+            resi_line2_edit = (EditText) findViewById(R.id.sign_residential_line2);
+            office_line1_edit = (EditText) findViewById(R.id.sign_office_line1);
+            office_line2_edit = (EditText) findViewById(R.id.sign_office_line2);
+            editor = pref.edit();
+            signUp_tc = (TextView)findViewById(R.id.signup_tc);
+            referredBy = (EditText) findViewById(R.id.sign_referredby);
+            String refer_code = pref.getString(AppConstants.REFERREDBY, "");
+            mobile_edit.setText(pref.getString(AppConstants.MOBILE_NUMBER,""));
+            mobile = mobile_edit.getText().toString();
+            if (refer_code.length() > 0) {
+                referredBy.setText(refer_code);
+                referredBy.setEnabled(false);
+            }
+            LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+            micro_recycle.setLayoutManager(horizontalLayoutManager);
+            horizontalAdapter = new HorizontalAdapter(micromarketlist, context);
+            micro_recycle.setAdapter(horizontalAdapter);
       /*  pd = new ProgressDialog(this, R.style.CustomProgressDialog);
         pd.setIndeterminateDrawable(this.getResources().getDrawable(R.drawable.progress_loader));
         pd.setCancelable(true);
         pd.setCanceledOnTouchOutside(false);*/
-        comp_type_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position != comp_type_list.size() - 1) {
-                    comp_type = parent.getItemAtPosition(position).toString();
-                    comp_type_edit.setVisibility(View.GONE);
-                } else {
-                    comp_type_edit.setVisibility(View.VISIBLE);
+            comp_type_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (position != comp_type_list.size() - 1) {
+                        comp_type = parent.getItemAtPosition(position).toString();
+                        comp_type_edit.setVisibility(View.GONE);
+                    } else {
+                        comp_type_edit.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
-        });
-        foo();
+            });
+            foo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
     private void setListener() {
-        addmore_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (micromarketlist.size() == 3) {
-                    addmore_text.setClickable(false);
-                } else {
-                   marketDialog();
+        try {
+            addmore_text.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (micromarketlist.size() == 3) {
+                        addmore_text.setClickable(false);
+                    } else {
+                       marketDialog();
+                    }
                 }
-            }
-        });
-        real_estate_commer_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (real_estate_type_list.contains("Commercial")) {
-                    real_estate_type_list.remove("Commercial");
-                    real_estate_commer_btn.setBackgroundResource(R.drawable.gray_empty_btn);
-                    real_estate_commer_btn.setTextColor(getResources().getColor(R.color.real_state_color));
-                } else {
-                    real_estate_commer_btn.setBackgroundResource(R.drawable.rounded_btn);
-                    real_estate_commer_btn.setTextColor(getResources().getColor(R.color.white));
-                    real_estate_type_list.add("Commercial");
+            });
+            real_estate_commer_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (real_estate_type_list.contains("Commercial")) {
+                        real_estate_type_list.remove("Commercial");
+                        real_estate_commer_btn.setBackgroundResource(R.drawable.gray_empty_btn);
+                        real_estate_commer_btn.setTextColor(getResources().getColor(R.color.real_state_color));
+                    } else {
+                        real_estate_commer_btn.setBackgroundResource(R.drawable.rounded_btn);
+                        real_estate_commer_btn.setTextColor(getResources().getColor(R.color.white));
+                        real_estate_type_list.add("Commercial");
+                    }
                 }
-            }
-        });
-        real_estate_resi_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (real_estate_type_list.contains("Residential")) {
-                    real_estate_type_list.remove("Residential");
-                    real_estate_resi_btn.setBackgroundResource(R.drawable.gray_empty_btn);
-                    real_estate_resi_btn.setTextColor(getResources().getColor(R.color.real_state_color));
-                } else {
-                    real_estate_resi_btn.setBackgroundResource(R.drawable.rounded_btn);
-                    real_estate_type_list.add("Residential");
-                    real_estate_resi_btn.setTextColor(getResources().getColor(R.color.white));
+            });
+            real_estate_resi_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (real_estate_type_list.contains("Residential")) {
+                        real_estate_type_list.remove("Residential");
+                        real_estate_resi_btn.setBackgroundResource(R.drawable.gray_empty_btn);
+                        real_estate_resi_btn.setTextColor(getResources().getColor(R.color.real_state_color));
+                    } else {
+                        real_estate_resi_btn.setBackgroundResource(R.drawable.rounded_btn);
+                        real_estate_type_list.add("Residential");
+                        real_estate_resi_btn.setTextColor(getResources().getColor(R.color.white));
+                    }
                 }
-            }
-        });
+            });
 
-        register_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              setValue();
-            }
-        });
-        signup_back_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
-        micromarket_reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (micromarketlist.size()){
-                    case 1:
-                        microMarket1="";
-                        city_edit.setText("");
-                        break;
-                    case 2:
-                        microMarket2="";
-                        break;
-                    case 3:
-                        microMarket3="";
-                        break;
+            register_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                  setValue();
                 }
-                micromarketlist.remove(micromarketlist.size()-1);
-               // micromarketlist.clear();
-                horizontalAdapter.notifyDataSetChanged();
-                addmore_text.setVisibility(View.VISIBLE);
-                addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
-                if(micromarketlist.size() == 0) {
-                    micromarket_reset.setVisibility(View.GONE);
+            });
+            signup_back_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                    finish();
                 }
-            }
-        });
+            });
+            micromarket_reset.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (micromarketlist.size()){
+                        case 1:
+                            microMarket1="";
+                            city_edit.setText("");
+                            break;
+                        case 2:
+                            microMarket2="";
+                            break;
+                        case 3:
+                            microMarket3="";
+                            break;
+                    }
+                    micromarketlist.remove(micromarketlist.size()-1);
+                   // micromarketlist.clear();
+                    horizontalAdapter.notifyDataSetChanged();
+                    addmore_text.setVisibility(View.VISIBLE);
+                    addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
+                    if(micromarketlist.size() == 0) {
+                        micromarket_reset.setVisibility(View.GONE);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void setValue(){
-        String fname = fname_edit.getText().toString();
-        String lname = lname_edit.getText().toString();
-        String city = city_edit.getText().toString();
-        String referral_id = referredBy.getText().toString();
-        String res_line_one = resi_line1_edit.getText().toString();
-        String res_line_two = resi_line2_edit.getText().toString();
+        try {
+            String fname = fname_edit.getText().toString();
+            String lname = lname_edit.getText().toString();
+            String city = city_edit.getText().toString();
+            String referral_id = referredBy.getText().toString();
+            String res_line_one = resi_line1_edit.getText().toString();
+            String res_line_two = resi_line2_edit.getText().toString();
             editor.putString(AppConstants.FIRST_NAME, fname);
             editor.putString(AppConstants.LAST_NAME, lname);
             editor.putString(AppConstants.EMAIL_ID, email);
@@ -300,153 +310,164 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             } else {
                 Utils.setSnackBar(parentLayout,"Add atleast 1 microMarket");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
 
     private void setWatcher() {
-        mobile_edit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        try {
+            mobile_edit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() == 10) {
-                    Utils.hideKeyboard(context, mobile_edit);
                 }
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                String phone = mobile_edit.getText().toString().trim();
-                if ((phone.startsWith("6") || phone.startsWith("7") || phone.startsWith("8") || phone.startsWith("9")) && (phone.length() == 10)){
-                    phone_signup_layout.setError("");
-                    phone_signup_layout.setErrorEnabled(false);
-                    mobile = phone;
-                }else if(phone.length() == 0) {
-                    mobile = "";
-                    phone_signup_layout.setError("");
-                    phone_signup_layout.setErrorEnabled(false);
-                }else
-                {
-                    phone_signup_layout.setError("Invalid Mobile number");
-                    phone_signup_layout.setErrorEnabled(true);
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (s.length() == 10) {
+                        Utils.hideKeyboard(context, mobile_edit);
+                    }
                 }
-            }
-        });
-        comp_type_edit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                comp_type = comp_type_edit.getText().toString();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        email_edit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String email1 = email_edit.getText().toString().trim();
-                if (email1.matches(emailPattern) && s.length() > 0){
-                    email_signup_layout.setError("");
-                    email_signup_layout.setErrorEnabled(false);
-                    email = email1;
-                }else if(s.length()>0){
-                    email_signup_layout.setErrorEnabled(true);
-                    email_signup_layout.setError("Invalid email id");
-                }else if(s.length() == 0){
-                    email_signup_layout.setError("");
-                    email_signup_layout.setErrorEnabled(false);
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String phone = mobile_edit.getText().toString().trim();
+                    if ((phone.startsWith("6") || phone.startsWith("7") || phone.startsWith("8") || phone.startsWith("9")) && (phone.length() == 10)){
+                        phone_signup_layout.setError("");
+                        phone_signup_layout.setErrorEnabled(false);
+                        mobile = phone;
+                    }else if(phone.length() == 0) {
+                        mobile = "";
+                        phone_signup_layout.setError("");
+                        phone_signup_layout.setErrorEnabled(false);
+                    }else
+                    {
+                        phone_signup_layout.setError("Invalid Mobile number");
+                        phone_signup_layout.setErrorEnabled(true);
+                    }
                 }
-            }
-        });
+            });
+            comp_type_edit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    comp_type = comp_type_edit.getText().toString();
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            email_edit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String email1 = email_edit.getText().toString().trim();
+                    if (email1.matches(emailPattern) && s.length() > 0){
+                        email_signup_layout.setError("");
+                        email_signup_layout.setErrorEnabled(false);
+                        email = email1;
+                    }else if(s.length()>0){
+                        email_signup_layout.setErrorEnabled(true);
+                        email_signup_layout.setError("Invalid email id");
+                    }else if(s.length() == 0){
+                        email_signup_layout.setError("");
+                        email_signup_layout.setErrorEnabled(false);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
     private void signUp(SignUpModel signUpModel) {
-        if (Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
-            Call<ResponseBody> call = null;
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            call = retrofitAPIs.signUpApi(signUpModel);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        String responseString = null;
-                        if (response.isSuccessful()) {
-                            try {
-                                responseString = response.body().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                int statusCode = jsonObject.optInt("statusCode");
-                                String message = jsonObject.optString("message");
-                                if (statusCode == 200) {
-                                    if(message.equalsIgnoreCase("We are not live in this location")){
-                                        nonPocDialog(context);
+        try {
+            if (Utils.isNetworkAvailable(context)) {
+                Utils.LoaderUtils.showLoader(context);
+                Call<ResponseBody> call = null;
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                call = retrofitAPIs.signUpApi(signUpModel);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utils.LoaderUtils.dismissLoader();
+                        if (response != null) {
+                            String responseString = null;
+                            if (response.isSuccessful()) {
+                                try {
+                                    responseString = response.body().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    String message = jsonObject.optString("message");
+                                    if (statusCode == 200) {
+                                        if(message.equalsIgnoreCase("We are not live in this location")){
+                                            nonPocDialog(context);
+                                        }else {
+                                            Utils.setSnackBar(parentLayout, message);
+                                      /*  editor.remove(AppConstants.REFERREDBY);
+                                        editor.putString(AppConstants.MOBILE_NUMBER, mobile);
+                                        editor.putBoolean(AppConstants.ISWALKTHROUGH, false);
+                                        editor.commit();
+                                        Intent serviceIntent = new Intent(context, RegistrationIntentService.class);
+                                        serviceIntent.putExtra("key", 200);
+                                        startService(serviceIntent);
+                                        startActivity(new Intent(SignUpActivity.this, DocumentUploadActivity.class));*/
+                                            nextPage();
+                                        }
+                                    }
+                                } catch (JSONException | IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    String message = jsonObject.optString("message");
+                                    if (message.equalsIgnoreCase("Broker Already Exist with this Mobile Number")) {
+                                        phone_signup_layout.setError("Phone Number already Exists");
                                     }else {
                                         Utils.setSnackBar(parentLayout, message);
-                                  /*  editor.remove(AppConstants.REFERREDBY);
-                                    editor.putString(AppConstants.MOBILE_NUMBER, mobile);
-                                    editor.putBoolean(AppConstants.ISWALKTHROUGH, false);
-                                    editor.commit();
-                                    Intent serviceIntent = new Intent(context, RegistrationIntentService.class);
-                                    serviceIntent.putExtra("key", 200);
-                                    startService(serviceIntent);
-                                    startActivity(new Intent(SignUpActivity.this, DocumentUploadActivity.class));*/
-                                        nextPage();
                                     }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException | IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                int statusCode = jsonObject.optInt("statusCode");
-                                String message = jsonObject.optString("message");
-                                if (message.equalsIgnoreCase("Broker Already Exist with this Mobile Number")) {
-                                    phone_signup_layout.setError("Phone Number already Exists");
-                                }else {
-                                    Utils.setSnackBar(parentLayout, message);
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
                         }
                     }
-                }
 
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                    Utils.LoaderUtils.dismissLoader();
-                }
-            });
-        }else{
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        Utils.LoaderUtils.dismissLoader();
+                    }
+                });
+            }else{
+                Utils.internetDialog(context,this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     @Override
@@ -469,128 +490,136 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     }
 
     private void fetchMicromarket(){
-        if(Utils.isNetworkAvailable(context)) {
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "signUp");
-            Call<SignUpModel.MarketModel> call = retrofitAPIs.fetchMarketApi(mobileNo);
-            call.enqueue(new Callback<SignUpModel.MarketModel>() {
-                @Override
-                public void onResponse(Call<SignUpModel.MarketModel> call, Response<SignUpModel.MarketModel> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        if (response.isSuccessful()) {
-                            SignUpModel.MarketModel marketModel = new SignUpModel.MarketModel();
-                            marketModel = response.body();
-                            int statusCode = marketModel.getStatusCode();
-                            if (statusCode == 200) {
-                                ArrayList<SignUpModel.MarketObject> arrayList = marketModel.getData();
-                                if(arrayList.size() != 0){
-                                    marketlist.clear();
-                                    poc_list.clear();
-                                    marketlist.addAll(arrayList);
-                                    for(int i=0;i<marketlist.size();i++){
-                                            poc_list.add(marketlist.get(i).getName());
+        try {
+            if(Utils.isNetworkAvailable(context)) {
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "signUp");
+                Call<SignUpModel.MarketModel> call = retrofitAPIs.fetchMarketApi(mobileNo);
+                call.enqueue(new Callback<SignUpModel.MarketModel>() {
+                    @Override
+                    public void onResponse(Call<SignUpModel.MarketModel> call, Response<SignUpModel.MarketModel> response) {
+                        Utils.LoaderUtils.dismissLoader();
+                        if (response != null) {
+                            if (response.isSuccessful()) {
+                                SignUpModel.MarketModel marketModel = new SignUpModel.MarketModel();
+                                marketModel = response.body();
+                                int statusCode = marketModel.getStatusCode();
+                                if (statusCode == 200) {
+                                    ArrayList<SignUpModel.MarketObject> arrayList = marketModel.getData();
+                                    if(arrayList.size() != 0){
+                                        marketlist.clear();
+                                        poc_list.clear();
+                                        marketlist.addAll(arrayList);
+                                        for(int i=0;i<marketlist.size();i++){
+                                                poc_list.add(marketlist.get(i).getName());
+                                        }
+                                    }
+                                    adapter.notifyDataSetChanged();
                                     }
                                 }
-                                adapter.notifyDataSetChanged();
+                            } else {
+                                String responseString = null;
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    String message = jsonObject.optString("message");
+                                    Utils.setSnackBar(parentLayout, message);
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
                                 }
                             }
-                        } else {
-                            String responseString = null;
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                int statusCode = jsonObject.optInt("statusCode");
-                                String message = jsonObject.optString("message");
-                                Utils.setSnackBar(parentLayout, message);
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
-                            }
                         }
-                    }
 
-                @Override
-                public void onFailure(Call<SignUpModel.MarketModel> call, Throwable t) {
-                    Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                }
-            });
-        }else{
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<SignUpModel.MarketModel> call, Throwable t) {
+                        Utils.LoaderUtils.dismissLoader();
+                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                    }
+                });
+            }else{
+                Utils.internetDialog(context,this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private void marketDialog(){
-        isDialogOpen = true;
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
+        try {
+            isDialogOpen = true;
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
 /*        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);*/
-        dialog.setContentView(R.layout.market_dialog);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-       dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        ListView listView = (ListView)dialog.findViewById(R.id.market_list_view);
-        EditText search_market = (EditText)dialog.findViewById(R.id.inputSearch);
-        Button cancel_btn = (Button)dialog.findViewById(R.id.market_dialog_cancel);
-        cancel_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.setCancelable(true);
-                dialog.dismiss();
-            }
-        });
-      listView.setAdapter(adapter);
-      listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-          @Override
-          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-              Utils.hideKeyboard(context,view);
-              if(microMarket1.equalsIgnoreCase("")){
-                  microMarket1 = marketlist.get(position).getMicroMarketId();
-                  micromarketlist.add(marketlist.get(position).getName());
-                  horizontalAdapter.notifyDataSetChanged();
-                  addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
-                  addmore_text.setVisibility(View.VISIBLE);
-                  micromarket_reset.setVisibility(View.VISIBLE);
-                  city_edit.setText(marketlist.get(position).getCity());
-              }else if(microMarket2.equalsIgnoreCase("")){
-                  microMarket2 = marketlist.get(position).getMicroMarketId();
-                  micromarketlist.add(marketlist.get(position).getName());
-                  horizontalAdapter.notifyDataSetChanged();
-                  addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
-              }else if(microMarket3.equalsIgnoreCase("")){
-                  microMarket3 = marketlist.get(position).getMicroMarketId();
-                  micromarketlist.add(marketlist.get(position).getName());
-                  horizontalAdapter.notifyDataSetChanged();
-                  addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
-              }
-              if(micromarketlist.size()==3){
-                  addmore_text.setVisibility(View.GONE);
-              }
-              dialog.dismiss();
-          }
-      });
-        search_market.addTextChangedListener(new TextWatcher() {
+            dialog.setContentView(R.layout.market_dialog);
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            ListView listView = (ListView)dialog.findViewById(R.id.market_list_view);
+            EditText search_market = (EditText)dialog.findViewById(R.id.inputSearch);
+            Button cancel_btn = (Button)dialog.findViewById(R.id.market_dialog_cancel);
+            cancel_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.setCancelable(true);
+                    dialog.dismiss();
+                }
+            });
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Utils.hideKeyboard(context,view);
+                    if(microMarket1.equalsIgnoreCase("")){
+                        microMarket1 = marketlist.get(position).getMicroMarketId();
+                        micromarketlist.add(marketlist.get(position).getName());
+                        horizontalAdapter.notifyDataSetChanged();
+                        addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
+                        addmore_text.setVisibility(View.VISIBLE);
+                        micromarket_reset.setVisibility(View.VISIBLE);
+                        city_edit.setText(marketlist.get(position).getCity());
+                    }else if(microMarket2.equalsIgnoreCase("")){
+                        microMarket2 = marketlist.get(position).getMicroMarketId();
+                        micromarketlist.add(marketlist.get(position).getName());
+                        horizontalAdapter.notifyDataSetChanged();
+                        addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
+                    }else if(microMarket3.equalsIgnoreCase("")){
+                        microMarket3 = marketlist.get(position).getMicroMarketId();
+                        micromarketlist.add(marketlist.get(position).getName());
+                        horizontalAdapter.notifyDataSetChanged();
+                        addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
+                    }
+                    if(micromarketlist.size()==3){
+                        addmore_text.setVisibility(View.GONE);
+                    }
+                    dialog.dismiss();
+                }
+            });
+            search_market.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                // When user changed the Text
-                adapter.getFilter().filter(cs);
-            }
+                @Override
+                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                    // When user changed the Text
+                    adapter.getFilter().filter(cs);
+                }
 
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                          int arg3) {
-                // TODO Auto-generated method stub
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                              int arg3) {
+                    // TODO Auto-generated method stub
 
-            }
+                }
 
-            @Override
-            public void afterTextChanged(Editable arg0) {
-                // TODO Auto-generated method stub
-            }
-        });
-        dialog.show();
+                @Override
+                public void afterTextChanged(Editable arg0) {
+                    // TODO Auto-generated method stub
+                }
+            });
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
     @Override
@@ -599,43 +628,51 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         Utils.LoaderUtils.dismissLoader();
     }
     private void nonPocDialog(Context context){
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.poc_live_dialog);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        final ImageView cross_btn = (ImageView) dialog.findViewById(R.id.poc_dialog_close);
-        final Button got_it_btn = (Button)dialog.findViewById(R.id.poc_dialog_btn);
-        cross_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        got_it_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-               onBackPressed();
-            }
-        });
-        dialog.show();
+        try {
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setContentView(R.layout.poc_live_dialog);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            final ImageView cross_btn = (ImageView) dialog.findViewById(R.id.poc_dialog_close);
+            final Button got_it_btn = (Button)dialog.findViewById(R.id.poc_dialog_btn);
+            cross_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            got_it_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                   onBackPressed();
+                }
+            });
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void foo() {
-        SpannableString link = makeLinkSpan("Terms & Conditions", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context,TermsConditionActivity.class);
-                intent.putExtra("fromActivity","signup");
-                startActivity(intent);
-            }
-        });
-        signUp_tc.setText("By signing up, you agree to our \n ");
-        signUp_tc.append(link);
+        try {
+            SpannableString link = makeLinkSpan("Terms & Conditions", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context,TermsConditionActivity.class);
+                    intent.putExtra("fromActivity","signup");
+                    startActivity(intent);
+                }
+            });
+            signUp_tc.setText("By signing up, you agree to our \n ");
+            signUp_tc.append(link);
 
-        // This line makes the link clickable!
-        makeLinksFocusable(signUp_tc);
+            // This line makes the link clickable!
+            makeLinksFocusable(signUp_tc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 /*
@@ -644,20 +681,29 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
 
     private SpannableString makeLinkSpan(CharSequence text, View.OnClickListener listener) {
         SpannableString link = new SpannableString(text);
-        link.setSpan(new ClickableString(listener), 0, text.length(),
-                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-        link.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.edit_hint_color)), 0, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        try {
+            link.setSpan(new ClickableString(listener), 0, text.length(),
+                    SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+            link.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.edit_hint_color)), 0, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return link;
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
         return link;
     }
 
     private void makeLinksFocusable(TextView tv) {
-        MovementMethod m = tv.getMovementMethod();
-        if ((m == null) || !(m instanceof LinkMovementMethod)) {
-            if (tv.getLinksClickable()) {
-                tv.setMovementMethod(LinkMovementMethod.getInstance());
+        try {
+            MovementMethod m = tv.getMovementMethod();
+            if ((m == null) || !(m instanceof LinkMovementMethod)) {
+                if (tv.getLinksClickable()) {
+                    tv.setMovementMethod(LinkMovementMethod.getInstance());
+                }
             }
+            tv.setHighlightColor(Color.TRANSPARENT);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        tv.setHighlightColor(Color.TRANSPARENT);
     }
     private static class ClickableString extends ClickableSpan {
         private View.OnClickListener mListener;
@@ -671,14 +717,18 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     }
 
     private void nextPage(){
-        editor.remove(AppConstants.REFERREDBY);
-        editor.putString(AppConstants.MOBILE_NUMBER, mobile);
-        editor.putBoolean(AppConstants.ISWALKTHROUGH, false);
-        editor.commit();
-        Intent serviceIntent = new Intent(context, RegistrationIntentService.class);
-        serviceIntent.putExtra("key", 200);
-        startService(serviceIntent);
-        startActivity(new Intent(SignUpActivity.this, DocumentUploadActivity.class));
+        try {
+            editor.remove(AppConstants.REFERREDBY);
+            editor.putString(AppConstants.MOBILE_NUMBER, mobile);
+            editor.putBoolean(AppConstants.ISWALKTHROUGH, false);
+            editor.commit();
+            Intent serviceIntent = new Intent(context, RegistrationIntentService.class);
+            serviceIntent.putExtra("key", 200);
+            startService(serviceIntent);
+            startActivity(new Intent(SignUpActivity.this, DocumentUploadActivity.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void checkValue(){
         String fname = fname_edit.getText().toString();

@@ -80,8 +80,8 @@
                  />
                 <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:id="@+id/message_count"
-                    android:layout_width="@dimen/ha_padding_large"
-                    android:layout_height="@dimen/ha_padding_large"
+                    android:layout_width="@dimen/ha_round_count"
+                    android:layout_height="@dimen/ha_round_count"
                     android:maxHeight="@dimen/ha_padding_large"
                     android:maxWidth="@dimen/ha_padding_large"
                     android:textSize="@dimen/ha_padding_normal"
@@ -90,7 +90,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:visibility="gone"
-                    android:layout_marginLeft="@dimen/ha_padding_small"
                     android:background="@drawable/text_circular_white"
                     app:customFont="lato_bold.ttf"/>
             </RelativeLayout>
@@ -114,8 +113,8 @@
                         android:src="@drawable/ic_notification" />
                     <in.brongo.brongo_broker.uiwidget.CustomTextView
                         android:id="@+id/notification_count"
-                        android:layout_width="@dimen/ha_padding_large"
-                        android:layout_height="@dimen/ha_padding_large"
+                        android:layout_width="@dimen/ha_round_count"
+                        android:layout_height="@dimen/ha_round_count"
                         android:maxHeight="@dimen/ha_padding_large"
                         android:maxWidth="@dimen/ha_padding_large"
                         android:textSize="@dimen/ha_padding_normal"
@@ -159,6 +158,10 @@
                     android:background="@drawable/mainfrontshape2"
                     android:paddingLeft="@dimen/curve_padding"
                     >
+                   <RelativeLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:id="@+id/home_data_relative">
                     <Button
                         android:id="@+id/refer_broker_btn"
                         android:layout_width="@dimen/ha_refer_width"
@@ -244,10 +247,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:shadowColor="#73000000"
-                            android:shadowDx="6.123233995736766e-17"
-                            android:shadowDy="1"
                             android:layout_marginLeft="@dimen/ha_padding_small"
-                            android:shadowRadius="3"
                             android:textSize="@dimen/text_size_vsmall"
                             android:padding="@dimen/ha_plan_top_padding"
                             android:textColor="#99ffffff"
@@ -321,6 +321,7 @@
 />
                     </LinearLayout>
                     </RelativeLayout>
+                   </RelativeLayout>
                 </RelativeLayout>
                 <LinearLayout
                     android:layout_width="match_parent"

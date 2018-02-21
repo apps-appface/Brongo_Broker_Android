@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-
-import com.google.android.gms.iid.InstanceID;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
@@ -59,12 +57,10 @@ public class RegistrationIntentService extends IntentService implements NoIntern
        pref = getSharedPreferences(AppConstants.PREF_NAME,0);
         editor = pref.edit();
         // Make a call to Instance API
-        InstanceID instanceID = InstanceID.getInstance(this);
         String senderId = getResources().getString(R.string.sender_id);
         try {
             // request token that will be used by the server to send push notifications
             newToken = FirebaseInstanceId.getInstance().getToken();
-           // newToken = instanceID.getToken(senderId, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             oldToken = pref.getString(AppConstants.DEVICE_TOKEN, "");
             boolean tokenSame = newToken.equals(oldToken);
             if (tokenSame) {

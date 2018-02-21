@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -56,7 +55,6 @@ import in.brongo.brongo_broker.other.NoInternetTryConnectListener;
 import in.brongo.brongo_broker.uiwidget.FlowLayout;
 import in.brongo.brongo_broker.util.AppConstants;
 import in.brongo.brongo_broker.util.CustomApplicationClass;
-import in.brongo.brongo_broker.util.DatabaseHandler;
 import in.brongo.brongo_broker.util.RetrofitAPIs;
 import in.brongo.brongo_broker.util.RetrofitBuilders;
 import in.brongo.brongo_broker.util.Utils;
@@ -170,44 +168,35 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         int lead_matched = getArguments().getInt("lead_matched",0);
         final String  lead_prop_type = getArguments().getString("lead_prop_type","");
         final String lead_posting_type = getArguments().getString("lead_posting_type","");
-        //int lead_matched =matchList(lead_posting_type,lead_prop_type);
         //String lead_site = getArguments().getString("lead_site");
      lead_mobile = getArguments().getString("lead_mobile","");
       float lead_rating = getArguments().getFloat("lead_rating",0.0f);
         double lead_commission = getArguments().getDouble("lead_commission",0.0d);
-        //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((screenWidth), (screenHeight*2));
-       // RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams((screenWidth), ((screenHeight*2)));
-       /* ScrollView linearLayout = (ScrollView) inflater.inflate(R.layout.fragment_item1, container, false);
-        CarouselLinearLayout root = (CarouselLinearLayout) linearLayout.findViewById(R.id.root_container1);
-        RelativeLayout relativeLayout = (RelativeLayout)linearLayout.findViewById(R.id.open_relative1);*/
         ScrollView linearLayout = (ScrollView) inflater.inflate(R.layout.fragment_item1, container, false);
-        relativeLayout = (RelativeLayout)linearLayout.findViewById(R.id.open_relative1);
-        flowLayout = (FlowLayout)linearLayout.findViewById(R.id.main_deal_flowlayout);
-        feedBackBtn = (Button)linearLayout.findViewById(R.id.feedBack_btn);
-        //relativeLayout.setLayoutParams(layoutParams);
-        mLinearLayout = (LinearLayout)linearLayout.findViewById(R.id.lead_status_linear);
+        relativeLayout = linearLayout.findViewById(R.id.open_relative1);
+        flowLayout = linearLayout.findViewById(R.id.main_deal_flowlayout);
+        feedBackBtn = linearLayout.findViewById(R.id.feedBack_btn);
+        mLinearLayout = linearLayout.findViewById(R.id.lead_status_linear);
         addLayout(arrayList);
-        TextView matching_properties = (TextView) linearLayout.findViewById(R.id.text_matching_properties);
-        TextView open_deal_name = (TextView) linearLayout.findViewById(R.id.opendeal_client_name);
-        TextView open_deal_commission = (TextView) linearLayout.findViewById(R.id.open_deal_commission);
-        TextView open_deal_clienttype = (TextView) linearLayout.findViewById(R.id.open_deal_client_type);
-        TextView open_deal_plan = (TextView)linearLayout.findViewById(R.id.lead_plan);
-        TextView view_all = (TextView)linearLayout.findViewById(R.id.landing_viewall);
+        TextView matching_properties = linearLayout.findViewById(R.id.text_matching_properties);
+        TextView open_deal_name = linearLayout.findViewById(R.id.opendeal_client_name);
+        TextView open_deal_commission = linearLayout.findViewById(R.id.open_deal_commission);
+        TextView open_deal_clienttype = linearLayout.findViewById(R.id.open_deal_client_type);
+        TextView open_deal_plan = linearLayout.findViewById(R.id.lead_plan);
+        TextView view_all = linearLayout.findViewById(R.id.landing_viewall);
         foo(view_all,bundle);
-        //feedBackBtn.setVisibility(View.GONE);
-        TextView open_deal_id = (TextView) linearLayout.findViewById(R.id.deal_id);
-        LinearLayout open_deal_del_btn = (LinearLayout) linearLayout.findViewById(R.id.client_drop);
-        LinearLayout open_deal_chat_btn = (LinearLayout) linearLayout.findViewById(R.id.client_chat);
-        ImageView open_deal_client_image = (ImageView) linearLayout.findViewById(R.id.client_deal_pic);
-        LinearLayout noti_star_linear = (LinearLayout)linearLayout.findViewById(R.id.noti_star_linear);
-        ratingBar = (RatingBar)linearLayout.findViewById(R.id.opendeal_ratingBar);
-        LinearLayout clientCall = (LinearLayout)linearLayout.findViewById(R.id.client_call);
-        final ProgressBar progressBar = (ProgressBar)linearLayout.findViewById(R.id.progress);
+        TextView open_deal_id = linearLayout.findViewById(R.id.deal_id);
+        LinearLayout open_deal_del_btn = linearLayout.findViewById(R.id.client_drop);
+        LinearLayout open_deal_chat_btn = linearLayout.findViewById(R.id.client_chat);
+        ImageView open_deal_client_image = linearLayout.findViewById(R.id.client_deal_pic);
+        LinearLayout noti_star_linear = linearLayout.findViewById(R.id.noti_star_linear);
+        ratingBar = linearLayout.findViewById(R.id.opendeal_ratingBar);
+        LinearLayout clientCall = linearLayout.findViewById(R.id.client_call);
+        final ProgressBar progressBar = linearLayout.findViewById(R.id.progress);
         Glide.with(context)
                 .load(lead_image)
                 .apply(CustomApplicationClass.getRequestOption(true))
                 .into(open_deal_client_image);
-      //  matching_properties1.setText(lead_matched + " matching properties");
         matching_properties.setText(lead_matched + " matching properties");
         open_deal_id.setText("DEAL ID : "+propertyId);
         open_deal_name.setText(lead_name);
@@ -245,7 +234,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                 Intent intent = new Intent(context, Menu_Activity.class);
                bundle.putString("frgToLoad","MatchingPropertyFragment");
                 intent.putExtras(bundle);
-               // startActivity(intent);
+               startActivity(intent);
             }
         });
         open_deal_chat_btn.setOnClickListener(new View.OnClickListener() {
@@ -265,111 +254,116 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         return linearLayout;
     }
     private void addLayout(final ArrayList<String> arrayList) {
-        if(!isClientRated) {
-            if(arrayList.size()>0){
-                remaining = arrayList.size()-1-status;
-            }
-            if (remaining < 3) {
-                feedBackBtn.setVisibility(View.VISIBLE);
-            } else {
-                feedBackBtn.setVisibility(View.GONE);
-            }
-        }
-        for (int i = 0; i < arrayList.size(); i++) {
-          try {
-                View layout2 = LayoutInflater.from(getActivity()).inflate(R.layout.linear_status, mLinearLayout, false);
-                TextView textView = (TextView) layout2.findViewById(R.id.status_text1);
-                LinearLayout status_text_linear = (LinearLayout) layout2.findViewById(R.id.status_text_linear);
-                TextView time_textview = (TextView) layout2.findViewById(R.id.status_time_text);
-                TextView meeting_text = (TextView) layout2.findViewById(R.id.status_reminder);
-              ImageView meeting_image= (ImageView) layout2.findViewById(R.id.status_reminder_imageview);
-                View view1 = (View) layout2.findViewById(R.id.status_view1);
-                View view2 = (View) layout2.findViewById(R.id.status_view2);
-                View view3 = (View) layout2.findViewById(R.id.status_view3);
-                ImageView tick_view = (ImageView) layout2.findViewById(R.id.tick_view);
-                ImageView circle_view = (ImageView)layout2.findViewById(R.id.circle_view);
-                view1.setVisibility(View.VISIBLE);
-                view2.setVisibility(View.VISIBLE);
-                textView.setText(arrayList.get(i));
-                final int position1 = i;
-                if (position1 == 0) {
-                    view1.setVisibility(View.INVISIBLE);
+        try {
+            if(!isClientRated) {
+                if(arrayList.size()>0){
+                    remaining = arrayList.size()-1-status;
                 }
-                if (position1 == arrayList.size() - 1) {
-                    view2.setVisibility(View.INVISIBLE);
+                if (remaining < 3) {
+                    feedBackBtn.setVisibility(View.VISIBLE);
+                } else {
+                    feedBackBtn.setVisibility(View.GONE);
                 }
-                if (position1 < status) {
-                    view1.setBackgroundColor(context.getResources().getColor(R.color.status_green));
-                    view2.setBackgroundColor(context.getResources().getColor(R.color.status_green));
-                    view3.setBackgroundColor(context.getResources().getColor(R.color.status_green));
-                    textView.setTextColor(context.getResources().getColor(R.color.status_green));
-                    time_textview.setText(timeList.get(position1));
-                    tick_view.setVisibility(View.GONE);
-                    circle_view.setVisibility(View.GONE);
-                } else if (position1 > status) {
-                    view1.setBackgroundColor(context.getResources().getColor(R.color.status_red));
-                    view2.setBackgroundColor(context.getResources().getColor(R.color.status_red));
-                    view3.setBackgroundColor(context.getResources().getColor(R.color.status_red));
-                    textView.setTextColor(context.getResources().getColor(R.color.status_red));
-                    time_textview.setText("");
-                    tick_view.setVisibility(View.GONE);
-                    circle_view.setVisibility(View.GONE);
-                } else if (position1 == status) {
-                    view1.setBackgroundColor(context.getResources().getColor(R.color.status_green));
-                    view2.setBackgroundColor(context.getResources().getColor(R.color.status_red));
-                    view3.setBackgroundColor(context.getResources().getColor(R.color.status_green));
-                    textView.setTextColor(context.getResources().getColor(R.color.status_green));
-                    time_textview.setText(timeList.get(position1));
-                    tick_view.setVisibility(View.VISIBLE);
-                    circle_view.setVisibility(View.VISIBLE);
-                }
-           if(position1 == 1 && status ==1){
-               meeting_text.setVisibility(View.VISIBLE);
-               meeting_image.setVisibility(View.VISIBLE);
-            }else{
-               meeting_text.setVisibility(View.GONE);
-               meeting_image.setVisibility(View.GONE);
             }
-                status_text_linear.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (position1 <= status) {
-                        } else if (position1 == status + 1) {
-                            if(position1 == arrayList.size()-1){
-                                if (!isClientRated) {
-                                    //Utils.showAlert("","Please give feedback first !",context);
-                                    viewListener1.alert("Please give feedback first !");
-                                } else {
-                                    feedBackBtn.setVisibility(View.GONE);
+            for (int i = 0; i < arrayList.size(); i++) {
+              try {
+                    View layout2 = LayoutInflater.from(getActivity()).inflate(R.layout.linear_status, mLinearLayout, false);
+                    TextView textView = layout2.findViewById(R.id.status_text1);
+                    LinearLayout status_text_linear = layout2.findViewById(R.id.status_text_linear);
+                    TextView time_textview = layout2.findViewById(R.id.status_time_text);
+                    TextView meeting_text = layout2.findViewById(R.id.status_reminder);
+                  ImageView meeting_image= layout2.findViewById(R.id.status_reminder_imageview);
+                    View view1 = layout2.findViewById(R.id.status_view1);
+                    View view2 = layout2.findViewById(R.id.status_view2);
+                    View view3 = layout2.findViewById(R.id.status_view3);
+                    ImageView tick_view = layout2.findViewById(R.id.tick_view);
+                    ImageView circle_view = layout2.findViewById(R.id.circle_view);
+                    view1.setVisibility(View.VISIBLE);
+                    view2.setVisibility(View.VISIBLE);
+                    textView.setText(arrayList.get(i));
+                    final int position1 = i;
+                    if (position1 == 0) {
+                        view1.setVisibility(View.INVISIBLE);
+                    }
+                    if (position1 == arrayList.size() - 1) {
+                        view2.setVisibility(View.INVISIBLE);
+                    }
+                    if (position1 < status) {
+                        view1.setBackgroundColor(context.getResources().getColor(R.color.status_green));
+                        view2.setBackgroundColor(context.getResources().getColor(R.color.status_green));
+                        view3.setBackgroundColor(context.getResources().getColor(R.color.status_green));
+                        textView.setTextColor(context.getResources().getColor(R.color.status_green));
+                        time_textview.setText(timeList.get(position1));
+                        tick_view.setVisibility(View.GONE);
+                        circle_view.setVisibility(View.GONE);
+                    } else if (position1 > status) {
+                        view1.setBackgroundColor(context.getResources().getColor(R.color.status_red));
+                        view2.setBackgroundColor(context.getResources().getColor(R.color.status_red));
+                        view3.setBackgroundColor(context.getResources().getColor(R.color.status_red));
+                        textView.setTextColor(context.getResources().getColor(R.color.status_red));
+                        time_textview.setText("");
+                        tick_view.setVisibility(View.GONE);
+                        circle_view.setVisibility(View.GONE);
+                    } else if (position1 == status) {
+                        view1.setBackgroundColor(context.getResources().getColor(R.color.status_green));
+                        view2.setBackgroundColor(context.getResources().getColor(R.color.status_red));
+                        view3.setBackgroundColor(context.getResources().getColor(R.color.status_green));
+                        textView.setTextColor(context.getResources().getColor(R.color.status_green));
+                        time_textview.setText(timeList.get(position1));
+                        tick_view.setVisibility(View.VISIBLE);
+                        circle_view.setVisibility(View.VISIBLE);
+                    }
+               if(position1 == 1 && status ==1){
+                   meeting_text.setVisibility(View.VISIBLE);
+                   meeting_image.setVisibility(View.VISIBLE);
+                }else{
+                   meeting_text.setVisibility(View.GONE);
+                   meeting_image.setVisibility(View.GONE);
+                }
+                    status_text_linear.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (position1 <= status) {
+                            } else if (position1 == status + 1) {
+                                if(position1 == arrayList.size()-1){
+                                    if (!isClientRated) {
+                                        //Utils.showAlert("","Please give feedback first !",context);
+                                        viewListener1.alert("Please give feedback first !");
+                                    } else {
+                                        feedBackBtn.setVisibility(View.GONE);
+                                        statusChangedDialog(position1, arrayList.get(status), arrayList.get(status + 1));
+                                    }
+                                }else{
                                     statusChangedDialog(position1, arrayList.get(status), arrayList.get(status + 1));
                                 }
-                            }else{
-                                statusChangedDialog(position1, arrayList.get(status), arrayList.get(status + 1));
+                            } else {
+                                viewListener1.alert("First select status '" + arrayList.get(status + 1) + "'");
                             }
-                        } else {
-                            viewListener1.alert("First select status '" + arrayList.get(status + 1) + "'");
                         }
-                    }
-                });
-              meeting_text.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), ReminderActivity.class);
-                        intent.putExtra("prop_id",bundle.getString("propertyId"));
-                        intent.putExtra("client_mobile",bundle.getString("lead_mobile"));
-                        intent.putExtra("meeting_date",bundle.getString("meeting_date"));
-                        intent.putExtra("meeting_time",bundle.getString("meeting_time"));
-                        intent.putExtra("meeting_notes",bundle.getString("meeting_notes"));
-                        intent.putExtra("meeting_lat",bundle.getDouble("meeting_lat"));
-                        intent.putExtra("meeting_long",bundle.getDouble("meeting_long"));
-                        intent.putExtra("meeting_location",bundle.getString("meeting_location"));
-                        startActivity(intent);
-                    }
-                });
-                mLinearLayout.addView(layout2);
-            } catch (Exception e) {
-                String error = e.toString();
+                    });
+                  meeting_text.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getActivity(), ReminderActivity.class);
+                            intent.putExtra("prop_id",bundle.getString("propertyId"));
+                            intent.putExtra("client_mobile",bundle.getString("lead_mobile"));
+                            intent.putExtra("meeting_date",bundle.getString("meeting_date"));
+                            intent.putExtra("meeting_time",bundle.getString("meeting_time"));
+                            intent.putExtra("meeting_notes",bundle.getString("meeting_notes"));
+                            intent.putExtra("meeting_lat",bundle.getDouble("meeting_lat"));
+                            intent.putExtra("meeting_long",bundle.getDouble("meeting_long"));
+                            intent.putExtra("meeting_location",bundle.getString("meeting_location"));
+                            startActivity(intent);
+                        }
+                    });
+                    mLinearLayout.addView(layout2);
+                } catch (Exception e) {
+                  e.printStackTrace();
+                    String error = e.toString();
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private void addview(ArrayList<String> keyList) {
@@ -378,13 +372,14 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                 try {
                     if(!keyList.get(j).isEmpty()) {
                         View layout2 = LayoutInflater.from(getActivity()).inflate(R.layout.deal_child, flowLayout, false);
-                        TextView deal_textview = (TextView) layout2.findViewById(R.id.deal_text);
+                        TextView deal_textview = layout2.findViewById(R.id.deal_text);
                         deal_textview.setBackgroundResource(R.drawable.rounded_blue_btn);
                         deal_textview.setTextColor(context.getResources().getColor(R.color.white));
                         deal_textview.setText(keyList.get(j));
                         flowLayout.addView(layout2);
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     String error = e.toString();
                 }
             }
@@ -394,73 +389,81 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
      * Get device screen width and height
      */
     private void getWidthAndHeight() {
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        screenHeight = displaymetrics.heightPixels;
-        screenWidth = displaymetrics.widthPixels;
+        try {
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            screenHeight = displaymetrics.heightPixels;
+            screenWidth = displaymetrics.widthPixels;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void callClient(final String lead_mobile, final String propertyId) {
-        if (Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
-            String client_no = lead_mobile;
-            String brokerno = (pref.getString(AppConstants.MOBILE_NUMBER, ""));
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            ApiModel.KnowlarityModel knowlarityModel = new ApiModel.KnowlarityModel();
-            knowlarityModel.setFrom(brokerno);
-            knowlarityModel.setTo(client_no);
-            knowlarityModel.setDealId(propertyId);
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+        try {
+            if (Utils.isNetworkAvailable(context)) {
+                Utils.LoaderUtils.showLoader(context);
+                String client_no = lead_mobile;
+                String brokerno = (pref.getString(AppConstants.MOBILE_NUMBER, ""));
+                String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+                String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+                ApiModel.KnowlarityModel knowlarityModel = new ApiModel.KnowlarityModel();
+                knowlarityModel.setFrom(brokerno);
+                knowlarityModel.setTo(client_no);
+                knowlarityModel.setDealId(propertyId);
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
 
-            Call<ResponseBody> call = retrofitAPIs.callKnowlarityApi(tokenaccess, "android", deviceId, knowlarityModel);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        String responseString = null;
-                        if (response.isSuccessful()) {
-                            try {
-                                responseString = response.body().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 200 && message.equalsIgnoreCase("You Can Processed With Call")) {
-                                    Intent callIntent = new Intent(Intent.ACTION_CALL);
-                                    callIntent.setData(Uri.parse("tel:" + "+919590224224"));
-                                    startActivity(callIntent);
+                Call<ResponseBody> call = retrofitAPIs.callKnowlarityApi(tokenaccess, "android", deviceId, knowlarityModel);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utils.LoaderUtils.dismissLoader();
+                        if (response != null) {
+                            String responseString = null;
+                            if (response.isSuccessful()) {
+                                try {
+                                    responseString = response.body().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    String message = jsonObject.optString("message");
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    if (statusCode == 200 && message.equalsIgnoreCase("You Can Processed With Call")) {
+                                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                                        callIntent.setData(Uri.parse("tel:" + "+919590224224"));
+                                        startActivity(callIntent);
+                                    }
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    viewListener1.alert("please try again");
-                                } else {
-                                    viewListener1.alert(message);
-                                }
+                            } else {
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    String message = jsonObject.optString("message");
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                        new AllUtils().getTokenRefresh(context);
+                                        viewListener1.alert("please try again");
+                                    } else {
+                                        viewListener1.alert(message);
+                                    }
 
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                }
-            });
-        } else {
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utils.LoaderUtils.dismissLoader();
+                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                    }
+                });
+            } else {
+                Utils.internetDialog(context,this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -477,158 +480,153 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
     }
 
     private void updateLeadStatus(final int position1){
-        if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
-            ClientDetailsModel.LeadStatusModel leadStatusModel = new ClientDetailsModel.LeadStatusModel();
-            leadStatusModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
-            leadStatusModel.setClientMobileNo(bundle.getString("lead_mobile"));
-            leadStatusModel.setPropertyId(bundle.getString("propertyId"));
-            leadStatusModel.setCommission(bundle.getDouble("lead_commission"));
-            leadStatusModel.setRegDate("");
-            leadStatusModel.setPostingType(bundle.getString("lead_posting_type").toUpperCase());
-            leadStatusModel.setStatus(position1 + 1);
-            leadStatusModel.setAcceptedProperty("");
-            leadStatusModel.setAcceptedPropertyName("");
-            leadStatusModel.setSiteVisitName("");
-            leadStatusModel.setMeetAt("");
-            leadStatusModel.setDateOfVisit("");
-            leadStatusModel.setPropertyName("");
-            leadStatusModel.setVisitingPropertyId("");
-            leadStatusModel.setTimeOfVisit("");
-            leadStatusModel.setRemainder("");
-            leadStatusModel.setReminder("");
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            Call<ResponseBody> call = retrofitAPIs.updateLeadStatusApi(tokenaccess, "android", deviceId, leadStatusModel);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        String responseString = null;
-                        if (response.isSuccessful()) {
-                            try {
-                                responseString = response.body().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 200 && message.equalsIgnoreCase("Lead Status Updated Successfully")) {
-                                   viewListener1.alert(message);
-                                   viewListener1.refreshData();
-                                   /* status = position1;
-                                    timeList.add("NOW");
-                                    mLinearLayout.removeAllViews();
-                                    addLayout(arrayList);
-                                    //setView();*/
+        try {
+            if(Utils.isNetworkAvailable(context)) {
+                Utils.LoaderUtils.showLoader(context);
+                ClientDetailsModel.LeadStatusModel leadStatusModel = new ClientDetailsModel.LeadStatusModel();
+                leadStatusModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
+                leadStatusModel.setClientMobileNo(bundle.getString("lead_mobile"));
+                leadStatusModel.setPropertyId(bundle.getString("propertyId"));
+                leadStatusModel.setCommission(bundle.getDouble("lead_commission"));
+                leadStatusModel.setRegDate("");
+                leadStatusModel.setPostingType(bundle.getString("lead_posting_type").toUpperCase());
+                leadStatusModel.setStatus(position1 + 1);
+                leadStatusModel.setAcceptedProperty("");
+                leadStatusModel.setAcceptedPropertyName("");
+                leadStatusModel.setSiteVisitName("");
+                leadStatusModel.setMeetAt("");
+                leadStatusModel.setDateOfVisit("");
+                leadStatusModel.setPropertyName("");
+                leadStatusModel.setVisitingPropertyId("");
+                leadStatusModel.setTimeOfVisit("");
+                leadStatusModel.setRemainder("");
+                leadStatusModel.setReminder("");
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+                String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+                Call<ResponseBody> call = retrofitAPIs.updateLeadStatusApi(tokenaccess, "android", deviceId, leadStatusModel);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utils.LoaderUtils.dismissLoader();
+                        if (response != null) {
+                            String responseString = null;
+                            if (response.isSuccessful()) {
+                                try {
+                                    responseString = response.body().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    String message = jsonObject.optString("message");
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    if (statusCode == 200 && message.equalsIgnoreCase("Lead Status Updated Successfully")) {
+                                       viewListener1.alert(message);
+                                       viewListener1.refreshData();
+                                       /* status = position1;
+                                        timeList.add("NOW");
+                                        mLinearLayout.removeAllViews();
+                                        addLayout(arrayList);
+                                        //setView();*/
+                                    }
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    viewListener1.alert("please try again");
-                                } else {
-                                    viewListener1.alert(message);
+                            } else {
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    String message = jsonObject.optString("message");
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                        new AllUtils().getTokenRefresh(context);
+                                        viewListener1.alert("please try again");
+                                    } else {
+                                        viewListener1.alert(message);
+                                    }
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                }
-            });
-        }else{
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utils.LoaderUtils.dismissLoader();
+                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                    }
+                });
+            }else{
+                Utils.internetDialog(context,this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
 
     private void statusChangedDialog(final int position1, String status1, String status2){
-        SpannableStringBuilder span_status1 = Utils.convertToSpannableString(status1,0,status1.length(),"black");
-        SpannableStringBuilder span_status2 = Utils.convertToSpannableString(status2,0,status2.length(),"black");
-        SpannableString content = new SpannableString("I’ll do it later");
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        String message = "Do you want to change your status from ‘";
-        message = message + span_status1;
-        message = message.concat("'to ‘");
-        message = message + span_status2;
-        message = message.concat("’?");
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_status);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        final Button yes_btn = (Button)dialog.findViewById(R.id.status_dialog_btn);
-        TextView message_textview = (TextView)dialog.findViewById(R.id.status_dialog_message_text);
-        TextView do_later_textview = (TextView)dialog.findViewById(R.id.status_dialog_do_later_text);
-        do_later_textview.setText(content);
-        message_textview.setText(message);
-        yes_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.setAlphaAnimation(yes_btn,context);
-                updateLeadStatus(position1);
-                dialog.dismiss();
-            }
-        });
-        do_later_textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+        try {
+            SpannableStringBuilder span_status1 = Utils.convertToSpannableString(status1,0,status1.length(),"black");
+            SpannableStringBuilder span_status2 = Utils.convertToSpannableString(status2,0,status2.length(),"black");
+            SpannableString content = new SpannableString("I’ll do it later");
+            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+            String message = "Do you want to change your status from ‘";
+            message = message + span_status1;
+            message = message.concat("'to ‘");
+            message = message + span_status2;
+            message = message.concat("’?");
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setContentView(R.layout.dialog_status);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            final Button yes_btn = dialog.findViewById(R.id.status_dialog_btn);
+            TextView message_textview = dialog.findViewById(R.id.status_dialog_message_text);
+            TextView do_later_textview = dialog.findViewById(R.id.status_dialog_do_later_text);
+            do_later_textview.setText(content);
+            message_textview.setText(message);
+            yes_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utils.setAlphaAnimation(yes_btn,context);
+                    updateLeadStatus(position1);
+                    dialog.dismiss();
+                }
+            });
+            do_later_textview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private int matchList(String posting_type,String property_type){
-        int count = 0;
-        DatabaseHandler db = new DatabaseHandler(context);
-        Cursor cursor = db.getListItem();
-        if (cursor != null) {
-            cursor.moveToNext();
-            for(int i =0;i<cursor.getCount();i++) {
-                String post_type = cursor.getString(cursor.getColumnIndex("postingtype"));
-                String prop_type = cursor.getString(cursor.getColumnIndex("propertytype"));
-                if (Utils.match_deal(posting_type, post_type, property_type, prop_type)) {
-                    count++;
-                }
-                cursor.moveToNext();
-            }
-        }
-        return count;
-    }
     private void foo(TextView landing_viewall, final Bundle bundle) {
-        SpannableString link = makeLinkSpan("View all requirement", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),Menu_Activity.class);
-                intent.putExtra("dealId",bundle.getString("propertyId"));
-                intent.putExtra("postingType",bundle.getString("lead_posting_type"));
-                intent.putExtra("propertyType",bundle.getString("lead_prop_type"));
-                intent.putExtra("clientMobile",bundle.getString("lead_mobile"));
-                intent.putExtra("sub_propertyType",bundle.getString("lead_sub_prop_type"));
-                intent.putExtra("frgToLoad",("requirement_page"));
-                startActivity(intent);
-            }
-        });
-        // Set the TextView's text
-        landing_viewall.setText(link);
-        // This line makes the link clickable!
-        makeLinksFocusable(landing_viewall);
+        try {
+            SpannableString link = makeLinkSpan("View all requirement", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(),Menu_Activity.class);
+                    intent.putExtra("dealId",bundle.getString("propertyId"));
+                    intent.putExtra("postingType",bundle.getString("lead_posting_type"));
+                    intent.putExtra("propertyType",bundle.getString("lead_prop_type"));
+                    intent.putExtra("clientMobile",bundle.getString("lead_mobile"));
+                    intent.putExtra("sub_propertyType",bundle.getString("lead_sub_prop_type"));
+                    intent.putExtra("frgToLoad",("requirement_page"));
+                    startActivity(intent);
+                }
+            });
+            // Set the TextView's text
+            landing_viewall.setText(link);
+            // This line makes the link clickable!
+            makeLinksFocusable(landing_viewall);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 /*
@@ -644,13 +642,17 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
     }
 
     private void makeLinksFocusable(TextView tv) {
-        MovementMethod m = tv.getMovementMethod();
-        if ((m == null) || !(m instanceof LinkMovementMethod)) {
-            if (tv.getLinksClickable()) {
-                tv.setMovementMethod(LinkMovementMethod.getInstance());
+        try {
+            MovementMethod m = tv.getMovementMethod();
+            if ((m == null) || !(m instanceof LinkMovementMethod)) {
+                if (tv.getLinksClickable()) {
+                    tv.setMovementMethod(LinkMovementMethod.getInstance());
+                }
             }
+            tv.setHighlightColor(Color.TRANSPARENT);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        tv.setHighlightColor(Color.TRANSPARENT);
     }
 /*
  * ClickableString class
@@ -669,6 +671,10 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Utils.LoaderUtils.dismissLoader();
+        try {
+            Utils.LoaderUtils.dismissLoader();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

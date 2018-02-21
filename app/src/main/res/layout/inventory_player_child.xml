@@ -13,19 +13,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <in.brongo.brongo_broker.uiwidget.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/personal_invent_tag"
-            android:id="@+id/personal_tag"
-            android:layout_marginTop="@dimen/builder_normal"
-            android:text="Personal"
-            android:textSize="@dimen/text_size_small"
-            android:textColor="#ffffff"
-            android:gravity="center"
-            android:padding="@dimen/builder_small"
-            app:customFont="lato_regular.ttf"
-            android:visibility="gone"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -182,6 +169,18 @@
                     android:layout_alignParentLeft="true"/>
             </LinearLayout>
         </RelativeLayout>
-
+        <in.brongo.brongo_broker.uiwidget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/personal_invent_tag"
+            android:id="@+id/personal_tag"
+            android:layout_marginTop="@dimen/builder_normal"
+            android:text="Personal"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:padding="@dimen/builder_small"
+            app:customFont="lato_regular.ttf"
+            android:visibility="gone"/>
     </RelativeLayout>
 </LinearLayout>

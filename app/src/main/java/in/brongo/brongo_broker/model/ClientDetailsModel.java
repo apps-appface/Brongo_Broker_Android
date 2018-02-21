@@ -352,6 +352,8 @@ public class ClientDetailsModel {
         int status;
     }
     public static class NotificatioModel{
+        String propertyId;
+        String postingType;
         String clientMobileNo;
         String brokerMobileNo;
 
@@ -387,8 +389,6 @@ public class ClientDetailsModel {
             this.postingType = postingType;
         }
 
-        String propertyId;
-        String postingType;
     }
     public static class ConnectedClientModel{
         int statusCode;

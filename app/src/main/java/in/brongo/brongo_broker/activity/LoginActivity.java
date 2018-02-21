@@ -50,10 +50,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity implements NoInternetTryConnectListener{
+public class LoginActivity extends AppCompatActivity implements NoInternetTryConnectListener {
     public EditText login_phone_edit, otp_edit1, otp_edit2, otp_edit3, otp_edit4;
     private Button login_btn, otp_verify_btn;
-    private int taskcompleted=0;
+    private int taskcompleted = 0;
     private int SMS_PERMISSION_REQUEST = 1000;
     private int SMS_BROADCAST_REQUEST = 2000;
     private int PHONE_PERMISSION_REQUEST = 100;
@@ -62,12 +62,12 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
     public static final int REQUEST_DEVICE_ID_PERMISSIONS = 112;
     private static final int REQUEST_CAMERA = 200;
     private List<String> listPermissionsNeeded;
-    int currentTime;
+    private int currentTime;
     private ImageView otp_back;
     private BroadcastReceiver broadcastReceiver;
     private Toolbar otp_toolbar;
-    private LinearLayout goto_register, linear_otp,linear_resend_otp,parentLayout;
-    private TextView resend_otp, register_text, otp_mobile_text, title_text,otp_timer,phone_invalid,otp_invalid,docu_skip;
+    private LinearLayout goto_register, linear_otp, linear_resend_otp, parentLayout;
+    private TextView resend_otp, register_text, otp_mobile_text, title_text, otp_timer, phone_invalid, otp_invalid, docu_skip;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private RelativeLayout relative_login;
@@ -78,7 +78,6 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
     private Context context = this;
     private CheckBox remember_check;
     private boolean isOtpVisible = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,24 +98,17 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                             String senderNum = phoneNumber;
                             String message = currentMessage.getDisplayMessageBody();
                             try {
-                               /* if (senderNum.contains("BRONGO")) {
-                                    String abcd = message.replaceAll("[^0-9]", "");
-                                    fill_Otp(abcd);
-                                    //LoginActivity Sms = new LoginActivity();
-                                    //Sms.recivedSms(message );
-                                }*/
                                 if (message.contains("Dear User Welcome to Brongo.")) {
                                     String abcd = message.replaceAll("[^0-9]", "");
                                     fill_Otp(abcd);
-                                    //LoginActivity Sms = new LoginActivity();
-                                    //Sms.recivedSms(message );
                                 }
                             } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
 
             }
@@ -138,9 +130,8 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                 } else {
                     ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.BROADCAST_SMS}, SMS_BROADCAST_REQUEST);
                 }
-
             }
-        }else{
+        } else {
             initalise();
             setListener();
             setTextWatcher();
@@ -149,351 +140,369 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
     }
 
     private void initalise() {
-        pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
-        editor = pref.edit();
-        parentLayout = (LinearLayout)findViewById(R.id.login_parent_linear);
-        editor.putBoolean(AppConstants.ISWALKTHROUGH,false).commit();
-        remember_check = (CheckBox)findViewById(R.id.loginCheck);
-        login_phone_edit = (EditText) findViewById(R.id.loginid);
-        otp_toolbar = (Toolbar) findViewById(R.id.login_toolbar);
-        title_text = (TextView) findViewById(R.id.login_toolbar).findViewById(R.id.other_toolbar_title);
-        docu_skip = (TextView)findViewById(R.id.login_toolbar).findViewById(R.id.other_toolbar_skip);
-        docu_skip.setVisibility(View.GONE);
-        otp_back = (ImageView) findViewById(R.id.login_toolbar).findViewById(R.id.other_toolbar_back);
-        otp_edit1 = (EditText) findViewById(R.id.otp_edit1);
-        otp_mobile_text = (TextView) findViewById(R.id.otp_mobile);
-        otp_edit2 = (EditText) findViewById(R.id.otp_edit2);
-        register_text = (TextView) findViewById(R.id.register_text);
-        linear_resend_otp = (LinearLayout)findViewById(R.id.linear_resend_otp);
-        otp_timer = (TextView) findViewById(R.id.login_toolbar).findViewById(R.id.other_toolbar_otp_timer);
-        phone_invalid = (TextView)findViewById(R.id.invalid_phone);
-        otp_invalid = (TextView)findViewById(R.id.invalid_otp);
-        otp_edit3 = (EditText) findViewById(R.id.otp_edit3);
-        otp_edit4 = (EditText) findViewById(R.id.otp_edit4);
-        login_btn = (Button) findViewById(R.id.login_btn);
-        otp_verify_btn = (Button) findViewById(R.id.otp_verify_btn);
-        goto_register = (LinearLayout) findViewById(R.id.contact_new_text);
-        resend_otp = (TextView) findViewById(R.id.resened_otp);
-        relative_login = (RelativeLayout) findViewById(R.id.login_relative_layout);
-        linear_otp = (LinearLayout) findViewById(R.id.otp_linear_layout);
-        Utils.storeDeviceInfo(context, editor);
-        String code = "+91  ";
-        login_phone_edit.setSelection(login_phone_edit.getText().length());
-        if(pref.getBoolean(AppConstants.LOGIN_REMEMBER,false)){
-            remember_check.setChecked(true);
-            login_phone_edit.setText(pref.getString(AppConstants.MOBILE_NUMBER,""));
-        }else{
-            remember_check.setChecked(false);
+        try {
+            pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
+            editor = pref.edit();
+            parentLayout = findViewById(R.id.login_parent_linear);
+            editor.putBoolean(AppConstants.ISWALKTHROUGH, false).commit();
+            remember_check = findViewById(R.id.loginCheck);
+            login_phone_edit = findViewById(R.id.loginid);
+            otp_toolbar = findViewById(R.id.login_toolbar);
+            title_text = findViewById(R.id.login_toolbar).findViewById(R.id.other_toolbar_title);
+            docu_skip = findViewById(R.id.login_toolbar).findViewById(R.id.other_toolbar_skip);
+            docu_skip.setVisibility(View.GONE);
+            otp_back = findViewById(R.id.login_toolbar).findViewById(R.id.other_toolbar_back);
+            otp_edit1 = findViewById(R.id.otp_edit1);
+            otp_mobile_text = findViewById(R.id.otp_mobile);
+            otp_edit2 = findViewById(R.id.otp_edit2);
+            register_text = findViewById(R.id.register_text);
+            linear_resend_otp = findViewById(R.id.linear_resend_otp);
+            otp_timer = findViewById(R.id.login_toolbar).findViewById(R.id.other_toolbar_otp_timer);
+            phone_invalid = findViewById(R.id.invalid_phone);
+            otp_invalid = findViewById(R.id.invalid_otp);
+            otp_edit3 = findViewById(R.id.otp_edit3);
+            otp_edit4 = findViewById(R.id.otp_edit4);
+            login_btn = findViewById(R.id.login_btn);
+            otp_verify_btn = findViewById(R.id.otp_verify_btn);
+            goto_register = findViewById(R.id.contact_new_text);
+            resend_otp = findViewById(R.id.resened_otp);
+            relative_login = findViewById(R.id.login_relative_layout);
+            linear_otp = findViewById(R.id.otp_linear_layout);
+            Utils.storeDeviceInfo(context, editor);
+            String code = "+91  ";
+            login_phone_edit.setSelection(login_phone_edit.getText().length());
+            if (pref.getBoolean(AppConstants.LOGIN_REMEMBER, false)) {
+                remember_check.setChecked(true);
+                login_phone_edit.setText(pref.getString(AppConstants.MOBILE_NUMBER, ""));
+            } else {
+                remember_check.setChecked(false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private void setListener() {
-        login_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phone = login_phone_edit.getText().toString();
-                if (phone.length() == 0) {
-                    Utils.setSnackBar(parentLayout,"Mobile can not be empty");
-                } else if ((phone.startsWith("6") ||phone.startsWith("7") || phone.startsWith("8") || phone.startsWith("9")) && (phone.length() == 10)) {
-                           callLogin(phone);
-                } else {
-                    Utils.setSnackBar(parentLayout,"Invalid Mobile Number");
+        try {
+            login_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    phone = login_phone_edit.getText().toString();
+                    if (phone.length() == 0) {
+                        Utils.setSnackBar(parentLayout, "Mobile can not be empty");
+                    } else if ((phone.startsWith("6") || phone.startsWith("7") || phone.startsWith("8") || phone.startsWith("9")) && (phone.length() == 10)) {
+                        callLogin(phone);
+                    } else {
+                        Utils.setSnackBar(parentLayout, "Invalid Mobile Number");
+                    }
                 }
-            }
-        });
-        goto_register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-                Intent i = new Intent(LoginActivity.this, Menu_Activity.class);
-                i.putExtra("frgToLoad", "ContactFragment");
-                startActivity(i);
-            }
-        });
-        resend_otp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               callLogin(phone);
-                linear_resend_otp.setVisibility(View.GONE);
-            }
-        });
-        otp_verify_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String otp1 = otp_edit1.getText().toString();
-                String otp2 = otp_edit2.getText().toString();
-                String otp3 = otp_edit3.getText().toString();
-                String otp4 = otp_edit4.getText().toString();
-                if (otp1.length() == 0 || otp2.length() == 0 || otp3.length() == 0 || otp4.length() == 0) {
-                    Utils.setSnackBar(parentLayout, "Otp can not be empty");
-                } else {
-                    otpValue = otp1 + otp2 + otp3 + otp4;
-                    verifyOtp(otpValue);
+            });
+            goto_register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                    Intent i = new Intent(LoginActivity.this, Menu_Activity.class);
+                    i.putExtra("frgToLoad", "ContactFragment");
+                    startActivity(i);
+                }
+            });
+            resend_otp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callLogin(phone);
+                    linear_resend_otp.setVisibility(View.GONE);
+                }
+            });
+            otp_verify_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String otp1 = otp_edit1.getText().toString();
+                    String otp2 = otp_edit2.getText().toString();
+                    String otp3 = otp_edit3.getText().toString();
+                    String otp4 = otp_edit4.getText().toString();
+                    if (otp1.length() == 0 || otp2.length() == 0 || otp3.length() == 0 || otp4.length() == 0) {
+                        Utils.setSnackBar(parentLayout, "Otp can not be empty");
+                    } else {
+                        otpValue = otp1 + otp2 + otp3 + otp4;
+                        verifyOtp(otpValue);
 
+                    }
                 }
-            }
-        });
-        otp_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               otpBack();
-            }
-        });
-        remember_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                  editor.putBoolean(AppConstants.LOGIN_REMEMBER,true).commit();
-                }else{
-                    editor.putBoolean(AppConstants.LOGIN_REMEMBER,false).commit();
+            });
+            otp_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    otpBack();
                 }
-            }
-        });
+            });
+            remember_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        editor.putBoolean(AppConstants.LOGIN_REMEMBER, true).commit();
+                    } else {
+                        editor.putBoolean(AppConstants.LOGIN_REMEMBER, false).commit();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void callLogin(final String phone) {
-        if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
-            String deviceId = Utils.getDeviceId(context);
-            String versionName = BuildConfig.VERSION_NAME;
-            Call<SignInModel> call = null;
-            editor.putString(AppConstants.DEVICE_ID, deviceId);
-            editor.putString(AppConstants.MOBILE_NUMBER, phone);
-            editor.commit();
-            SignUpModel.LoginModel loginModel = new SignUpModel.LoginModel();
-            loginModel.setUserId(phone);
-            loginModel.setDeviceId(deviceId);
-            loginModel.setPlatform("android");
-            loginModel.setVersion(versionName);
-            loginModel.setOsVersion(pref.getString(AppConstants.OS_VERSION, ""));
-            loginModel.setAppVersion(pref.getString(AppConstants.APP_VERSION, ""));
-            loginModel.setModelName(pref.getString(AppConstants.MODEL_NAME, ""));
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            call = retrofitAPIs.signInApi(loginModel);
-            call.enqueue(new Callback<SignInModel>() {
-                @Override
-                public void onResponse(Call<SignInModel> call, Response<SignInModel> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        if (response.isSuccessful()) {
-                            SignInModel signInModel = response.body();
-                            int statusCode = signInModel.getStatusCode();
-                            String message = signInModel.getMessage();
-                            String otp = signInModel.getData().get(0).getOtp();
-                            if (statusCode == 200 && message.equalsIgnoreCase("OTP Sent To Your Mobile Number Please Check")) {
-                                //Utils.setSnackBar(parentLayout, otp);
-                                relative_login.setVisibility(View.GONE);
-                                linear_otp.setVisibility(View.VISIBLE);
-                                otp_toolbar.setVisibility(View.VISIBLE);
-                                title_text.setText("Verification");
-                                otp_mobile_text.setText(pref.getString(AppConstants.MOBILE_NUMBER, ""));
-                                isOtpVisible = true;
-                                showTimer();
-                            }
-                        } else {
-                            try {
-                                String responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (message.equalsIgnoreCase("Broker Not Found")) {
-                                    //phone_invalid.setVisibility(View.VISIBLE);
-                                    startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-                                } else  if(statusCode == 412){
-                                  AllUtils.updateDialog(context);
-                                }else{
-                                    Utils.setSnackBar(parentLayout,message);
+        try {
+            if (Utils.isNetworkAvailable(context)) {
+                Utils.LoaderUtils.showLoader(context);
+                String deviceId = Utils.getDeviceId(context);
+                String versionName = BuildConfig.VERSION_NAME;
+                Call<SignInModel> call = null;
+                editor.putString(AppConstants.DEVICE_ID, deviceId);
+                editor.putString(AppConstants.MOBILE_NUMBER, phone);
+                editor.commit();
+                SignUpModel.LoginModel loginModel = new SignUpModel.LoginModel();
+                loginModel.setUserId(phone);
+                loginModel.setDeviceId(deviceId);
+                loginModel.setPlatform("android");
+                loginModel.setVersion(versionName);
+                loginModel.setOsVersion(pref.getString(AppConstants.OS_VERSION, ""));
+                loginModel.setAppVersion(pref.getString(AppConstants.APP_VERSION, ""));
+                loginModel.setModelName(pref.getString(AppConstants.MODEL_NAME, ""));
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                call = retrofitAPIs.signInApi(loginModel);
+                call.enqueue(new Callback<SignInModel>() {
+                    @Override
+                    public void onResponse(Call<SignInModel> call, Response<SignInModel> response) {
+                        Utils.LoaderUtils.dismissLoader();
+                        if (response != null) {
+                            if (response.isSuccessful()) {
+                                SignInModel signInModel = response.body();
+                                int statusCode = signInModel.getStatusCode();
+                                String message = signInModel.getMessage();
+                                String otp = signInModel.getData().get(0).getOtp();
+                                if (statusCode == 200 && message.equalsIgnoreCase("OTP Sent To Your Mobile Number Please Check")) {
+                                    //Utils.setSnackBar(parentLayout, otp);
+                                    relative_login.setVisibility(View.GONE);
+                                    linear_otp.setVisibility(View.VISIBLE);
+                                    otp_toolbar.setVisibility(View.VISIBLE);
+                                    title_text.setText("Verification");
+                                    otp_mobile_text.setText(pref.getString(AppConstants.MOBILE_NUMBER, ""));
+                                    isOtpVisible = true;
+                                    showTimer();
                                 }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
+                            } else {
+                                try {
+                                    String responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    String message = jsonObject.optString("message");
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    if (message.equalsIgnoreCase("Broker Not Found")) {
+                                        //phone_invalid.setVisibility(View.VISIBLE);
+                                        startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                                    } else if (statusCode == 412) {
+                                        AllUtils.updateDialog(context);
+                                    } else {
+                                        Utils.setSnackBar(parentLayout, message);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<SignInModel> call, Throwable t) {
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                    Utils.LoaderUtils.dismissLoader();
-                }
-            });
-        }else{
-            taskcompleted = 100;
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<SignInModel> call, Throwable t) {
+                        Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        Utils.LoaderUtils.dismissLoader();
+                    }
+                });
+            } else {
+                taskcompleted = 100;
+                Utils.internetDialog(context, this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private void verifyOtp(String otpValue) {
-        if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            Call<ResponseBody> call = null;
-            SignUpModel.OtpVerificationModel otpVerificationModel = new SignUpModel.OtpVerificationModel();
-            otpVerificationModel.setDeviceId(deviceId);
-            otpVerificationModel.setMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
-            otpVerificationModel.setPlatform("android");
-            otpVerificationModel.setOtp(Integer.parseInt(otpValue));
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            call = retrofitAPIs.verify_otpApi(otpVerificationModel);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        String responseString = null;
-                        if (response.isSuccessful()) {
-                            try {
-                                responseString = response.body().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                int statusCode = jsonObject.optInt("statusCode");
-                                String message = jsonObject.optString("message");
-                                if (statusCode == 200 && message.equalsIgnoreCase("OTP Verified Successfully")) {
-                                    Utils.setSnackBar(parentLayout,message);
-                              /*  JSONArray data = jsonObject.getJSONArray("data");
-                                JSONObject broker = data.getJSONObject(0);
-                                String brokerImage =  broker.optString("brokerImage");
-                                editor.putString(AppConstants.USER_PIC,brokerImage);
-                                editor.commit();
-                                chatlogin(brokerImage);*/
-                                    editor.putBoolean(AppConstants.LOGIN_STATUS, true);
+        try {
+            if (Utils.isNetworkAvailable(context)) {
+                Utils.LoaderUtils.showLoader(context);
+                String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+                Call<ResponseBody> call = null;
+                SignUpModel.OtpVerificationModel otpVerificationModel = new SignUpModel.OtpVerificationModel();
+                otpVerificationModel.setDeviceId(deviceId);
+                otpVerificationModel.setMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
+                otpVerificationModel.setPlatform("android");
+                otpVerificationModel.setOtp(Integer.parseInt(otpValue));
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                call = retrofitAPIs.verify_otpApi(otpVerificationModel);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utils.LoaderUtils.dismissLoader();
+                        if (response != null) {
+                            String responseString = null;
+                            if (response.isSuccessful()) {
+                                try {
+                                    responseString = response.body().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    String message = jsonObject.optString("message");
+                                    if (statusCode == 200 && message.equalsIgnoreCase("OTP Verified Successfully")) {
+                                        Utils.setSnackBar(parentLayout, message);
+                                  /*  JSONArray data = jsonObject.getJSONArray("data");
+                                    JSONObject broker = data.getJSONObject(0);
+                                    String brokerImage =  broker.optString("brokerImage");
+                                    editor.putString(AppConstants.USER_PIC,brokerImage);
                                     editor.commit();
-                                    //new RefreshTokenCall(context,0);
-                                    startActivity(new Intent(context, MainActivity.class));
+                                    chatlogin(brokerImage);*/
+                                        editor.putBoolean(AppConstants.LOGIN_STATUS, true);
+                                        editor.commit();
+                                        //new RefreshTokenCall(context,0);
+                                        startActivity(new Intent(context, MainActivity.class));
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException | IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                int statusCode = jsonObject.optInt("statusCode");
-                                String message = jsonObject.optString("message");
-                                if (message.equalsIgnoreCase("Invalid OTP")) {
-                                    otp_invalid.setVisibility(View.VISIBLE);
-                                } else {
-                                    Utils.setSnackBar(parentLayout, message);
+                            } else {
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    String message = jsonObject.optString("message");
+                                    if (message.equalsIgnoreCase("Invalid OTP")) {
+                                        otp_invalid.setVisibility(View.VISIBLE);
+                                    } else {
+                                        Utils.setSnackBar(parentLayout, message);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                    Utils.LoaderUtils.dismissLoader();
-                }
-            });
-        }else{
-            taskcompleted = 200;
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        Utils.LoaderUtils.dismissLoader();
+                    }
+                });
+            } else {
+                taskcompleted = 200;
+                Utils.internetDialog(context, this);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
     }
 
     private void setTextWatcher() {
-        login_phone_edit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                phone_invalid.setVisibility(View.GONE);
-                if(s.length() == 10){
-                    Utils.hideKeyboard(getApplicationContext(),login_phone_edit);
+        try {
+            login_phone_edit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        otp_edit1.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                otp_invalid.setVisibility(View.GONE);
-                if (otp_edit1.getText().toString().length() == 1) {
-                    otp_edit2.requestFocus();
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    phone_invalid.setVisibility(View.GONE);
+                    if (s.length() == 10) {
+                        Utils.hideKeyboard(getApplicationContext(), login_phone_edit);
+                    }
                 }
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                @Override
+                public void afterTextChanged(Editable s) {
 
-            }
-        });
-        otp_edit2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                otp_invalid.setVisibility(View.GONE);
-                if (otp_edit2.getText().toString().length() == 1) {
-                    otp_edit3.requestFocus();
-                }else if (otp_edit2.getText().toString().length() == 0) {
-                    otp_edit1.requestFocus();
                 }
-            }
+            });
+            otp_edit1.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        otp_edit3.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                otp_invalid.setVisibility(View.GONE);
-                if (otp_edit3.getText().toString().length() == 1) {
-                    otp_edit4.requestFocus();
-                }else if (otp_edit3.getText().toString().length() == 0) {
-                    otp_edit2.requestFocus();
                 }
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        otp_edit4.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                otp_invalid.setVisibility(View.GONE);
-                if (otp_edit4.getText().toString().length() == 0) {
-                    otp_edit3.requestFocus();
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    otp_invalid.setVisibility(View.GONE);
+                    if (otp_edit1.getText().toString().length() == 1) {
+                        otp_edit2.requestFocus();
+                    }
                 }
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                @Override
+                public void afterTextChanged(Editable s) {
 
-            }
-        });
+                }
+            });
+            otp_edit2.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    otp_invalid.setVisibility(View.GONE);
+                    if (otp_edit2.getText().toString().length() == 1) {
+                        otp_edit3.requestFocus();
+                    } else if (otp_edit2.getText().toString().length() == 0) {
+                        otp_edit1.requestFocus();
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            otp_edit3.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    otp_invalid.setVisibility(View.GONE);
+                    if (otp_edit3.getText().toString().length() == 1) {
+                        otp_edit4.requestFocus();
+                    } else if (otp_edit3.getText().toString().length() == 0) {
+                        otp_edit2.requestFocus();
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            otp_edit4.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    otp_invalid.setVisibility(View.GONE);
+                    if (otp_edit4.getText().toString().length() == 0) {
+                        otp_edit3.requestFocus();
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -501,7 +510,6 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case 1000:
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     initalise();
@@ -520,27 +528,12 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                     initalise();
                     setListener();
                     setTextWatcher();
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                 }
                 break;
         }
     }
-    /*private void chatlogin(String brokerImage){
-        User user = new User();
-        user.setUserId(pref.getString(AppConstants.MOBILE_NUMBER,"")); //userId it can be any unique user identifier
-        user.setDisplayName(pref.getString(AppConstants.FIRST_NAME,"")); //displayName is the name of the user which will be shown in chat messages
-        user.setEmail(""); //optional
-       *//* List<String> featureList =  new ArrayList<>();
-        featureList.add(User.Features.IP_AUDIO_CALL.getValue());// FOR AUDIO
-        featureList.add(User.Features.IP_VIDEO_CALL.getValue());// FOR VIDEO
-        user.setFeatures(featureList);*//*
-        user.setAuthenticationTypeId(User.AuthenticationType.APPLOZIC.getValue());  //User.AuthenticationType.APPLOZIC.getValue() for password verification from Applozic server and User.AuthenticationType.CLIENT.getValue() for access Token verification from your server set access token as password
-        user.setPassword(""); //optional, leave it blank for testing purpose, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
-        user.setImageLink(brokerImage);//optional,pass your image link
-        new UserLoginTask(user, listener, context).execute((Void) null);
-    }*/
-    private void fill_Otp(String messageText){
+
+    private void fill_Otp(String messageText) {
         try {
             String otp_char1 = Character.toString(messageText.charAt(0));
             String otp_char2 = Character.toString(messageText.charAt(1));
@@ -552,6 +545,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
             otp_edit4.setText(otp_char4);
             otp_verify_btn.performClick();
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -564,53 +558,58 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
 
     @Override
     protected void onResume() {
-        registerReceiver(broadcastReceiver,intentFilter);
+        registerReceiver(broadcastReceiver, intentFilter);
         super.onResume();
     }
-    private void showTimer() {
-        otp_timer.setVisibility(View.VISIBLE);
-        currentTime = 1;
-        countDownTimer = new CountDownTimer(60000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                currentTime++;
-                if(currentTime > 50){
-                    otp_timer.setText("00:0" + (60 - currentTime));
-                }
-                else {
-                    otp_timer.setText("00:" + (60 - currentTime));
-                }
-            }
 
-            @Override
-            public void onFinish() {
-                currentTime++;
-                if(currentTime <= 60) {
+    private void showTimer() {
+        try {
+            otp_timer.setVisibility(View.VISIBLE);
+            currentTime = 1;
+            countDownTimer = new CountDownTimer(60000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    currentTime++;
                     if (currentTime > 50) {
                         otp_timer.setText("00:0" + (60 - currentTime));
                     } else {
                         otp_timer.setText("00:" + (60 - currentTime));
                     }
                 }
-                otp_timer.setVisibility(View.GONE);
-                countDownTimer.cancel();
-                linear_resend_otp.setVisibility(View.VISIBLE);
-            }
-        };
-        countDownTimer.start();
+
+                @Override
+                public void onFinish() {
+                    currentTime++;
+                    if (currentTime <= 60) {
+                        if (currentTime > 50) {
+                            otp_timer.setText("00:0" + (60 - currentTime));
+                        } else {
+                            otp_timer.setText("00:" + (60 - currentTime));
+                        }
+                    }
+                    otp_timer.setVisibility(View.GONE);
+                    countDownTimer.cancel();
+                    linear_resend_otp.setVisibility(View.VISIBLE);
+                }
+            };
+            countDownTimer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
     @Override
     public void onBackPressed() {
-        if(isOtpVisible){
+        if (isOtpVisible) {
             otpBack();
-        }else {
+        } else {
             finishAffinity();
         }
     }
 
     @Override
     public void onTryReconnect() {
-        switch (taskcompleted){
+        switch (taskcompleted) {
             case 100:
                 callLogin(phone);
                 break;
@@ -619,20 +618,26 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                 break;
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
     }
-    private void otpBack(){
-        otp_edit1.setText("");
-        otp_edit2.setText("");
-        otp_edit3.setText("");
-        otp_edit4.setText("");
-        relative_login.setVisibility(View.VISIBLE);
-        linear_otp.setVisibility(View.GONE);
-        otp_toolbar.setVisibility(View.GONE);
-        isOtpVisible = false;
+
+    private void otpBack() {
+        try {
+            otp_edit1.setText("");
+            otp_edit2.setText("");
+            otp_edit3.setText("");
+            otp_edit4.setText("");
+            relative_login.setVisibility(View.VISIBLE);
+            linear_otp.setVisibility(View.GONE);
+            otp_toolbar.setVisibility(View.GONE);
+            isOtpVisible = false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

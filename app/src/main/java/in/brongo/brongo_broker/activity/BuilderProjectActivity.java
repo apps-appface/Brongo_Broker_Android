@@ -38,7 +38,7 @@ import retrofit2.Response;
 public class BuilderProjectActivity extends Activity implements NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test{
     private ImageView project_back,three_dot_btn;
     private WebView project_webview;
-    Bundle bundle;
+    private Bundle bundle;
     private TextView project_title;
     private LinearLayout parentLayout;
     private String Url="";
@@ -61,82 +61,80 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
             weburl = getIntent().getExtras().getString("url");
         }
         setContentView(R.layout.activity_builder_project);
-       // Url = "https://www.androidtutorialpoint.com/basics/android-webview-example-using-android-studio/";
         initialise();
 
     }
     private void initialise(){
-        context = BuilderProjectActivity.this;
-        parentLayout = (LinearLayout)findViewById(R.id.builder_activity_linear);
-        pref = getSharedPreferences(AppConstants.PREF_NAME,0);
-        project_title = (TextView)findViewById(R.id.project_title);
-        project_back = (ImageView)findViewById(R.id.toolbar_project_back);
-        three_dot_btn = (ImageView)findViewById(R.id.project_three_dot);
-        project_webview = (WebView)findViewById(R.id.project_webview);
-    //    project_webview.setWebChromeClient(new MyWebChromeClient(this));
-        project_webview.setWebViewClient(new MyBrowser());
-        project_title.setText(title);
-        setListener();
-        retrieveUrl();
-        if(!isLoading){
-            Utils.LoaderUtils.showLoader(context);
-            isLoading = true;
+        try {
+            context = BuilderProjectActivity.this;
+            parentLayout = findViewById(R.id.builder_activity_linear);
+            pref = getSharedPreferences(AppConstants.PREF_NAME,0);
+            project_title = findViewById(R.id.project_title);
+            project_back = findViewById(R.id.toolbar_project_back);
+            three_dot_btn = findViewById(R.id.project_three_dot);
+            project_webview = findViewById(R.id.project_webview);
+            project_webview.setWebViewClient(new MyBrowser());
+            project_title.setText(title);
+            setListener();
+            setWebUrl();
+            if(!isLoading){
+                Utils.LoaderUtils.showLoader(context);
+                isLoading = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private void setListener(){
-        three_dot_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(BuilderProjectActivity.this, three_dot_btn);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
+        try {
+            three_dot_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popup = new PopupMenu(BuilderProjectActivity.this, three_dot_btn);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
 
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()){
-                            case R.id.action_logout:
-                                emailLink();
-                                break;
+                    //registering popup with OnMenuItemClickListener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()){
+                                case R.id.action_logout:
+                                    emailLink();
+                                    break;
+                            }
+                            /*Toast.makeText(MainActivity.this,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();*/
+                            return true;
                         }
-                        /*Toast.makeText(MainActivity.this,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();*/
-                        return true;
-                    }
-                });
+                    });
 
-                popup.show();
-            }
-        });
-        project_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+                    popup.show();
+                }
+            });
+            project_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void setWebUrl(){
-        project_webview.getSettings().setLoadsImagesAutomatically(true);
-        project_webview.getSettings().setJavaScriptEnabled(true);
-        project_webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        project_webview.getSettings().setGeolocationEnabled(true);
-        project_webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        project_webview.getSettings().setBuiltInZoomControls(true);
-        project_webview.getSettings().setDomStorageEnabled(true);
-        project_webview.getSettings().setLoadWithOverviewMode(true);
-        project_webview.getSettings().setUseWideViewPort(true);
-        project_webview.loadUrl(weburl);
-    }
-
-    private void retrieveUrl(){
-       /* if(weburl != null && !weburl.isEmpty()){
-            if(!weburl.contains("http")) {
-                String baseImageurl = pref.getString(AppConstants.IMAGE_BASE_URL,"");
-                baseImageurl =  baseImageurl.concat(weburl);
-                weburl = baseImageurl;
-            }
-
-        }*/
-        setWebUrl();
+        try {
+            project_webview.getSettings().setLoadsImagesAutomatically(true);
+            project_webview.getSettings().setJavaScriptEnabled(true);
+            project_webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            project_webview.getSettings().setGeolocationEnabled(true);
+            project_webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+            project_webview.getSettings().setBuiltInZoomControls(true);
+            project_webview.getSettings().setDomStorageEnabled(true);
+            project_webview.getSettings().setLoadWithOverviewMode(true);
+            project_webview.getSettings().setUseWideViewPort(true);
+            project_webview.loadUrl(weburl);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -163,13 +161,6 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
             view.loadUrl(request.getUrl().toString());
             return true;
         }
-        public void onLoadResource (WebView view, String url) {
-                // in standard case YourActivity.this
-               /* if(!isLoading){
-                    Utils.LoaderUtils.showLoader(context);
-                    isLoading = true;
-            }*/
-        }
         public void onPageFinished(WebView view, String url) {
             try {
                 if (isLoading){
@@ -192,69 +183,75 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
         Utils.LoaderUtils.dismissLoader();
     }
     private void emailLink(){
-        if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
-            ApiModel.BuilderAcceptModel builderAcceptModel = new ApiModel.BuilderAcceptModel();
-            builderAcceptModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
-            builderAcceptModel.setPropertyId(prop_id);
-            builderAcceptModel.setUserId(user_id);
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            Call<ApiModel.ResponseModel> call = retrofitAPIs.emailBuilderApi(tokenaccess, "android", deviceId, builderAcceptModel);
-            call.enqueue(new Callback<ApiModel.ResponseModel>() {
-                @Override
-                public void onResponse(Call<ApiModel.ResponseModel> call, Response<ApiModel.ResponseModel> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        String responseString = null;
-                        if (response.isSuccessful()) {
-                            ApiModel.ResponseModel responseModel = response.body();
-                            int statusCode = responseModel.getStatusCode();
-                            String message = responseModel.getMessage();
-                            if (statusCode == 200 ) {
-                                Utils.setSnackBar(parentLayout,message);
-                            }
-                        } else {
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                   openTokenDialog(context);
-                                }else{
-                                    Utils.setSnackBar(parentLayout, message);
+        try {
+            if(Utils.isNetworkAvailable(context)) {
+                Utils.LoaderUtils.showLoader(context);
+                ApiModel.BuilderAcceptModel builderAcceptModel = new ApiModel.BuilderAcceptModel();
+                builderAcceptModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
+                builderAcceptModel.setPropertyId(prop_id);
+                builderAcceptModel.setUserId(user_id);
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+                String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+                Call<ApiModel.ResponseModel> call = retrofitAPIs.emailBuilderApi(tokenaccess, "android", deviceId, builderAcceptModel);
+                call.enqueue(new Callback<ApiModel.ResponseModel>() {
+                    @Override
+                    public void onResponse(Call<ApiModel.ResponseModel> call, Response<ApiModel.ResponseModel> response) {
+                        Utils.LoaderUtils.dismissLoader();
+                        if (response != null) {
+                            String responseString = null;
+                            if (response.isSuccessful()) {
+                                ApiModel.ResponseModel responseModel = response.body();
+                                int statusCode = responseModel.getStatusCode();
+                                String message = responseModel.getMessage();
+                                if (statusCode == 200 ) {
+                                    Utils.setSnackBar(parentLayout,message);
                                 }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
+                            } else {
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    String message = jsonObject.optString("message");
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                       openTokenDialog(context);
+                                    }else{
+                                        Utils.setSnackBar(parentLayout, message);
+                                    }
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
-                    Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, t.getMessage().toString(),"Failure" );
-                }
-            });
-        }else{
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
+                        Utils.LoaderUtils.dismissLoader();
+                        Utils.showToast(context, t.getMessage().toString(),"Failure" );
+                    }
+                });
+            }else{
+                Utils.internetDialog(context,this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-    private class MyWebChromeClient extends WebChromeClient {
-        Context context;
-        public MyWebChromeClient(Context context) {
-            super();
-            this.context = context;
-        }
-    }
+
     private void openTokenDialog(Context context){
-        Utils.tokenDialog(context,this);
+        try {
+                Utils.tokenDialog(context, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void getToken(Context context){
-        new AllUtils().getToken(context,this);
+        try {
+            new AllUtils().getToken(context,this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

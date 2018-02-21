@@ -91,57 +91,65 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
         return view;
     }
     private void initialise(View view){
-        context = getActivity();
-        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
-        arrayList = new ArrayList<>();
-        arrayList_full = new ArrayList<>();
-        referMoreAdapter = new ReferMoreAdapter(context,arrayList);
-        pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
-        refer_count = (TextView)view.findViewById(R.id.referee_count_text);
-        refer_credit = (TextView)view.findViewById(R.id.refer_credit_value);
-        refer_viewall = (TextView)view.findViewById(R.id.refer_viewall);
-        no_referee_text = (TextView)view.findViewById(R.id.no_referee_text);
-        refer_recycle = (RecyclerView)view.findViewById(R.id.referee_recycle);
-        LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
-        verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
-        refer_recycle.setLayoutManager(verticalmanager);
-        refer_recycle.setAdapter(referMoreAdapter);
-        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
-        delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
-        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
-        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
-        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
-        toolbar.setVisibility(View.GONE);
-        edit_icon.setVisibility(View.GONE);
-        delete_icon.setVisibility(View.GONE);
-        add_icon.setVisibility(View.GONE);
-        toolbar_title.setText("Refer More");
-        refer_more_btn = (Button)view.findViewById(R.id.refer_more_broker_btn);
-        referback2 = (ImageView)view.findViewById(R.id.refer_back2);
-        referApi();
-        createText();
+        try {
+            context = getActivity();
+            parentLayout = getActivity().findViewById(R.id.menu_parent_relative);
+            arrayList = new ArrayList<>();
+            arrayList_full = new ArrayList<>();
+            referMoreAdapter = new ReferMoreAdapter(context,arrayList);
+            pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
+            refer_count = view.findViewById(R.id.referee_count_text);
+            refer_credit = view.findViewById(R.id.refer_credit_value);
+            refer_viewall = view.findViewById(R.id.refer_viewall);
+            no_referee_text = view.findViewById(R.id.no_referee_text);
+            refer_recycle = view.findViewById(R.id.referee_recycle);
+            LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
+            verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
+            refer_recycle.setLayoutManager(verticalmanager);
+            refer_recycle.setAdapter(referMoreAdapter);
+            edit_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+            delete_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+            add_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+            toolbar = getActivity().findViewById(R.id.inventory_toolbar);
+            toolbar_title = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+            toolbar.setVisibility(View.GONE);
+            edit_icon.setVisibility(View.GONE);
+            delete_icon.setVisibility(View.GONE);
+            add_icon.setVisibility(View.GONE);
+            toolbar_title.setText("Refer More");
+            refer_more_btn = view.findViewById(R.id.refer_more_broker_btn);
+            referback2 = view.findViewById(R.id.refer_back2);
+            referApi();
+            createText();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void createText() {
-        SpannableString link = makeLinkSpan("View all", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(arrayList_full.size() != 0){
-                    arrayList.clear();
-                    arrayList.addAll(arrayList_full);
-                    referMoreAdapter.notifyDataSetChanged();
+        try {
+            SpannableString link = makeLinkSpan("View all", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(arrayList_full.size() != 0){
+                        arrayList.clear();
+                        arrayList.addAll(arrayList_full);
+                        referMoreAdapter.notifyDataSetChanged();
+                    }
                 }
-            }
-        });
-        refer_viewall.setText(link);
-        // Set the TextView's text
+            });
+            refer_viewall.setText(link);
+            // Set the TextView's text
 
-        // Append the link we created above using a function defined below.
+            // Append the link we created above using a function defined below.
 
 
-        // Append a period (this will not be a link).
+            // Append a period (this will not be a link).
 
-        // This line makes the link clickable!
-        makeLinksFocusable(refer_viewall);
+            // This line makes the link clickable!
+            makeLinksFocusable(refer_viewall);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 /*
@@ -157,11 +165,15 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
     }
 
     private void makeLinksFocusable(TextView tv) {
-        MovementMethod m = tv.getMovementMethod();
-        if ((m == null) || !(m instanceof LinkMovementMethod)) {
-            if (tv.getLinksClickable()) {
-                tv.setMovementMethod(LinkMovementMethod.getInstance());
+        try {
+            MovementMethod m = tv.getMovementMethod();
+            if ((m == null) || !(m instanceof LinkMovementMethod)) {
+                if (tv.getLinksClickable()) {
+                    tv.setMovementMethod(LinkMovementMethod.getInstance());
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -190,86 +202,90 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
         }
     }
     private void referApi(){
-        if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
-            Call<ApiModel.ReferralData> call = retrofitAPIs.getReferralApi(tokenaccess, "android", deviceId, mobileNo);
-            call.enqueue(new Callback<ApiModel.ReferralData>() {
-                @Override
-                public void onResponse(Call<ApiModel.ReferralData> call, Response<ApiModel.ReferralData> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        if (response.isSuccessful()) {
-                            ApiModel.ReferralData referralData = response.body();
-                            int statusCode = referralData.getStatusCode();
-                            String message = referralData.getMessage();
-                            String credit = referralData.getData().getTotalReferralBonus();
-                            String count = referralData.getData().getReferralCount();
-                            refer_credit.setText(credit);
-                            refer_count.setText("My referees(" + count + ")");
-                            if (statusCode == 200 && message.equalsIgnoreCase("")) {
-                                ArrayList<ApiModel.referredBrokerObject> referred_broker_list = referralData.getData().getReferredBroker();
-                                if (referred_broker_list.size() != 0) {
-                                    refer_viewall.setVisibility(View.VISIBLE);
-                                    refer_recycle.setVisibility(View.VISIBLE);
-                                    no_referee_text.setVisibility(View.GONE);
-                                    arrayList_full.addAll(referred_broker_list);
-                                    if (referred_broker_list.size() > 2) {
-                                        arrayList.add(referred_broker_list.get(0));
-                                        arrayList.add(referred_broker_list.get(1));
-                                        arrayList.add(referred_broker_list.get(2));
-                                    } else {
-                                        for (int i = 0; i < referred_broker_list.size(); i++) {
-                                            arrayList.add(referred_broker_list.get(i));
+        try {
+            if(Utils.isNetworkAvailable(context)) {
+                Utils.LoaderUtils.showLoader(context);
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+                String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+                String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
+                Call<ApiModel.ReferralData> call = retrofitAPIs.getReferralApi(tokenaccess, "android", deviceId, mobileNo);
+                call.enqueue(new Callback<ApiModel.ReferralData>() {
+                    @Override
+                    public void onResponse(Call<ApiModel.ReferralData> call, Response<ApiModel.ReferralData> response) {
+                        Utils.LoaderUtils.dismissLoader();
+                        if (response != null) {
+                            if (response.isSuccessful()) {
+                                ApiModel.ReferralData referralData = response.body();
+                                int statusCode = referralData.getStatusCode();
+                                String message = referralData.getMessage();
+                                String credit = referralData.getData().getTotalReferralBonus();
+                                String count = referralData.getData().getReferralCount();
+                                refer_credit.setText(credit);
+                                refer_count.setText("My referees(" + count + ")");
+                                if (statusCode == 200 && message.equalsIgnoreCase("")) {
+                                    ArrayList<ApiModel.referredBrokerObject> referred_broker_list = referralData.getData().getReferredBroker();
+                                    if (referred_broker_list.size() != 0) {
+                                        refer_viewall.setVisibility(View.VISIBLE);
+                                        refer_recycle.setVisibility(View.VISIBLE);
+                                        no_referee_text.setVisibility(View.GONE);
+                                        arrayList_full.addAll(referred_broker_list);
+                                        if (referred_broker_list.size() > 2) {
+                                            arrayList.add(referred_broker_list.get(0));
+                                            arrayList.add(referred_broker_list.get(1));
+                                            arrayList.add(referred_broker_list.get(2));
+                                        } else {
+                                            for (int i = 0; i < referred_broker_list.size(); i++) {
+                                                arrayList.add(referred_broker_list.get(i));
+                                            }
                                         }
+                                    }else{
                                     }
-                                }else{
+                                    referMoreAdapter.notifyDataSetChanged();
+                                /*if(pd.isShowing()) {
+                                    pd.dismiss();
+                                }*/
                                 }
-                                referMoreAdapter.notifyDataSetChanged();
-                            /*if(pd.isShowing()) {
-                                pd.dismiss();
-                            }*/
-                            }
-                        } else {
-                            refer_viewall.setVisibility(View.INVISIBLE);
-                            refer_recycle.setVisibility(View.INVISIBLE);
-                            no_referee_text.setVisibility(View.VISIBLE);
-                            String responseString = null;
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                int statusCode = jsonObject.optInt("statusCode");
-                                String message = jsonObject.optString("message");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    openTokenDialog(context);
-                                } else {
-                                    Utils.setSnackBar(parentLayout,message);
+                            } else {
+                                refer_viewall.setVisibility(View.INVISIBLE);
+                                refer_recycle.setVisibility(View.INVISIBLE);
+                                no_referee_text.setVisibility(View.VISIBLE);
+                                String responseString = null;
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    String message = jsonObject.optString("message");
+                                    if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                        openTokenDialog(context);
+                                    } else {
+                                        Utils.setSnackBar(parentLayout,message);
+                                    }
+                               /* if(pd.isShowing()) {
+                                    pd.dismiss();
+                                }*/
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
                                 }
-                           /* if(pd.isShowing()) {
-                                pd.dismiss();
-                            }*/
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
                             }
                         }
+
                     }
 
-                }
-
-                @Override
-                public void onFailure(Call<ApiModel.ReferralData> call, Throwable t) {
-                    Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                /*if(pd.isShowing()) {
-                    pd.dismiss();
-                }*/
-                }
-            });
-        }else{
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<ApiModel.ReferralData> call, Throwable t) {
+                        Utils.LoaderUtils.dismissLoader();
+                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                    /*if(pd.isShowing()) {
+                        pd.dismiss();
+                    }*/
+                    }
+                });
+            }else{
+                Utils.internetDialog(context,this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     @Override
@@ -283,10 +299,20 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
         Utils.LoaderUtils.dismissLoader();
     }
     private void openTokenDialog(Context context){
-        Utils.tokenDialog(context,this);
+        try {
+            if(!getActivity().isFinishing()) {
+                Utils.tokenDialog(context, this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void getToken(Context context){
-        new AllUtils().getToken(context,this);
+        try {
+            new AllUtils().getToken(context,this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void onSuccessRes(boolean isSuccess) {

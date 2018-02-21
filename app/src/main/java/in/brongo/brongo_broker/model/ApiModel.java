@@ -1694,7 +1694,17 @@ public class ApiModel {
         String clientProfile;
         String userId;
         String builderName;
+
+        public String getPropertyId() {
+            return propertyId;
+        }
+
+        public void setPropertyId(String propertyId) {
+            this.propertyId = propertyId;
+        }
+
         String commission;
+        String propertyId;
 
         public String getCommission() {
             return commission;
@@ -1712,7 +1722,15 @@ public class ApiModel {
             this.mobileNo = mobileNo;
         }
 
-        String propertyId;
+        public String getDealId() {
+            return dealId;
+        }
+
+        public void setDealId(String dealId) {
+            this.dealId = dealId;
+        }
+
+        String dealId;
         String projectName;
         String location;
         String mobileNo;
@@ -1732,14 +1750,6 @@ public class ApiModel {
 
         public void setBuilderName(String builderName) {
             this.builderName = builderName;
-        }
-
-        public String getPropertyId() {
-            return propertyId;
-        }
-
-        public void setPropertyId(String propertyId) {
-            this.propertyId = propertyId;
         }
 
         public String getProjectName() {

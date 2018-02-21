@@ -35,7 +35,11 @@ public class SubmenuAdapter extends RecyclerView.Adapter<SubmenuAdapter.Employee
 
     @Override
     public void onBindViewHolder(final SubmenuAdapter.EmployeeViewHolder holder, final int position) {
-        holder.title.setText(arrayList.get(position));
+        try {
+            holder.title.setText(arrayList.get(position));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

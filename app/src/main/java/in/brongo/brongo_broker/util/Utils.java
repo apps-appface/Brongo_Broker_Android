@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -62,11 +63,16 @@ public class Utils {
     public static BroadcastReceiver br = null;
 
     public static String getDeviceId(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+        String deviceId="";
+        try {
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            }
+            deviceId = telephonyManager.getDeviceId();
+            System.out.println("** DEVICE_ID ** " + deviceId);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        String deviceId = telephonyManager.getDeviceId();
-        System.out.println("** DEVICE_ID ** " + deviceId);
         return deviceId;
     }
 
@@ -76,67 +82,54 @@ public class Utils {
     }
 
     public static void replaceFragment(FragmentManager fm, Fragment fragment, int containerId,String tag) {
-       /* if (!fragment.isAdded()) {
-            if(back) {
-                fragmentManager.beginTransaction()
-                        .replace(view_id, fragment)
-                    .addToBackStack(null)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit();
-            }else{
-                fragmentManager.beginTransaction()
-                        .replace(view_id, fragment)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit();
-            }
-        }*/
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(containerId, fragment, tag);
-        ft.addToBackStack(tag);
-        ft.commit();
+        try {
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(containerId, fragment, tag);
+            ft.addToBackStack(tag);
+            ft.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static boolean isAppIsInBackground(Context context) {
         boolean isInBackground = true;
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-            List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
-            for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
-                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                    for (String activeProcess : processInfo.pkgList) {
-                        if (activeProcess.equals(context.getPackageName())) {
-                            isInBackground = false;
+        try {
+            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+                List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
+                for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
+                    if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                        for (String activeProcess : processInfo.pkgList) {
+                            if (activeProcess.equals(context.getPackageName())) {
+                                isInBackground = false;
+                            }
                         }
                     }
                 }
-            }
-        } else {
-            List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-            ComponentName componentInfo = taskInfo.get(0).topActivity;
-            if (componentInfo.getPackageName().equals(context.getPackageName())) {
-                isInBackground = false;
-            }
+            } else {
+                List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+                ComponentName componentInfo = taskInfo.get(0).topActivity;
+                if (componentInfo.getPackageName().equals(context.getPackageName())) {
+                    isInBackground = false;
+                }
 
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
         }
         return isInBackground;
     }
     public static boolean isNetworkAvailable(Context context) {
-       /* ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();*/
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
+        boolean isConnected = activeNetwork != null &&activeNetwork.isConnectedOrConnecting();
         return isConnected;
     }
     public static void storeDeviceInfo(Context context, SharedPreferences.Editor editor){
         PackageInfo pInfo = null;
         try {
            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e1) {
-            e1.printStackTrace();
-        }
         String appVersion =  BuildConfig.VERSION_NAME;;
         String os_version = Build.VERSION.RELEASE;
         final String manufacturer = Build.MANUFACTURER;
@@ -148,12 +141,19 @@ public class Utils {
         editor.putString(AppConstants.OS_VERSION,os_version);
         editor.putString(AppConstants.DEVICE_ID,device_id);
         editor.commit();
+        } catch (PackageManager.NameNotFoundException e1) {
+            e1.printStackTrace();
+        }
     }
     public static void setAlphaAnimation(View view,Context context){
-        Animation animation = new AlphaAnimation(1.0f,0.7f);
-        animation.setDuration(100);
-        animation.setBackgroundColor(context.getResources().getColor(R.color.appColor));
-        view.startAnimation(animation);
+        try {
+            Animation animation = new AlphaAnimation(1.0f,0.7f);
+            animation.setDuration(100);
+            animation.setBackgroundColor(context.getResources().getColor(R.color.appColor));
+            view.startAnimation(animation);
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
     }
     public static void showToast(Context context, String message, String title){
         try {
@@ -179,87 +179,95 @@ public class Utils {
         }
     }
     public static void showAlert(String title,String message,Context context){
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setTitle(title)
-                .setMessage(message)
-                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .setCancelable(false)
-                .create()
-                .show();
+        try {
+            final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            alertDialogBuilder.setTitle(title)
+                    .setMessage(message)
+                    .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .setCancelable(false)
+                    .create()
+                    .show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static String numToWord(int number){
-       String numToWord1 = "";
-        String numToWord2 = "";
-        int number1 = number;
-        int number2 = 0;
-        int number3 = 0;
-        int length = (int) Math.log10(number) + 1;
-        switch(length){
-            case 4:
-                number1 = number/1000;
-                number3 = number%1000;
-                number2 = number3/100;
-                if(number2 == 0){
-                    numToWord1 = number1+" K";
-                }else {
-                    numToWord1 = number1 + "." + number2 + " K";
-                }
-                break;
-            case 5:
-                number1 = number/1000;
-                number3 = number%1000;
-                number2 = number3/100;
-                if(number2 == 0){
-                    numToWord1 = number1+" K";
-                }else {
-                    numToWord1 = number1 + "." + number2 + " K";
-                }
-                break;
-            case 6:
-                number1 = number/100000;
-                number3 = number % 100000;
-                number2 = number3/1000;
-                if(number2 == 0){
-                    numToWord1 = number1+" Lacs";
-                }else {
-                    numToWord1 = number1 + "." + number2 + " Lacs";
-                }
-                break;
-            case 7:
-                number1 = number/100000;
-                number3 = number % 100000;
-                number2 = number3/1000;
-                if(number2 == 0){
-                    numToWord1 = number1+" Lacs";
-                }else {
-                    numToWord1 = number1 + "." + number2 + " Lacs";
-                }
-                break;
-            case 8:
-                number1 = number/10000000;
-                number3 = number % 10000000;
-                number2 = number3/100000;
-                if(number2 == 0){
-                    numToWord1 = number1+" Cr";
-                }else {
-                    numToWord1 = number1 + "." + number2 + " Cr";
-                }
-                break;
-            case 9:
-                number1 = number/10000000;
-                number3 = number % 10000000;
-                number2 = number3/100000;
-                if(number2 == 0){
-                    numToWord1 = number1+" Cr";
-                }else {
-                    numToWord1 = number1 + "." + number2 + " Cr";
-                }
-                break;
+        String numToWord1 = "";
+        try {
+            String numToWord2 = "";
+            int number1 = number;
+            int number2 = 0;
+            int number3 = 0;
+            int length = (int) Math.log10(number) + 1;
+            switch(length){
+                case 4:
+                    number1 = number/1000;
+                    number3 = number%1000;
+                    number2 = number3/100;
+                    if(number2 == 0){
+                        numToWord1 = number1+" K";
+                    }else {
+                        numToWord1 = number1 + "." + number2 + " K";
+                    }
+                    break;
+                case 5:
+                    number1 = number/1000;
+                    number3 = number%1000;
+                    number2 = number3/100;
+                    if(number2 == 0){
+                        numToWord1 = number1+" K";
+                    }else {
+                        numToWord1 = number1 + "." + number2 + " K";
+                    }
+                    break;
+                case 6:
+                    number1 = number/100000;
+                    number3 = number % 100000;
+                    number2 = number3/1000;
+                    if(number2 == 0){
+                        numToWord1 = number1+" Lacs";
+                    }else {
+                        numToWord1 = number1 + "." + number2 + " Lacs";
+                    }
+                    break;
+                case 7:
+                    number1 = number/100000;
+                    number3 = number % 100000;
+                    number2 = number3/1000;
+                    if(number2 == 0){
+                        numToWord1 = number1+" Lacs";
+                    }else {
+                        numToWord1 = number1 + "." + number2 + " Lacs";
+                    }
+                    break;
+                case 8:
+                    number1 = number/10000000;
+                    number3 = number % 10000000;
+                    number2 = number3/100000;
+                    if(number2 == 0){
+                        numToWord1 = number1+" Cr";
+                    }else {
+                        numToWord1 = number1 + "." + number2 + " Cr";
+                    }
+                    break;
+                case 9:
+                    number1 = number/10000000;
+                    number3 = number % 10000000;
+                    number2 = number3/100000;
+                    if(number2 == 0){
+                        numToWord1 = number1+" Cr";
+                    }else {
+                        numToWord1 = number1 + "." + number2 + " Cr";
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return numToWord1;
     }
@@ -267,67 +275,77 @@ public class Utils {
     public static String stringToInt(String lead_budget){
 
         String word="";
-        String budget1="",budget2 ="";
-        if(lead_budget != null && (!lead_budget.isEmpty())) {
-            if (lead_budget.contains("-")) {
-                int index = lead_budget.indexOf("-");
-                if (lead_budget.contains(".")) {
-                    budget1 = lead_budget.substring(0, index - 3);
-                    budget2 = lead_budget.substring(index + 2, lead_budget.length() - 2);
-                } else {
-                    budget1 = lead_budget.substring(0, index - 1);
-                    budget2 = lead_budget.substring(index + 2, lead_budget.length());
-                }
-                int budget3 = 0, budget4 = 0;
-
-                try {
-                    budget3 = Integer.parseInt(budget1);
-                    budget4 = Integer.parseInt(budget2);
-                    if (budget3 == 0 && budget4 == 0) {
-                        word = "";
+        try {
+            String budget1="",budget2 ="";
+            if(lead_budget != null && (!lead_budget.isEmpty())) {
+                if (lead_budget.contains("-")) {
+                    int index = lead_budget.indexOf("-");
+                    if (lead_budget.contains(".")) {
+                        budget1 = lead_budget.substring(0, index - 3);
+                        budget2 = lead_budget.substring(index + 2, lead_budget.length() - 2);
                     } else {
-                        if (budget3 == 0) {
-                            word = numToWord(budget4);
-                        } else if (budget4 == 0) {
-                            word = numToWord(budget3);
-                        } else {
-                            word = numToWord(budget3) + "-" + numToWord(budget4);
-                        }
+                        budget1 = lead_budget.substring(0, index - 1);
+                        budget2 = lead_budget.substring(index + 2, lead_budget.length());
                     }
-                } catch (NumberFormatException nfe) {
-                    System.out.println("Could not parse " + nfe);
-                }
-            } else {
-                if (budget1.contains(".")) {
-                    budget1 = lead_budget.substring(0, lead_budget.length() - 2);
-                } else {
-                    budget1 = lead_budget;
-                }
-                int budget3 = 0;
+                    int budget3 = 0, budget4 = 0;
 
-                try {
-                    budget3 = Integer.parseInt(budget1);
-                    word = numToWord(budget3);
-                } catch (NumberFormatException nfe) {
-                    System.out.println("Could not parse " + nfe);
+                    try {
+                        budget3 = Integer.parseInt(budget1);
+                        budget4 = Integer.parseInt(budget2);
+                        if (budget3 == 0 && budget4 == 0) {
+                            word = "";
+                        } else {
+                            if (budget3 == 0) {
+                                word = numToWord(budget4);
+                            } else if (budget4 == 0) {
+                                word = numToWord(budget3);
+                            } else {
+                                word = numToWord(budget3) + "-" + numToWord(budget4);
+                            }
+                        }
+                    } catch (NumberFormatException nfe) {
+                        System.out.println("Could not parse " + nfe);
+                    }
+                } else {
+                    if (budget1.contains(".")) {
+                        budget1 = lead_budget.substring(0, lead_budget.length() - 2);
+                    } else {
+                        budget1 = lead_budget;
+                    }
+                    int budget3 = 0;
+
+                    try {
+                        budget3 = Integer.parseInt(budget1);
+                        word = numToWord(budget3);
+                    } catch (NumberFormatException nfe) {
+                        nfe.printStackTrace();
+                        System.out.println("Could not parse " + nfe);
+                    }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return word;
     }
     public static String getPostingColor(String post_type){
         String back_color = "#00000000";
         try {
-            if (post_type.equalsIgnoreCase("sell")) {
-                back_color = "#3664cb";
-            } else if (post_type.equalsIgnoreCase("rent_out")) {
-                back_color = "#60cb36";
-            } else if (post_type.equalsIgnoreCase("rent")) {
-                back_color = "#60cb36";
-            } else if (post_type.equalsIgnoreCase("BUY")) {
-                back_color = "#ea8737";
+            try {
+                if (post_type.equalsIgnoreCase("sell")) {
+                    back_color = "#3664cb";
+                } else if (post_type.equalsIgnoreCase("rent_out")) {
+                    back_color = "#60cb36";
+                } else if (post_type.equalsIgnoreCase("rent")) {
+                    back_color = "#60cb36";
+                } else if (post_type.equalsIgnoreCase("BUY")) {
+                    back_color = "#ea8737";
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return back_color;
     }
@@ -346,141 +364,134 @@ public class Utils {
 
     public static void internetDialog(final Context context,final NoInternetTryConnectListener internetTryConnectListener){
        // final Activity  activity = (Activity)context;
-         dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_internet);
-        dialog.setCanceledOnTouchOutside(false);
-        final Button try_again_btn = (Button)dialog.findViewById(R.id.internet_dialog_btn);
-        try_again_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isNetworkAvailable(context)) {
-                    dialog.dismiss();
-                    if (internetTryConnectListener != null)
-                        internetTryConnectListener.onTryReconnect();
-                }
-            }
-        });
-        dialog.show();
-        /* br = new BroadcastReceiver() {
-
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                Bundle extras = intent.getExtras();
-
-                NetworkInfo info = (NetworkInfo) extras
-                        .getParcelable("networkInfo");
-
-                NetworkInfo.State state = info.getState();
-                Log.d("TEST Internet", info.toString() + " "
-                        + state.toString());
-
-                if (state == NetworkInfo.State.CONNECTED) {
-                    dialog.dismiss();
-                    if (internetTryConnectListener != null)
-                        internetTryConnectListener.onTryReconnect();
-                    if(br != null) {
-                        context.unregisterReceiver(br);
+        try {
+            dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setContentView(R.layout.dialog_internet);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            final Button try_again_btn = (Button)dialog.findViewById(R.id.internet_dialog_btn);
+            try_again_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isNetworkAvailable(context)) {
+                        dialog.dismiss();
+                        if (internetTryConnectListener != null)
+                            internetTryConnectListener.onTryReconnect();
                     }
-                    //activity.recreate();
                 }
-            }
-        };
-        final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        context.registerReceiver((BroadcastReceiver) br, intentFilter);*/
+            });
+                dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void bidAcceptedDialog(String message,Context context){
-         final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.bid_accepted_dialog);
-        TextView message_text = (TextView)dialog.findViewById(R.id.bid_accepted_text);
-        //dialog.setCanceledOnTouchOutside(false);
-        // dialog.setCancelable(false);
-        ImageView cross_btn = (ImageView) dialog.findViewById(R.id.dialog_close_btn);
-        Button see_details_btn = (Button)dialog.findViewById(R.id.dialog_see_details);
-        message_text.setText(message);
-        cross_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        see_details_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+        try {
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setContentView(R.layout.bid_accepted_dialog);
+            TextView message_text = (TextView)dialog.findViewById(R.id.bid_accepted_text);
+            //dialog.setCanceledOnTouchOutside(false);
+            // dialog.setCancelable(false);
+            ImageView cross_btn = (ImageView) dialog.findViewById(R.id.dialog_close_btn);
+            Button see_details_btn = (Button)dialog.findViewById(R.id.dialog_see_details);
+            message_text.setText(message);
+            cross_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            see_details_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void clientAcceptDialog(Context context){
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.noti_accept_dialog);
-        //dialog.setCanceledOnTouchOutside(false);
-        // dialog.setCancelable(false);
-        final ImageView cross_btn = (ImageView) dialog.findViewById(R.id.client_accept_dialog_close);
-        final Button got_it_btn = (Button)dialog.findViewById(R.id.client_accept_dialog_btn);
-        cross_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        got_it_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+        try {
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setContentView(R.layout.noti_accept_dialog);
+            //dialog.setCanceledOnTouchOutside(false);
+            // dialog.setCancelable(false);
+            final ImageView cross_btn = (ImageView) dialog.findViewById(R.id.client_accept_dialog_close);
+            final Button got_it_btn = (Button)dialog.findViewById(R.id.client_accept_dialog_btn);
+            cross_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            got_it_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public static void permissionDialog(final Context context){
-        final Activity activity = (Activity)context;
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setTitle("Permissions Required")
-                .setMessage("You have forcefully denied some of the required permissions " +
-                        "for this action. Please open settings, go to permissions and allow them.")
-                .setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                Uri.fromParts("package", context.getPackageName(), null));
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        activity.startActivity(intent);
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .setCancelable(false)
-                .create()
-                .show();
+        try {
+            final Activity activity = (Activity)context;
+            final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            alertDialogBuilder.setTitle("Permissions Required")
+                    .setMessage("You have forcefully denied some of the required permissions " +
+                            "for this action. Please open settings, go to permissions and allow them.")
+                    .setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", context.getPackageName(), null));
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            activity.startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .setCancelable(false)
+                    .create()
+                    .show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static boolean match_deal(String posting1,String posting2, String prop1, String prop2){
         boolean isMatched = false;
-        if(prop1.equalsIgnoreCase(prop2)){
-            if(posting1.equalsIgnoreCase("rent") && posting2.equalsIgnoreCase("rent_out")){
-                isMatched = true;
-            }else if(posting1.equalsIgnoreCase("rent_out") && posting2.equalsIgnoreCase("rent")){
-                isMatched = true;
-            }else if(posting1.equalsIgnoreCase("buy") && posting2.equalsIgnoreCase("sell")){
-                isMatched = true;
-            }else if(posting1.equalsIgnoreCase("sell") && posting2.equalsIgnoreCase("buy")){
-                isMatched = true;
+        try {
+            if(prop1.equalsIgnoreCase(prop2)){
+                if(posting1.equalsIgnoreCase("rent") && posting2.equalsIgnoreCase("rent_out")){
+                    isMatched = true;
+                }else if(posting1.equalsIgnoreCase("rent_out") && posting2.equalsIgnoreCase("rent")){
+                    isMatched = true;
+                }else if(posting1.equalsIgnoreCase("buy") && posting2.equalsIgnoreCase("sell")){
+                    isMatched = true;
+                }else if(posting1.equalsIgnoreCase("sell") && posting2.equalsIgnoreCase("buy")){
+                    isMatched = true;
+                }
+            }else{
+                return isMatched;
             }
-        }else{
-            return isMatched;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return isMatched;
     }
@@ -499,37 +510,6 @@ public class Utils {
         }
         return formattedDate;
     }
-    public static void touchDelegate(final View view){
-
-        final View parent = (View)view.getParent();
-        parent.post(new Runnable() {
-            @Override
-            public void run() {
-              final Rect rect = new Rect();
-              view.getHitRect(rect);
-              rect.top -= 100;
-                rect.left -= 100;
-                rect.right += 100;
-                rect.bottom += 100;
-                parent.setTouchDelegate(new TouchDelegate(rect,view));
-            }
-        });
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch(event.getAction()) {
-
-                    case MotionEvent.ACTION_DOWN:
-                        view.setBackgroundResource(R.drawable.view_circle);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        view.setBackgroundColor(Color.TRANSPARENT);
-                        break;
-                }
-                return false;
-            }
-        });
-    }
     public static class LoaderUtils {
         public static void showLoader(Context context) {
             try {
@@ -538,11 +518,12 @@ public class Utils {
                 dialog.setContentView(R.layout.progress_layout);
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.setCancelable(false);
-                dialog.show();
+                    dialog.show();
                 GifView check_mark_GV = (GifView) dialog.findViewById(R.id.check_mark_GV);
                 check_mark_GV.setGifResource(R.drawable.loader);
                 check_mark_GV.play();
             }catch (Exception e){
+                e.printStackTrace();
             }
         }
 
@@ -552,6 +533,7 @@ public class Utils {
                     dialog.dismiss();
                 }
             }catch (Exception e){
+                e.printStackTrace();
             }
         }
     }
@@ -571,28 +553,34 @@ public class Utils {
             TextView txtv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
             txtv.setGravity(Gravity.CENTER_HORIZONTAL);
         }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
     public static void tokenDialog(final Context context,final NoTokenTryListener tokenTryListener) {
         // final Activity  activity = (Activity)context;
-       final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_internet);
-        dialog.setCanceledOnTouchOutside(false);
-        final Button try_again_btn = (Button) dialog.findViewById(R.id.internet_dialog_btn);
-        try_again_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isNetworkAvailable(context)) {
-                    dialog.dismiss();
-                    if (tokenTryListener != null)
-                        tokenTryListener.onTryRegenerate();
+        try {
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setContentView(R.layout.dialog_internet);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            final Button try_again_btn = (Button) dialog.findViewById(R.id.internet_dialog_btn);
+            try_again_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isNetworkAvailable(context)) {
+                        dialog.dismiss();
+                        if (tokenTryListener != null)
+                            tokenTryListener.onTryRegenerate();
+                    }
                 }
-            }
-        });
-        dialog.show();
+            });
+                dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

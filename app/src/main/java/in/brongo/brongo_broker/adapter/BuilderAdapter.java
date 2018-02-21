@@ -57,70 +57,74 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
     @Override
     public void onBindViewHolder(final BuilderAdapter.EmployeeViewHolder holder, final int position) {
         holder.setIsRecyclable(false);
-        final BuilderModel.BuilderObject builderObject = arrayList.get(position);
-      holder.invent_builder_name.setText(arrayList.get(position).getProjectName());
-      String url = arrayList.get(position).getUrl();
-      if(url != null && url.isEmpty()){
-          holder.build_linear.setVisibility(View.VISIBLE);
-          holder.invent_TC_relative.setVisibility(View.GONE);
-      }else if(url != null && !url.isEmpty()) {
-          holder.build_linear.setVisibility(View.GONE);
-          holder.invent_TC_relative.setVisibility(View.VISIBLE);
-      }
-        holder.invent_builder_address.setText(arrayList.get(position).getSubLocation());
-        holder.invent_builder_commission.setText(arrayList.get(position).getCommission()+"% Commission");
-        String imageUrl = "";
+        try {
+            final BuilderModel.BuilderObject builderObject = arrayList.get(position);
+            holder.invent_builder_name.setText(arrayList.get(position).getProjectName());
+            String url = arrayList.get(position).getUrl();
+            if(url != null && url.isEmpty()){
+                holder.build_linear.setVisibility(View.VISIBLE);
+                holder.invent_TC_relative.setVisibility(View.GONE);
+            }else if(url != null && !url.isEmpty()) {
+                holder.build_linear.setVisibility(View.GONE);
+                holder.invent_TC_relative.setVisibility(View.VISIBLE);
+            }
+            holder.invent_builder_address.setText(arrayList.get(position).getSubLocation());
+            holder.invent_builder_commission.setText(arrayList.get(position).getCommission()+"% Commission");
+            String imageUrl = "";
         /*if(arrayList.get(position).getImageFiles().size()>0){
             imageUrl = arrayList.get(position).getImageFiles().get(0);
            imageUrl = Utils.getImageUrl(imageUrl,pref);
             }*/
        /* Glide.with(context).load(arrayList.get(position).getImageFiles()).placeholder(R.drawable.no_image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.invent_builder_image);*/
-        if(arrayList.get(position).getImageFiles().size()>0) {
-            Glide.with(context).load(arrayList.get(position).getImageFiles().get(0)).apply(CustomApplicationClass.getPropertyImage(true)).into(holder.invent_builder_image);
-        }else{
-            Glide.with(context).load("").apply(CustomApplicationClass.getPropertyImage(true)).into(holder.invent_builder_image);
-        }
+            if(arrayList.get(position).getImageFiles().size()>0) {
+                Glide.with(context).load(arrayList.get(position).getImageFiles().get(0)).apply(CustomApplicationClass.getPropertyImage(true)).into(holder.invent_builder_image);
+            }else{
+                Glide.with(context).load("").apply(CustomApplicationClass.getPropertyImage(true)).into(holder.invent_builder_image);
+            }
 
-        holder.invent_builder_register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClick.registerClient(position,builderObject);
-            }
-        });
-        holder.invent_builder_reject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClick.rejectProject(position,builderObject);
-            }
-        });
-        holder.invent_builder_proceed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClick.acceptTc(position,builderObject,true);
-            }
-        });
-        holder.invent_builder_tc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClick.acceptTc(position,builderObject,false);
-            }
-        });
-        holder.builder_web_linear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClick.proceedToWeb(position,builderObject);
-            }
-        });
-        int budget = (int) (Float.parseFloat(arrayList.get(position).getDimensionsOfBedRoom()) * (arrayList.get(position).getPricePerSQFT()));
-        String project_budget = Utils.numToWord(budget);
-        holder.builder_flowLayout.removeAllViews();
-        addView(project_budget,holder.builder_flowLayout);
-        addView((arrayList.get(position).getNoOfBedRooms()+"BHK"),holder.builder_flowLayout);
-        addView(arrayList.get(position).getLandArea()+" "+arrayList.get(position).getLandAreaUnits(),holder.builder_flowLayout);
-        addView(arrayList.get(position).getProjectStatus(),holder.builder_flowLayout);
-        addView(arrayList.get(position).getProjectType(),holder.builder_flowLayout);
-        addView(arrayList.get(position).getDimensionsOfBedRoom()+" Sqft",holder.builder_flowLayout);
+            holder.invent_builder_register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClick.registerClient(position,builderObject);
+                }
+            });
+            holder.invent_builder_reject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClick.rejectProject(position,builderObject);
+                }
+            });
+            holder.invent_builder_proceed.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClick.acceptTc(position,builderObject,true);
+                }
+            });
+            holder.invent_builder_tc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClick.acceptTc(position,builderObject,false);
+                }
+            });
+            holder.builder_web_linear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClick.proceedToWeb(position,builderObject);
+                }
+            });
+            int budget = (int) (Float.parseFloat(arrayList.get(position).getDimensionsOfBedRoom()) * (arrayList.get(position).getPricePerSQFT()));
+            String project_budget = Utils.numToWord(budget);
+            holder.builder_flowLayout.removeAllViews();
+            addView(project_budget,holder.builder_flowLayout);
+            addView((arrayList.get(position).getNoOfBedRooms()+"BHK"),holder.builder_flowLayout);
+            addView(arrayList.get(position).getLandArea()+" "+arrayList.get(position).getLandAreaUnits(),holder.builder_flowLayout);
+            addView(arrayList.get(position).getProjectStatus(),holder.builder_flowLayout);
+            addView(arrayList.get(position).getProjectType(),holder.builder_flowLayout);
+            addView(arrayList.get(position).getDimensionsOfBedRoom()+"",holder.builder_flowLayout);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -168,6 +172,7 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
                     deal_textview.setText(text);
                     flowLayout.addView(layout2);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     String error = e.toString();
                 }
             }

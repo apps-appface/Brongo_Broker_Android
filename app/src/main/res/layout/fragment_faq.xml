@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".brongo_broker.fragment.FaqFragment">
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,6 +14,7 @@
             android:id="@+id/beforedeal_btn"
             android:layout_margin="@dimen/faq_btn_margin"
             android:text="Before Deal"
+            android:textSize="@dimen/text_size_small"
             android:background="@drawable/dialog_button"
             android:textColor="@color/white"/>
         <Button
@@ -24,6 +24,7 @@
             android:id="@+id/Whiledeal_btn"
             android:layout_margin="@dimen/faq_btn_margin"
             android:text="OPEN DEAL"
+            android:textSize="@dimen/text_size_small"
             android:background="@drawable/button_change"
             android:textColor="@color/appColor"/>
         <Button
@@ -33,6 +34,7 @@
             android:id="@+id/afterdeal_btn"
             android:layout_margin="@dimen/faq_btn_margin"
             android:text="CLOSED DEAL"
+            android:textSize="@dimen/text_size_small"
             android:background="@drawable/button_change"
             android:textColor="@color/appColor"/>
     </LinearLayout>

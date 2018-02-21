@@ -60,52 +60,19 @@ public class HistoricalAdapter extends RecyclerView.Adapter<HistoricalAdapter.My
     @Override
     public void onBindViewHolder(final HistoricalAdapter.MyViewHolder holder, final int position) {
         holder.setIsRecyclable(false);
-        holder.his_name.setText(arraylist.get(position).getClientName());
-       //holder.his_address.setText(arraylist.get(position).getMicroMarketName());
-        holder.his_commission.setText(arraylist.get(position).getCommission() + "%");
-        holder.his_deal_id.setText(arraylist.get(position).getPropertyId());
-        addview(arraylist.get(position).getProperty(),holder.his_flowlayout);
-       /* if(arraylist.get(position).getBedRoomType().equalsIgnoreCase("")){
-            holder.his_bhk.setVisibility(View.GONE);
-        }else {
-            holder.his_bhk.setText(arraylist.get(position).getBedRoomType());
+        try {
+            holder.his_name.setText(arraylist.get(position).getClientName());
+            //holder.his_address.setText(arraylist.get(position).getMicroMarketName());
+            holder.his_commission.setText(arraylist.get(position).getCommission() + "%");
+            holder.his_deal_id.setText(arraylist.get(position).getPropertyId());
+            addview(arraylist.get(position).getProperty(),holder.his_flowlayout);
+            holder.his_post_type.setText(arraylist.get(position).getPostingType().toUpperCase()+"/"+arraylist.get(position).getPropertyType().toUpperCase());
+            String back_color = Utils.getPostingColor(arraylist.get(position).getPostingType());
+            holder.his_post_type.setBackgroundColor(Color.parseColor(back_color));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if(arraylist.get(position).getPropertyStatus().equalsIgnoreCase("")){
-            holder.his_prop_status.setVisibility(View.GONE);
-        }else {
-            holder.his_prop_status.setText(arraylist.get(position).getPropertyStatus());
-        }
-        if(arraylist.get(position).getSubPropertyType().equalsIgnoreCase("")){
-            holder.his_sub_proptype.setVisibility(View.GONE);
-        }else {
-            holder.his_sub_proptype.setText(arraylist.get(position).getSubPropertyType());
-        }*/
-     //  addView(arraylist.get(position).getMicroMarketName(),holder.his_flowlayout);
-       // addView(arraylist.get(position).getBedRoomType(),holder.his_flowlayout);
-      //  String budget = arraylist.get(position).getBudget()+"";
-      //  budget = Utils.stringToInt(budget);
-        //addView(budget,holder.his_flowlayout);
-        holder.his_post_type.setText(arraylist.get(position).getPostingType().toUpperCase()+"/"+arraylist.get(position).getPropertyType().toUpperCase());
-        String back_color = Utils.getPostingColor(arraylist.get(position).getPostingType());
-        holder.his_post_type.setBackgroundColor(Color.parseColor(back_color));
-       // addView(arraylist.get(position).getPropertyStatus(),holder.his_flowlayout);
-        //addView(arraylist.get(position).getSubPropertyType(),holder.his_flowlayout);
     }
-   /* private void addView(String text, FlowLayout flowLayout) {
-        if(text != null) {
-            if (!text.isEmpty()) {
-                try {
-                    View layout2 = LayoutInflater.from(context).inflate(R.layout.deal_child, flowLayout, false);
-                    TextView deal_textview = (TextView) layout2.findViewById(R.id.deal_text);
-                    deal_textview.setBackgroundResource(R.drawable.rounded_purple);
-                    deal_textview.setText(text);
-                    flowLayout.addView(layout2);
-                } catch (Exception e) {
-                    String error = e.toString();
-                }
-            }
-        }
-    }*/
     private void addview(ArrayList<String> keyList, FlowLayout flowLayout) {
         if(keyList != null && keyList.size()> 0 ) {
             for (int j = 0; j < keyList.size(); j++) {
@@ -119,6 +86,7 @@ public class HistoricalAdapter extends RecyclerView.Adapter<HistoricalAdapter.My
                         flowLayout.addView(layout2);
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     String error = e.toString();
                 }
             }

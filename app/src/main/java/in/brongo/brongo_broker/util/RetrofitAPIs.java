@@ -140,6 +140,7 @@ public interface RetrofitAPIs {
 
     @GET("broker/fetchMicroMarkets")
     Call<SignUpModel.MarketModel> fetchMarketApi(@Query("mobileNo") String mobileNo);
+
     @POST("broker/notiReceived")
     Call<ResponseBody>notificationApi(@Body ClientDetailsModel.NotificatioModel notificatioModel);
 

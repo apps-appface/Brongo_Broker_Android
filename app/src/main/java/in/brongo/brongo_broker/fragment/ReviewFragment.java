@@ -72,126 +72,140 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
         return view;
     }
     private void initialise(View view){
-        context = getActivity();
-        arrayList = new ArrayList<>();
-        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
-        ratingCountList = new ArrayList<>();
-        pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
-        review_list = (RecyclerView)view.findViewById(R.id.review_recycle);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
-        review_list.setLayoutManager(layoutManager);
-        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
-        delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
-        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
-        edit_icon.setVisibility(View.GONE);
-        delete_icon.setVisibility(View.GONE);
-        add_icon.setVisibility(View.GONE);
-        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
-        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        toolbar_title.setText("Ratings & Reviews");
-        review_broker_name = (TextView)view.findViewById(R.id.review_broker_name);
-        review_count = (TextView)view.findViewById(R.id.review_count1);
-        review_rating_value = (TextView)view.findViewById(R.id.review_rating_value);
-        review_image = (ImageView)view.findViewById(R.id.review_image);
-        review_broker_badge = (ImageView)view.findViewById(R.id.review_broker_badge);
-        review_ratingbar = (RatingBar)view.findViewById(R.id.review_ratingBar);
-        reviewAdapter = new ReviewAdapter(context,arrayList,ratingCountList,this);
-        review_list.setAdapter(reviewAdapter);
-        setView();
-        getReviewList(from,size);
+        try {
+            context = getActivity();
+            arrayList = new ArrayList<>();
+            parentLayout = getActivity().findViewById(R.id.menu_parent_relative);
+            ratingCountList = new ArrayList<>();
+            pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
+            review_list = view.findViewById(R.id.review_recycle);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+            review_list.setLayoutManager(layoutManager);
+            edit_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+            delete_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+            add_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+            edit_icon.setVisibility(View.GONE);
+            delete_icon.setVisibility(View.GONE);
+            add_icon.setVisibility(View.GONE);
+            toolbar_title = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+            toolbar = getActivity().findViewById(R.id.inventory_toolbar);
+            toolbar.setVisibility(View.VISIBLE);
+            toolbar_title.setText("Ratings & Reviews");
+            review_broker_name = view.findViewById(R.id.review_broker_name);
+            review_count = view.findViewById(R.id.review_count1);
+            review_rating_value = view.findViewById(R.id.review_rating_value);
+            review_image = view.findViewById(R.id.review_image);
+            review_broker_badge = view.findViewById(R.id.review_broker_badge);
+            review_ratingbar = view.findViewById(R.id.review_ratingBar);
+            reviewAdapter = new ReviewAdapter(context,arrayList,ratingCountList,this);
+            review_list.setAdapter(reviewAdapter);
+            setView();
+            getReviewList(from,size);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void setView(){
-        review_broker_name.setText(pref.getString(AppConstants.FIRST_NAME,"")+" "+pref.getString(AppConstants.LAST_NAME,""));
-        review_ratingbar.setRating(pref.getFloat(AppConstants.RATING,0.0f));
-        String rate = String.format("%.1f",pref.getFloat(AppConstants.RATING,0.0f));
-        review_rating_value.setText( rate+" out of 5 stars");
-       /* Glide.with(context).load(pref.getString(AppConstants.USER_PIC,""))
-                .diskCacheStrategy(DiskCacheStrategy.ALL).transform(new CircleTransform(context)).into(review_image);*/
-        Glide.with(context)
-                .load(pref.getString(AppConstants.USER_PIC,""))
-                .apply(CustomApplicationClass.getRequestOption(true))
-                .into(review_image);
+        try {
+            review_broker_name.setText(pref.getString(AppConstants.FIRST_NAME,"")+" "+pref.getString(AppConstants.LAST_NAME,""));
+            review_ratingbar.setRating(pref.getFloat(AppConstants.RATING,0.0f));
+            String rate = String.format("%.1f",pref.getFloat(AppConstants.RATING,0.0f));
+            review_rating_value.setText( rate+" out of 5 stars");
+            Glide.with(context)
+                    .load(pref.getString(AppConstants.USER_PIC,""))
+                    .apply(CustomApplicationClass.getRequestOption(true))
+                    .into(review_image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void getReviewList(final int from, final int size){
-        if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
-            ApiModel.ReviewApiModel reviewApiModel = new ApiModel.ReviewApiModel();
-            reviewApiModel.setFrom(from);
-            reviewApiModel.setSize(size);
-            reviewApiModel.setMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            Call<ApiModel.ReviewModel> call = retrofitAPIs.getReviewApi(tokenaccess, "android", deviceId, reviewApiModel);
-            call.enqueue(new Callback<ApiModel.ReviewModel>() {
-                @Override
-                public void onResponse(Call<ApiModel.ReviewModel> call, Response<ApiModel.ReviewModel> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        String responseString = null;
-                        if (response.isSuccessful()) {
-                            ApiModel.ReviewModel reviewModel = response.body();
-                            int statusCode = reviewModel.getStatusCode();
-                            String message = reviewModel.getMessage();
-                            if (statusCode == 200) {
-                                ratingCountList.clear();
-                                ratingCountList.add(reviewModel.getData().get(0).getOneRating());
-                                ratingCountList.add(reviewModel.getData().get(0).getTwoRating());
-                                ratingCountList.add(reviewModel.getData().get(0).getThreeRating());
-                                ratingCountList.add(reviewModel.getData().get(0).getFourRating());
-                                ratingCountList.add(reviewModel.getData().get(0).getFiveRating());
-                                totalCount = 0;
-                                for (int i = 0; i < 5; i++) {
-                                    totalCount = totalCount + ratingCountList.get(i);
+        try {
+            if(Utils.isNetworkAvailable(context)) {
+                Utils.LoaderUtils.showLoader(context);
+                ApiModel.ReviewApiModel reviewApiModel = new ApiModel.ReviewApiModel();
+                reviewApiModel.setFrom(from);
+                reviewApiModel.setSize(size);
+                reviewApiModel.setMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+                String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+                Call<ApiModel.ReviewModel> call = retrofitAPIs.getReviewApi(tokenaccess, "android", deviceId, reviewApiModel);
+                call.enqueue(new Callback<ApiModel.ReviewModel>() {
+                    @Override
+                    public void onResponse(Call<ApiModel.ReviewModel> call, Response<ApiModel.ReviewModel> response) {
+                        Utils.LoaderUtils.dismissLoader();
+                        if (response != null) {
+                            String responseString = null;
+                            if (response.isSuccessful()) {
+                                ApiModel.ReviewModel reviewModel = response.body();
+                                int statusCode = reviewModel.getStatusCode();
+                                String message = reviewModel.getMessage();
+                                if (statusCode == 200) {
+                                    ratingCountList.clear();
+                                    ratingCountList.add(reviewModel.getData().get(0).getOneRating());
+                                    ratingCountList.add(reviewModel.getData().get(0).getTwoRating());
+                                    ratingCountList.add(reviewModel.getData().get(0).getThreeRating());
+                                    ratingCountList.add(reviewModel.getData().get(0).getFourRating());
+                                    ratingCountList.add(reviewModel.getData().get(0).getFiveRating());
+                                    totalCount = 0;
+                                    for (int i = 0; i < 5; i++) {
+                                        totalCount = totalCount + ratingCountList.get(i);
+                                    }
+                                    review_count.setText(totalCount + "");
+                                    ArrayList<ApiModel.ReviewChild> arrayList1 = reviewModel.getData().get(0).getReviews();
+                                    if (arrayList1.size() != 0) {
+                                        arrayList.addAll(arrayList1);
+                                    }
+                                    if (arrayList1.size() < size) {
+                                        isemptyData = true;
+                                        reviewAdapter.setButton(false);
+                                    }else{
+                                        reviewAdapter.setButton(true);
+                                    }
                                 }
-                                review_count.setText(totalCount + "");
-                                ArrayList<ApiModel.ReviewChild> arrayList1 = reviewModel.getData().get(0).getReviews();
-                                if (arrayList1.size() != 0) {
-                                    arrayList.addAll(arrayList1);
+                                reviewAdapter.notifyDataSetChanged();
+                            } else {
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    String message = jsonObject.optString("message");
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                        openTokenDialog(context);
+                                    } else {
+                                        Utils.setSnackBar(parentLayout,message);
+                                    }
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
                                 }
-                                if (arrayList1.size() < size) {
-                                    isemptyData = true;
-                                    reviewAdapter.setButton(false);
-                                }else{
-                                    reviewAdapter.setButton(true);
-                                }
-                            }
-                            reviewAdapter.notifyDataSetChanged();
-                        } else {
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    openTokenDialog(context);
-                                } else {
-                                    Utils.setSnackBar(parentLayout,message);
-                                }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ApiModel.ReviewModel> call, Throwable t) {
-                    Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                }
-            });
-        }else{
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<ApiModel.ReviewModel> call, Throwable t) {
+                        Utils.LoaderUtils.dismissLoader();
+                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                    }
+                });
+            }else{
+                Utils.internetDialog(context,this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void btnClick() {
-        if(!isemptyData) {
-            from++;
-            getReviewList(from, size);
+        try {
+            if(!isemptyData) {
+                from++;
+                getReviewList(from, size);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     @Override
@@ -202,7 +216,11 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Utils.LoaderUtils.dismissLoader();
+        try {
+            Utils.LoaderUtils.dismissLoader();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -210,7 +228,13 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
         getReviewList(from,size);
     }
     private void openTokenDialog(Context context){
-        Utils.tokenDialog(context,this);
+        try {
+            if(!getActivity().isFinishing()) {
+                Utils.tokenDialog(context, this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -218,7 +242,11 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
      getToken(context);
     }
     private void getToken(Context context){
-        new AllUtils().getToken(context,this);
+        try {
+            new AllUtils().getToken(context,this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

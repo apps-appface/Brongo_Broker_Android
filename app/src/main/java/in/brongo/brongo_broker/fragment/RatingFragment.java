@@ -29,16 +29,20 @@ public class RatingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rating, container, false);
-        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
-        delete_icon =(ImageView) getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
-        add_icon =(ImageView) getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
-        edit_icon.setVisibility(View.GONE);
-        delete_icon.setVisibility(View.GONE);
-        add_icon.setVisibility(View.GONE);
-        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
-        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        toolbar_title.setText("Your Ratings");
+        try {
+            edit_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+            delete_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+            add_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+            edit_icon.setVisibility(View.GONE);
+            delete_icon.setVisibility(View.GONE);
+            add_icon.setVisibility(View.GONE);
+            toolbar_title = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+            toolbar = getActivity().findViewById(R.id.inventory_toolbar);
+            toolbar.setVisibility(View.VISIBLE);
+            toolbar_title.setText("Your Ratings");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return view;
     }
 

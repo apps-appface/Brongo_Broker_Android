@@ -1,6 +1,7 @@
 package in.brongo.brongo_broker.fragment;
 
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -88,21 +89,21 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
         pd.getWindow().setGravity(Gravity.BOTTOM);*/
         pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
         editor = pref.edit();
-        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
+        parentLayout = getActivity().findViewById(R.id.menu_parent_relative);
         unread = pref.getInt(AppConstants.NOTIFICATION_BADGES,0);
         notificationItemModel = new ApiModel.NotificationChildModel();
         editor.putInt(AppConstants.NOTIFICATION_BADGES,0).commit();
-        RecyclerView noti_recycle = (RecyclerView)view.findViewById(R.id.notification_recycle);
-        no_noti_linear = (LinearLayout)view.findViewById(R.id.no_notification_linear);
+        RecyclerView noti_recycle = view.findViewById(R.id.notification_recycle);
+        no_noti_linear = view.findViewById(R.id.no_notification_linear);
         no_noti_linear.setVisibility(View.GONE);
-        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
-        delete_icon =(ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
-        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+        edit_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        delete_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        add_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
         edit_icon.setVisibility(View.GONE);
         delete_icon.setVisibility(View.GONE);
         add_icon.setVisibility(View.GONE);
-        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
-        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar_title = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+        toolbar = getActivity().findViewById(R.id.inventory_toolbar);
         toolbar.setVisibility(View.VISIBLE);
         toolbar_title.setText("Notifications");
         LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
@@ -239,70 +240,74 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
     }
 
     private void callClient(final String lead_mobile, final String propertyId) {
-        client_mobile = lead_mobile;
-        client_property_id = propertyId;
-        if(Utils.isNetworkAvailable(context)) {
-            startLoader();
-            String client_no = lead_mobile;
-            String brokerno = (pref.getString(AppConstants.MOBILE_NUMBER, ""));
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            ApiModel.KnowlarityModel knowlarityModel = new ApiModel.KnowlarityModel();
-            knowlarityModel.setFrom(brokerno);
-            knowlarityModel.setTo(client_no);
-            knowlarityModel.setDealId(propertyId);
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+        try {
+            client_mobile = lead_mobile;
+            client_property_id = propertyId;
+            if(Utils.isNetworkAvailable(context)) {
+                startLoader();
+                String client_no = lead_mobile;
+                String brokerno = (pref.getString(AppConstants.MOBILE_NUMBER, ""));
+                String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+                String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+                ApiModel.KnowlarityModel knowlarityModel = new ApiModel.KnowlarityModel();
+                knowlarityModel.setFrom(brokerno);
+                knowlarityModel.setTo(client_no);
+                knowlarityModel.setDealId(propertyId);
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
 
-            Call<ResponseBody> call = retrofitAPIs.callKnowlarityApi(tokenaccess, "android", deviceId, knowlarityModel);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    stopLoader();
-                    if (response != null) {
-                        String responseString = null;
-                        if (response.isSuccessful()) {
-                            try {
-                                responseString = response.body().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 200 && message.equalsIgnoreCase("You Can Processed With Call")) {
-                                    Intent callIntent = new Intent(Intent.ACTION_CALL);
-                                    callIntent.setData(Uri.parse("tel:" + "+919590224224"));
-                                    startActivity(callIntent);
+                Call<ResponseBody> call = retrofitAPIs.callKnowlarityApi(tokenaccess, "android", deviceId, knowlarityModel);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        stopLoader();
+                        if (response != null) {
+                            String responseString = null;
+                            if (response.isSuccessful()) {
+                                try {
+                                    responseString = response.body().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    String message = jsonObject.optString("message");
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    if (statusCode == 200 && message.equalsIgnoreCase("You Can Processed With Call")) {
+                                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                                        callIntent.setData(Uri.parse("tel:" + "+919590224224"));
+                                        startActivity(callIntent);
+                                    }
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    Utils.setSnackBar(parentLayout,"Please try again");
-                                } else {
-                                    Utils.setSnackBar(parentLayout,message);
-                                }
+                            } else {
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    String message = jsonObject.optString("message");
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                        new AllUtils().getTokenRefresh(context);
+                                        Utils.setSnackBar(parentLayout,"Please try again");
+                                    } else {
+                                        Utils.setSnackBar(parentLayout,message);
+                                    }
 
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    stopLoader();
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                }
-            });
-        }else{
-            taskCompleted = 200;
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        stopLoader();
+                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                    }
+                });
+            }else{
+                taskCompleted = 200;
+                Utils.internetDialog(context,this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     @Override
@@ -338,232 +343,246 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
 
     }
     private void readNotification(final ApiModel.NotificationChildModel notificationChildModel, final int position, final boolean isDataSet) {
-        notificationItemModel = notificationChildModel;
-        noti_position = position;
-        isNotified = isDataSet;
-        if(Utils.isNetworkAvailable(context)) {
-            startLoader();
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
-            String id = notificationChildModel.getId();
-            Call<ResponseBody> call = retrofitAPIs.readNotificationApi(tokenaccess, "android", deviceId, mobileNo, id);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    stopLoader();
-                    if (response != null) {
-                        String responseString = null;
-                        if (response.isSuccessful()) {
-                            JSONObject jsonObject = null;
-                            try {
-                                responseString = response.body().string();
-                                jsonObject = new JSONObject(responseString);
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
-                            }
-                            int statusCode = jsonObject.optInt("statusCode");
-                            String message = jsonObject.optString("message");
-                            if (statusCode == 200 && message.equalsIgnoreCase("Updated Successfully")) {
-                                arrayList.get(position).setRead(true);
-                                    //arrayList.add(position,notificationChildModel);
-                                if(isDataSet) {
-                                    notificationAdapter.notifyDataSetChanged();
+        try {
+            notificationItemModel = notificationChildModel;
+            noti_position = position;
+            isNotified = isDataSet;
+            if(Utils.isNetworkAvailable(context)) {
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+                String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+                String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
+                String id = notificationChildModel.getId();
+                Call<ResponseBody> call = retrofitAPIs.readNotificationApi(tokenaccess, "android", deviceId, mobileNo, id);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        stopLoader();
+                        if (response != null) {
+                            String responseString = null;
+                            if (response.isSuccessful()) {
+                                JSONObject jsonObject = null;
+                                try {
+                                    responseString = response.body().string();
+                                    jsonObject = new JSONObject(responseString);
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            }
-                            // referAdapter.notifyDataSetChanged();
-                        } else {
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
                                 int statusCode = jsonObject.optInt("statusCode");
                                 String message = jsonObject.optString("message");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    Utils.setSnackBar(parentLayout,"Please try again");
-                                } else {
-                                    Utils.setSnackBar(parentLayout,message);
+                                if (statusCode == 200 && message.equalsIgnoreCase("Updated Successfully")) {
+                                    arrayList.get(position).setRead(true);
+                                        //arrayList.add(position,notificationChildModel);
+                                    if(isDataSet) {
+                                        notificationAdapter.notifyDataSetChanged();
+                                    }
                                 }
-                           /* if(pd.isShowing()) {
-                                pd.dismiss();
-                            }*/
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
+                                // referAdapter.notifyDataSetChanged();
+                            } else {
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    String message = jsonObject.optString("message");
+                                    if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                        new AllUtils().getTokenRefresh(context);
+                                        Utils.setSnackBar(parentLayout,"Please try again");
+                                    } else {
+                                        Utils.setSnackBar(parentLayout,message);
+                                    }
+                               /* if(pd.isShowing()) {
+                                    pd.dismiss();
+                                }*/
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    stopLoader();
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                /*if(pd.isShowing()) {
-                    pd.dismiss();
-                }*/
-                }
-            });
-        }else{
-            taskCompleted = 300;
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        stopLoader();
+                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                    /*if(pd.isShowing()) {
+                        pd.dismiss();
+                    }*/
+                    }
+                });
+            }else{
+                taskCompleted = 300;
+                Utils.internetDialog(context,this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private void accept_builder(final ApiModel.NotificationChildModel notificationChildModel, final int position){
-        notificationItemModel = notificationChildModel;
-        noti_position = position;
-        if(Utils.isNetworkAvailable(context)) {
-            startLoader();
-            ApiModel.BuilderAcceptModel builderAcceptModel = new ApiModel.BuilderAcceptModel();
-            builderAcceptModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
-            builderAcceptModel.setPropertyId(notificationChildModel.getPropertyId());
-            builderAcceptModel.setUserId(notificationChildModel.getUserId());
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            Call<ApiModel.ResponseModel> call = retrofitAPIs.acceptBuilderApi(tokenaccess, "android", deviceId, builderAcceptModel);
-            call.enqueue(new Callback<ApiModel.ResponseModel>() {
-                @Override
-                public void onResponse(Call<ApiModel.ResponseModel> call, Response<ApiModel.ResponseModel> response) {
-                    stopLoader();
-                    if (response != null) {
-                        String responseString = null;
-                        if (response.isSuccessful()) {
-                            ApiModel.ResponseModel responseModel = response.body();
-                            int statusCode = responseModel.getStatusCode();
-                            String message = responseModel.getMessage();
-                            if (statusCode == 200 && message.equalsIgnoreCase("Builder And Broker Connection Is Established")) {
-                                arrayList.get(position).setStatus("accept");
-                                notificationAdapter.notifyDataSetChanged();
-                                Utils.setSnackBar(parentLayout,message);
-                            }
-                        } else {
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    Utils.setSnackBar(parentLayout,"Please try again");
-                                }else{
+        try {
+            notificationItemModel = notificationChildModel;
+            noti_position = position;
+            if(Utils.isNetworkAvailable(context)) {
+                startLoader();
+                ApiModel.BuilderAcceptModel builderAcceptModel = new ApiModel.BuilderAcceptModel();
+                builderAcceptModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
+                builderAcceptModel.setPropertyId(notificationChildModel.getPropertyId());
+                builderAcceptModel.setUserId(notificationChildModel.getUserId());
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+                String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+                Call<ApiModel.ResponseModel> call = retrofitAPIs.acceptBuilderApi(tokenaccess, "android", deviceId, builderAcceptModel);
+                call.enqueue(new Callback<ApiModel.ResponseModel>() {
+                    @Override
+                    public void onResponse(Call<ApiModel.ResponseModel> call, Response<ApiModel.ResponseModel> response) {
+                        stopLoader();
+                        if (response != null) {
+                            String responseString = null;
+                            if (response.isSuccessful()) {
+                                ApiModel.ResponseModel responseModel = response.body();
+                                int statusCode = responseModel.getStatusCode();
+                                String message = responseModel.getMessage();
+                                if (statusCode == 200 && message.equalsIgnoreCase("Builder And Broker Connection Is Established")) {
+                                    arrayList.get(position).setStatus("accept");
+                                    notificationAdapter.notifyDataSetChanged();
                                     Utils.setSnackBar(parentLayout,message);
                                 }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
+                            } else {
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    String message = jsonObject.optString("message");
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                        new AllUtils().getTokenRefresh(context);
+                                        Utils.setSnackBar(parentLayout,"Please try again");
+                                    }else{
+                                        Utils.setSnackBar(parentLayout,message);
+                                    }
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
-                    stopLoader();
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                }
-            });
-        }else{
-            taskCompleted = 400;
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
+                        stopLoader();
+                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                    }
+                });
+            }else{
+                taskCompleted = 400;
+                Utils.internetDialog(context,this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private void builderRejectApi(final ApiModel.NotificationChildModel notificationChildModel,final int position){
-        notificationItemModel = notificationChildModel;
-        noti_position = position;
-        if (Utils.isNetworkAvailable(context)) {
-            startLoader();
-            ApiModel.ClientAcceptModel clientAcceptModel = new ApiModel.ClientAcceptModel();
-            clientAcceptModel.setClientMobileNo(notificationChildModel.getUserId());
-            clientAcceptModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
-            clientAcceptModel.setPostingType("");
-            clientAcceptModel.setPropertyId(notificationChildModel.getPropertyId());
-            clientAcceptModel.setReason("");
-            clientAcceptModel.setPostedUser("builder");
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            Call<ResponseBody> call = retrofitAPIs.rejectLeadApi(tokenaccess, "android", deviceId, clientAcceptModel);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    stopLoader();
-                    if (response != null) {
-                        String responseString = null;
-                        if (response.isSuccessful()) {
-                            try {
-                                responseString = response.body().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 200 ) {
-                                    arrayList.get(position).setStatus("reject");
-                                    notificationAdapter.notifyDataSetChanged();
-                                    if(notificationChildModel.isRead()==false) {
-                                        readNotification(notificationChildModel, position, true);
+        try {
+            notificationItemModel = notificationChildModel;
+            noti_position = position;
+            if (Utils.isNetworkAvailable(context)) {
+                startLoader();
+                ApiModel.ClientAcceptModel clientAcceptModel = new ApiModel.ClientAcceptModel();
+                clientAcceptModel.setClientMobileNo(notificationChildModel.getUserId());
+                clientAcceptModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
+                clientAcceptModel.setPostingType("");
+                clientAcceptModel.setPropertyId(notificationChildModel.getPropertyId());
+                clientAcceptModel.setReason("");
+                clientAcceptModel.setPostedUser("builder");
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+                String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+                Call<ResponseBody> call = retrofitAPIs.rejectLeadApi(tokenaccess, "android", deviceId, clientAcceptModel);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        stopLoader();
+                        if (response != null) {
+                            String responseString = null;
+                            if (response.isSuccessful()) {
+                                try {
+                                    responseString = response.body().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    String message = jsonObject.optString("message");
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    if (statusCode == 200 ) {
+                                        arrayList.get(position).setStatus("reject");
+                                        notificationAdapter.notifyDataSetChanged();
+                                        if(notificationChildModel.isRead()==false) {
+                                            readNotification(notificationChildModel, position, true);
+                                        }
                                     }
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                String message = jsonObject.optString("message");
-                                int statusCode = jsonObject.optInt("statusCode");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    new AllUtils().getTokenRefresh(context);
-                                    Utils.setSnackBar(parentLayout,"Please try again");
-                                } else {
-                                    Utils.setSnackBar(parentLayout,message);
+                            } else {
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    String message = jsonObject.optString("message");
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                        new AllUtils().getTokenRefresh(context);
+                                        Utils.setSnackBar(parentLayout,"Please try again");
+                                    } else {
+                                        Utils.setSnackBar(parentLayout,message);
+                                    }
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    stopLoader();
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                }
-            });
-        }else{
-            taskCompleted = 500;
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        stopLoader();
+                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                    }
+                });
+            }else{
+                taskCompleted = 500;
+                Utils.internetDialog(context,this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private void tc_dialog(final ApiModel.NotificationChildModel notificationChildModel ,final int position){
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog_tc);
-        //dialog.setCanceledOnTouchOutside(false);
-        // dialog.setCancelable(false);
-        final ImageView cross_btn = (ImageView) dialog.findViewById(R.id.tc_close_btn);
-        final Button accept_btn = (Button)dialog.findViewById(R.id.tcDialog_accept);
-        TextView commission_text = (TextView)dialog.findViewById(R.id.tcDialog_commission);
-        if(arrayList.get(position).getCommission() != null) {
-            commission_text.setText(notificationChildModel.getCommission() + "% Commission");
+        try {
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.setContentView(R.layout.dialog_tc);
+            //dialog.setCanceledOnTouchOutside(false);
+            // dialog.setCancelable(false);
+            final ImageView cross_btn = dialog.findViewById(R.id.tc_close_btn);
+            final Button accept_btn = dialog.findViewById(R.id.tcDialog_accept);
+            TextView commission_text = dialog.findViewById(R.id.tcDialog_commission);
+            if(arrayList.get(position).getCommission() != null) {
+                commission_text.setText(notificationChildModel.getCommission() + "% Commission");
+            }
+            cross_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            accept_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    accept_builder(notificationChildModel,position);
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        cross_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        accept_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                accept_builder(notificationChildModel,position);
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-        dialog.show();
     }
     private void startLoader(){
         if(!isLoader){
@@ -587,10 +606,20 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
         }
     }
     private void openTokenDialog(Context context){
-        Utils.tokenDialog(context,this);
+        try {
+            if(!getActivity().isFinishing()) {
+                Utils.tokenDialog(context, this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void getToken(Context context){
-        new AllUtils().getToken(context,this);
+        try {
+            new AllUtils().getToken(context,this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void onSuccessRes(boolean isSuccess) {

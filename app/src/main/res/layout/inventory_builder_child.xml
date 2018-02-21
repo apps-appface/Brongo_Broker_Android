@@ -1,32 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/edit_border"
+    android:layout_marginTop="@dimen/builder_normal"
     android:layout_marginLeft="@dimen/builder_large"
     android:layout_marginRight="@dimen/builder_large"
-    android:layout_marginTop="@dimen/builder_normal"
-    android:layout_marginBottom="@dimen/builder_normal"
-    android:padding="@dimen/builder_big"
-    android:paddingBottom="@dimen/builder_normal">
+    android:layout_marginBottom="@dimen/builder_normal">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/builder_web_linear">
+        android:background="@drawable/edit_border"
+        android:paddingLeft="@dimen/builder_large"
+        android:paddingRight="@dimen/builder_large">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/builder_web_linear"
+        >
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/builder_large">
+
         <ImageView
+            android:id="@+id/invent_builder_image"
             android:layout_width="@dimen/prof_pic_size"
             android:layout_height="@dimen/prof_pic_size"
-            android:id="@+id/invent_builder_image"
-            android:scaleType="fitXY"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:scaleType="fitXY" />
         <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -176,5 +183,18 @@
                     android:layout_alignParentLeft="true"/>
             </RelativeLayout>
         </RelativeLayout>
-
     </LinearLayout>
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/builder_invent_tag"
+        android:id="@+id/builder_tag"
+        android:layout_marginTop="@dimen/builder_normal"
+        android:text="Builder"
+        android:textSize="@dimen/text_size_small"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:padding="@dimen/builder_small"
+        app:customFont="lato_regular.ttf"
+        android:visibility="gone"/>
+    </RelativeLayout>

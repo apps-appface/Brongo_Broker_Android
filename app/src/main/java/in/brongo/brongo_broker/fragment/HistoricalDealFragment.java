@@ -60,121 +60,133 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_historical_deal, container, false);
-        initialise(view);
-        his_open_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                his_recycle2.setVisibility(View.GONE);
-                his_recycle1.setVisibility(View.VISIBLE);
-                his_open_btn.setBackgroundResource(R.drawable.dialog_button);
-                his_close_btn.setBackgroundResource(R.drawable.button_change);
-                his_open_btn.setTextColor(context.getResources().getColor(R.color.white));
-                his_close_btn.setTextColor(context.getResources().getColor(R.color.appColor));
-            }
-        });
-        his_close_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                his_recycle2.setVisibility(View.VISIBLE);
-                his_recycle1.setVisibility(View.GONE);
-                his_open_btn.setBackgroundResource(R.drawable.button_change);
-                his_close_btn.setBackgroundResource(R.drawable.dialog_button);
-                his_open_btn.setTextColor(context.getResources().getColor(R.color.appColor));
-                his_close_btn.setTextColor(context.getResources().getColor(R.color.white));
-            }
-        });
+        try {
+            initialise(view);
+            his_open_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    his_recycle2.setVisibility(View.GONE);
+                    his_recycle1.setVisibility(View.VISIBLE);
+                    his_open_btn.setBackgroundResource(R.drawable.dialog_button);
+                    his_close_btn.setBackgroundResource(R.drawable.button_change);
+                    his_open_btn.setTextColor(context.getResources().getColor(R.color.white));
+                    his_close_btn.setTextColor(context.getResources().getColor(R.color.appColor));
+                }
+            });
+            his_close_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    his_recycle2.setVisibility(View.VISIBLE);
+                    his_recycle1.setVisibility(View.GONE);
+                    his_open_btn.setBackgroundResource(R.drawable.button_change);
+                    his_close_btn.setBackgroundResource(R.drawable.dialog_button);
+                    his_open_btn.setTextColor(context.getResources().getColor(R.color.appColor));
+                    his_close_btn.setTextColor(context.getResources().getColor(R.color.white));
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return view;
     }
     private void initialise(View view){
-        context = getActivity();
-        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
-        pref = context.getSharedPreferences(AppConstants.PREF_NAME,0);
-        his_recycle1 = (RecyclerView)view.findViewById(R.id.his_recycle_open_deal);
-        his_recycle2 = (RecyclerView)view.findViewById(R.id.his_recycle_close_deal);
-        LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
-        verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
-        his_recycle1.setLayoutManager(verticalmanager);
-        LinearLayoutManager verticalmanager1 = new LinearLayoutManager(context, 0, false);
-        verticalmanager1.setOrientation(LinearLayoutManager.VERTICAL);
-        his_recycle2.setLayoutManager(verticalmanager1);
-        his_open_btn = (Button)view.findViewById(R.id.historical_open_btn);
-        his_close_btn = (Button)view.findViewById(R.id.historical_closed_btn);
-        openList = new ArrayList<>();
-        closeList = new ArrayList<>();
-        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
-        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        toolbar_title.setText("Historical Deals");
-        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
-        delete_icon =(ImageView) getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
-        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
-        edit_icon.setVisibility(View.GONE);
-        delete_icon.setVisibility(View.GONE);
-        add_icon.setVisibility(View.GONE);
-        adapter1 = new HistoricalAdapter(openList,context);
-        adapter2 = new HistoricalAdapter(closeList,context);
-        his_recycle1.setAdapter(adapter1);
-        his_recycle2.setAdapter(adapter2);
-        populateList();
+        try {
+            context = getActivity();
+            parentLayout = getActivity().findViewById(R.id.menu_parent_relative);
+            pref = context.getSharedPreferences(AppConstants.PREF_NAME,0);
+            his_recycle1 = view.findViewById(R.id.his_recycle_open_deal);
+            his_recycle2 = view.findViewById(R.id.his_recycle_close_deal);
+            LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
+            verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
+            his_recycle1.setLayoutManager(verticalmanager);
+            LinearLayoutManager verticalmanager1 = new LinearLayoutManager(context, 0, false);
+            verticalmanager1.setOrientation(LinearLayoutManager.VERTICAL);
+            his_recycle2.setLayoutManager(verticalmanager1);
+            his_open_btn = view.findViewById(R.id.historical_open_btn);
+            his_close_btn = view.findViewById(R.id.historical_closed_btn);
+            openList = new ArrayList<>();
+            closeList = new ArrayList<>();
+            toolbar_title = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+            toolbar = getActivity().findViewById(R.id.inventory_toolbar);
+            toolbar.setVisibility(View.VISIBLE);
+            toolbar_title.setText("Historical Deals");
+            edit_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+            delete_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+            add_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+            edit_icon.setVisibility(View.GONE);
+            delete_icon.setVisibility(View.GONE);
+            add_icon.setVisibility(View.GONE);
+            adapter1 = new HistoricalAdapter(openList,context);
+            adapter2 = new HistoricalAdapter(closeList,context);
+            his_recycle1.setAdapter(adapter1);
+            his_recycle2.setAdapter(adapter2);
+            populateList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void populateList(){
-        if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
-            Call<ApiModel.OpenDealModels> call = retrofitAPIs.getActiveDeals(tokenaccess, "android", deviceId, mobileNo,false);
-            call.enqueue(new Callback<ApiModel.OpenDealModels>() {
-                @Override
-                public void onResponse(Call<ApiModel.OpenDealModels> call, Response<ApiModel.OpenDealModels> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        if (response.isSuccessful()) {
-                            ApiModel.OpenDealModels openDealModels = response.body();
-                            int statusCode = openDealModels.getStatusCode();
-                            String message = openDealModels.getMessage();
-                            if (statusCode == 200 && message.equalsIgnoreCase("")) {
-                                ArrayList<ApiModel.BuyAndRentModel> openlist1 = openDealModels.getData().get(0).getOpenDeals();
-                                ArrayList<ApiModel.BuyAndRentModel> closelist1 = openDealModels.getData().get(0).getClosedDeals();
-                                if (openlist1.size() != 0) {
-                                    openList.clear();
-                                    openList.addAll(openlist1);
+        try {
+            if(Utils.isNetworkAvailable(context)) {
+                Utils.LoaderUtils.showLoader(context);
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+                String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+                String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
+                Call<ApiModel.OpenDealModels> call = retrofitAPIs.getActiveDeals(tokenaccess, "android", deviceId, mobileNo,false);
+                call.enqueue(new Callback<ApiModel.OpenDealModels>() {
+                    @Override
+                    public void onResponse(Call<ApiModel.OpenDealModels> call, Response<ApiModel.OpenDealModels> response) {
+                        Utils.LoaderUtils.dismissLoader();
+                        if (response != null) {
+                            if (response.isSuccessful()) {
+                                ApiModel.OpenDealModels openDealModels = response.body();
+                                int statusCode = openDealModels.getStatusCode();
+                                String message = openDealModels.getMessage();
+                                if (statusCode == 200 && message.equalsIgnoreCase("")) {
+                                    ArrayList<ApiModel.BuyAndRentModel> openlist1 = openDealModels.getData().get(0).getOpenDeals();
+                                    ArrayList<ApiModel.BuyAndRentModel> closelist1 = openDealModels.getData().get(0).getClosedDeals();
+                                    if (openlist1.size() != 0) {
+                                        openList.clear();
+                                        openList.addAll(openlist1);
+                                    }
+                                    if (closelist1.size() != 0) {
+                                        closeList.clear();
+                                       closeList.addAll(closelist1);
+                                    }
+                                    adapter1.notifyDataSetChanged();
+                                    adapter2.notifyDataSetChanged();
                                 }
-                                if (closelist1.size() != 0) {
-                                    closeList.clear();
-                                   closeList.addAll(closelist1);
+                            } else {
+                                String responseString = null;
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    String message = jsonObject.optString("message");
+                                    if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                        openTokenDialog(context);
+                                    } else {
+                                        Utils.setSnackBar(parentLayout, message);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                                adapter1.notifyDataSetChanged();
-                                adapter2.notifyDataSetChanged();
-                            }
-                        } else {
-                            String responseString = null;
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                int statusCode = jsonObject.optInt("statusCode");
-                                String message = jsonObject.optString("message");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    openTokenDialog(context);
-                                } else {
-                                    Utils.setSnackBar(parentLayout, message);
-                                }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ApiModel.OpenDealModels> call, Throwable t) {
-                    Utils.LoaderUtils.dismissLoader();
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                }
-            });
-        }else{
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<ApiModel.OpenDealModels> call, Throwable t) {
+                        Utils.LoaderUtils.dismissLoader();
+                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                    }
+                });
+            }else{
+                Utils.internetDialog(context,this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     @Override
@@ -198,10 +210,20 @@ public class HistoricalDealFragment extends Fragment implements NoInternetTryCon
       getToken(context);
     }
     private void openTokenDialog(Context context){
-        Utils.tokenDialog(context,this);
+        try {
+            if(!getActivity().isFinishing()) {
+                Utils.tokenDialog(context, this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void getToken(Context context){
-        new AllUtils().getToken(context,this);
+        try {
+            new AllUtils().getToken(context,this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

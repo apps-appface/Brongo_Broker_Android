@@ -116,6 +116,15 @@ public class PaymentHashModel {
         public String name;
         public String amountToSub;
         public String expireTime;
+        String expiredPeriod;
+
+        public String getExpiredPeriod() {
+            return expiredPeriod;
+        }
+
+        public void setExpiredPeriod(String expiredPeriod) {
+            this.expiredPeriod = expiredPeriod;
+        }
 
         public String get_id() {
             return _id;

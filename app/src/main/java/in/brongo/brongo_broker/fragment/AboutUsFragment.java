@@ -33,20 +33,24 @@ public class AboutUsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_about_us, container, false);
-        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
-        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        toolbar_title.setText("About Brongo");
-        about_version_text = (TextView)view.findViewById(R.id.about_us_version_name);
-        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
-        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
-        delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
-        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
-        edit_icon.setVisibility(View.GONE);
-        delete_icon.setVisibility(View.GONE);
-        add_icon.setVisibility(View.GONE);
-        String versionName = BuildConfig.VERSION_NAME;
-        about_version_text.setText("Version "+ versionName);
+        try {
+            toolbar_title = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+            toolbar = getActivity().findViewById(R.id.inventory_toolbar);
+            toolbar.setVisibility(View.VISIBLE);
+            toolbar_title.setText("About Brongo");
+            about_version_text = view.findViewById(R.id.about_us_version_name);
+            parentLayout = getActivity().findViewById(R.id.menu_parent_relative);
+            edit_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+            delete_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+            add_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+            edit_icon.setVisibility(View.GONE);
+            delete_icon.setVisibility(View.GONE);
+            add_icon.setVisibility(View.GONE);
+            String versionName = BuildConfig.VERSION_NAME;
+            about_version_text.setText("Version "+ versionName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return view;
     }
 

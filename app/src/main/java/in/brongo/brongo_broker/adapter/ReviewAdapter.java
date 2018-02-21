@@ -60,56 +60,60 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         holder.setIsRecyclable(false);
-        if (holder instanceof HeaderViewHolder) {
-            if(starCountList.size()  > 0){
-                for(int i =0;i<starCountList.size();i++){
-                    totalCount = totalCount + starCountList.get(i);
+        try {
+            if (holder instanceof HeaderViewHolder) {
+                if(starCountList.size()  > 0){
+                    for(int i =0;i<starCountList.size();i++){
+                        totalCount = totalCount + starCountList.get(i);
+                    }
+                    HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
+                    headerHolder.count_one.setText(starCountList.get(0)+"");
+                    headerHolder.count_two.setText(starCountList.get(1)+"");
+                    headerHolder.count_three.setText(starCountList.get(2)+"");
+                    headerHolder.count_four.setText(starCountList.get(3)+"");
+                    headerHolder.count_five.setText(starCountList.get(4)+"");
+                    if(totalCount != 0) {
+                        progress1 = ((starCountList.get(0))* 100) / totalCount;
+                        progress2 = ((starCountList.get(1))* 100) / totalCount;
+                        progress3 = ((starCountList.get(2))* 100) / totalCount;
+                        progress4 = ((starCountList.get(3))* 100) / totalCount;
+                        progress5 = ((starCountList.get(4))* 100) / totalCount;
+                    }
+                        headerHolder.progress_one.setProgress(progress1);
+                        headerHolder.progress_two.setProgress(progress2);
+                        headerHolder.progress_three.setProgress(progress3);
+                        headerHolder.progress_four.setProgress(progress4);
+                        headerHolder.progress_five.setProgress(progress5);
                 }
-                HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
-                headerHolder.count_one.setText(starCountList.get(0)+"");
-                headerHolder.count_two.setText(starCountList.get(1)+"");
-                headerHolder.count_three.setText(starCountList.get(2)+"");
-                headerHolder.count_four.setText(starCountList.get(3)+"");
-                headerHolder.count_five.setText(starCountList.get(4)+"");
-                if(totalCount != 0) {
-                    progress1 = ((starCountList.get(0))* 100) / totalCount;
-                    progress2 = ((starCountList.get(1))* 100) / totalCount;
-                    progress3 = ((starCountList.get(2))* 100) / totalCount;
-                    progress4 = ((starCountList.get(3))* 100) / totalCount;
-                    progress5 = ((starCountList.get(4))* 100) / totalCount;
-                }
-                    headerHolder.progress_one.setProgress(progress1);
-                    headerHolder.progress_two.setProgress(progress2);
-                    headerHolder.progress_three.setProgress(progress3);
-                    headerHolder.progress_four.setProgress(progress4);
-                    headerHolder.progress_five.setProgress(progress5);
-            }
 
-        } else if (holder instanceof FooterViewHolder) {
-            FooterViewHolder footerHolder = (FooterViewHolder) holder;
-            if(!isVisible){
-                footerHolder.footerText.setVisibility(View.GONE);
-            }else{
-                footerHolder.footerText.setVisibility(View.VISIBLE);
-            }
-            footerHolder.footerText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    footerListener.btnClick();
+            } else if (holder instanceof FooterViewHolder) {
+                FooterViewHolder footerHolder = (FooterViewHolder) holder;
+                if(!isVisible){
+                    footerHolder.footerText.setVisibility(View.GONE);
+                }else{
+                    footerHolder.footerText.setVisibility(View.VISIBLE);
                 }
-            });
-        } else if (holder instanceof ItemViewHolder) {
-            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            ArrayList<String> reviewlist = reviewChildArrayList.get(position-1).getReview();
-            if(reviewlist.size() > 1) {
-                addReview(reviewlist, itemViewHolder.flowLayout);
+                footerHolder.footerText.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        footerListener.btnClick();
+                    }
+                });
+            } else if (holder instanceof ItemViewHolder) {
+                ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+                ArrayList<String> reviewlist = reviewChildArrayList.get(position-1).getReview();
+                if(reviewlist.size() > 1) {
+                    addReview(reviewlist, itemViewHolder.flowLayout);
+                }
+                if(reviewlist.size()>0) {
+                    itemViewHolder.review1.setText(reviewChildArrayList.get(position - 1).getReview().get(0));
+                    itemViewHolder.review1.setVisibility(View.VISIBLE);
+                }
+                itemViewHolder.review_ratingbar.setRating(reviewChildArrayList.get(position-1).getRating());
+                itemViewHolder.comment.setText("");
             }
-            if(reviewlist.size()>0) {
-                itemViewHolder.review1.setText(reviewChildArrayList.get(position - 1).getReview().get(0));
-                itemViewHolder.review1.setVisibility(View.VISIBLE);
-            }
-            itemViewHolder.review_ratingbar.setRating(reviewChildArrayList.get(position-1).getRating());
-            itemViewHolder.comment.setText("");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -185,6 +189,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 review.setText(arrayList.get(i));
                 flowlayout.addView(layout2);
             } catch (Exception e) {
+                e.printStackTrace();
                 String error = e.toString();
             }
         }

@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import in.brongo.brongo_broker.R;
+import in.brongo.brongo_broker.util.Utils;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener,GoogleMap.OnMarkerDragListener{
     private SupportMapFragment mapFragment;
@@ -48,87 +49,96 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map2);
         context = MapActivity.this;
-        parentLayout = (RelativeLayout)findViewById(R.id.map_parent_relative);
-        mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_picker));
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        autocompleteFragment.setHint("Search For Meeting Location");
-        AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder()
-                .setTypeFilter(Place.TYPE_COUNTRY)
-                .setCountry("IN")
-                .build();
-        autocompleteFragment.setFilter(autocompleteFilter);
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                                                            @Override
-                                                            public void onPlaceSelected(Place place) {
-                                                               LatLng latLng = place.getLatLng();
-                                                                selected_lat = latLng.latitude;
-                                                                selected_lng = latLng.longitude;
-                                                                if(marker != null){
-                                                                    marker.remove();
+        try {
+            parentLayout = (RelativeLayout)findViewById(R.id.map_parent_relative);
+            mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_picker));
+            PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                    getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+            autocompleteFragment.setHint("Search For Meeting Location");
+            AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder()
+                    .setTypeFilter(Place.TYPE_COUNTRY)
+                    .setCountry("IN")
+                    .build();
+            autocompleteFragment.setFilter(autocompleteFilter);
+            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                                                                @Override
+                                                                public void onPlaceSelected(Place place) {
+                                                                   LatLng latLng = place.getLatLng();
+                                                                    selected_lat = latLng.latitude;
+                                                                    selected_lng = latLng.longitude;
+                                                                    if(marker != null){
+                                                                        marker.remove();
+                                                                    }
+                                                                    marker = map.addMarker(new MarkerOptions().position(latLng).draggable(true));
+                                                                    //markerOptions.draggable(true);
+                                                                    map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                                                                    map.animateCamera(CameraUpdateFactory.zoomTo(15));
                                                                 }
-                                                                marker = map.addMarker(new MarkerOptions().position(latLng).draggable(true));
-                                                                //markerOptions.draggable(true);
-                                                                map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                                                                map.animateCamera(CameraUpdateFactory.zoomTo(15));
-                                                            }
 
-                                                            @Override
-                                                            public void onError(Status status) {
+                                                                @Override
+                                                                public void onError(Status status) {
 
-                                                            }
-                                                        });
+                                                                }
+                                                            });
 
-                done_btn = (Button)findViewById(R.id.map_done_btn);
-        mapFragment.getMapAsync(this);
-        done_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ReminderActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                intent.putExtra("lat_value", selected_lat);
-                intent.putExtra("long_value", selected_lng);
-                startActivity(intent);
-                finish();
-            }
-        });
+            done_btn = (Button)findViewById(R.id.map_done_btn);
+            mapFragment.getMapAsync(this);
+            done_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ReminderActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    intent.putExtra("lat_value", selected_lat);
+                    intent.putExtra("long_value", selected_lng);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-        selected_lat = 12.959172;
-        selected_lng =77.697419;
-        LatLng latLng = new LatLng(selected_lat, selected_lng);
-        marker = map.addMarker(new MarkerOptions().position(latLng).draggable(true));
-        //markerOptions.draggable(true);
-        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        map.animateCamera(CameraUpdateFactory.zoomTo(15));
-        map.setOnMapClickListener(this);
-        map.setOnMarkerDragListener(this);
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (ContextCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(MapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_REQUEST);
+        try {
+            map = googleMap;
+            selected_lat = 12.959172;
+            selected_lng =77.697419;
+            LatLng latLng = new LatLng(selected_lat, selected_lng);
+            marker = map.addMarker(new MarkerOptions().position(latLng).draggable(true));
+            map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            map.animateCamera(CameraUpdateFactory.zoomTo(15));
+            map.setOnMapClickListener(this);
+            map.setOnMarkerDragListener(this);
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (ContextCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_REQUEST);
+                } else {
+                    setMap();
+                }
             } else {
                 setMap();
             }
-        } else {
-            setMap();
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
-        selected_lat = latLng.latitude;
-        selected_lng = latLng.longitude;
-        if(marker != null){
-            marker.remove();
+        try {
+            selected_lat = latLng.latitude;
+            selected_lng = latLng.longitude;
+            if(marker != null){
+                marker.remove();
+            }
+            marker = map.addMarker(new MarkerOptions().position(latLng).draggable(true));
+            map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            map.animateCamera(CameraUpdateFactory.zoomTo(15));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        marker = map.addMarker(new MarkerOptions().position(latLng).draggable(true));
-        //markerOptions.draggable(true);
-        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        map.animateCamera(CameraUpdateFactory.zoomTo(15));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -141,45 +151,63 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             } else {
                    return;
                 }
-                // Permission was denied. Display an error message.
             }
         }
 
     private void setMap() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        map.setMyLocationEnabled(true);
-            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-            Criteria criteria = new Criteria();
-            String bestProvider = locationManager.getBestProvider(criteria, true);
-            Location location = locationManager.getLastKnownLocation(bestProvider);
-            if (location != null) {
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                selected_lat = latitude;
-                selected_lng = longitude;
-                LatLng latLng = new LatLng(latitude, longitude);
-                if(marker != null){
-                    marker.remove();
+        try {
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (ContextCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_REQUEST);
+                } else {
+                    map.setMyLocationEnabled(true);
+                    LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                    Criteria criteria = new Criteria();
+                    String bestProvider = locationManager.getBestProvider(criteria, true);
+                    Location location = locationManager.getLastKnownLocation(bestProvider);
+                    if (location != null) {
+                        double latitude = location.getLatitude();
+                        double longitude = location.getLongitude();
+                        selected_lat = latitude;
+                        selected_lng = longitude;
+                        LatLng latLng = new LatLng(latitude, longitude);
+                        if (marker != null) {
+                            marker.remove();
+                        }
+                        marker = map.addMarker(new MarkerOptions().position(latLng).draggable(true));
+                        //markerOptions.draggable(true);
+                        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                        map.animateCamera(CameraUpdateFactory.zoomTo(15));
+                    }
                 }
-                marker = map.addMarker(new MarkerOptions().position(latLng).draggable(true));
-                //markerOptions.draggable(true);
-                map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                map.animateCamera(CameraUpdateFactory.zoomTo(15));
+            }else{
+                map.setMyLocationEnabled(true);
+                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                Criteria criteria = new Criteria();
+                String bestProvider = locationManager.getBestProvider(criteria, true);
+                Location location = locationManager.getLastKnownLocation(bestProvider);
+                if (location != null) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    selected_lat = latitude;
+                    selected_lng = longitude;
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    if (marker != null) {
+                        marker.remove();
+                    }
+                    marker = map.addMarker(new MarkerOptions().position(latLng).draggable(true));
+                    //markerOptions.draggable(true);
+                    map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                    map.animateCamera(CameraUpdateFactory.zoomTo(15));
+                }
             }
+            }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onMarkerDragStart(Marker arg0) {
-        // TODO Auto-generated method stub
         Log.d("System out", "onMarkerDragStart..."+arg0.getPosition().latitude+"..."+arg0.getPosition().longitude);
     }
 
@@ -190,13 +218,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onMarkerDragEnd(Marker arg0) {
-        Log.d("System out", "onMarkerDragEnd..."+arg0.getPosition().latitude+"..."+arg0.getPosition().longitude);
-        selected_lat = arg0.getPosition().latitude;
-        selected_lng = arg0.getPosition().longitude;
-        map.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
+        try {
+            Log.d("System out", "onMarkerDragEnd..."+arg0.getPosition().latitude+"..."+arg0.getPosition().longitude);
+            selected_lat = arg0.getPosition().latitude;
+            selected_lng = arg0.getPosition().longitude;
+            map.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onBackPressed() {
+        Utils.setSnackBar(parentLayout,"Click on done button to go back");
     }
 }

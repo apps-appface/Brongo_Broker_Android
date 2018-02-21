@@ -67,18 +67,18 @@ public class SupportFragment extends Fragment implements NoInternetTryConnectLis
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_support, container, false);
         context = getActivity();
-        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
+        parentLayout = getActivity().findViewById(R.id.menu_parent_relative);
         arrayList = new ArrayList<String>(Arrays.asList("Take me to the app walkthrough", "Contact Brongo Customer Support", "I want to unsubscribe"));
         pref = context.getSharedPreferences(AppConstants.PREF_NAME,0);
-        RecyclerView support_recycle = (RecyclerView)view.findViewById(R.id.support_recycle);
-        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
-        delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
-        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+        RecyclerView support_recycle = view.findViewById(R.id.support_recycle);
+        edit_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        delete_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        add_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
         edit_icon.setVisibility(View.GONE);
         delete_icon.setVisibility(View.GONE);
         add_icon.setVisibility(View.GONE);
-        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
-        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar_title = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+        toolbar = getActivity().findViewById(R.id.inventory_toolbar);
         toolbar.setVisibility(View.VISIBLE);
         toolbar_title.setText("Support");
         LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
@@ -95,45 +95,54 @@ public class SupportFragment extends Fragment implements NoInternetTryConnectLis
         return view;
     }
     private void changePage(int position){
-        switch(position){
-            case 0:
-                Intent intent = new Intent(getActivity(), WalkThroughActivity.class);
-                intent.putExtra("from_activity","menu");
-                context.startActivity(intent);
-                break;
-            case 1:
-                ContactFragment contactFragment = new ContactFragment();
-                Utils.replaceFragment(getFragmentManager(),contactFragment,R.id.inventory_frag_container,CONTACT);
-                break;
-            case 2:
-                unSubscribe();
-                break;
+        try {
+            switch(position){
+                case 0:
+                    Intent intent = new Intent(getActivity(), WalkThroughActivity.class);
+                    intent.putExtra("from_activity","menu");
+                    context.startActivity(intent);
+                    break;
+                case 1:
+                    ContactFragment contactFragment = new ContactFragment();
+                    Utils.replaceFragment(getFragmentManager(),contactFragment,R.id.inventory_frag_container,CONTACT);
+                    break;
+                case 2:
+                    unSubscribe();
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     public static void unsubscribeDialog(Context context){
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.unsubscribe_dialog);
-        //dialog.setCanceledOnTouchOutside(false);
-        // dialog.setCancelable(false);
-        final ImageView cross_btn = (ImageView) dialog.findViewById(R.id.unsubscribe_dialog_close);
-        final Button got_it_btn = (Button)dialog.findViewById(R.id.unsubscribe_dialog_btn);
-        cross_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        got_it_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+        try {
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.setContentView(R.layout.unsubscribe_dialog);
+            //dialog.setCanceledOnTouchOutside(false);
+            // dialog.setCancelable(false);
+            final ImageView cross_btn = dialog.findViewById(R.id.unsubscribe_dialog_close);
+            final Button got_it_btn = dialog.findViewById(R.id.unsubscribe_dialog_btn);
+            cross_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            got_it_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void unSubscribe() {
+        try {
             if (Utils.isNetworkAvailable(context)) {
                 Utils.LoaderUtils.showLoader(context);
                 RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
@@ -186,6 +195,9 @@ public class SupportFragment extends Fragment implements NoInternetTryConnectLis
             } else {
                 Utils.internetDialog(context, this);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

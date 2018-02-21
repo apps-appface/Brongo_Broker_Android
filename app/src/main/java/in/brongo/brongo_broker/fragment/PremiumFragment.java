@@ -79,29 +79,33 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
         return view;
     }
     private void initialise(View view){
-        context = getActivity();
-        pref = context.getSharedPreferences(AppConstants.PREF_NAME,0);
-        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
-        plans_linear = (LinearLayout)view.findViewById(R.id.premium_sub_linear);
-        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
-        delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
-        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
-        edit_icon.setVisibility(View.GONE);
-        delete_icon.setVisibility(View.GONE);
-        add_icon.setVisibility(View.GONE);
-        premium_condition_recycle = (RecyclerView)view.findViewById(R.id.premium_list);
-        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
-        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        toolbar_title.setText("Upgrade to premium");
-        LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
-        verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
-        premium_condition_recycle.setLayoutManager(verticalmanager);
-        arrayList = new ArrayList<>();
-        premium_conditionlist = new ArrayList<>();
-        premiumAdapter = new CustomAdapter(premium_conditionlist,context);
-        premium_condition_recycle.setAdapter(premiumAdapter);
-        fetchCurrentPlan();
+        try {
+            context = getActivity();
+            pref = context.getSharedPreferences(AppConstants.PREF_NAME,0);
+            parentLayout = getActivity().findViewById(R.id.menu_parent_relative);
+            plans_linear = view.findViewById(R.id.premium_sub_linear);
+            edit_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+            delete_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+            add_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+            edit_icon.setVisibility(View.GONE);
+            delete_icon.setVisibility(View.GONE);
+            add_icon.setVisibility(View.GONE);
+            premium_condition_recycle = view.findViewById(R.id.premium_list);
+            toolbar_title = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+            toolbar = getActivity().findViewById(R.id.inventory_toolbar);
+            toolbar.setVisibility(View.VISIBLE);
+            toolbar_title.setText("Upgrade to premium");
+            LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
+            verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
+            premium_condition_recycle.setLayoutManager(verticalmanager);
+            arrayList = new ArrayList<>();
+            premium_conditionlist = new ArrayList<>();
+            premiumAdapter = new CustomAdapter(premium_conditionlist,context);
+            premium_condition_recycle.setAdapter(premiumAdapter);
+            fetchCurrentPlan();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void addPlans(ArrayList<PaymentHashModel.SubPlanObject> arrayList){
         for (int i = 0; i < arrayList.size(); i++) {
@@ -111,12 +115,12 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
                 String perMonth_rate = AllUtils.changeNumberFormat(arrayList.get(i).getAmountFMonth());
                 final int position = i;
                 View layout2 = LayoutInflater.from(getActivity()).inflate(R.layout.premium_subplan_child, plans_linear, false);
-                Button pay_btn = (Button)layout2.findViewById(R.id.pay_btn);
-                TextView plan_type = (TextView)layout2.findViewById(R.id.premium_plan_type);
-                TextView plan_actual_rate = (TextView)layout2.findViewById(R.id.premium_actual_rate);
-                TextView plan_paying_rate = (TextView)layout2.findViewById(R.id.premium_paying_rate);
-                TextView plan_offer = (TextView)layout2.findViewById(R.id.premium_save);
-                TextView plan_net_worth = (TextView)layout2.findViewById(R.id.premium_net_worth);
+                Button pay_btn = layout2.findViewById(R.id.pay_btn);
+                TextView plan_type = layout2.findViewById(R.id.premium_plan_type);
+                TextView plan_actual_rate = layout2.findViewById(R.id.premium_actual_rate);
+                TextView plan_paying_rate = layout2.findViewById(R.id.premium_paying_rate);
+                TextView plan_offer = layout2.findViewById(R.id.premium_save);
+                TextView plan_net_worth = layout2.findViewById(R.id.premium_net_worth);
                 plan_type.setText(arrayList.get(i).getName());
                 plan_actual_rate.setText(actualRate);
                 if(!(arrayList.get(i).getOffers() == 0.0f)) {
@@ -138,6 +142,7 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
                 });
                 plans_linear.addView(layout2);
             } catch (Exception e) {
+                e.printStackTrace();
                 String error = e.toString();
             }
         }
@@ -284,75 +289,79 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
         Utils.LoaderUtils.dismissLoader();
     }
     private void fetchCurrentPlan(){
-        if(Utils.isNetworkAvailable(context)) {
-            Utils.LoaderUtils.showLoader(context);
-            RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
-            String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
-            String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
-            String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
-            String premium_id = pref.getString(AppConstants.PREMIUM_ID,"");
-            Call<PaymentHashModel.CurrentPlanModel> call = retrofitAPIs.getCurrentPlanApi(tokenaccess, "android", deviceId, mobileNo,premium_id);
-            call.enqueue(new Callback<PaymentHashModel.CurrentPlanModel>() {
-                @Override
-                public void onResponse(Call<PaymentHashModel.CurrentPlanModel> call, Response<PaymentHashModel.CurrentPlanModel> response) {
-                    Utils.LoaderUtils.dismissLoader();
-                    if (response != null) {
-                        if (response.isSuccessful()) {
-                            PaymentHashModel.CurrentPlanModel currentPlanModel = response.body();
-                            int statusCode = currentPlanModel.getStatusCode();
-                            String message = currentPlanModel.getMessage();
-                            if (statusCode == 200 && message.equalsIgnoreCase("")) {
-                                ArrayList<PaymentHashModel.CurrentPlanObject> subscription_list = currentPlanModel.getData();
-                                if (subscription_list.size() != 0) {
-                                    ArrayList<String> conditionList = currentPlanModel.getData().get(0).getConditions();
-                                    if(conditionList.size() != 0){
-                                        premium_conditionlist.clear();
-                                        premium_conditionlist.addAll(conditionList);
-                                        premiumAdapter.notifyDataSetChanged();
+        try {
+            if(Utils.isNetworkAvailable(context)) {
+                Utils.LoaderUtils.showLoader(context);
+                RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
+                String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
+                String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
+                String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
+                String premium_id = pref.getString(AppConstants.PREMIUM_ID,"");
+                Call<PaymentHashModel.CurrentPlanModel> call = retrofitAPIs.getCurrentPlanApi(tokenaccess, "android", deviceId, mobileNo,premium_id);
+                call.enqueue(new Callback<PaymentHashModel.CurrentPlanModel>() {
+                    @Override
+                    public void onResponse(Call<PaymentHashModel.CurrentPlanModel> call, Response<PaymentHashModel.CurrentPlanModel> response) {
+                        Utils.LoaderUtils.dismissLoader();
+                        if (response != null) {
+                            if (response.isSuccessful()) {
+                                PaymentHashModel.CurrentPlanModel currentPlanModel = response.body();
+                                int statusCode = currentPlanModel.getStatusCode();
+                                String message = currentPlanModel.getMessage();
+                                if (statusCode == 200 && message.equalsIgnoreCase("")) {
+                                    ArrayList<PaymentHashModel.CurrentPlanObject> subscription_list = currentPlanModel.getData();
+                                    if (subscription_list.size() != 0) {
+                                        ArrayList<String> conditionList = currentPlanModel.getData().get(0).getConditions();
+                                        if(conditionList.size() != 0){
+                                            premium_conditionlist.clear();
+                                            premium_conditionlist.addAll(conditionList);
+                                            premiumAdapter.notifyDataSetChanged();
+                                        }
+                                       ArrayList<PaymentHashModel.SubPlanObject> subplanList = subscription_list.get(0).getSubPlans();
+                                       if(subplanList.size() != 0){
+                                         arrayList.clear();
+                                         arrayList.addAll(subplanList);
+                                         addPlans(arrayList);
+                                       }
                                     }
-                                   ArrayList<PaymentHashModel.SubPlanObject> subplanList = subscription_list.get(0).getSubPlans();
-                                   if(subplanList.size() != 0){
-                                     arrayList.clear();
-                                     arrayList.addAll(subplanList);
-                                     addPlans(arrayList);
-                                   }
                                 }
-                            }
-                            // referAdapter.notifyDataSetChanged();
-                        } else {
-                            String responseString = null;
-                            try {
-                                responseString = response.errorBody().string();
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                int statusCode = jsonObject.optInt("statusCode");
-                                String message = jsonObject.optString("message");
-                                if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                    openTokenDialog(context);
-                                } else {
-                                    Utils.setSnackBar(parentLayout,message);
+                                // referAdapter.notifyDataSetChanged();
+                            } else {
+                                String responseString = null;
+                                try {
+                                    responseString = response.errorBody().string();
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    int statusCode = jsonObject.optInt("statusCode");
+                                    String message = jsonObject.optString("message");
+                                    if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
+                                        openTokenDialog(context);
+                                    } else {
+                                        Utils.setSnackBar(parentLayout,message);
+                                    }
+                               /* if(pd.isShowing()) {
+                                    pd.dismiss();
+                                }*/
+                                } catch (IOException | JSONException e) {
+                                    e.printStackTrace();
                                 }
-                           /* if(pd.isShowing()) {
-                                pd.dismiss();
-                            }*/
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<PaymentHashModel.CurrentPlanModel> call, Throwable t) {
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                    Utils.LoaderUtils.dismissLoader();
-                /*if(pd.isShowing()) {
-                    pd.dismiss();
-                }*/
-                }
-            });
-        }else{
-            Task_completed = 200;
-            Utils.internetDialog(context,this);
+                    @Override
+                    public void onFailure(Call<PaymentHashModel.CurrentPlanModel> call, Throwable t) {
+                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        Utils.LoaderUtils.dismissLoader();
+                    /*if(pd.isShowing()) {
+                        pd.dismiss();
+                    }*/
+                    }
+                });
+            }else{
+                Task_completed = 200;
+                Utils.internetDialog(context,this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -361,11 +370,21 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
         getToken(context);
     }
     private void openTokenDialog(Context context){
-        Utils.tokenDialog(context,this);
+        try {
+            if(!getActivity().isFinishing()) {
+                Utils.tokenDialog(context, this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void getToken(Context context){
-        new AllUtils().getToken(context,this);
+        try {
+            new AllUtils().getToken(context,this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -1,8 +1,6 @@
 package in.brongo.brongo_broker.util;
 
 import android.app.Application;
-import android.content.Context;
-import android.support.multidex.MultiDex;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -19,15 +17,10 @@ public class CustomApplicationClass extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         // Initialize the Branch object
         Branch.getAutoInstance(this);
     }
-    protected void attachBaseContext(Context base)
-    {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
-    }
+
     public static RequestOptions getRequestOption(boolean showCached) {
         if (requestOptions == null) {
             if (showCached) {

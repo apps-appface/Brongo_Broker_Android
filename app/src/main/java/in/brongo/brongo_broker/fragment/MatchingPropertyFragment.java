@@ -1,10 +1,7 @@
 package in.brongo.brongo_broker.fragment;
 
-
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,9 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.util.Util;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,7 +25,6 @@ import in.brongo.brongo_broker.model.ApiModel;
 import in.brongo.brongo_broker.other.AllUtils;
 import in.brongo.brongo_broker.other.NoInternetTryConnectListener;
 import in.brongo.brongo_broker.util.AppConstants;
-import in.brongo.brongo_broker.util.DatabaseHandler;
 import in.brongo.brongo_broker.util.RetrofitAPIs;
 import in.brongo.brongo_broker.util.RetrofitBuilders;
 import in.brongo.brongo_broker.util.Utils;
@@ -50,7 +43,7 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
     private TextView toolbar_title;
     private Toolbar toolbar;
     private RelativeLayout parentLayout;
-    private ArrayList<ApiModel.MatchingModel> arraylist = new ArrayList<>();;
+    private ArrayList<ApiModel.MatchingModel> arraylist = new ArrayList<>();
     private SharedPreferences pref;
     private String posting_type,brokerMobile,propertyType,subPropertyType,microMarketName;
 
@@ -79,20 +72,20 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
 
     private void initialise(View view){
         context = getActivity();
-        parentLayout = (RelativeLayout)getActivity().findViewById(R.id.menu_parent_relative);
-        matching_recycle = (RecyclerView)view.findViewById(R.id.matching_prop_recycle);
+        parentLayout = getActivity().findViewById(R.id.menu_parent_relative);
+        matching_recycle = view.findViewById(R.id.matching_prop_recycle);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         matching_recycle.setLayoutManager(layoutManager);
         matchingAdapter = new MatchingAdapter(context,arraylist,getFragmentManager());
         matching_recycle.setAdapter(matchingAdapter);
-        edit_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
-        delete_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
-        add_icon = (ImageView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+        edit_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+        delete_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+        add_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
         edit_icon.setVisibility(View.GONE);
         delete_icon.setVisibility(View.GONE);
         add_icon.setVisibility(View.GONE);
-        toolbar_title = (TextView)getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
-        toolbar = (Toolbar)getActivity().findViewById(R.id.inventory_toolbar);
+        toolbar_title = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+        toolbar = getActivity().findViewById(R.id.inventory_toolbar);
         toolbar.setVisibility(View.VISIBLE);
         toolbar_title.setText("Matching Properties");
         pref =context.getSharedPreferences(AppConstants.PREF_NAME,0);
@@ -100,35 +93,6 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
        // pd.show();
     }
     private void fetchList() {
-        /*DatabaseHandler db = new DatabaseHandler(context);
-        Cursor cursor = db.getListItem();
-        if (cursor != null) {
-            cursor.moveToNext();
-            for(int i =0;i<cursor.getCount();i++) {
-                String post_type = cursor.getString(cursor.getColumnIndex("postingtype"));
-                String prop_type = cursor.getString(cursor.getColumnIndex("propertytype"));
-                if (Utils.match_deal(posting_type, post_type, propertyType, prop_type)) {
-                    ApiModel.MatchingModel matchingModel = new ApiModel.MatchingModel();
-                    matchingModel.setAddress(cursor.getString(cursor.getColumnIndex("address")));
-                    matchingModel.setArea(cursor.getString(cursor.getColumnIndex("area")));
-                    matchingModel.setBhk(cursor.getString(cursor.getColumnIndex("bhk")));
-                    matchingModel.setBudget(cursor.getString(cursor.getColumnIndex("budget")));
-                    matchingModel.setCommission(cursor.getString(cursor.getColumnIndex("commission")));
-                    matchingModel.setDealid(cursor.getString(cursor.getColumnIndex("dealid")));
-                    matchingModel.setImage(cursor.getString(cursor.getColumnIndex("image")));
-                    matchingModel.setInventory_type(cursor.getString(cursor.getColumnIndex("inventory_type")));
-                    matchingModel.setMobile(cursor.getString(cursor.getColumnIndex("mobile")));
-                    matchingModel.setPostingtype(cursor.getString(cursor.getColumnIndex("postingtype")));
-                    matchingModel.setPropertystatus(cursor.getString(cursor.getColumnIndex("propertystatus")));
-                    matchingModel.setPropertytype(cursor.getString(cursor.getColumnIndex("propertytype")));
-                    matchingModel.setSubproperty(cursor.getString(cursor.getColumnIndex("subproperty")));
-                    matchingModel.setName(cursor.getString(cursor.getColumnIndex("name")));
-                    arraylist.add(matchingModel);
-                }
-                cursor.moveToNext();
-            }
-        }*/
-
         RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
         ApiModel.InventoryPersoanlList inventoryPersoanlList = new ApiModel.InventoryPersoanlList();
         inventoryPersoanlList.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));

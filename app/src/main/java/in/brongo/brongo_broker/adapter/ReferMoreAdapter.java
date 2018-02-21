@@ -40,14 +40,16 @@ public class ReferMoreAdapter extends RecyclerView.Adapter<ReferMoreAdapter.Empl
 
     @Override
     public void onBindViewHolder(final ReferMoreAdapter.EmployeeViewHolder holder, final int position) {
-        holder.refree_name.setText(arrayList.get(position).getName());
-        holder.refree_phone.setText(arrayList.get(position).getMobileNo());
-       /* Glide.with(context).load(arrayList.get(position).getImage()).placeholder(R.drawable.placeholder1)
-                .diskCacheStrategy(DiskCacheStrategy.ALL).transform(new CircleTransform(context)).dontAnimate().into(holder.refree_image);*/
-        Glide.with(context)
-                .load(arrayList.get(position).getImage())
-                .apply(CustomApplicationClass.getRequestOption(true))
-                .into(holder.refree_image);
+        try {
+            holder.refree_name.setText(arrayList.get(position).getName());
+            holder.refree_phone.setText(arrayList.get(position).getMobileNo());
+            Glide.with(context)
+                    .load(arrayList.get(position).getImage())
+                    .apply(CustomApplicationClass.getRequestOption(true))
+                    .into(holder.refree_image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

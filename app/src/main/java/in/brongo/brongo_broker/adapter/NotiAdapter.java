@@ -271,6 +271,7 @@ public class NotiAdapter extends RecyclerView.Adapter {
                     deal_textview.setText(text);
                     flowLayout.addView(layout2);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     String error = e.toString();
                 }
             }

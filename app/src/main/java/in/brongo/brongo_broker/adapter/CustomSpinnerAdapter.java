@@ -62,8 +62,9 @@ import in.brongo.brongo_broker.activity.VenueActivity;
             View row = inflater.inflate(R.layout.spinner_rows, parent, false);
 
             /***** Get each Model object from Arraylist ********/
-            TextView label   = (TextView)row.findViewById(R.id.spinner_header);
-            TextView sub     = (TextView)row.findViewById(R.id.spinner_child);
+            try {
+                TextView label   = (TextView)row.findViewById(R.id.spinner_header);
+                TextView sub     = (TextView)row.findViewById(R.id.spinner_child);
            /* if(position==0){
 
                 // Default selected Spinner item
@@ -75,6 +76,9 @@ import in.brongo.brongo_broker.activity.VenueActivity;
                 // Set values for spinner each row
                 label.setText(data.get(position).toString());
                 sub.setText(countList.get(position)+" available");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
           /*  }*/
