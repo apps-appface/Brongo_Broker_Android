@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.telephony.SmsMessage;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -281,7 +282,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                                 String message = signInModel.getMessage();
                                 String otp = signInModel.getData().get(0).getOtp();
                                 if (statusCode == 200 && message.equalsIgnoreCase("OTP Sent To Your Mobile Number Please Check")) {
-                                    //Utils.setSnackBar(parentLayout, otp);
+                                    Log.w("otp",otp);
                                     relative_login.setVisibility(View.GONE);
                                     linear_otp.setVisibility(View.VISIBLE);
                                     otp_toolbar.setVisibility(View.VISIBLE);

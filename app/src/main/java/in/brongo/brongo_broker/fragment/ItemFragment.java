@@ -428,7 +428,11 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                     if (statusCode == 200 && message.equalsIgnoreCase("You Can Processed With Call")) {
                                         Intent callIntent = new Intent(Intent.ACTION_CALL);
                                         callIntent.setData(Uri.parse("tel:" + "+919590224224"));
-                                        startActivity(callIntent);
+                                        try {
+                                            startActivity(callIntent);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();

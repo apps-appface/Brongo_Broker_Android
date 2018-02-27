@@ -97,8 +97,8 @@
                         <in.brongo.brongo_broker.uiwidget.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/profile_trumpcard"
                             android:background="@drawable/round_white"
-                            android:text="Gold"
                             android:layout_alignBottom="@+id/profile_username"
                             android:layout_toRightOf="@+id/profile_username"
                             android:layout_marginLeft="@dimen/text_size_normal"
@@ -111,7 +111,7 @@
                            android:paddingRight="@dimen/pa_margin_small"
                             android:paddingLeft="@dimen/pa_margin_small"
                             android:paddingBottom="@dimen/pa_medal_padding"
-
+                            android:inputType="textCapSentences"
                             app:customFont="lato_regular.ttf"/>
 
                         <RelativeLayout

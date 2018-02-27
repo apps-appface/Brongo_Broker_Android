@@ -126,7 +126,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
             pan_edit = findViewById(R.id.pan_no);
             docu_heading = findViewById(R.id.btn_no);
             docu_title.setText("Submit Documents");
-            docu_skip.setVisibility(View.VISIBLE);
+            docu_skip.setVisibility(View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
         }

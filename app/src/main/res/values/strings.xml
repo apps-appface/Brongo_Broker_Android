@@ -8,7 +8,7 @@
     <string name="otp_text">SMS verification code has been \n sent to:</string>
     <string name="inventory_register_tc">See Terms &amp; Conditions</string>
     <string name="contact_us">Get in touch with us if you \n need any help</string>
-
+<string name="onboard_text">**No cash payment will be accepted**</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

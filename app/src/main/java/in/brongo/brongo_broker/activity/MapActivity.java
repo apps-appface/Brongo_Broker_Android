@@ -31,6 +31,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 import in.brongo.brongo_broker.R;
 import in.brongo.brongo_broker.util.Utils;
 
@@ -162,12 +164,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 } else {
                     map.setMyLocationEnabled(true);
                     LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                    Criteria criteria = new Criteria();
-                    String bestProvider = locationManager.getBestProvider(criteria, true);
-                    Location location = locationManager.getLastKnownLocation(bestProvider);
-                    if (location != null) {
-                        double latitude = location.getLatitude();
-                        double longitude = location.getLongitude();
+                    List<String> providers = locationManager.getProviders(true);
+                    Location bestLocation = null;
+                    for (String provider : providers) {
+                        Location l = locationManager.getLastKnownLocation(provider);
+                        if (l == null) {
+                            continue;
+                        }
+                        if (bestLocation == null
+                                || l.getAccuracy() < bestLocation.getAccuracy()) {
+                            bestLocation = l;
+                        }
+                    }
+                    if (bestLocation != null) {
+                        double latitude = bestLocation.getLatitude();
+                        double longitude = bestLocation.getLongitude();
                         selected_lat = latitude;
                         selected_lng = longitude;
                         LatLng latLng = new LatLng(latitude, longitude);
@@ -183,12 +194,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }else{
                 map.setMyLocationEnabled(true);
                 LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                Criteria criteria = new Criteria();
-                String bestProvider = locationManager.getBestProvider(criteria, true);
-                Location location = locationManager.getLastKnownLocation(bestProvider);
-                if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
+                List<String> providers = locationManager.getProviders(true);
+                Location bestLocation = null;
+                for (String provider : providers) {
+                    Location l = locationManager.getLastKnownLocation(provider);
+                    if (l == null) {
+                        continue;
+                    }
+                    if (bestLocation == null
+                            || l.getAccuracy() < bestLocation.getAccuracy()) {
+                        bestLocation = l;
+                    }
+                }
+                if (bestLocation != null) {
+                    double latitude = bestLocation.getLatitude();
+                    double longitude = bestLocation.getLongitude();
                     selected_lat = latitude;
                     selected_lng = longitude;
                     LatLng latLng = new LatLng(latitude, longitude);
@@ -232,4 +252,5 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onBackPressed() {
         Utils.setSnackBar(parentLayout,"Click on done button to go back");
     }
+
 }

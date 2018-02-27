@@ -375,7 +375,7 @@
         <activity
             android:name=".activity.Menu_Activity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name=".activity.ProfileActivity"
             android:screenOrientation="portrait" />

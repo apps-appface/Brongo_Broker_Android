@@ -37,7 +37,7 @@ public class AppConstants {
     public static final String REFERRAL_ID = "REFERRAL_ID";
     public static final String LOGIN_REMEMBER = "LOGIN_REMEMBER";
     public static final String REFERREDBY = "REFERREDBY";
-    public static final String CHAT_LOGIN ="CHATLOGIN";
+    public static final String TRUMP_CARD ="TRUMP_CARD";
     public static final String ISWALKTHROUGH = "ISWALKTHROUGH";
     public static final String NOTI_TYPE="NOTI_TYPE";
     public static final String PREMIUM_ID="PREMIUM_ID";

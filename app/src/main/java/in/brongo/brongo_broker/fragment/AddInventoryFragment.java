@@ -222,9 +222,6 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
             relativeRemove3 = view.findViewById(R.id.inventory_remove3);
             save_inventory = view.findViewById(R.id.inventory_save_btn);
             cancel_inventory = view.findViewById(R.id.inventory_cancel_btn);
-      /*  pd = new ProgressDialog(context, R.style.MyDialogTheme);
-        pd.setCancelable(false);
-        pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);*/
             toolbar_title = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
             toolbar = getActivity().findViewById(R.id.inventory_toolbar);
             toolbar.setVisibility(View.VISIBLE);

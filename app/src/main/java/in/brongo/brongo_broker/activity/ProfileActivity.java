@@ -48,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
     private RatingBar profile_ratingbar;
     private TextView prof_name, prof_address, prof_rating, prof_close_deal, prof_open_deal, prof_total_deal, prof_close_deal_count, prof_open_deal_count, prof_inventory_count,
             prof_email, prof_comp_type, prof_real_estate, prof_micromarket, prof_office_address, prof_credits, prof_see_plans,prof_refer_text,prof_subscrip_plan,
-            prof_plan_expiry,toolbar_title,prof_plan_tc,profile_plan_upgrade_text;
+            prof_plan_expiry,toolbar_title,prof_plan_tc,profile_plan_upgrade_text,profile_trumpcard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +92,7 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
             prof_id_proof = findViewById(R.id.profile_id_proof);
             prof_address_proof = findViewById(R.id.profile_address_proof);
             prof_rating = findViewById(R.id.profile_rating);
+            profile_trumpcard = findViewById(R.id.profile_trumpcard);
             toolbar_title = findViewById(R.id.profile_toolbar_title);
             profile_back = findViewById(R.id.profile_toolbar_back);
             setView();
@@ -104,6 +105,7 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
     private void setView() {
         try {
             toolbar_title.setText("My Profile");
+            profile_trumpcard.setText(pref.getString(AppConstants.TRUMP_CARD,""));
             prof_name.setText(pref.getString(AppConstants.FIRST_NAME,"")+" "+ pref.getString(AppConstants.LAST_NAME,""));
             prof_address.setText(pref.getString(AppConstants.MOBILE_NUMBER,"") + "," + pref.getString(AppConstants.MICROMARKET_NAME,""));
             Glide.with(context)

@@ -1,10 +1,13 @@
 package in.brongo.brongo_broker.activity;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,12 +15,17 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -214,7 +222,11 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
             venue_submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    submitSlot();
+                    if(selected_slot != null && selected_date != null && !selected_slot.isEmpty() && !selected_date.isEmpty()) {
+                        onBoardDialog(context);
+                    }else{
+                        Utils.setSnackBar(parentLayout,"Select the slot details first");
+                    }
                 }
             });
             map_btn.setOnClickListener(new View.OnClickListener() {
@@ -383,6 +395,46 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
                 TASK_IMCOMPLETE = 200;
                 Utils.internetDialog(context,this);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void onBoardDialog(Context context){
+        try {
+        String onboardtext1 = "Please note a one time OnBoarding Fee of ";
+        String str1 = "Rs.5,000 + 900 (18% GST) = Rs.5,900";
+        String comp_name = "‘Turnip Technologies Pvt Ltd’";
+        SpannableStringBuilder str = new SpannableStringBuilder(str1);
+        str.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableStringBuilder str2 = new SpannableStringBuilder(comp_name);
+        str2.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, comp_name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setContentView(R.layout.onboarding_dialog);
+            dialog.setCanceledOnTouchOutside(false);
+            TextView onBoardTextview = dialog.findViewById(R.id.onboard_textview);
+            onBoardTextview.setText(onboardtext1);
+            onBoardTextview.append(str);
+            onBoardTextview.append(" will be applicable.\n Request you to carry a Cheque or DD in the name of ");
+            onBoardTextview.append(str2);
+            onBoardTextview.append(" for the same along with the originals documents.");
+           Button accept_btn = dialog.findViewById(R.id.onboard_accept);
+            ImageView close_btn = dialog.findViewById(R.id.onboard_close_btn);
+            accept_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    submitSlot();
+                    dialog.dismiss();
+                }
+            });
+            close_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
         } catch (Exception e) {
             e.printStackTrace();
         }

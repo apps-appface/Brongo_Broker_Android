@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -74,7 +76,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
     private ImageView inventory_toolbar_edit,inventory_toolbar_delete,inventory_add;
     private TextView toolbar_title,builder_count;
     private Button personal_btn,builder_btn;
-    private String client,mobile,email;
+    private String client,mobile,email,emailPattern;
     private SharedPreferences pref;
     private int taskcompleted =0;
     private int count = 0;
@@ -143,7 +145,8 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
     private void initialise(View view){
         try {
             context = getActivity();
-            client = mobile = email ="";
+            client = mobile = email = emailPattern ="";
+            emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
             parentLayout = getActivity().findViewById(R.id.menu_parent_relative);
             client_list = new ArrayList<>();
             clientDetails_list = new ArrayList<>();
@@ -540,6 +543,8 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
             final LinearLayout client_register_linear = dialog.findViewById(R.id.client_register_linear);
             final EditText client_name = dialog.findViewById(R.id.client_name_register);
             final EditText client_email = dialog.findViewById(R.id.client_email_register);
+            final TextInputLayout email_layout  = dialog.findViewById(R.id.input_layout_client_email);
+            final TextInputLayout mobile_layout  = dialog.findViewById(R.id.input_layout_client_mobile);
             final EditText client_mobile = dialog.findViewById(R.id.client_mobile_register);
             MaterialBetterSpinner client_spinner = dialog.findViewById(R.id.inventory_spinner_client1);
             Button register_btn = dialog.findViewById(R.id.client_register_register);
@@ -554,6 +559,35 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                     email = clientDetails_list.get(position).getEmailId();
                 }
             });
+            client_email.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String email1 = client_email.getText().toString().trim();
+                    if (email1.matches(emailPattern) && s.length() > 0){
+                        email_layout.setError("");
+                        email_layout.setErrorEnabled(false);
+                        email = email1;
+                    }else if(s.length()>0){
+                        email_layout.setErrorEnabled(true);
+                        email_layout.setError("Invalid email id");
+                        email = "";
+                    }else if(s.length() == 0){
+                        email_layout.setError("");
+                        email_layout.setErrorEnabled(false);
+                        email = "";
+                    }
+                }
+            });
             client_mobile.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -562,12 +596,28 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    mobile = s.toString();
+                    if (s.length() == 10) {
+                        Utils.hideKeyboard(context, client_mobile);
+                    }
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-
+                    String phone = client_mobile.getText().toString().trim();
+                    if ((phone.startsWith("6") || phone.startsWith("7") || phone.startsWith("8") || phone.startsWith("9")) && (phone.length() == 10)){
+                        mobile_layout.setError("");
+                        mobile_layout.setErrorEnabled(false);
+                        mobile = phone;
+                    }else if(phone.length() == 0) {
+                        mobile = "";
+                        mobile_layout.setError("");
+                        mobile_layout.setErrorEnabled(false);
+                    }else
+                    {
+                        mobile = phone;
+                        mobile_layout.setError("Invalid Mobile number");
+                        mobile_layout.setErrorEnabled(true);
+                    }
                 }
             });
 

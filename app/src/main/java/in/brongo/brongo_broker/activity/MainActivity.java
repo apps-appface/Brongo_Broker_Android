@@ -45,6 +45,7 @@ import com.applozic.mobicomkit.api.conversation.database.MessageDatabaseService;
 import com.applozic.mobicomkit.uiwidgets.ApplozicSetting;
 import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActivity;
 import com.bumptech.glide.Glide;
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.kyleduo.switchbutton.SwitchButton;
 
@@ -122,9 +123,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_home);
         try {
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
             pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
             editor = pref.edit();
+            Crashlytics.setUserIdentifier(pref.getString(AppConstants.MOBILE_NUMBER,""));
             onNewIntent(getIntent());
             if (!pref.getBoolean(AppConstants.DEVICE_TOKEN_UPDATED, false)) {
                 Intent serviceIntent = new Intent(context, RegistrationIntentService.class);
@@ -363,6 +364,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     editor.putInt(AppConstants.NOTIFICATION_BADGES, homeProfileModel.getData().get(0).getNotificationsBadge());
                                     editor.putString(AppConstants.USER_STATUS, homeProfileModel.getData().get(0).getIsActive());
                                     editor.putString(AppConstants.MICROMARKET_NAME, homeProfileModel.getData().get(0).getMicroMarketName());
+                                    editor.putString(AppConstants.TRUMP_CARD, homeProfileModel.getData().get(0).getTrumpCard());
                                     editor.putBoolean("homedata", true);
                                     editor.commit();
                                 }
@@ -436,13 +438,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     JSONObject jsonObject1 = (JSONObject) dataArray.get(0);
                                     String newStatus = jsonObject1.optString("isActive");
                                     if (statusCode == 200 && message.equalsIgnoreCase("Status Updated Successfully")) {
-                                        if (newStatus.equalsIgnoreCase("ACTIVE")) {
-                                            switchButton.setThumbColorRes(R.color.appColor);
-                                            switch_linear.setBackgroundColor(getResources().getColor(R.color.appColor));
-                                        } else {
-                                            switchButton.setThumbColorRes(R.color.round_empty_gray);
-                                            switch_linear.setBackgroundColor(getResources().getColor(R.color.refer_gray));
-                                        }
                                         editor.putString(AppConstants.USER_STATUS, newStatus);
                                         editor.commit();
                                         switch_text.setText(newStatus.toUpperCase());
@@ -593,11 +588,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String isActive = pref.getString(AppConstants.USER_STATUS, "");
             if (isActive.equalsIgnoreCase("Active") || isActive.equalsIgnoreCase("")) {
                 switchButton.setChecked(true);
+                switchButton.setThumbColorRes(R.color.appColor);
                 switch_text.setText("ACTIVE");
                 switch_linear.setBackgroundColor(getResources().getColor(R.color.appColor));
             } else {
                 switchButton.setChecked(false);
                 switch_text.setText("INACTIVE");
+                switchButton.setThumbColorRes(R.color.round_empty_gray);
                 switch_linear.setBackgroundColor(getResources().getColor(R.color.refer_gray));
             }
         } catch (Resources.NotFoundException e) {
@@ -1029,8 +1026,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
+                        switchButton.setThumbColorRes(R.color.appColor);
+                        switch_linear.setBackgroundColor(getResources().getColor(R.color.appColor));
                         callActiveApi("Active");
                     } else {
+                        switchButton.setThumbColorRes(R.color.round_empty_gray);
+                        switch_linear.setBackgroundColor(getResources().getColor(R.color.refer_gray));
                         callActiveApi("INActive");
                     }
                 }

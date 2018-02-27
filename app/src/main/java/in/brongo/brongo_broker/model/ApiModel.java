@@ -642,6 +642,15 @@ public class ApiModel {
         String firstName;
         String brokerImage;
         String lastName;
+        String trumpCard;
+
+        public String getTrumpCard() {
+            return trumpCard;
+        }
+
+        public void setTrumpCard(String trumpCard) {
+            this.trumpCard = trumpCard;
+        }
 
         public String getImageBaseurl() {
             return imageBaseurl;

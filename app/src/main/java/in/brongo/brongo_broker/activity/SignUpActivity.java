@@ -41,6 +41,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import in.brongo.brongo_broker.R;
 import in.brongo.brongo_broker.adapter.HorizontalAdapter;
@@ -104,7 +105,6 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
             poc_list = new ArrayList<>();
             marketlist = new ArrayList<>();
-            adapter = new ArrayAdapter<String>(this, R.layout.spinner_text,poc_list);
             fetchMicromarket();
             marketIdList = new ArrayList<>();
             emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -514,7 +514,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                                                 poc_list.add(marketlist.get(i).getName());
                                         }
                                     }
-                                    adapter.notifyDataSetChanged();
+
                                     }
                                 }
                             } else {
@@ -546,6 +546,9 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     }
     private void marketDialog(){
         try {
+            final ArrayList<String> pocnewlist = new ArrayList<>();
+            pocnewlist.addAll(poc_list);
+            adapter = new ArrayAdapter<String>(this, R.layout.spinner_text,pocnewlist);
             isDialogOpen = true;
             final Dialog dialog = new Dialog(context);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -570,30 +573,36 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Utils.hideKeyboard(context,view);
-                    if(microMarket1.equalsIgnoreCase("")){
-                        microMarket1 = marketlist.get(position).getMicroMarketId();
-                        micromarketlist.add(marketlist.get(position).getName());
-                        horizontalAdapter.notifyDataSetChanged();
-                        addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
-                        addmore_text.setVisibility(View.VISIBLE);
-                        micromarket_reset.setVisibility(View.VISIBLE);
-                        city_edit.setText(marketlist.get(position).getCity());
-                    }else if(microMarket2.equalsIgnoreCase("")){
-                        microMarket2 = marketlist.get(position).getMicroMarketId();
-                        micromarketlist.add(marketlist.get(position).getName());
-                        horizontalAdapter.notifyDataSetChanged();
-                        addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
-                    }else if(microMarket3.equalsIgnoreCase("")){
-                        microMarket3 = marketlist.get(position).getMicroMarketId();
-                        micromarketlist.add(marketlist.get(position).getName());
-                        horizontalAdapter.notifyDataSetChanged();
-                        addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
+                    Utils.hideKeyboard(context, view);
+                    String selectedMarket = adapter.getItem(position);
+                    int position1 = poc_list.indexOf(selectedMarket);
+                    if (position1 >= 0) {
+                        if (microMarket1.equalsIgnoreCase("")) {
+                            microMarket1 = marketlist.get(position1).getMicroMarketId();
+                            micromarketlist.add(marketlist.get(position1).getName());
+                            horizontalAdapter.notifyDataSetChanged();
+                            addmore_text.setText("+ADD " + (3 - micromarketlist.size()) + " MORE");
+                            addmore_text.setVisibility(View.VISIBLE);
+                            micromarket_reset.setVisibility(View.VISIBLE);
+                            city_edit.setText(marketlist.get(position1).getCity());
+                        } else if (microMarket2.equalsIgnoreCase("")) {
+                            microMarket2 = marketlist.get(position1).getMicroMarketId();
+                            micromarketlist.add(marketlist.get(position1).getName());
+                            horizontalAdapter.notifyDataSetChanged();
+                            addmore_text.setText("+ADD " + (3 - micromarketlist.size()) + " MORE");
+                        } else if (microMarket3.equalsIgnoreCase("")) {
+                            microMarket3 = marketlist.get(position1).getMicroMarketId();
+                            micromarketlist.add(marketlist.get(position1).getName());
+                            horizontalAdapter.notifyDataSetChanged();
+                            addmore_text.setText("+ADD " + (3 - micromarketlist.size()) + " MORE");
+                        }
+                        if (micromarketlist.size() == 3) {
+                            addmore_text.setVisibility(View.GONE);
+                        }
+                        dialog.dismiss();
+                    }else{
+                        dialog.dismiss();
                     }
-                    if(micromarketlist.size()==3){
-                        addmore_text.setVisibility(View.GONE);
-                    }
-                    dialog.dismiss();
                 }
             });
             search_market.addTextChangedListener(new TextWatcher() {

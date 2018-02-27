@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.HashMap;
 
@@ -36,7 +37,7 @@ public class SplashActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     public static final int REQUEST_DEVICE_ID_PERMISSIONS = 112;
     private Context context;
-    private LinearLayout parentLayout;
+    private RelativeLayout parentLayout;
     private static int SPLASH_TIME_OUT = 5100;
 
 
@@ -51,7 +52,6 @@ public class SplashActivity extends AppCompatActivity {
             check_mark_GV.setGifResource(R.drawable.splash_gif);
             check_mark_GV.play();
             pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
-
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -67,6 +67,7 @@ public class SplashActivity extends AppCompatActivity {
             LogDeviceDetails();
         } catch (Exception e) {
             e.printStackTrace();
+            startSplashScreen1();
         }
     }
 
