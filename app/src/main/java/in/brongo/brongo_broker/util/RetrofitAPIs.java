@@ -28,7 +28,7 @@ import retrofit2.http.Query;
 
 public interface RetrofitAPIs {
     @POST("broker/signup")
-    Call<ResponseBody>signUpApi(@Body SignUpModel signUpModel);
+    Call<ApiModel.SignUpResponseModel>signUpApi(@Body SignUpModel signUpModel);
 
     @POST("broker/loginWithOTP")
     Call<SignInModel>signInApi(@Body SignUpModel.LoginModel loginModel);

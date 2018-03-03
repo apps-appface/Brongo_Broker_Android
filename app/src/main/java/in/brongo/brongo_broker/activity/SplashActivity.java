@@ -149,7 +149,9 @@ public class SplashActivity extends AppCompatActivity {
                     StartHomeActivity();
                 } else {
                     if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) {
-                        permissionDialog();
+                        if(!isFinishing()) {
+                            permissionDialog();
+                        }
                     } else {
                         Utils.setSnackBar(parentLayout, "Permission Denied");
                         finish();

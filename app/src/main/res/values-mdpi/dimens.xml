@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--TextSize-->
-    <dimen name="text_size_big">16sp</dimen>
-    <dimen name="text_size_ebig">18sp</dimen>
-    <dimen name="text_size_vsmall">10sp</dimen>
-    <dimen name="text_extra_small">8sp</dimen>
-    <dimen name="text_size_normal">13sp</dimen>
-    <dimen name="text_size_small">11sp</dimen>
-    <dimen name="text_size_large">20sp</dimen>
-    <dimen name="text_size_elarge">23sp</dimen>
+    <dimen name="text_size_big">16dp</dimen>
+    <dimen name="text_size_ebig">18dp</dimen>
+    <dimen name="text_size_vsmall">10dp</dimen>
+    <dimen name="text_extra_small">8dp</dimen>
+    <dimen name="text_size_normal">13dp</dimen>
+    <dimen name="text_size_small">11dp</dimen>
+    <dimen name="text_size_large">20dp</dimen>
+    <dimen name="text_size_elarge">23dp</dimen>
     <dimen name="back_icon_size">50dp</dimen>
     <dimen name="btn_padding">60dp</dimen>
     <dimen name="element_spacing">4dp</dimen>
@@ -78,7 +78,7 @@
     <dimen name="pa_curve_parent_height">330dp</dimen>
     <dimen name="pa_prof_image_height">50dp</dimen>
     <dimen name="pa_prof_image_width">60dp</dimen>
-    <dimen name="pa_medal_text">10sp</dimen>
+    <dimen name="pa_medal_text">10dp</dimen>
     <dimen name="pa_medal_padding">2dp</dimen>
     <dimen name="pa_commission_left_margin">63dp</dimen>
     <dimen name="pa_deal_linear_height">80dp</dimen>
@@ -227,7 +227,7 @@
     <dimen name="supf_margin_normal">10dp</dimen>
     <dimen name="tcf_scrollwidth">3dp</dimen>
     <!--Dialog-->
-    <dimen name="dialog_title_size">24sp</dimen>
+    <dimen name="dialog_title_size">24dp</dimen>
     <dimen name="dialog_margin_small">5dp</dimen>
     <dimen name="dialog_margin_normal">10dp</dimen>
     <dimen name="dialog_margin_big">15dp</dimen>

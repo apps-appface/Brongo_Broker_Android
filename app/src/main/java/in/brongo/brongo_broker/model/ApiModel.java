@@ -2612,5 +2612,47 @@ public class ApiModel {
 
             String planType;
         }
+        public static class SignUpResponseModel{
+       String message;
+       int statusCode;
+
+            public String getMessage() {
+                return message;
+            }
+
+            public void setMessage(String message) {
+                this.message = message;
+            }
+
+            public int getStatusCode() {
+                return statusCode;
+            }
+
+            public void setStatusCode(int statusCode) {
+                this.statusCode = statusCode;
+            }
+
+            public ArrayList<SignupObject> getData() {
+                return data;
+            }
+
+            public void setData(ArrayList<SignupObject> data) {
+                this.data = data;
+            }
+
+            ArrayList<SignupObject> data;
+        }
+        public static class SignupObject{
+        boolean isEligible;
+
+            public boolean isEligible() {
+                return isEligible;
+            }
+
+            public void setEligible(boolean eligible) {
+                isEligible = eligible;
+            }
+        }
+
     }
 

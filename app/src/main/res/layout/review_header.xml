@@ -25,12 +25,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/five_star_count"
             android:paddingTop="@dimen/review_header_small"
+            android:textSize="@dimen/text_size_normal"
             android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
         <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/four_star_count"
+            android:textSize="@dimen/text_size_normal"
             android:paddingTop="@dimen/review_header_small"
             android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
@@ -38,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/three_star_count"
+            android:textSize="@dimen/text_size_normal"
             android:paddingTop="@dimen/review_header_small"
             android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
@@ -45,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/two_star_count"
+            android:textSize="@dimen/text_size_normal"
             android:paddingTop="@dimen/review_header_small"
             android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
@@ -52,6 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/one_star_count"
+            android:textSize="@dimen/text_size_normal"
             android:paddingTop="@dimen/review_header_small"
             android:paddingBottom="@dimen/review_header_small"
             app:customFont="lato_regular.ttf"/>
@@ -73,6 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5 stars"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="lato_bold.ttf"/>
         <ProgressBar
             android:layout_width="0dp"
@@ -96,6 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4 stars"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="lato_bold.ttf"/>
         <ProgressBar
             android:layout_width="0dp"
@@ -118,6 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3 stars"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="lato_bold.ttf"/>
         <ProgressBar
             android:layout_width="0dp"
@@ -140,6 +148,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2 stars"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="lato_bold.ttf"/>
         <ProgressBar
             android:layout_width="0dp"
@@ -162,6 +171,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1 stars"
+            android:textSize="@dimen/text_size_normal"
             app:customFont="lato_bold.ttf"/>
         <ProgressBar
             android:layout_width="0dp"

@@ -41,12 +41,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="By"
+            android:textSize="@dimen/text_size_normal"
             android:layout_centerVertical="true"
             android:id="@+id/review_by"/>
         <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/review_header_normal"
+            android:textSize="@dimen/text_size_normal"
             android:layout_toRightOf="@+id/review_by"
             android:id="@+id/review_by_name"
             android:layout_centerVertical="true"

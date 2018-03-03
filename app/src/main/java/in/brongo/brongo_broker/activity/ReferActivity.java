@@ -76,25 +76,33 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
     private ReferAdapter referAdapter;
     private ArrayList<String> arrayList1,arrayList2;
     private SharedPreferences pref;
+    private String referralMessage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refer);
-        initialise();
-        refer_broker_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refer_dialog();
-              /*  ReferFragmentTwo referFragmentTwo = new ReferFragmentTwo();
-                Utils.replaceFragment(getFragmentManager(),referFragmentTwo,R.id.inventory_frag_container,true);*/
-            }
-        });
-        refer_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               onBackPressed();
-            }
-        });
+        referralMessage = "I'm inviting you to join Brongo. Get verified Lead @ free of cost & many other features.To know more Watch "+ "https://www.youtube.com/watch?v=NXWlgspDR_E" +" and To download the App. ";
+        try {
+            initialise();
+            refer_broker_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!isFinishing()) {
+                        refer_dialog();
+                    }
+                  /*  ReferFragmentTwo referFragmentTwo = new ReferFragmentTwo();
+                    Utils.replaceFragment(getFragmentManager(),referFragmentTwo,R.id.inventory_frag_container,true);*/
+                }
+            });
+            refer_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   onBackPressed();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void initialise(){
         try {
@@ -206,7 +214,6 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
             BranchUniversalObject branchUniversalObject = new BranchUniversalObject()
                     .setCanonicalIdentifier(pref.getString(AppConstants.REFERRAL_ID,""))
                     .setTitle("Brongo Broker")
-                    .setContentDescription("My Content Description")
                     .setContentImageUrl("https://example.com/mycontent-12345.png")
                     .setContentIndexingMode(BranchUniversalObject.CONTENT_INDEX_MODE.PUBLIC)
                     .addContentMetadata("property1", "blue")
@@ -396,7 +403,9 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
                     }
                 });
             }else{
-                Utils.internetDialog(context,this);
+                if(!isFinishing()) {
+                    Utils.internetDialog(context, this);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -404,28 +413,41 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
     }
     private void onSubmitClicked(){
         try {
-            String msg = shorturl;
+            String msg = referralMessage.concat(shorturl);
             String phoneNo = referee_mobile.getText().toString();
             Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
             smsIntent.addCategory(Intent.CATEGORY_DEFAULT);
             smsIntent.setType("vnd.android-dir/mms-sms");
             smsIntent.setData(Uri.parse("sms:" + phoneNo));
             smsIntent.putExtra("sms_body", msg);
-            startActivity(smsIntent);
+            if(phoneNo.length()>= 10) {
+                startActivity(smsIntent);
+            }else{
+                Utils.setSnackBar(parentLayout,"Select valid Mobile Number");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void onWhatsappClicked(){
+        boolean isWhatsappInstalled = whatsappInstalledOrNot("com.whatsapp");
+        String message = referralMessage.concat(shorturl);
         try {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, shorturl);
-            sendIntent.setPackage("com.whatsapp");
-            sendIntent.setType("text/plain");
-            startActivity(sendIntent);
-        }catch (Exception e){
+            if (isWhatsappInstalled) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, message);
+                sendIntent.setPackage("com.whatsapp");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+            } else {
+                Uri uri = Uri.parse("market://details?id=com.whatsapp");
+                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                Utils.setSnackBar(parentLayout, "WhatsApp not Installed");
+                startActivity(goToMarket);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -486,7 +508,9 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
     }
     private void openTokenDialog(Context context){
         try {
-            Utils.tokenDialog(context,this);
+            if(!isFinishing()) {
+                Utils.tokenDialog(context, this);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -503,5 +527,16 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
             Utils.LoaderUtils.dismissLoader();
             openTokenDialog(context);
         }
+    }
+    private boolean whatsappInstalledOrNot(String uri) {
+        PackageManager pm = context.getPackageManager();
+        boolean app_installed = false;
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            app_installed = true;
+        } catch (PackageManager.NameNotFoundException e) {
+            app_installed = false;
+        }
+        return app_installed;
     }
 }

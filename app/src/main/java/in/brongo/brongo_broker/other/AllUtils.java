@@ -87,7 +87,7 @@ public class AllUtils implements NoInternetTryConnectListener {
                             TokenModel responseModel = response.body();
                             statusCode = responseModel.getStatusCode();
                             if (statusCode == 200) {
-                                interfaces.onSuccessRes(true);
+                               // interfaces.onSuccessRes(true);
     //                            Toast.makeText(context, responseModel.getMessage(), Toast.LENGTH_SHORT).show();
                                 List<TokenModel.Data> data = responseModel.getData();
                                 newToken = data.get(0).getAccessToken();
@@ -104,7 +104,7 @@ public class AllUtils implements NoInternetTryConnectListener {
                                 if(statusCode == 412){
                                     updateDialog(context);
                                 }else {
-                                    interfaces.onSuccessRes(false);
+                                   // interfaces.onSuccessRes(false);
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -117,7 +117,7 @@ public class AllUtils implements NoInternetTryConnectListener {
                     @Override
                     public void onFailure(Call<TokenModel> call, Throwable t) {
                         String errormessage = t.getMessage().toString();
-                        interfaces.onSuccessRes(false);
+                        //interfaces.onSuccessRes(false);
                         //Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
@@ -189,30 +189,34 @@ public class AllUtils implements NoInternetTryConnectListener {
     }
 
     public static void PaymentErrorDialog(final Context context, final RetryPaymentListener retryPaymentListener) {
-        final Dialog dialogBlock = new Dialog(context, R.style.MyDialogTheme);
-        dialogBlock.setContentView(R.layout.payment_error);
-        dialogBlock.setCanceledOnTouchOutside(false);
-        dialogBlock.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        try {
+            final Dialog dialogBlock = new Dialog(context, R.style.MyDialogTheme);
+            dialogBlock.setContentView(R.layout.payment_error);
+            dialogBlock.setCanceledOnTouchOutside(false);
+            dialogBlock.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        Button reconnect = (Button) dialogBlock.findViewById(R.id.try_again_payment);
-        reconnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialogBlock.dismiss();
-                if (retryPaymentListener != null)
-                    retryPaymentListener.RetryPayment();
-            }
-        });
+            Button reconnect = (Button) dialogBlock.findViewById(R.id.try_again_payment);
+            reconnect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogBlock.dismiss();
+                    if (retryPaymentListener != null)
+                        retryPaymentListener.RetryPayment();
+                }
+            });
 
-        ImageView close = (ImageView) dialogBlock.findViewById(R.id.close);
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialogBlock.dismiss();
-            }
-        });
+            ImageView close = (ImageView) dialogBlock.findViewById(R.id.close);
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogBlock.dismiss();
+                }
+            });
 
-        dialogBlock.show();
+            dialogBlock.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static String changeNumberFormat(float amount) {

@@ -29,6 +29,7 @@
         <!-- <item name="android:windowFullscreen">true</item>-->
     </style>
     <style name="AppTheme.NoACBar" parent="MyTheme">
+        <item name="android:textSize">@dimen/text_size_normal</item>
     </style>
     <style name="MyDialogTheme" parent="android:Theme.Holo.Dialog">
         <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>
@@ -39,7 +40,7 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">12dp</item>
         <item name="android:windowEnterAnimation">@anim/dialog_in</item>
         <item name="android:windowExitAnimation">@anim/dialog_in</item>
     </style>
@@ -71,7 +72,7 @@
     <item name="android:backgroundDimEnabled">true</item>
     <item name="android:textColor">#fffbfd</item>
     <item name="android:textStyle">bold</item>
-    <item name="android:textSize">20sp</item>
+    <item name="android:textSize">20dp</item>
     </style>
 
     <style name="ApplozicTheme" parent="Theme.AppCompat.Light.NoActionBar">

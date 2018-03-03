@@ -17,14 +17,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitBuilders {
 
     private static String SERVER_IP = "https://dev.brongo.in/Brongo/";
-    private static String DEVELOPMENT_URL = "http://18.220.16.149:8080/Brongo/";
+    private static String DEVELOPMENT_URL = "http://18.221.178.146:8080/Brongo/";
     private static String LOCAL_IP = "http://192.168.1.42:8080/Brongo/";
     public static final String MAP_ROOT_URL = "https://maps.googleapis.com";
     private static String PRODUCTION_URL = "https://prod.brongo.in/Brongo/";
     private static RetrofitBuilders retrofitBuilders;
 
     public static String getBaseUrl() {
-        return SERVER_IP;
+        return PRODUCTION_URL;
     }
 
     public static RetrofitBuilders getInstance() {

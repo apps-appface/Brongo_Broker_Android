@@ -455,7 +455,9 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                             }
                         });
             } else {
-                Utils.internetDialog(context, this);
+                if(!isFinishing()) {
+                    Utils.internetDialog(context, this);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

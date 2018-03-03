@@ -184,7 +184,9 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                     if (micromarketlist.size() == 3) {
                         addmore_text.setClickable(false);
                     } else {
-                       marketDialog();
+                        if(!isFinishing()) {
+                            marketDialog();
+                        }
                     }
                 }
             });
@@ -402,38 +404,30 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         try {
             if (Utils.isNetworkAvailable(context)) {
                 Utils.LoaderUtils.showLoader(context);
-                Call<ResponseBody> call = null;
+                Call<ApiModel.SignUpResponseModel> call = null;
                 RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
                 call = retrofitAPIs.signUpApi(signUpModel);
-                call.enqueue(new Callback<ResponseBody>() {
+                call.enqueue(new Callback<ApiModel.SignUpResponseModel>() {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    public void onResponse(Call<ApiModel.SignUpResponseModel> call, Response<ApiModel.SignUpResponseModel> response) {
                         Utils.LoaderUtils.dismissLoader();
                         if (response != null) {
                             String responseString = null;
                             if (response.isSuccessful()) {
                                 try {
-                                    responseString = response.body().string();
-                                    JSONObject jsonObject = new JSONObject(responseString);
-                                    int statusCode = jsonObject.optInt("statusCode");
-                                    String message = jsonObject.optString("message");
+                                    ApiModel.SignUpResponseModel signUpResponseModel = response.body();
+                                    int statusCode = signUpResponseModel.getStatusCode();
+                                    String message = signUpResponseModel.getMessage();
                                     if (statusCode == 200) {
-                                        if(message.equalsIgnoreCase("We are not live in this location")){
-                                            nonPocDialog(context);
-                                        }else {
-                                            Utils.setSnackBar(parentLayout, message);
-                                      /*  editor.remove(AppConstants.REFERREDBY);
-                                        editor.putString(AppConstants.MOBILE_NUMBER, mobile);
-                                        editor.putBoolean(AppConstants.ISWALKTHROUGH, false);
-                                        editor.commit();
-                                        Intent serviceIntent = new Intent(context, RegistrationIntentService.class);
-                                        serviceIntent.putExtra("key", 200);
-                                        startService(serviceIntent);
-                                        startActivity(new Intent(SignUpActivity.this, DocumentUploadActivity.class));*/
-                                            nextPage();
+                                        ArrayList<ApiModel.SignupObject> list = signUpResponseModel.getData();
+                                        if(list.size()>0) {
+                                            boolean isEligible = signUpResponseModel.getData().get(0).isEligible();
+                                            pref.edit().putBoolean(AppConstants.ISELIGIBLE, isEligible).commit();
                                         }
+                                            Utils.setSnackBar(parentLayout, message);
+                                        nextPage();
                                     }
-                                } catch (JSONException | IOException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             } else {
@@ -458,13 +452,15 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
 
 
                     @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    public void onFailure(Call<ApiModel.SignUpResponseModel> call, Throwable t) {
                         Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
                         Utils.LoaderUtils.dismissLoader();
                     }
                 });
             }else{
-                Utils.internetDialog(context,this);
+                if(!isFinishing()) {
+                    Utils.internetDialog(context, this);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -538,7 +534,9 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                     }
                 });
             }else{
-                Utils.internetDialog(context,this);
+                if(!isFinishing()) {
+                    Utils.internetDialog(context, this);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     private void initialise() {
@@ -376,6 +377,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     int statusCode = jsonObject.optInt("statusCode");
                                     String message = jsonObject.optString("message");
                                     Utils.LoaderUtils.dismissLoader();
+                                    isLoader = false;
                                     if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                         apicode = 100;
                                         openTokenDialog(context);
@@ -1549,9 +1551,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onTryRegenerate() {
         switch (apicode) {
             case 100:
+                if (!isLoader) {
+                    Utils.LoaderUtils.showLoader(context);
+                    isLoader = true;
+                }
                 getToken(context);
                 break;
             case 200:
+                if (!isLoader) {
+                    Utils.LoaderUtils.showLoader(context);
+                    isLoader = true;
+                }
                 getToken(context);
                 break;
         }

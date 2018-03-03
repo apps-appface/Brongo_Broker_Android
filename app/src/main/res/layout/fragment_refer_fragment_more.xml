@@ -4,8 +4,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/white"
     android:gravity="center_horizontal"
-    tools:context=".brongo_broker.fragment.ReferFragmentMore">
+    tools:context="in.brongo.brongo_broker.fragment.ReferFragmentMore">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -56,7 +57,7 @@
             android:gravity="center_horizontal"
             android:layout_below="@+id/refer_image"
             android:layout_alignParentBottom="true"
-            android:padding="@dimen/rmf_padding_large">
+            android:padding="@dimen/rmf_padding_normal">
             <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,13 +85,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/white"
+            android:paddingBottom="@dimen/rmf_padding_large"
             android:layout_alignParentBottom="true"
             android:layout_below="@+id/refree_relative">
             <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="@dimen/rmf_padding_large"
+                android:padding="@dimen/rmf_padding_normal"
                 android:id="@+id/referee_count_text"
                 android:shadowColor="#c0ffffff"
                 android:textSize="@dimen/text_size_big"
@@ -132,7 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/rmf_padding_large"
+                android:layout_marginTop="@dimen/rmf_padding_normal"
                 android:background="@drawable/dialog_button"
                 android:paddingBottom="@dimen/rmf_padding_small"
              android:paddingRight="@dimen/btn_padding"
@@ -140,7 +142,7 @@
                 android:paddingTop="@dimen/rmf_padding_small"
                 android:text="Refer more brokers"
                 android:textColor="@color/white"
-                android:layout_marginBottom="@dimen/rmf_padding_large"/>
+               />
         </LinearLayout>
 
     </RelativeLayout>

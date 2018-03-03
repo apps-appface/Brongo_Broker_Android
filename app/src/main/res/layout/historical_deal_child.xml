@@ -20,8 +20,8 @@
             android:layout_height="wrap_content"
             android:background="#e5eaf0"
             android:gravity="center"
+            android:textSize="@dimen/text_size_small"
             android:padding="@dimen/deal_small"
-            android:text=""
             android:textColor="@color/edit_hint_color"
             app:customFont="lato_bold.ttf"/>
         <in.brongo.brongo_broker.uiwidget.CustomTextView

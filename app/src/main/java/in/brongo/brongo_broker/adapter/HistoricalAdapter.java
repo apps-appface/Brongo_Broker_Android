@@ -64,7 +64,7 @@ public class HistoricalAdapter extends RecyclerView.Adapter<HistoricalAdapter.My
             holder.his_name.setText(arraylist.get(position).getClientName());
             //holder.his_address.setText(arraylist.get(position).getMicroMarketName());
             holder.his_commission.setText(arraylist.get(position).getCommission() + "%");
-            holder.his_deal_id.setText(arraylist.get(position).getPropertyId());
+            holder.his_deal_id.setText("DEAL ID : "+arraylist.get(position).getPropertyId());
             addview(arraylist.get(position).getProperty(),holder.his_flowlayout);
             holder.his_post_type.setText(arraylist.get(position).getPostingType().toUpperCase()+"/"+arraylist.get(position).getPropertyType().toUpperCase());
             String back_color = Utils.getPostingColor(arraylist.get(position).getPostingType());

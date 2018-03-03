@@ -25,6 +25,7 @@
             android:layout_weight="1"
             android:background="@drawable/dialog_button"
             android:text="Personal"
+            android:textSize="@dimen/text_size_normal"
             android:layout_marginRight="@dimen/ilf_padding_small"
             android:id="@+id/inventory_personal_btn"
             android:textColor="@color/white"
@@ -37,6 +38,7 @@
             android:id="@+id/inventory_builder_btn"
             android:background="@drawable/button_change"
             android:layout_marginLeft="@dimen/ilf_padding_small"
+            android:textSize="@dimen/text_size_normal"
             android:text="Builders"
             android:textAllCaps="false"
             android:textColor="@color/appColor" />

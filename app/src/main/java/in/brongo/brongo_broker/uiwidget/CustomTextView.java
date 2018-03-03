@@ -48,7 +48,11 @@ public class CustomTextView extends android.support.v7.widget.AppCompatTextView 
                 return false;
             }
         }else{
-            typeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/lato_regular.ttf");
+            try {
+                typeface = Typeface.createFromAsset(ctx.getAssets(), "fonts/lato_regular.ttf");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         setTypeface(typeface);
         return true;

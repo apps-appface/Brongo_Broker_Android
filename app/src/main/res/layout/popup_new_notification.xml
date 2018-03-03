@@ -31,6 +31,7 @@
                 android:layout_marginTop="@dimen/pua_margin_top"
                 android:gravity="center_horizontal"
                 android:text="Incoming Request"
+                android:textSize="@dimen/text_size_normal"
                 android:textColor="#b31d4f91"
                 app:customFont="lato_regular.ttf" />
 
@@ -97,6 +98,17 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/pua_margin_top"
+                    android:textSize="@dimen/text_size_normal"
+                    android:shadowColor="#73000000"
+                    android:textColor="#ffffff"
+                    app:customFont="lato_regular.ttf" />
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
+                    android:id="@+id/noti_commission_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/pua_margin_top"
+                    android:textSize="@dimen/text_size_normal"
                     android:shadowColor="#73000000"
                     android:textColor="#ffffff"
                     app:customFont="lato_regular.ttf" />
@@ -157,6 +169,7 @@
                 android:layout_marginRight="@dimen/pua_padding_large"
                 android:layout_marginTop="@dimen/pua_padding_normal"
                 android:background="@drawable/rounded_purple"
+                android:textSize="@dimen/text_size_normal"
                 android:gravity="center"
                 android:textColor="#000000"
                 android:visibility="visible"
@@ -206,6 +219,7 @@
             android:background="@drawable/premium_back"
             android:gravity="center"
             android:padding="@dimen/pua_padding_small"
+            android:textSize="@dimen/text_size_small"
             android:textColor="@color/black"
             app:customFont="lato_bold.ttf" />
     </RelativeLayout>

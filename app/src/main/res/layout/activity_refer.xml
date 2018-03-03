@@ -54,7 +54,8 @@
             android:layout_marginTop="@dimen/ra_margin_large"
             android:text="Coming soon ..."
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_large" />
+            android:textSize="@dimen/text_size_large"
+            android:visibility="gone"/>
 
         <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:id="@+id/refer_text"
@@ -63,7 +64,7 @@
             android:layout_marginTop="@dimen/ra_margin_large"
             android:gravity="center"
             android:textColor="@color/refer_gray"
-            android:visibility="gone"
+            android:visibility="visible"
             app:customFont="lato_regular.ttf" />
 
         <in.brongo.brongo_broker.uiwidget.CustomTextView
@@ -73,7 +74,7 @@
             android:gravity="center"
             android:text="Your referral code"
             android:textColor="@color/refer_gray"
-            android:visibility="gone"
+            android:visibility="visible"
             app:customFont="lato_regular.ttf" />
 
         <in.brongo.brongo_broker.uiwidget.CustomTextView
@@ -86,9 +87,10 @@
             android:paddingBottom="@dimen/ra_margin_normal"
             android:paddingLeft="@dimen/ra_margin_large"
             android:paddingRight="@dimen/ra_margin_large"
+            android:textSize="@dimen/text_size_normal"
             android:paddingTop="@dimen/ra_margin_normal"
             android:textColor="@color/white"
-            android:visibility="gone"
+            android:visibility="visible"
             app:customFont="lato_regular.ttf" />
 
         <in.brongo.brongo_broker.uiwidget.CustomTextView
@@ -98,7 +100,7 @@
             android:layout_marginTop="@dimen/ra_margin_top"
             android:gravity="center"
             android:textColor="@color/refer_gray"
-            android:visibility="gone"
+            android:visibility="visible"
             app:customFont="lato_regular.ttf" />
 
         <Button
@@ -112,7 +114,7 @@
             android:paddingRight="@dimen/ra_btn_padding"
             android:text="Refer a Broker"
             android:textColor="@color/appColor"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
     </LinearLayout>
 

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dialog_margin_large">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_border"
+        android:layout_centerInParent="true"
+        android:paddingBottom="@dimen/dialog_margin_large">
+        <ImageView
+            android:layout_width="@dimen/dialog_margin_sixty"
+            android:layout_height="@dimen/dialog_margin_sixty"
+            android:padding="@dimen/dialog_margin_large"
+            android:src="@drawable/ic_remove"
+            android:layout_gravity="right"
+            android:id="@+id/rental_dialog_close_btn"
+            android:layout_alignParentRight="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rental_dialog_close_btn"
+            android:id="@+id/venue_dialog_scroll">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dialog_margin_large"
+                android:paddingLeft="@dimen/dialog_margin_large"
+                android:paddingRight="@dimen/dialog_margin_large"
+                android:gravity="center">
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Commission"
+                    android:gravity="center_horizontal"
+                    android:textSize="@dimen/dialog_title_size"
+                    app:customFont="lato_bold.ttf"
+                    android:textColor="@color/appColor" />
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rental_dialog_textview"
+                    android:layout_marginTop="@dimen/dialog_margin_normal"
+                    android:lineSpacingExtra="1dp"
+                    />
+            </LinearLayout>
+        </ScrollView>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/dialog_button"
+            android:text="ACCEPT"
+            android:layout_below="@+id/venue_dialog_scroll"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/dialog_margin_normal"
+            android:paddingRight="@dimen/btn_padding"
+            android:paddingLeft="@dimen/btn_padding"
+            android:id="@+id/rental_dialog_accept"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

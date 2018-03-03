@@ -113,19 +113,35 @@
                             android:paddingBottom="@dimen/pa_medal_padding"
                             android:inputType="textCapSentences"
                             app:customFont="lato_regular.ttf"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_below="@+id/profile_username"
+                            android:layout_alignLeft="@+id/profile_username"
+                            android:id="@+id/prof_comp_linear"
+                            android:visibility="gone">
+                            <in.brongo.brongo_broker.uiwidget.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/prof_comp_name"
+                                android:textSize="@dimen/text_size_small"
+                                android:textColor="#ffffff"
+                                app:customFont="lato_regular.ttf"/>
+                        </LinearLayout>
 
                         <RelativeLayout
                             android:id="@+id/profile_image_relative"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignLeft="@+id/profile_username"
-                            android:layout_below="@+id/profile_username">
+                            android:layout_below="@+id/prof_comp_linear">
 
                             <in.brongo.brongo_broker.uiwidget.CustomTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:shadowColor="#73000000"
-                                android:textSize="@dimen/text_size_normal"
+                                android:textSize="@dimen/text_size_small"
                                 android:textColor="#b3e6c5e8"
                                 android:gravity="center_horizontal"
                                 android:id="@+id/profile_uaddress"
@@ -596,6 +612,7 @@ Certificate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/pa_margin_normal"
+                    android:textSize="@dimen/text_size_small"
                     android:id="@+id/profile_referred"
                     app:customFont="lato_regular.ttf"/>
 
@@ -622,6 +639,7 @@ Certificate"
                         android:layout_height="match_parent"
                         android:layout_alignParentBottom="true"
                         android:layout_marginLeft="@dimen/pa_margin_normal"
+                        android:textSize="@dimen/text_size_small"
                         android:layout_toRightOf="@+id/prof_credit"
                         android:textColor="@color/appColor"
                         app:customFont="lato_regular.ttf"/>
@@ -633,6 +651,7 @@ Certificate"
                         android:layout_gravity="end"
                         android:paddingRight="@dimen/pa_margin_normal"
                         android:paddingLeft="@dimen/pa_margin_normal"
+                        android:textSize="@dimen/text_size_small"
                         android:background="@drawable/dialog_button"
                         android:text="Refer More Brokers"
                         android:textAllCaps="false"
@@ -744,6 +763,7 @@ Certificate"
                     android:paddingLeft="@dimen/pa_margin_normal"
                     android:background="@drawable/dialog_button"
                     android:text="Upgrade Now"
+                    android:textSize="@dimen/text_size_small"
                     android:layout_below="@+id/profile_plan_expiry"
                     android:textAllCaps="false"
                     android:layout_alignParentBottom="true"

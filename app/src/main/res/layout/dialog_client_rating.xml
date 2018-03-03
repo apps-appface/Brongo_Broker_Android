@@ -73,7 +73,7 @@ android:padding="@dimen/dialog_margin_large"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/rating_check_linear"
-            android:visibility="visible">
+            android:visibility="gone">
         <CheckBox
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

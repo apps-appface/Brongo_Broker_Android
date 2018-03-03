@@ -9,8 +9,8 @@ android {
         applicationId "in.brongo.brongo_broker"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 7
-        versionName "1.2"
+        versionCode 9
+        versionName "1.4"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

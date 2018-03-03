@@ -376,6 +376,7 @@ public class Utils {
                 @Override
                 public void onClick(View v) {
                     if (isNetworkAvailable(context)) {
+                        dialog.setCancelable(true);
                         dialog.dismiss();
                         if (internetTryConnectListener != null)
                             internetTryConnectListener.onTryReconnect();
@@ -571,6 +572,7 @@ public class Utils {
                 @Override
                 public void onClick(View v) {
                     if (isNetworkAvailable(context)) {
+                        dialog.setCancelable(true);
                         dialog.dismiss();
                         if (tokenTryListener != null)
                             tokenTryListener.onTryRegenerate();

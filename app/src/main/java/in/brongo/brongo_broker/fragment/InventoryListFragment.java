@@ -183,7 +183,6 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
         pd.setCancelable(true);
         pd.setCanceledOnTouchOutside(false);*/
             fetchList();
-            fetchConnectedClient();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -293,6 +292,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                     pd.dismiss();
                                 }*/
                                 }
+                                fetchConnectedClient();
                             } else {
                                 String responseString = null;
                                 try {

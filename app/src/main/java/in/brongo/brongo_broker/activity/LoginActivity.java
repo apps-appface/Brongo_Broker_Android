@@ -320,7 +320,9 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                 });
             } else {
                 taskcompleted = 100;
-                Utils.internetDialog(context, this);
+                if(!isFinishing()) {
+                    Utils.internetDialog(context, this);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -393,8 +395,10 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                     }
                 });
             } else {
-                taskcompleted = 200;
-                Utils.internetDialog(context, this);
+                if(!isFinishing()) {
+                    taskcompleted = 200;
+                    Utils.internetDialog(context, this);
+                }
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();

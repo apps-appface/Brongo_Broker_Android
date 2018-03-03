@@ -67,7 +67,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
     private Bundle data;
     private int apicode = 0;
     private int currentTime, matchedProperties;
-    private TextView noti_commission, noti_client_name, noti_reject, noti_progress, noti_client_type, noti_matching, plan_textview;
+    private TextView noti_commission, noti_client_name, noti_reject, noti_progress, noti_client_type, noti_matching, plan_textview,noti_commission_two;
     private ImageView noti_client_pic;
     private RatingBar noti_ratingbar;
     private FlowLayout push_flowlayout;
@@ -171,6 +171,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
             keyList = new ArrayList<>();
             push_flowlayout = findViewById(R.id.push_flowlayout);
             noti_commission = findViewById(R.id.noti_commission);
+            noti_commission_two = findViewById(R.id.noti_commission_two);
             noti_client_name = findViewById(R.id.notification_client_name);
             noti_reject = findViewById(R.id.noti_reject);
             plan_textview = findViewById(R.id.push_plan_text);
@@ -330,10 +331,18 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                 noti_client_type.setText(posting_type.toUpperCase() + "/" + prop_type.toUpperCase());
                 String back_color = Utils.getPostingColor(posting_type);
                 noti_client_type.setBackgroundColor(Color.parseColor(back_color));
-                noti_commission.setText(commission1 + "% Commission");
-                if (commission1.equalsIgnoreCase("")) {
-                    noti_commission.setVisibility(View.GONE);
-                }
+               /* if(posting_type.equalsIgnoreCase("BUY")){
+                    noti_commission.setText(commission1 + "% Commission");
+                    if (commission1.equalsIgnoreCase("")) {
+                        noti_commission.setVisibility(View.GONE);
+                    }
+                }else {
+                    noti_commission.setText(commission1 + "% Commission");
+                    if (commission1.equalsIgnoreCase("")) {
+                        noti_commission.setVisibility(View.GONE);
+                    }
+                }*/
+               setCommissionText(posting_type.toUpperCase());
                 noti_client_name.setText(prop_client_name);
                 Glide.with(context)
                         .load(client_image)
@@ -752,6 +761,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
     public void onTryRegenerate() {
         switch (apicode) {
             case 200:
+                Utils.LoaderUtils.showLoader(context);
                 getToken(context);
                 break;
         }
@@ -774,12 +784,92 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         if (isSuccess) {
             switch (apicode) {
                 case 200:
+                    Utils.LoaderUtils.dismissLoader();
                     leadRejectApi();
                     break;
             }
         } else {
             Utils.LoaderUtils.dismissLoader();
             openTokenDialog(context);
+        }
+    }
+
+    private void setCommissionText(String posting_type){
+        try {
+            switch(posting_type){
+                case "BUY":
+                    setBuyCommission();
+                    break;
+                case "SELL":
+                    setSellCommission();
+                    break;
+                case "RENT":
+                    setRentCommission();
+                    break;
+                case "RENT_OUT":
+                    setRentOutCommission();
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void setBuyCommission(){
+        try {
+            if(prop_type.equalsIgnoreCase("RESIDENTIAL") || prop_type.equalsIgnoreCase("COMMERCIAL")){
+                noti_commission.setText("Commission for New Property : 0%");
+                noti_commission_two.setText("Commission for Resale Property : "+commission1 + "%");
+            }else if(prop_type.equalsIgnoreCase("LAND")){
+                if(sub_property_type != null){
+                    if(sub_property_type.equalsIgnoreCase("RESIDENTIAL_ZONE")){
+                        noti_commission_two.setText("Commission For Land : "+commission1+"%");
+                        noti_commission.setText("Commission For New Gated property : 0%");
+                    }else if(sub_property_type.equalsIgnoreCase("COMMERCIAL_ZONE")){
+                        noti_commission.setText(commission1 + "% Commission");
+                        noti_commission_two.setVisibility(View.GONE);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void setSellCommission(){
+        try {
+            noti_commission.setText(commission1 + "% Commission");
+            noti_commission_two.setVisibility(View.GONE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void setRentCommission(){
+        try {
+            Float comm = Float.valueOf(commission1);
+            if(comm == 100.0f) {
+                noti_commission.setText("1 Month Commission");
+                noti_commission_two.setVisibility(View.GONE);
+            }else{
+                int number = (int) ((30*comm)/100);
+                noti_commission.setText(number+" days Commission");
+                noti_commission_two.setVisibility(View.GONE);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+    private void setRentOutCommission(){
+        try {
+            Float comm = Float.valueOf(commission1);
+            if(comm == 100.0f) {
+                noti_commission.setText("1 Month Commission");
+                noti_commission_two.setVisibility(View.GONE);
+            }else{
+                int number = (int) ((30*comm)/100);
+                noti_commission.setText(number+" days Commission");
+                noti_commission_two.setVisibility(View.GONE);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -222,8 +222,15 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
             venue_submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    boolean isEligible = pref.getBoolean(AppConstants.ISELIGIBLE,false);
                     if(selected_slot != null && selected_date != null && !selected_slot.isEmpty() && !selected_date.isEmpty()) {
-                        onBoardDialog(context);
+                        if(isEligible){
+                            submitSlot();
+                        }else {
+                            if (!isFinishing()) {
+                                onBoardDialog(context);
+                            }
+                        }
                     }else{
                         Utils.setSnackBar(parentLayout,"Select the slot details first");
                     }
@@ -366,6 +373,7 @@ public class VenueActivity extends AppCompatActivity implements OnMapReadyCallba
                                 int statusCode = responseModel.getStatusCode();
                                 String message = responseModel.getMessage();
                                 if (statusCode == 200) {
+                                    pref.edit().remove(AppConstants.ISELIGIBLE).commit();
                                     Utils.setSnackBar(parentLayout,message);
                                     startActivity(new Intent(context,LoginActivity.class));
                                     finish();

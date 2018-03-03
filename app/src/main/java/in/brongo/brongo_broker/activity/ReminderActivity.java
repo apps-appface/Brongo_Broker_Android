@@ -290,7 +290,9 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
                                         int statusCode = responseModel.getStatusCode();
                                         String message = responseModel.getMessage();
                                         if (statusCode == 200) {
-                                           successDialog(context,message,"Success");
+                                            if(!isFinishing()) {
+                                                successDialog(context, message, "Success");
+                                            }
                                         }
                                     } else {
                                         shouldRefresh = false;
@@ -301,7 +303,9 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
                                             String message = jsonObject.optString("message");
                                             int statusCode = jsonObject.optInt("statusCode");
                                             if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                                openTokenDialog(context);
+                                                if(!isFinishing()) {
+                                                    openTokenDialog(context);
+                                                }
                                             } else {
                                                 Utils.setSnackBar(parentLayout,message);
                                             }
@@ -320,7 +324,9 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
                             }
                         });
                     } else {
-                        Utils.internetDialog(context, this);
+                        if(!isFinishing()) {
+                            Utils.internetDialog(context, this);
+                        }
                     }
                 }
             }else{
@@ -507,7 +513,9 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
             submitMeetingDetails();
         }else{
             Utils.LoaderUtils.dismissLoader();
-            openTokenDialog(context);
+            if(!isFinishing()) {
+                openTokenDialog(context);
+            }
         }
     }
     private void successDialog(final Context context, final String message, String title){

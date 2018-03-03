@@ -79,13 +79,15 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
     private RelativeLayout relativeLayout;
     private ArrayList<String> arrayList,timeList,remaininglist;
     private SharedPreferences pref;
-    private LinearLayout mLinearLayout;
+    private LinearLayout mLinearLayout,open_deal_comm_linear2,open_deal_comm_linear1;
     private RatingBar ratingBar;
     private Bundle bundle;
+    private String prop_type,commission1,sub_property_type;
     private Button feedBackBtn;
     private boolean isClientRated = false;
     private FlowLayout flowLayout;
     private Context context;
+    private TextView comm1,comm2,comm3,comm4,comm5,comm6;
 
 
     public static Fragment newInstance(int position, float scale, ArrayList<ApiModel.BuyAndRentModel> arrayList,ViewListener viewListener) {
@@ -167,11 +169,14 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         String lead_image = getArguments().getString("lead_image","");
         int lead_matched = getArguments().getInt("lead_matched",0);
         final String  lead_prop_type = getArguments().getString("lead_prop_type","");
+        prop_type = getArguments().getString("lead_prop_type","").toUpperCase();
         final String lead_posting_type = getArguments().getString("lead_posting_type","");
         //String lead_site = getArguments().getString("lead_site");
      lead_mobile = getArguments().getString("lead_mobile","");
       float lead_rating = getArguments().getFloat("lead_rating",0.0f);
         double lead_commission = getArguments().getDouble("lead_commission",0.0d);
+        commission1 = lead_commission+"";
+        sub_property_type = getArguments().getString("lead_sub_prop_type","").toUpperCase();
         ScrollView linearLayout = (ScrollView) inflater.inflate(R.layout.fragment_item1, container, false);
         relativeLayout = linearLayout.findViewById(R.id.open_relative1);
         flowLayout = linearLayout.findViewById(R.id.main_deal_flowlayout);
@@ -183,6 +188,14 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         TextView open_deal_commission = linearLayout.findViewById(R.id.open_deal_commission);
         TextView open_deal_clienttype = linearLayout.findViewById(R.id.open_deal_client_type);
         TextView open_deal_plan = linearLayout.findViewById(R.id.lead_plan);
+        comm1 = linearLayout.findViewById(R.id.open_deal_comm1);
+        comm2 = linearLayout.findViewById(R.id.open_deal_comm2);
+        comm3 = linearLayout.findViewById(R.id.open_deal_comm3);
+        comm4 = linearLayout.findViewById(R.id.open_deal_comm4);
+        comm5 = linearLayout.findViewById(R.id.open_deal_comm5);
+        comm6 = linearLayout.findViewById(R.id.open_deal_comm6);
+        open_deal_comm_linear1 = linearLayout.findViewById(R.id.open_deal_comm_linear1);
+        open_deal_comm_linear2 = linearLayout.findViewById(R.id.open_deal_comm_linear2);
         TextView view_all = linearLayout.findViewById(R.id.landing_viewall);
         foo(view_all,bundle);
         TextView open_deal_id = linearLayout.findViewById(R.id.deal_id);
@@ -198,10 +211,12 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                 .apply(CustomApplicationClass.getRequestOption(true))
                 .into(open_deal_client_image);
         matching_properties.setText(lead_matched + " matching properties");
+        setCommissionText(lead_posting_type.toUpperCase());
         open_deal_id.setText("DEAL ID : "+propertyId);
         open_deal_name.setText(lead_name);
         open_deal_plan.setText(lead_plan.toUpperCase());
-        open_deal_commission.setText(lead_commission + "%");
+   //     open_deal_commission.setText(lead_commission + "%");
+        open_deal_commission.setVisibility(View.GONE);
         open_deal_clienttype.setText(lead_posting_type.toUpperCase()+"/"+lead_prop_type.toUpperCase());
        String color_back = Utils.getPostingColor(lead_posting_type);
             open_deal_clienttype.setBackgroundColor(Color.parseColor(color_back));
@@ -678,6 +693,102 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         try {
             Utils.LoaderUtils.dismissLoader();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void setCommissionText(String posting_type){
+        try {
+            switch(posting_type){
+                case "BUY":
+                    setBuyCommission();
+                    open_deal_comm_linear2.setVisibility(View.VISIBLE);
+                    open_deal_comm_linear1.setVisibility(View.GONE);
+                    break;
+                case "SELL":
+                    setSellCommission();
+                    open_deal_comm_linear2.setVisibility(View.GONE);
+                    open_deal_comm_linear1.setVisibility(View.VISIBLE);
+                    break;
+                case "RENT":
+                    setRentCommission();
+                    open_deal_comm_linear2.setVisibility(View.GONE);
+                    open_deal_comm_linear1.setVisibility(View.VISIBLE);
+                    break;
+                case "RENT_OUT":
+                    setRentOutCommission();
+                    open_deal_comm_linear2.setVisibility(View.GONE);
+                    open_deal_comm_linear1.setVisibility(View.VISIBLE);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void setBuyCommission(){
+        try {
+            if(prop_type.equalsIgnoreCase("RESIDENTIAL") || prop_type.equalsIgnoreCase("COMMERCIAL")){
+                //comm1.setText("New Property : 0% Commission");
+                //comm2.setText("Resale Property : "+commission1 + "% Commission");
+                comm3.setText("New Property");
+                comm4.setText("0%");
+                comm5.setText("Resale Property");
+                comm6.setText(commission1 + "%");
+            }else if(prop_type.equalsIgnoreCase("LAND")){
+                if(sub_property_type != null){
+                    if(sub_property_type.equalsIgnoreCase("RESIDENTIAL_ZONE")){
+                       // comm2.setText("For Land : "+commission1+"% Commission");
+                      //  comm1.setText("New Gated property : 0% Commission");
+                        comm3.setText("New Gated property");
+                        comm4.setText("0%");
+                        comm5.setText("For Land ");
+                        comm6.setText(commission1 + "%");
+                    }else if(sub_property_type.equalsIgnoreCase("COMMERCIAL_ZONE")){
+                        comm1.setText(commission1 + "% Commission");
+                        comm2.setVisibility(View.GONE);
+                        open_deal_comm_linear2.setVisibility(View.GONE);
+                        open_deal_comm_linear1.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void setSellCommission(){
+        try {
+            comm1.setText(commission1 + "% Commission");
+            comm2.setVisibility(View.GONE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void setRentCommission(){
+        try {
+            Float comm = Float.valueOf(commission1);
+            if(comm == 100.0f) {
+                comm1.setText("1 Month Commission");
+                comm2.setVisibility(View.GONE);
+            }else{
+                int number = (int) ((30*comm)/100);
+                comm1.setText(number+" days Commission");
+                comm2.setVisibility(View.GONE);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+    private void setRentOutCommission(){
+        try {
+            Float comm = Float.valueOf(commission1);
+            if(comm == 100.0f) {
+                comm1.setText("1 Month Commission");
+                comm2.setVisibility(View.GONE);
+            }else{
+                int number = (int) ((30*comm)/100);
+                comm1.setText(number+" days Commission");
+                comm2.setVisibility(View.GONE);
+            }
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
     }

@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.applozic.mobicomkit.api.notification.MobiComPushReceiver;
@@ -62,16 +63,16 @@ public class MyNotificationListener extends FirebaseMessagingService {
             i = i + 1;
             editor.putInt(AppConstants.NOTIFICATION_BADGES, i).commit();
             String noti_type = remoteMessage.getData().get("NotiType");
+            Log.i("NOTITYPE",noti_type);
             Intent intent;
             if (noti_type != null) {
                 switch (noti_type) {
                     case "APP":
+                        Log.i("NOTITYPE","******** Getting Call **********");
                         if (pref.getBoolean(AppConstants.LOGIN_STATUS, false)) {
                             editor.putString(AppConstants.NOTI_TYPE, "call").commit();
                             callNotification(remoteMessage);
                         }
-
-
                         break;
                     case "CLIENT_ACCEPT":
                         if (!isAppIsInBackground(context)) {

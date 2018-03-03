@@ -214,7 +214,9 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
                                     String message = jsonObject.optString("message");
                                     int statusCode = jsonObject.optInt("statusCode");
                                     if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                       openTokenDialog(context);
+                                        if(!isFinishing()) {
+                                            openTokenDialog(context);
+                                        }
                                     }else{
                                         Utils.setSnackBar(parentLayout, message);
                                     }
@@ -232,7 +234,9 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
                     }
                 });
             }else{
-                Utils.internetDialog(context,this);
+                if(!isFinishing()) {
+                    Utils.internetDialog(context, this);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -260,7 +264,9 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
             emailLink();
         }else{
             Utils.LoaderUtils.dismissLoader();
-            openTokenDialog(context);
+            if(!isFinishing()) {
+                openTokenDialog(context);
+            }
         }
     }
 }

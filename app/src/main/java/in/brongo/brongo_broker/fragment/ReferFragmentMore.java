@@ -4,6 +4,7 @@ package in.brongo.brongo_broker.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -75,17 +76,25 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
         refer_more_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, ReferActivity.class);
-                startActivity(i);
+                try {
+                    Intent i = new Intent(context, ReferActivity.class);
+                    startActivity(i);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         referback2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,ProfileActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                getActivity().finish();
+                try {
+                    Intent intent = new Intent(context,ProfileActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
+                    getActivity().finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         return view;
@@ -121,6 +130,7 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
             referback2 = view.findViewById(R.id.refer_back2);
             referApi();
             createText();
+            refer_more_btn.requestFocus();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -158,9 +168,13 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
 
     private SpannableString makeLinkSpan(CharSequence text, View.OnClickListener listener) {
         SpannableString link = new SpannableString(text);
-        link.setSpan(new ReferFragmentMore.ClickableString(listener), 0, text.length(),
-                SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-        link.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.appColor)), 0, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        try {
+            link.setSpan(new ClickableString(listener), 0, text.length(),
+                    SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+            link.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.appColor)), 0, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
         return link;
     }
 
@@ -221,12 +235,16 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
                                 String message = referralData.getMessage();
                                 String credit = referralData.getData().getTotalReferralBonus();
                                 String count = referralData.getData().getReferralCount();
-                                refer_credit.setText(credit);
+                                Float creditvalue = Float.valueOf(credit);
+                                String creditString = AllUtils.changeNumberFormat(creditvalue);
+                                refer_credit.setText(creditString);
                                 refer_count.setText("My referees(" + count + ")");
                                 if (statusCode == 200 && message.equalsIgnoreCase("")) {
                                     ArrayList<ApiModel.referredBrokerObject> referred_broker_list = referralData.getData().getReferredBroker();
                                     if (referred_broker_list.size() != 0) {
-                                        refer_viewall.setVisibility(View.VISIBLE);
+                                        if(referred_broker_list.size()>3) {
+                                            refer_viewall.setVisibility(View.VISIBLE);
+                                        }
                                         refer_recycle.setVisibility(View.VISIBLE);
                                         no_referee_text.setVisibility(View.GONE);
                                         arrayList_full.addAll(referred_broker_list);
@@ -240,6 +258,9 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
                                             }
                                         }
                                     }else{
+                                        refer_viewall.setVisibility(View.INVISIBLE);
+                                        refer_recycle.setVisibility(View.INVISIBLE);
+                                        no_referee_text.setVisibility(View.VISIBLE);
                                     }
                                     referMoreAdapter.notifyDataSetChanged();
                                 /*if(pd.isShowing()) {
@@ -259,12 +280,17 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
                                     if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                         openTokenDialog(context);
                                     } else {
+                                        if(message.equalsIgnoreCase("referrals Not Found.Please refer your friends")){
+                                            String creditString = AllUtils.changeNumberFormat(0.0f);
+                                            refer_credit.setText(creditString);
+                                        }
                                         Utils.setSnackBar(parentLayout,message);
                                     }
                                /* if(pd.isShowing()) {
                                     pd.dismiss();
                                 }*/
-                                } catch (IOException | JSONException e) {
+                                } catch (Exception e) {
+                                    String error = e.toString();
                                     e.printStackTrace();
                                 }
                             }
@@ -316,11 +342,15 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
     }
     @Override
     public void onSuccessRes(boolean isSuccess) {
-        if(isSuccess){
-            referApi();
-        }else{
-            Utils.LoaderUtils.dismissLoader();
-            openTokenDialog(context);
+        try {
+            if(isSuccess){
+                referApi();
+            }else{
+                Utils.LoaderUtils.dismissLoader();
+                openTokenDialog(context);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

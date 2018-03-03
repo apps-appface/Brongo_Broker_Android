@@ -185,26 +185,114 @@
                 android:layout_marginBottom="@dimen/hof_margin_large"
                 android:elevation="@dimen/hof_margin_normal">
                 <in.brongo.brongo_broker.uiwidget.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/open_dealPotComm"
+                    android:shadowColor="#73000000"
+                    android:gravity="center_horizontal"
+                    android:text="Potential Commission"
+                    android:textColor="#64687f"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="@dimen/text_size_small"
+                    app:customFont="lato_bold.ttf"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/open_deal_comm_linear1"
+                   android:layout_below="@+id/open_dealPotComm">
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/open_dealPotComm"
+                    android:textColor="#64687f"
+                    android:textSize="@dimen/text_size_small"
+                    android:id="@+id/open_deal_comm1"
+                    app:customFont="lato_regular.ttf" />
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:shadowColor="#73000000"
-                    android:layout_centerVertical="true"
-                    android:text="Potential Commission"
+                    android:id="@+id/open_deal_comm2"
+                    android:layout_below="@+id/open_deal_comm1"
                     android:textColor="#64687f"
                     android:textSize="@dimen/text_size_small"
-                    app:customFont="lato_bold.ttf" />
+                    app:customFont="lato_regular.ttf"/>
+                </LinearLayout>
+
 
                 <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:id="@+id/open_deal_commission"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:shadowColor="#73000000"
                     android:textColor="#264c91"
                     android:textSize="@dimen/text_size_big"
-                    app:customFont="lato_bold.ttf" />
+                    app:customFont="lato_bold.ttf"
+                    android:visibility="gone"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@+id/open_dealPotComm"
+                    android:id="@+id/open_deal_comm_linear2">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/open_deal_comm3"
+                            android:textColor="#64687f"
+                            android:textSize="@dimen/text_size_small"
+                            app:customFont="lato_regular.ttf"/>
+                        <in.brongo.brongo_broker.uiwidget.CustomTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/open_deal_comm4"
+                            android:gravity="center"
+                            android:textColor="#64687f"
+                            android:textSize="@dimen/text_size_small"
+                            app:customFont="lato_bold.ttf"/>
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="@dimen/view_small"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="#bec4be"
+                        android:layout_marginLeft="@dimen/hof_margin_small"
+                        android:layout_marginRight="@dimen/hof_margin_small"
+                       />
+                    <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                    <in.brongo.brongo_broker.uiwidget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/open_deal_comm5"
+                        android:textColor="#64687f"
+                        android:textSize="@dimen/text_size_small"
+                        app:customFont="lato_regular.ttf"/>
+                    <in.brongo.brongo_broker.uiwidget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/open_deal_comm6"
+                        android:textColor="#64687f"
+                        android:gravity="center"
+                        android:textSize="@dimen/text_size_small"
+                        app:customFont="lato_bold.ttf"/>
+
+                </LinearLayout>
+                </LinearLayout>
             </RelativeLayout>
 
             <LinearLayout
@@ -253,7 +341,7 @@
                     android:gravity="center"
                     android:layout_marginTop="@dimen/hof_margin_normal"
                     android:padding="@dimen/hof_margin_small"
-                    android:text=""
+                    android:textSize="@dimen/text_size_small"
                     android:textColor="@color/edit_hint_color"
                     app:customFont="lato_bold.ttf"/>
 
@@ -273,6 +361,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/landing_viewall"
                     android:text="View all requirements"
+                    android:textSize="@dimen/text_size_small"
                   android:padding="@dimen/hof_margin_normal"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
@@ -350,6 +439,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:textSize="@dimen/text_size_small"
             android:layout_alignParentRight="true"
             android:layout_marginEnd="@dimen/hof_plan_margin"
             android:layout_marginRight="@dimen/hof_plan_margin"

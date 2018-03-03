@@ -57,20 +57,18 @@
             android:windowSoftInputMode="stateHidden|adjustPan|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <data
-                    android:host="open"
-                    android:scheme="@string/app_name" />
-
+                    android:scheme="brongobroker" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
+        <!--<meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
+        <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false" />-->
 
         <meta-data
             android:name="io.branch.sdk.BranchKey"

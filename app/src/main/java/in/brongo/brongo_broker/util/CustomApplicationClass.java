@@ -1,6 +1,7 @@
 package in.brongo.brongo_broker.util;
 
 import android.app.Application;
+import android.content.Intent;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -17,8 +18,12 @@ public class CustomApplicationClass extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        // Initialize the Branch object
-        Branch.getAutoInstance(this);
+        try {
+            // Initialize the Branch object
+            Branch.getAutoInstance(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static RequestOptions getRequestOption(boolean showCached) {

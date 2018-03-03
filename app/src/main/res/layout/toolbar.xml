@@ -408,6 +408,7 @@
                             android:text="Buy/Rent"
                             android:layout_marginRight="@dimen/ha_padding_small"
                             android:textAllCaps="false"
+                            android:textSize="@dimen/text_size_small"
                             android:id="@+id/buy_rent"
                             android:textColor="@color/white"
                             android:background="@drawable/rounded_blue_btn"/>
@@ -418,6 +419,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginLeft="@dimen/ha_padding_small"
                             android:layout_weight="1"
+                            android:textSize="@dimen/text_size_small"
                             android:background="@drawable/rounded_blue_empty_btn"
                             android:text="Sell/Rent out"
                             android:textAllCaps="false"
