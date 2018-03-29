@@ -71,12 +71,6 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
             holder.invent_builder_address.setText(arrayList.get(position).getSubLocation());
             holder.invent_builder_commission.setText(arrayList.get(position).getCommission()+"% Commission");
             String imageUrl = "";
-        /*if(arrayList.get(position).getImageFiles().size()>0){
-            imageUrl = arrayList.get(position).getImageFiles().get(0);
-           imageUrl = Utils.getImageUrl(imageUrl,pref);
-            }*/
-       /* Glide.with(context).load(arrayList.get(position).getImageFiles()).placeholder(R.drawable.no_image)
-                .diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.invent_builder_image);*/
             if(arrayList.get(position).getImageFiles().size()>0) {
                 Glide.with(context).load(arrayList.get(position).getImageFiles().get(0)).apply(CustomApplicationClass.getPropertyImage(true)).into(holder.invent_builder_image);
             }else{
@@ -179,9 +173,6 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
         }
     }
 
-   /* public void setOnClick(BuilderAdapter.OnClick onClick) {
-        this.onClick = onClick;
-    }*/
     public interface OnClick {
         void acceptTc(int position,BuilderModel.BuilderObject builderObject,boolean accept);
         void proceedToWeb(int position,BuilderModel.BuilderObject builderObject);

@@ -4,18 +4,21 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#fff"
-    android:padding="@dimen/deal_large">
+    android:paddingBottom="@dimen/deal_large">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#ededed">
        <ImageView
            android:layout_width="match_parent"
            android:layout_height="@dimen/da_document_height"
            android:id="@+id/docu_imageview"
-           android:scaleType="fitXY"/>
+           android:scaleType="fitCenter"
+           android:paddingRight="@dimen/deal_large"
+           android:paddingLeft="@dimen/deal_large"/>
     </LinearLayout>
    <LinearLayout
        android:layout_width="match_parent"

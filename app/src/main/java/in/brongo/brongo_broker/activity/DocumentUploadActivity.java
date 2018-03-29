@@ -2,12 +2,15 @@ package in.brongo.brongo_broker.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -20,9 +23,12 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -408,6 +414,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                 RequestBody mobileNo = RequestBody.create(MediaType.parse("multipart/form-data"), pref.getString(AppConstants.MOBILE_NUMBER, ""));
                     String panNo = pan_edit.getText().toString();
                     String reraRegistration = rera_edit.getText().toString();
+                    if(!panNo.isEmpty() && addressProof != null && IDProof != null) {
                         RequestBody panCardNumber = RequestBody.create(MediaType.parse("multipart/form-data"), panNo);
                         RequestBody reraRegistrationNumber = RequestBody.create(MediaType.parse("multipart/form-data"), reraRegistration);
                         RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPITask(RetrofitBuilders.getBaseUrl());
@@ -427,7 +434,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                                             String message = jsonObject.optString("message");
                                             if (statusCode == 200 && message.equalsIgnoreCase("Broker Documents Successfully Uploaded")) {
                                                 Utils.setSnackBar(parentLayout, message);
-                                                startActivity(new Intent(DocumentUploadActivity.this, VenueActivity.class));
+                                                //startActivity(new Intent(DocumentUploadActivity.this, VenueActivity.class));
+                                                startActivity(new Intent(DocumentUploadActivity.this, VerificationActivity.class));
                                                 finish();
                                             }
                                         } catch (JSONException | IOException e) {
@@ -454,6 +462,9 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                                 Utils.showToast(context, t.getMessage().toString(), "Failure");
                             }
                         });
+                    }else{
+                            showErrorMessage(panNo);
+                    }
             } else {
                 if(!isFinishing()) {
                     Utils.internetDialog(context, this);
@@ -819,5 +830,18 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private void showErrorMessage(String panNo){
+        String message = "Data should not be empty";
+        try {
+            if(panNo != null && panNo.isEmpty()){
+                message = "Pan Number should not be empty";
+            }else if(addressProof == null || IDProof == null) {
+                message = "Document should not be empty";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Utils.setSnackBar(parentLayout,message);
     }
 }

@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.applozic.mobicomkit.api.MobiComKitConstants;
@@ -47,7 +48,6 @@ import com.applozic.mobicomkit.uiwidgets.conversation.activity.ConversationActiv
 import com.bumptech.glide.Glide;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.kyleduo.switchbutton.SwitchButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -104,13 +104,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private Toolbar toolbar;
+    private Switch active_switch;
     private int btn_click = 0;
     private ImageView noti_message, noti_icon;
     private FragmentManager fragmentManager;
     private Context context = this;
     private boolean isLoader = false, isActiveCalled = false;
     private TextView switch_text, chat_count, home_commission, home_name, home_plan, home_pot_commission, homerating, noti_count;
-    private SwitchButton switchButton;
     private FloatingActionButton floatingActionButton;
     private ResideMenu resideMenu;
     private ResideMenuItem itemSettings, itemHistorical, itemInventory, itemPayment, itemHelp, itemLogout, itemRating;
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             noti_message = toolbar.findViewById(R.id.toolbar_message_icon);
             noti_icon = toolbar.findViewById(R.id.toolbar_notification_icon);
             noti_count = toolbar.findViewById(R.id.notification_count);
-            switchButton = findViewById(R.id.active_btn);
+            active_switch = findViewById(R.id.switch_active);
             switch_text = findViewById(R.id.switch_status_text);
             chat_count = toolbar.findViewById(R.id.message_count);
             setUpMenu();
@@ -257,40 +257,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         try {
             if (view == itemHistorical) {
-                Utils.setAlphaAnimation(itemHistorical, this);
-                Intent i = new Intent(MainActivity.this, Menu_Activity.class);
-                i.putExtra("frgToLoad", "HistoricalFragment");
-                startActivity(i);
-                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                loadFragment("HistoricalFragment",itemHistorical);
             } else if (view == itemInventory) {
-                Utils.setAlphaAnimation(itemInventory, this);
-                Intent i = new Intent(MainActivity.this, Menu_Activity.class);
-                i.putExtra("frgToLoad", "InventoryListFragment");
-                startActivity(i);
+                loadFragment("InventoryListFragment",itemInventory);
             } else if (view == itemHelp) {
-                Utils.setAlphaAnimation(itemHelp, this);
-                Intent i = new Intent(MainActivity.this, Menu_Activity.class);
-                i.putExtra("frgToLoad", "HelpFragment");
-                startActivity(i);
-                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                loadFragment("HelpFragment",itemHelp);
             } else if (view == itemSettings) {
-                Utils.setAlphaAnimation(itemSettings, this);
-                Intent i = new Intent(MainActivity.this, Menu_Activity.class);
-                i.putExtra("frgToLoad", "SettingFragment");
-                startActivity(i);
+                loadFragment("SettingFragment",itemSettings);
             } else if (view == itemLogout) {
                 Utils.setAlphaAnimation(itemLogout, this);
                 logOutDialog();
             } else if (view == itemPayment) {
-                Utils.setAlphaAnimation(itemPayment, this);
-                Intent i = new Intent(MainActivity.this, Menu_Activity.class);
-                i.putExtra("frgToLoad", "SubscriptionFragment");
-                startActivity(i);
+                loadFragment("SubscriptionFragment",itemPayment);
             } else if (view == itemRating) {
-                Utils.setAlphaAnimation(itemPayment, this);
-                Intent i = new Intent(MainActivity.this, Menu_Activity.class);
-                i.putExtra("frgToLoad", "ReviewFragment");
-                startActivity(i);
+                loadFragment("ReviewFragment",itemRating);
             }
             resideMenu.closeMenu();
         } catch (Exception e) {
@@ -522,7 +502,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     e.printStackTrace();
                                 }
                             } else {
-                                RegisterWithApplozic();
+                                //RegisterWithApplozic();
                                 try {
                                     responseString = response.errorBody().string();
                                     JSONObject jsonObject = new JSONObject(responseString);
@@ -589,14 +569,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             String isActive = pref.getString(AppConstants.USER_STATUS, "");
             if (isActive.equalsIgnoreCase("Active") || isActive.equalsIgnoreCase("")) {
-                switchButton.setChecked(true);
-                switchButton.setThumbColorRes(R.color.appColor);
+                active_switch.setChecked(true);
                 switch_text.setText("ACTIVE");
                 switch_linear.setBackgroundColor(getResources().getColor(R.color.appColor));
             } else {
-                switchButton.setChecked(false);
+                active_switch.setChecked(false);
                 switch_text.setText("INACTIVE");
-                switchButton.setThumbColorRes(R.color.round_empty_gray);
                 switch_linear.setBackgroundColor(getResources().getColor(R.color.refer_gray));
             }
         } catch (Resources.NotFoundException e) {
@@ -780,21 +758,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     int statusCode = jsonObject.optInt("statusCode");
                                     if (statusCode == 200 && message.equalsIgnoreCase("Lead Dropped Successfully")) {
                                         Utils.setSnackBar(parentLayout, message);
-                                           /* if (btn_click == 1) {
-                                                buyAndRentList.remove(position);
-                                                adapter1.notifyDataSetChanged();
-                                            } else if (btn_click == 2) {
-                                                sellAndRentList.remove(position);
-                                                adapter2.notifyDataSetChanged();
-                                            }
-                                            if (buyAndRentList.size() == 0 && sellAndRentList.size() == 0) {
-                                                no_deal_linear.setVisibility(View.VISIBLE);
-                                                deal_linear.setVisibility(View.GONE);
-                                            } else {
-                                                no_deal_linear.setVisibility(View.GONE);
-                                                deal_linear.setVisibility(View.VISIBLE);
-                                            }
-                                        setButtonText();*/
                                         if (!isLoader) {
                                             Utils.LoaderUtils.showLoader(context);
                                             isLoader = true;
@@ -1024,15 +987,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     startActivity(i);
                 }
             });
-            switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            active_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        switchButton.setThumbColorRes(R.color.appColor);
                         switch_linear.setBackgroundColor(getResources().getColor(R.color.appColor));
                         callActiveApi("Active");
                     } else {
-                        switchButton.setThumbColorRes(R.color.round_empty_gray);
                         switch_linear.setBackgroundColor(getResources().getColor(R.color.refer_gray));
                         callActiveApi("INActive");
                     }
@@ -1158,39 +1119,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             UserLogoutTask.TaskListener userLogoutTaskListener = new UserLogoutTask.TaskListener() {
                 @Override
                 public void onSuccess(Context context) {
-                    Utils.setSnackBar(parentLayout, message);
-                    String mobile = pref.getString(AppConstants.MOBILE_NUMBER, "");
-                    Boolean login_remember = pref.getBoolean(AppConstants.LOGIN_REMEMBER, false);
-                    Boolean tc_read = pref.getBoolean(AppConstants.IS_TERMS_ACCEPTED, false);
-                    editor.clear();
-                    editor.putBoolean(AppConstants.IS_TERMS_ACCEPTED, tc_read);
-                    editor.commit();
-                    if (login_remember) {
-                        editor.putBoolean(AppConstants.LOGIN_REMEMBER, login_remember);
-                        editor.putString(AppConstants.MOBILE_NUMBER, mobile);
-                        editor.commit();
-                    }
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                    finish();
-                    //Logout success
+                   onApplozicLogout(message);
                 }
 
                 @Override
                 public void onFailure(Exception exception) {
-                    Utils.setSnackBar(parentLayout, message);
-                    String mobile = pref.getString(AppConstants.MOBILE_NUMBER, "");
-                    Boolean login_remember = pref.getBoolean(AppConstants.LOGIN_REMEMBER, false);
-                    Boolean tc_read = pref.getBoolean(AppConstants.IS_TERMS_ACCEPTED, false);
-                    editor.clear();
-                    editor.putBoolean(AppConstants.IS_TERMS_ACCEPTED, tc_read);
-                    editor.commit();
-                    if (login_remember) {
-                        editor.putBoolean(AppConstants.LOGIN_REMEMBER, login_remember);
-                        editor.putString(AppConstants.MOBILE_NUMBER, mobile);
-                        editor.commit();
-                    }
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                    finish();
+                   onApplozicLogout(message);
                     //Logout failure
                 }
             };
@@ -1198,6 +1132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             userLogoutTask.execute((Void) null);
         } catch (Exception e) {
             e.printStackTrace();
+            onApplozicLogout(message);
         }
     }
 
@@ -1604,5 +1539,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private void onApplozicLogout(String message){
+        Utils.setSnackBar(parentLayout, message);
+        String mobile = pref.getString(AppConstants.MOBILE_NUMBER, "");
+        Boolean login_remember = pref.getBoolean(AppConstants.LOGIN_REMEMBER, false);
+        Boolean tc_read = pref.getBoolean(AppConstants.IS_TERMS_ACCEPTED, false);
+        editor.clear();
+        editor.putBoolean(AppConstants.IS_TERMS_ACCEPTED, tc_read);
+        editor.commit();
+        if (login_remember) {
+            editor.putBoolean(AppConstants.LOGIN_REMEMBER, login_remember);
+            editor.putString(AppConstants.MOBILE_NUMBER, mobile);
+            editor.commit();
+        }
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        finish();
+    }
+    private void loadFragment(String frgToLoad,View view){
+        Utils.setAlphaAnimation(view, this);
+        Intent i = new Intent(MainActivity.this, Menu_Activity.class);
+        i.putExtra("frgToLoad", frgToLoad);
+        startActivity(i);
     }
 }

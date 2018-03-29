@@ -30,7 +30,7 @@
     <dimen name="da_normal_margin">10dp</dimen>
     <dimen name="da_btn_padding">60dp</dimen>
     <dimen name="da_small_margin">5dp</dimen>
-    <dimen name="da_document_height">120dp</dimen>
+    <dimen name="da_document_height">200dp</dimen>
     <dimen name="da_gallery_height">40dp</dimen>
     <dimen name="da_gallery_padding">3dp</dimen>
     <dimen name="da_text_drawable_size">20dp</dimen>
@@ -186,8 +186,8 @@
     <dimen name="sf_padding_normal">10dp</dimen>
     <dimen name="sf_padding_large">20dp</dimen>
     <dimen name="sf_margin_top">40dp</dimen>
-    <dimen name="sf_switch_width">46dp</dimen>
-    <dimen name="sf_switch_height">27dp</dimen>
+    <dimen name="sf_switch_width">40dp</dimen>
+    <dimen name="sf_switch_height">22dp</dimen>
     <dimen name="sf_layout_margin">65dp</dimen>
     <!--SubscriptionFragment-->
     <dimen name="suf_padding_normal">10dp</dimen>

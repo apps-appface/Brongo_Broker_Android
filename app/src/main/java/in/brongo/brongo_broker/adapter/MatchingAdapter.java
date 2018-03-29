@@ -96,9 +96,9 @@ public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
             holder.invent_builder_name.setText(arrayList.get(position).getClientName());
             holder.invent_builder_address.setText(arrayList.get(position).getMicroMarketName());
             String budget = arrayList.get(position).getBudget() + "";
-            budget = Utils.stringToInt(budget);
+           // budget = Utils.stringToInt(budget);
             holder.invent_builder_tag.setVisibility(View.VISIBLE);
-           // holder.invent_builder_commission.setText(arrayList.get(position).getCommission()+"% Commission");
+            holder.invent_builder_commission.setText(arrayList.get(position).getCommission()+"% Commission");
             if(arrayList.get(position).getPropertyImage1() != null) {
                 Glide.with(context).load(arrayList.get(position).getPropertyImage1()).apply(CustomApplicationClass.getPropertyImage(true)).into(holder.invent_builder_image);
             }
@@ -110,14 +110,16 @@ public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
             holder.builder_flowLayout.removeAllViews();
             addView(budget,holder.builder_flowLayout);
             addView((arrayList.get(position).getBedRoomType()),holder.builder_flowLayout);
-            //addView(arrayList.get(position).getLandArea()+" "+arrayList.get(position).getLandAreaUnits(),holder.builder_flowLayout);
+            addView(arrayList.get(position).getLandArea(),holder.builder_flowLayout);
             addView(arrayList.get(position).getPropertyStatus(),holder.builder_flowLayout);
+            addView(arrayList.get(position).getSubPropertyType(),holder.builder_flowLayout);
            // addView(arrayList.get(position).getPropertyType(),holder.builder_flowLayout);
            // addView(arrayList.get(position).getDimensionsOfBedRoom()+" Sqft",holder.builder_flowLayout);
         }
     } catch (Exception e) {
         e.printStackTrace();
     }
+
 }
 
 
@@ -148,7 +150,7 @@ private class BuilderViewHolder extends RecyclerView.ViewHolder {
         builder_web_linear = itemView.findViewById(R.id.builder_web_linear);
         invent_builder_proceed = itemView.findViewById(R.id.invent_builder_proceed);
         invent_builder_reject = itemView.findViewById(R.id.invent_builder_reject);
-        invent_builder_tag = itemView.findViewWithTag(R.id.builder_tag);
+        invent_builder_tag = itemView.findViewById(R.id.builder_tag);
     }
 }
 

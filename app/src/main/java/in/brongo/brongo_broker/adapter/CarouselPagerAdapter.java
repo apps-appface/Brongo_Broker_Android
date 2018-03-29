@@ -71,39 +71,4 @@ public class CarouselPagerAdapter extends FragmentStatePagerAdapter{
         // refresh all fragments when data set changed
         return PagerAdapter.POSITION_NONE;
     }
-
-
-
-
-   /* @Override
-    public Fragment getItem(int position) {
-        // make the first pager bigger than others
-        return ItemFragment.newInstance(context, position, scale,arrayList,viewListener);
-    }
-
-    @Override
-    public int getCount() {
-        int count = 0;
-        try {
-            count = arrayList.size() * MainActivity.LOOPS;
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-        return count;
-    }
-
-    private String getFragmentTag(int position) {
-        return "android:switcher:" + pager.getId() + ":" + position;
-    }
-
-    public void removeFragment(int position){
-        notifyDataSetChanged();
-        Fragment fragment = getItem(position);
-        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-        fragmentTransaction.remove(fragment);
-        fragmentTransaction.commit();
-       // pager.removeView((View)(pager.getChildAt(position)));
-    }
-*/
 }

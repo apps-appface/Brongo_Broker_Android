@@ -236,6 +236,61 @@
             android:textSize="@dimen/text_size_big"
             android:textColor="#000"
             app:customFont="lato_bold.ttf"/>
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DEAL PREFERENCE(S)"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textColor="@color/edit_hint_color"
+                    android:layout_marginTop="@dimen/sa_padding_large"
+                    app:customFont="lato_regular.ttf"
+                    android:visibility="gone"
+                    />
+                <in.brongo.brongo_broker.uiwidget.FlowLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/if_margin_normal"
+                    app:flowDirection="leftToRight"
+                    app:elementSpacing="20dp"
+                    app:lineSpacing="@dimen/if_margin_normal"
+                    android:visibility="gone">
+
+                  <CheckBox
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Buy"
+                      android:id="@+id/sign_check_buy"
+                      android:textColor="@color/edit_hint_color"
+                      android:buttonTint="@color/edit_hint_color"/>
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sell"
+                        android:id="@+id/sign_check_sell"
+                        android:textColor="@color/edit_hint_color"
+                        android:buttonTint="@color/edit_hint_color"/>
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rent"
+                        android:id="@+id/sign_check_rent"
+                        android:textColor="@color/edit_hint_color"
+                        android:buttonTint="@color/edit_hint_color"/>
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rent_Out"
+                        android:id="@+id/sign_check_rentout"
+                        android:textColor="@color/edit_hint_color"
+                        android:buttonTint="@color/edit_hint_color"/>
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Any"
+                        android:id="@+id/sign_check_any"
+                        android:textColor="@color/edit_hint_color"
+                        android:buttonTint="@color/edit_hint_color"/>
+                </in.brongo.brongo_broker.uiwidget.FlowLayout>
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_layout_city"
                     android:layout_width="match_parent"

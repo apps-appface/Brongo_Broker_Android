@@ -48,10 +48,6 @@ public class WalkThroughActivity extends AppCompatActivity implements ViewPager.
         if(getIntent().getExtras() != null) {
             activity_name = getIntent().getExtras().getString("from_activity");
         }
-        // To make activity full screen.
-        /*requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
 
         pref = getSharedPreferences(AppConstants.PREF_NAME,0);
         setReference();
@@ -187,9 +183,6 @@ public class WalkThroughActivity extends AppCompatActivity implements ViewPager.
                     finish();
                     break;
                 case "menu":
-                   /* Intent intent = new Intent(WalkThroughActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(intent);*/
                     super.onBackPressed();
                     break;
             }

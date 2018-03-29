@@ -191,7 +191,6 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
                                         getPlanPosition(arrayList);
                                     }
                                 }
-                                // referAdapter.notifyDataSetChanged();
                             } else {
                                 String responseString = null;
                                 try {
@@ -205,9 +204,6 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
                                     } else {
                                         Utils.setSnackBar(parentLayout,message);
                                     }
-                               /* if(pd.isShowing()) {
-                                    pd.dismiss();
-                                }*/
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -219,9 +215,6 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
                     public void onFailure(Call<ApiModel.SubscriptionModel> call, Throwable t) {
                         Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
                         Utils.LoaderUtils.dismissLoader();
-                    /*if(pd.isShowing()) {
-                        pd.dismiss();
-                    }*/
                     }
                 });
             }else{
@@ -234,11 +227,7 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
     }
     private void setView(){
         try {
-            String currentPlan = pref.getString(AppConstants.PLAN_TYPE,"");
-            //premium_tc = getTc(arrayList.get(2).getServices());
             sub_username.setText("Hi, "+pref.getString(AppConstants.FIRST_NAME,"")+" "+pref.getString(AppConstants.LAST_NAME,""));
-       /* Glide.with(getActivity()).load(pref.getString(AppConstants.USER_PIC,""))
-                .diskCacheStrategy(DiskCacheStrategy.NONE).transform(new CircleTransform(context)).into(sub_user_image);*/
             Glide.with(context)
                     .load(pref.getString(AppConstants.USER_PIC,""))
                     .apply(CustomApplicationClass.getRequestOption(true))
@@ -266,7 +255,6 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // text = "All ("+ text+ ")leads are free";
         return text;
     }
     private void getPlanPosition(ArrayList<ApiModel.SubscriptionObject> list){
@@ -474,7 +462,6 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
                                       setCurrentPlan(subscription_list);
                                     }
                                 }
-                                // referAdapter.notifyDataSetChanged();
                             } else {
                                 String responseString = null;
                                 try {
@@ -488,9 +475,6 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
                                     } else {
                                         Utils.setSnackBar(parentLayout,message);
                                     }
-                               /* if(pd.isShowing()) {
-                                    pd.dismiss();
-                                }*/
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -502,9 +486,6 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
                     public void onFailure(Call<PaymentHashModel.CurrentPlanModel> call, Throwable t) {
                         Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
                         Utils.LoaderUtils.dismissLoader();
-                    /*if(pd.isShowing()) {
-                        pd.dismiss();
-                    }*/
                     }
                 });
             }else{

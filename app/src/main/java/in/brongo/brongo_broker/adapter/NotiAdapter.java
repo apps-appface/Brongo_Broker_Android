@@ -37,9 +37,6 @@ public class NotiAdapter extends RecyclerView.Adapter {
     private ArrayList<ApiModel.NotificationChildModel> arrayList;
     private LayoutInflater inflater;
     private RecyclerView recyclerView;
- /*   private int lastVisibleItem, totalItemCount;
-    private int visibleThreshold = 15;
-    private boolean loading,isVisible;*/
     private RelativeLayout parentLinear;
     private NotiAdapter.CallListener callListener;
     private SharedPreferences pref;

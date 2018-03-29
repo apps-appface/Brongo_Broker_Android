@@ -78,13 +78,6 @@ public class RegistrationIntentService extends IntentService implements NoIntern
         }else{
           Utils.internetDialog(context,this);
         }
-        /*if (MobiComUserPreference.getInstance(this).isRegistered()) {
-            try {
-                new RegisterUserClientService(this).updatePushNotificationId(pref.getString(AppConstants.DEVICE_TOKEN,""));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }*/
     }
 
 

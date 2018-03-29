@@ -226,8 +226,6 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                                     intent.putExtra("shouldShowDialog", true);
                                     startActivity(intent);
                                     finish();
-                                    //finish();
-                                    // Utils.showToast(context, message);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -331,17 +329,6 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                 noti_client_type.setText(posting_type.toUpperCase() + "/" + prop_type.toUpperCase());
                 String back_color = Utils.getPostingColor(posting_type);
                 noti_client_type.setBackgroundColor(Color.parseColor(back_color));
-               /* if(posting_type.equalsIgnoreCase("BUY")){
-                    noti_commission.setText(commission1 + "% Commission");
-                    if (commission1.equalsIgnoreCase("")) {
-                        noti_commission.setVisibility(View.GONE);
-                    }
-                }else {
-                    noti_commission.setText(commission1 + "% Commission");
-                    if (commission1.equalsIgnoreCase("")) {
-                        noti_commission.setVisibility(View.GONE);
-                    }
-                }*/
                setCommissionText(posting_type.toUpperCase());
                 noti_client_name.setText(prop_client_name);
                 Glide.with(context)
@@ -351,33 +338,6 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                 noti_matching.setText(matchedProperties + " matching properties in your inventory");
                 noti_ratingbar.setRating(rating1);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void playMedia() {
-        String audioUri = "android.resource://" + getPackageName() + "/" + R.raw.ios7_radiate;
-        try {
-            mediaPlayer.setLooping(true);
-            AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-            audio.setMode(AudioManager.MODE_NORMAL);
-           /* audio.setStreamVolume(AudioManager.STREAM_RING,
-                    90, 0);*/
-            mediaPlayer.setDataSource(context, Uri.parse(audioUri));
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_RING);
-            mediaPlayer.setScreenOnWhilePlaying(true);
-            //mediaPlayer.setVolume(0.9f,0.9f);
-            mediaPlayer.prepare();
-          /*  mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-
-                @Override
-                public void onCompletion(MediaPlayer mp)
-                {
-                    mp.release();
-                }
-            });*/
-            mediaPlayer.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -725,7 +685,6 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         try {
             if (impFields != null && !impFields.isEmpty()) {
                 impFields = impFields.substring(1, impFields.length() - 1);
-                impFields = impFields.replaceAll("\\s", "");
                 if (impFields.length() > 0) {
                     keyList = new ArrayList<>(Arrays.asList(impFields.split(",")));
                     addviewTolayout(keyList);

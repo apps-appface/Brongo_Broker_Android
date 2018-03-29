@@ -28,7 +28,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.github.chrisbanes.photoview.PhotoView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +40,7 @@ import in.brongo.brongo_broker.activity.MainActivity;
 import in.brongo.brongo_broker.model.ApiModel;
 import in.brongo.brongo_broker.other.NoInternetTryConnectListener;
 import in.brongo.brongo_broker.uiwidget.FlowLayout;
+import in.brongo.brongo_broker.uiwidget.TouchImageView;
 import in.brongo.brongo_broker.util.AppConstants;
 import in.brongo.brongo_broker.util.CustomApplicationClass;
 import in.brongo.brongo_broker.util.RetrofitAPIs;
@@ -396,12 +396,10 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             View itemView = layoutInflater.inflate(R.layout.item1, container, false);
-            PhotoView photoView = itemView.findViewById(R.id.photo_view);
             ImageView imageView = itemView.findViewById(R.id.imageView);
             imageView.setVisibility(View.VISIBLE);
-            photoView.setVisibility(View.GONE);
-
-
+            TouchImageView imgDisplay = itemView.findViewById(R.id.imgDisplay);
+imgDisplay.setVisibility(View.GONE);
             Glide.with(context)
                     .load(images.get(position))
                     .apply(CustomApplicationClass.getPropertyImage(true))
@@ -460,15 +458,14 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
             dialog.setCanceledOnTouchOutside(true);
             dialog.setCancelable(true);
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-            PhotoView photoView = dialog.findViewById(R.id.photo_view);
+            TouchImageView imgDisplay = dialog.findViewById(R.id.imgDisplay);
             imageView1 = dialog.findViewById(R.id.imageView);
             imageView1.setVisibility(View.GONE);
-            photoView.setVisibility(View.VISIBLE);
-
+           imgDisplay.setVisibility(View.VISIBLE);
             Glide.with(context)
                     .load(imageUrl)
                     .apply(CustomApplicationClass.getPropertyImage(true))
-                    .into(photoView);
+                    .into(imgDisplay);
             dialog.show();
         } catch (Exception e) {
             e.printStackTrace();

@@ -18,9 +18,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
-
-import com.kyleduo.switchbutton.SwitchButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +42,7 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class SettingFragment extends Fragment implements NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test{
-    private SwitchButton offer_noti_switch,builder_noti_switch,noti_sound_switch;
+    private Switch offer_noti_switch,builder_noti_switch,noti_sound_switch;
     private static SeekBar sound_seekbar;
     private int i=0;
     private TextView toolbar_title;
@@ -113,27 +112,16 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    offer_noti_switch.setThumbColorRes(R.color.appColor);
                     offerNoti = true;
                     if(isUpdateRequired) {
-                        /*if(!isLoader) {
-                            Utils.LoaderUtils.showLoader(context);
-                            isLoader = true;
-                        }*/
+
                             updateSetings(offerNoti, builderNoti, notiSound);
                     }
-                    // pd.show(};
                 }else{
-                    offer_noti_switch.setThumbColorRes(R.color.switch_off);
                     offerNoti = false;
                     if(isUpdateRequired) {
-                      /*  if(!isLoader) {
-                            Utils.LoaderUtils.showLoader(context);
-                            isLoader = true;
-                        }*/
                             updateSetings(offerNoti, builderNoti, notiSound);
                     }
-                   // pd.show();
                 }
             }
         });
@@ -142,26 +130,14 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     builderNoti = true;
-                    builder_noti_switch.setThumbColorRes(R.color.appColor);
                     if(isUpdateRequired) {
-                       /* if(!isLoader) {
-                            Utils.LoaderUtils.showLoader(context);
-                            isLoader = true;
-                        }*/
                         updateSetings(offerNoti, builderNoti, notiSound);
                     }
-                    // pd.show(};
                 }else{
-                    builder_noti_switch.setThumbColorRes(R.color.switch_off);
                     builderNoti = false;
                     if(isUpdateRequired) {
-                       /* if(!isLoader) {
-                            Utils.LoaderUtils.showLoader(context);
-                            isLoader = true;
-                        }*/
                         updateSetings(offerNoti, builderNoti, notiSound);
                     }
-                    // pd.show();
                 }
             }
         });
@@ -170,18 +146,14 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     notiSound = true;
-                    noti_sound_switch.setThumbColorRes(R.color.appColor);
                     sound_seekbar.setProgress(1);
                     setVolume(1);
-                    // pd.show(};
                 }else{
-                    noti_sound_switch.setThumbColorRes(R.color.switch_off);
                     notiSound = false;
                     if(sound_seekbar.getProgress() != 0) {
                         sound_seekbar.setProgress(0);
                     }
                     setVolume(0);
-                    // pd.show();
                 }
             }
         });
@@ -246,12 +218,10 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                                 if (statusCode == 200 && message.equalsIgnoreCase("")) {
                                     offerNoti = settingPlanModel.getData().isOffers();
                                     builderNoti = settingPlanModel.getData().isBuilderProject();
-                                    // editor.putBoolean(AppConstants.NOTI_SOUND,notiSound);
                                     editor.putBoolean(AppConstants.OFFER_NOTI, offerNoti);
                                     editor.putBoolean(AppConstants.BUILDER_NOTI, builderNoti);
                                     editor.commit();
                                 }
-                                // referAdapter.notifyDataSetChanged();
                             } else {
                                 String responseString = null;
                                 try {
@@ -262,9 +232,6 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                                     if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                        openTokenDialog(context);
                                     }
-                               /* if(pd.isShowing()) {
-                                    pd.dismiss();
-                                }*/
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -278,9 +245,6 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                         Utils.LoaderUtils.dismissLoader();
                         isLoader = false;
                         Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                    /*if(pd.isShowing()) {
-                        pd.dismiss();
-                    }*/
                     }
                 });
             }else{

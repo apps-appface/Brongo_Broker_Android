@@ -76,6 +76,11 @@ public class Utils {
         return deviceId;
     }
 
+    public static String getDeviceId1(Context context) {
+        return Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+    }
+
     public static void hideKeyboard(Context context, View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -92,34 +97,6 @@ public class Utils {
         }
     }
 
-    public static boolean isAppIsInBackground(Context context) {
-        boolean isInBackground = true;
-        try {
-            ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-                List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
-                for (ActivityManager.RunningAppProcessInfo processInfo : runningProcesses) {
-                    if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
-                        for (String activeProcess : processInfo.pkgList) {
-                            if (activeProcess.equals(context.getPackageName())) {
-                                isInBackground = false;
-                            }
-                        }
-                    }
-                }
-            } else {
-                List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-                ComponentName componentInfo = taskInfo.get(0).topActivity;
-                if (componentInfo.getPackageName().equals(context.getPackageName())) {
-                    isInBackground = false;
-                }
-
-            }
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
-        return isInBackground;
-    }
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -176,23 +153,6 @@ public class Utils {
             dialog.show();
         }catch (Exception e){
 
-        }
-    }
-    public static void showAlert(String title,String message,Context context){
-        try {
-            final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-            alertDialogBuilder.setTitle(title)
-                    .setMessage(message)
-                    .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    })
-                    .setCancelable(false)
-                    .create()
-                    .show();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -475,42 +435,6 @@ public class Utils {
         }
     }
 
-    public static boolean match_deal(String posting1,String posting2, String prop1, String prop2){
-        boolean isMatched = false;
-        try {
-            if(prop1.equalsIgnoreCase(prop2)){
-                if(posting1.equalsIgnoreCase("rent") && posting2.equalsIgnoreCase("rent_out")){
-                    isMatched = true;
-                }else if(posting1.equalsIgnoreCase("rent_out") && posting2.equalsIgnoreCase("rent")){
-                    isMatched = true;
-                }else if(posting1.equalsIgnoreCase("buy") && posting2.equalsIgnoreCase("sell")){
-                    isMatched = true;
-                }else if(posting1.equalsIgnoreCase("sell") && posting2.equalsIgnoreCase("buy")){
-                    isMatched = true;
-                }
-            }else{
-                return isMatched;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return isMatched;
-    }
-    public static String changeTimeFormat(String DateString){
-        String formattedDate = DateString != null ? DateString : "";
-        if (formattedDate != null && !formattedDate.isEmpty()) {
-            try {
-                Date apiFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(formattedDate);
-                SimpleDateFormat sdf = new SimpleDateFormat("EEE dd/MM/yyyy hh:mm a");
-                formattedDate = sdf.format(apiFormat);
-                String array[] = formattedDate.split("\\s+");
-                formattedDate = array[0].toUpperCase() + " " + array[1] + " at " + array[2].toLowerCase() + " " + array[3].toLowerCase();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return formattedDate;
-    }
     public static class LoaderUtils {
         public static void showLoader(Context context) {
             try {
@@ -537,14 +461,6 @@ public class Utils {
                 e.printStackTrace();
             }
         }
-    }
-    public static String getImageUrl(String stringurl,SharedPreferences pref){
-        String url = "";
-        if (!stringurl.contains("http")) {
-            String baseurl = pref.getString(AppConstants.IMAGE_BASE_URL, "");
-            stringurl = baseurl.concat(stringurl);
-        }
-        return url;
     }
     public static void setSnackBar(View coordinatorLayout, String snackTitle) {
         try {

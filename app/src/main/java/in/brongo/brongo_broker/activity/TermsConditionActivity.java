@@ -38,13 +38,13 @@ public class TermsConditionActivity extends AppCompatActivity implements OnPageC
             activityName = bundle.getString("fromActivity","");
         }
         setContentView(R.layout.activity_terms_condition);
-        try {
         context = TermsConditionActivity.this;
+        Button accept_btn = findViewById(R.id.tc_accept_btn);
+        pref = getSharedPreferences(AppConstants.PREF_NAME,0);
+        try {
         parentLayout = findViewById(R.id.tc_parent_linear);
         PDFView pdfView = findViewById(R.id.start_pdfView);
         ScrollBar scrollBar = findViewById(R.id.start_pdf_scrollBar);
-        Button accept_btn = findViewById(R.id.tc_accept_btn);
-            pref = getSharedPreferences(AppConstants.PREF_NAME,0);
         pdfView.setScrollBar(scrollBar);
         if(activityName.equalsIgnoreCase("signup") || activityName.equalsIgnoreCase("refer")){
             accept_btn.setVisibility(View.GONE);
@@ -57,6 +57,9 @@ public class TermsConditionActivity extends AppCompatActivity implements OnPageC
                     .load();
 
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         accept_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,9 +68,6 @@ public class TermsConditionActivity extends AppCompatActivity implements OnPageC
                 }
             }
         });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

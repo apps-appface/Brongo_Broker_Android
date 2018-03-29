@@ -1418,226 +1418,6 @@ public class ApiModel {
         }
     }
 
-    public static class HistoricalModel {
-        String clientName;
-        String mobileNo;
-        String clientImage;
-        String planType;
-        String siteVisit;
-        String subPropertyType;
-        String bedRoomType;
-        String microMarketName;
-        String furnishingStatus;
-        String propertyType;
-        String postingType;
-        String propertyStatus;
-        String timeOfSearching;
-        String propertyId;
-        String orientation;
-        String budget;
-        float rating;
-
-        public String getClientName() {
-            return clientName;
-        }
-
-        public void setClientName(String clientName) {
-            this.clientName = clientName;
-        }
-
-        public String getMobileNo() {
-            return mobileNo;
-        }
-
-        public void setMobileNo(String mobileNo) {
-            this.mobileNo = mobileNo;
-        }
-
-        public String getClientImage() {
-            return clientImage;
-        }
-
-        public void setClientImage(String clientImage) {
-            this.clientImage = clientImage;
-        }
-
-        public String getPlanType() {
-            return planType;
-        }
-
-        public void setPlanType(String planType) {
-            this.planType = planType;
-        }
-
-        public String getSiteVisit() {
-            return siteVisit;
-        }
-
-        public void setSiteVisit(String siteVisit) {
-            this.siteVisit = siteVisit;
-        }
-
-        public String getSubPropertyType() {
-            return subPropertyType;
-        }
-
-        public void setSubPropertyType(String subPropertyType) {
-            this.subPropertyType = subPropertyType;
-        }
-
-        public String getBedRoomType() {
-            return bedRoomType;
-        }
-
-        public void setBedRoomType(String bedRoomType) {
-            this.bedRoomType = bedRoomType;
-        }
-
-        public String getMicroMarketName() {
-            return microMarketName;
-        }
-
-        public void setMicroMarketName(String microMarketName) {
-            this.microMarketName = microMarketName;
-        }
-
-        public String getFurnishingStatus() {
-            return furnishingStatus;
-        }
-
-        public void setFurnishingStatus(String furnishingStatus) {
-            this.furnishingStatus = furnishingStatus;
-        }
-
-        public String getPropertyType() {
-            return propertyType;
-        }
-
-        public void setPropertyType(String propertyType) {
-            this.propertyType = propertyType;
-        }
-
-        public String getPostingType() {
-            return postingType;
-        }
-
-        public void setPostingType(String postingType) {
-            this.postingType = postingType;
-        }
-
-        public String getPropertyStatus() {
-            return propertyStatus;
-        }
-
-        public void setPropertyStatus(String propertyStatus) {
-            this.propertyStatus = propertyStatus;
-        }
-
-        public String getTimeOfSearching() {
-            return timeOfSearching;
-        }
-
-        public void setTimeOfSearching(String timeOfSearching) {
-            this.timeOfSearching = timeOfSearching;
-        }
-
-        public String getPropertyId() {
-            return propertyId;
-        }
-
-        public void setPropertyId(String propertyId) {
-            this.propertyId = propertyId;
-        }
-
-        public String getOrientation() {
-            return orientation;
-        }
-
-        public void setOrientation(String orientation) {
-            this.orientation = orientation;
-        }
-
-        public String getBudget() {
-            return budget;
-        }
-
-        public void setBudget(String budget) {
-            this.budget = budget;
-        }
-
-        public float getRating() {
-            return rating;
-        }
-
-        public void setRating(float rating) {
-            this.rating = rating;
-        }
-
-        public float getCommission() {
-            return commission;
-        }
-
-        public void setCommission(float commission) {
-            this.commission = commission;
-        }
-
-        public int getMatchedProperty() {
-            return matchedProperty;
-        }
-
-        public void setMatchedProperty(int matchedProperty) {
-            this.matchedProperty = matchedProperty;
-        }
-
-        public double getBudgetRange1() {
-            return budgetRange1;
-        }
-
-        public void setBudgetRange1(double budgetRange1) {
-            this.budgetRange1 = budgetRange1;
-        }
-
-        public double getBudgetRange2() {
-            return budgetRange2;
-        }
-
-        public void setBudgetRange2(double budgetRange2) {
-            this.budgetRange2 = budgetRange2;
-        }
-
-        public String getExpectedRent() {
-            return expectedRent;
-        }
-
-        public void setExpectedRent(String expectedRent) {
-            this.expectedRent = expectedRent;
-        }
-
-        public String getExpectedDeposit() {
-            return expectedDeposit;
-        }
-
-        public void setExpectedDeposit(String expectedDeposit) {
-            this.expectedDeposit = expectedDeposit;
-        }
-
-        public String getExpectedPrice() {
-            return expectedPrice;
-        }
-
-        public void setExpectedPrice(String expectedPrice) {
-            this.expectedPrice = expectedPrice;
-        }
-
-        float commission;
-        int matchedProperty;
-        double budgetRange1;
-        double budgetRange2;
-        String expectedRent;
-        String expectedDeposit;
-        String expectedPrice;
-    }
-
     public static class NotificationModel {
         int statusCode;
         String id;
@@ -2207,6 +1987,8 @@ public class ApiModel {
         String microMarketName;
         String bedRoomType;
         String propertyType;
+        String landArea;
+        String bedRoomDimensions;
 
         public String getPropertyType() {
             return propertyType;
@@ -2323,9 +2105,36 @@ public class ApiModel {
         String propertyStatus;
         String budget;
         String propertyImage1;
+
+        public String getLandArea() {
+            return landArea;
+        }
+
+        public void setLandArea(String landArea) {
+            this.landArea = landArea;
+        }
+
+        public String getBedRoomDimensions() {
+            return bedRoomDimensions;
+        }
+
+        public void setBedRoomDimensions(String bedRoomDimensions) {
+            this.bedRoomDimensions = bedRoomDimensions;
+        }
+
         String propertyImage2;
         String propertyImage3;
         String type;
+
+        public float getCommission() {
+            return commission;
+        }
+
+        public void setCommission(float commission) {
+            this.commission = commission;
+        }
+
+        float commission;
     }
     public static class ReviewModel {
         public int statusCode;

@@ -120,8 +120,6 @@ public class SupportFragment extends Fragment implements NoInternetTryConnectLis
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.setContentView(R.layout.unsubscribe_dialog);
-            //dialog.setCanceledOnTouchOutside(false);
-            // dialog.setCancelable(false);
             final ImageView cross_btn = dialog.findViewById(R.id.unsubscribe_dialog_close);
             final Button got_it_btn = dialog.findViewById(R.id.unsubscribe_dialog_btn);
             cross_btn.setOnClickListener(new View.OnClickListener() {

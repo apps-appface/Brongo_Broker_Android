@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.applozic.mobicomkit.api.notification.MobiComPushReceiver;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -50,10 +51,17 @@ public class MyNotificationListener extends FirebaseMessagingService {
     private SharedPreferences.Editor editor;
     Context context = MyNotificationListener.this;
 
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         pref = getApplication().getSharedPreferences(AppConstants.PREF_NAME, 0);
+/*
+
+        Log.i("NOTITYPE 1",remoteMessage.getNotification().getBody());
+
+        defaultNotification(remoteMessage.getNotification().getBody());*/
+
         if (MobiComPushReceiver.isMobiComPushNotification(remoteMessage.getData())) {
             MobiComPushReceiver.processMessageAsync(this, remoteMessage.getData());
             return;
@@ -63,9 +71,9 @@ public class MyNotificationListener extends FirebaseMessagingService {
             i = i + 1;
             editor.putInt(AppConstants.NOTIFICATION_BADGES, i).commit();
             String noti_type = remoteMessage.getData().get("NotiType");
-            Log.i("NOTITYPE",noti_type);
             Intent intent;
             if (noti_type != null) {
+                Log.i("NOTITYPE",noti_type);
                 switch (noti_type) {
                     case "APP":
                         Log.i("NOTITYPE","******** Getting Call **********");
@@ -136,6 +144,16 @@ public class MyNotificationListener extends FirebaseMessagingService {
     private void defaultNotification(RemoteMessage remoteMessage) {
         Uri soundUri1 = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         String message = remoteMessage.getData().get("message");
+        android.support.v4.app.NotificationCompat.Builder builder = buildNotification(message, "menuPage");
+        NotificationManager notificationManager = (android.app.NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        builder.setSound(soundUri1);
+        notificationManager.notify(getRandomNotificationID(), builder.build());
+    }
+
+
+    private void defaultNotification(String remoteMessage) {
+        Uri soundUri1 = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        String message = remoteMessage;
         android.support.v4.app.NotificationCompat.Builder builder = buildNotification(message, "menuPage");
         NotificationManager notificationManager = (android.app.NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         builder.setSound(soundUri1);

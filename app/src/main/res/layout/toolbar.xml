@@ -516,13 +516,14 @@
             android:id="@+id/switch_status_text"
             app:customFont="lato_regular.ttf"
             />
-        <com.kyleduo.switchbutton.SwitchButton
+        <Switch
+            android:id="@+id/switch_active"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:kswThumbColor="@color/appColor"
+            android:switchMinWidth="40dp"
             android:checked="true"
-            android:id="@+id/active_btn"
-            app:kswBackColor="@color/white"/>
+            android:thumbTint="@drawable/thumb_selector"
+            android:track="@drawable/switch_track_custom"/>
     </LinearLayout>
 
 </LinearLayout>

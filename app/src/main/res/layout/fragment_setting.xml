@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#ededed"
-    tools:context=".brongo_broker.fragment.SettingFragment">
+    tools:context="in.brongo.brongo_broker.fragment.SettingFragment">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,15 +48,15 @@
                 android:layout_alignTop="@+id/setting_offer_btn"
                 android:textSize="@dimen/text_size_normal"
                 app:customFont="lato_regular.ttf"/>
-
-            <com.kyleduo.switchbutton.SwitchButton
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:switchMinWidth="@dimen/sf_switch_width"
                 android:id="@+id/setting_offer_btn"
-                android:layout_width="@dimen/sf_switch_width"
-                android:layout_height="@dimen/sf_switch_height"
                 android:layout_alignParentRight="true"
                 android:checked="true"
-                app:kswThumbColor="@color/appColor"
-                app:kswBackColor="#ededed"/>
+                android:thumbTint="@drawable/thumb_selector"
+                android:track="@drawable/switch_setting_track"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -76,14 +76,15 @@
                 app:customFont="lato_regular.ttf"
                 />
 
-            <com.kyleduo.switchbutton.SwitchButton
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:switchMinWidth="40dp"
                 android:id="@+id/setting_builder_btn"
-                android:layout_width="@dimen/sf_switch_width"
-                android:layout_height="@dimen/sf_switch_height"
                 android:layout_alignParentRight="true"
                 android:checked="true"
-                app:kswThumbColor="@color/appColor"
-                app:kswBackColor="#ededed"/>
+                android:thumbTint="@drawable/thumb_selector"
+                android:track="@drawable/switch_setting_track"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -102,14 +103,15 @@
                 android:text="Notification Sound"
                 app:customFont="lato_regular.ttf"
                 />
-            <com.kyleduo.switchbutton.SwitchButton
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:switchMinWidth="40dp"
                 android:id="@+id/setting_noti_sound"
-                android:layout_width="@dimen/sf_switch_width"
-                android:layout_height="@dimen/sf_switch_height"
                 android:layout_alignParentRight="true"
                 android:checked="true"
-                app:kswThumbColor="@color/appColor"
-                app:kswBackColor="#ededed" />
+                android:thumbTint="@drawable/thumb_selector"
+                android:track="@drawable/switch_setting_track"/>
         </RelativeLayout>
         <SeekBar
             android:id="@+id/setting_seekbar"

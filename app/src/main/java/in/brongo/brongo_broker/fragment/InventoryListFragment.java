@@ -178,10 +178,6 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
             inventory_toolbar_delete.setVisibility(View.GONE);
             inventory_toolbar_edit.setVisibility(View.GONE);
             toolbar_title.setText("Inventory List");
-       /* pd = new ProgressDialog(context, R.style.CustomProgressDialog);
-        pd.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.progress_loader));
-        pd.setCancelable(true);
-        pd.setCanceledOnTouchOutside(false);*/
             fetchList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -211,9 +207,6 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                         arraylist.addAll(inventoryPersoanlLists);
                                         inventoryPersonalAdapter.notifyDataSetChanged();
                                     }
-                                /*if(pd.isShowing()) {
-                                    pd.dismiss();
-                                }*/
                                 }
                             } else {
                                 String responseString = null;
@@ -229,9 +222,6 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                         Utils.LoaderUtils.dismissLoader();
                                         Utils.setSnackBar(parentLayout, message);
                                     }
-                               /* if(pd.isShowing()) {
-                                    pd.dismiss();
-                                }*/
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -288,9 +278,6 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                             builder_btn.setTextColor(context.getResources().getColor(R.color.appColor));
                                         }
                                     }
-                                /*if(pd.isShowing()) {
-                                    pd.dismiss();
-                                }*/
                                 }
                                 fetchConnectedClient();
                             } else {
@@ -306,11 +293,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                         openTokenDialog(context);
                                     } else {
                                         shouldMessageShown = true;
-                                        //Utils.showToast(context,message,"Error");
                                     }
-                               /* if(pd.isShowing()) {
-                                    pd.dismiss();
-                                }*/
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -363,8 +346,6 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.setContentView(R.layout.dialog_tc);
-            //dialog.setCanceledOnTouchOutside(false);
-            // dialog.setCancelable(false);
             final ImageView cross_btn = dialog.findViewById(R.id.tc_close_btn);
             final Button accept_btn = dialog.findViewById(R.id.tcDialog_accept);
             TextView commission_text = dialog.findViewById(R.id.tcDialog_commission);
@@ -535,8 +516,6 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
             dialog.getWindow().setDimAmount(0.5f);
             dialog.setContentView(R.layout.register_client_dialog);
             dialog.getWindow().setLayout(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-            //dialog.setCanceledOnTouchOutside(false);
-            // dialog.setCancelable(false);
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             final TextView clientAdd = dialog.findViewById(R.id.client_register_add);
             final LinearLayout manual_register = dialog.findViewById(R.id.manual_register_linear);
@@ -787,9 +766,6 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                         clientAdapter.notifyDataSetChanged();
 
                                     }
-                                /*if(pd.isShowing()) {
-                                    pd.dismiss();
-                                }*/
                                 }
                             } else {
                                 String responseString = null;
@@ -805,9 +781,6 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                     } else {
                                         Utils.setSnackBar(parentLayout,message);
                                     }
-                               /* if(pd.isShowing()) {
-                                    pd.dismiss();
-                                }*/
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
                                 }

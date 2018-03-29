@@ -8,10 +8,10 @@
         android:layout_height="match_parent"
         android:id="@+id/imageView"
         android:scaleType="fitXY"/>
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/photo_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <in.brongo.brongo_broker.uiwidget.TouchImageView
+        android:id="@+id/imgDisplay"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:scaleType="fitXY"
         android:visibility="gone"/>
 </RelativeLayout>

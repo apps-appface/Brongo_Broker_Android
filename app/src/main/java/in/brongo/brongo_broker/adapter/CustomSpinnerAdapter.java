@@ -65,14 +65,6 @@ import in.brongo.brongo_broker.activity.VenueActivity;
             try {
                 TextView label   = (TextView)row.findViewById(R.id.spinner_header);
                 TextView sub     = (TextView)row.findViewById(R.id.spinner_child);
-           /* if(position==0){
-
-                // Default selected Spinner item
-                label.setText("Please select company");
-                sub.setText("");
-            }
-            else
-            {*/
                 // Set values for spinner each row
                 label.setText(data.get(position).toString());
                 sub.setText(countList.get(position)+" available");

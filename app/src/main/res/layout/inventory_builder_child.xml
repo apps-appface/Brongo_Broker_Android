@@ -141,9 +141,9 @@
         <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/inventory_register_tc"
+            android:text= " See Terms &amp; Conditions"
             android:padding="@dimen/builder_small"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="@dimen/text_size_vsmall"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/tc_imageview"
             android:textColor="@color/edit_hint_color"
@@ -171,9 +171,9 @@
                 <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Register Client"
+                    android:text=" Register Client"
                     android:padding="@dimen/builder_small"
-                    android:textSize="@dimen/text_size_small"
+                    android:textSize="@dimen/text_size_vsmall"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/register_imageview"
                     android:textColor="@color/edit_hint_color"

@@ -19,7 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.github.chrisbanes.photoview.PhotoView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +30,7 @@ import in.brongo.brongo_broker.model.ClientDetailsModel;
 import in.brongo.brongo_broker.other.AllUtils;
 import in.brongo.brongo_broker.other.NoInternetTryConnectListener;
 import in.brongo.brongo_broker.other.NoTokenTryListener;
+import in.brongo.brongo_broker.uiwidget.TouchImageView;
 import in.brongo.brongo_broker.util.AppConstants;
 import in.brongo.brongo_broker.util.CustomApplicationClass;
 import in.brongo.brongo_broker.util.RetrofitAPIs;
@@ -238,14 +238,14 @@ public class RequirementFragment extends Fragment implements NoInternetTryConnec
             dialog.setCanceledOnTouchOutside(true);
             dialog.setCancelable(true);
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-            PhotoView photoView = dialog.findViewById(R.id.photo_view);
             ImageView property_image = dialog.findViewById(R.id.imageView);
+            TouchImageView imgDisplay = dialog.findViewById(R.id.imgDisplay);
             property_image.setVisibility(View.GONE);
-            photoView.setVisibility(View.VISIBLE);
+            imgDisplay.setVisibility(View.VISIBLE);
             Glide.with(context)
                     .load(imageUrl)
                     .apply(CustomApplicationClass.getPropertyImage(true))
-                    .into(photoView);
+                    .into(imgDisplay);
             dialog.show();
         } catch (Exception e) {
             e.printStackTrace();

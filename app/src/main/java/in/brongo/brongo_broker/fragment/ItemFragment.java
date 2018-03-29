@@ -233,7 +233,6 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
       open_deal_del_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.setAlphaAnimation(v,context);
                 viewListener1.clickBtn(position,bundle);
             }
         });
@@ -539,11 +538,6 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                     if (statusCode == 200 && message.equalsIgnoreCase("Lead Status Updated Successfully")) {
                                        viewListener1.alert(message);
                                        viewListener1.refreshData();
-                                       /* status = position1;
-                                        timeList.add("NOW");
-                                        mLinearLayout.removeAllViews();
-                                        addLayout(arrayList);
-                                        //setView();*/
                                     }
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
@@ -727,8 +721,6 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
     private void setBuyCommission(){
         try {
             if(prop_type.equalsIgnoreCase("RESIDENTIAL") || prop_type.equalsIgnoreCase("COMMERCIAL")){
-                //comm1.setText("New Property : 0% Commission");
-                //comm2.setText("Resale Property : "+commission1 + "% Commission");
                 comm3.setText("New Property");
                 comm4.setText("0%");
                 comm5.setText("Resale Property");
@@ -736,8 +728,6 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
             }else if(prop_type.equalsIgnoreCase("LAND")){
                 if(sub_property_type != null){
                     if(sub_property_type.equalsIgnoreCase("RESIDENTIAL_ZONE")){
-                       // comm2.setText("For Land : "+commission1+"% Commission");
-                      //  comm1.setText("New Gated property : 0% Commission");
                         comm3.setText("New Gated property");
                         comm4.setText("0%");
                         comm5.setText("For Land ");

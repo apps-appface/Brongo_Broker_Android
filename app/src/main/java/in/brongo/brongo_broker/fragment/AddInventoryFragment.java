@@ -29,12 +29,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -76,7 +78,7 @@ import retrofit2.Response;
  */
 public class AddInventoryFragment extends Fragment implements NoInternetTryConnectListener, NoTokenTryListener, AllUtils.test {
     private Context context;
-    private ArrayAdapter<String> marketAdapter;
+    private ArrayAdapter<String> marketAdapter,adapter;;
     private ArrayList<String> poc_list;
     private File image_file;
     private int apiCode = 0;
@@ -449,6 +451,12 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                     microMarketState1 = marketlist.get(position).getState();
                 }
             });
+            inventory_location.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    marketDialog();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -818,8 +826,8 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                         }
 
                     }
-                    break;
                 }
+                break;
         }
     }
 
@@ -992,15 +1000,6 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
     }
 
     private void startCameraIntent() {
-        /*try {
-            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-          *//*  uri = getOutputMediaFileUri();
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);*//*
-            startActivityForResult(cameraIntent, REQUEST_CAMERA);
-        }catch (Exception e){
-
-        }*/
-
         try {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
@@ -1108,6 +1107,72 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+    private void marketDialog(){
+        try {
+            final ArrayList<String> pocnewlist = new ArrayList<>();
+            pocnewlist.addAll(poc_list);
+            adapter = new ArrayAdapter<String>(context, R.layout.spinner_text,pocnewlist);
+            final Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
+            dialog.setContentView(R.layout.market_dialog);
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            ListView listView = (ListView)dialog.findViewById(R.id.market_list_view);
+            EditText search_market = (EditText)dialog.findViewById(R.id.inputSearch);
+            Button cancel_btn = (Button)dialog.findViewById(R.id.market_dialog_cancel);
+            cancel_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.setCancelable(true);
+                    dialog.dismiss();
+                }
+            });
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Utils.hideKeyboard(context, view);
+                    String selectedMarket = adapter.getItem(position);
+                    int position1 = poc_list.indexOf(selectedMarket);
+                    if (position1 >= 0) {
+                        microMarketName1 = marketlist.get(position1).getName();
+                        microMarketCity1 = marketlist.get(position1).getCity();
+                        microMarketState1 = marketlist.get(position1).getState();
+                        inventory_location.setText(microMarketName1);
+                        dialog.dismiss();
+                    }else{
+                        dialog.dismiss();
+                    }
+                }
+            });
+            search_market.addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                    // When user changed the Text
+                    adapter.getFilter().filter(cs);
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                              int arg3) {
+                    // TODO Auto-generated method stub
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable arg0) {
+                    // TODO Auto-generated method stub
+                }
+            });
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
 

@@ -90,8 +90,6 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
                     if(!isFinishing()) {
                         refer_dialog();
                     }
-                  /*  ReferFragmentTwo referFragmentTwo = new ReferFragmentTwo();
-                    Utils.replaceFragment(getFragmentManager(),referFragmentTwo,R.id.inventory_frag_container,true);*/
                 }
             });
             refer_back.setOnClickListener(new View.OnClickListener() {
@@ -244,8 +242,6 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
             dialog.getWindow().setDimAmount(0.5f);
             dialog.setContentView(R.layout.dialog_referral_plan);
             dialog.getWindow().setLayout(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-            //dialog.setCanceledOnTouchOutside(false);
-            // dialog.setCancelable(false);
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             RecyclerView refer_recycle = (RecyclerView)dialog.findViewById(R.id.referee_plan_recycle);
             Button refer_plan_btn = (Button)dialog.findViewById(R.id.refer_plan_dialog_btn);
@@ -267,16 +263,11 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
     private void refer_dialog(){
         try {
             final BottomSheetDialog dialog = new BottomSheetDialog (context);
-        /*dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-       // dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
-        dialog.setContentView(R.layout.dialog_refer_broker);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.MATCH_PARENT);*/
             View view = View.inflate(context, R.layout.dialog_refer_broker, null);
             dialog.setContentView(view);
             BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
             bottomSheetBehavior.setPeekHeight(1000);
             dialog.setCanceledOnTouchOutside(false);
-            // dialog.setCancelable(false);
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             referee_name = (EditText)dialog.findViewById(R.id.referee_name);
             referee_mobile = (EditText)dialog.findViewById(R.id.referee_mobile);
@@ -308,7 +299,6 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
                 @Override
                 public void onClick(View v) {
                     onWhatsappClicked();
-                    //dialog.dismiss();
                 }
             });
             dialog.show();
@@ -329,17 +319,14 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
 
                 String number =  cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 String name =  cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                //contactName.setText(name);
                 referee_mobile.setText(number);
                 referee_name.setText(name);
-                //contactEmail.setText(email);
             }
         }
     }
     private void callReferralPlanApi(){
         try {
             if(Utils.isNetworkAvailable(context)) {
-               // Utils.LoaderUtils.showLoader(context);
                 RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
                 String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
                 String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
@@ -366,9 +353,6 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
                                     }
                                     foo();
                                     referAdapter.notifyDataSetChanged();
-                                /*if(pd.isShowing()) {
-                                    pd.dismiss();
-                                }*/
                                 }
                             } else {
                                 String responseString = null;
@@ -382,9 +366,6 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
                                     } else {
                                         Utils.setSnackBar(parentLayout,message);
                                     }
-                               /* if(pd.isShowing()) {
-                                    pd.dismiss();
-                                }*/
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -397,9 +378,6 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
                     public void onFailure(Call<ApiModel.ReferPlanModel> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
                         Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                    /*if(pd.isShowing()) {
-                        pd.dismiss();
-                    }*/
                     }
                 });
             }else{
@@ -503,8 +481,6 @@ public class ReferActivity extends AppCompatActivity implements NoInternetTryCon
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /*Intent it = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-        startActivityForResult(it, 1);*/
     }
     private void openTokenDialog(Context context){
         try {

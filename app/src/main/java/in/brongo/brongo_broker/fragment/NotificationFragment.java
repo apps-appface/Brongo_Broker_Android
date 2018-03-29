@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -62,11 +63,13 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
     private ApiModel.NotificationChildModel notificationItemModel;
     /*private ProgressDialog pd;*/
     private int apiCode, size=20;
+    private  RecyclerView noti_recycle;
     private int noti_position,unread,from=0;
     String client_mobile,client_property_id;
     private boolean isNotified=false ,isLoader= false;
     private int taskCompleted = 0;
     private SharedPreferences.Editor editor;
+    private SwipeRefreshLayout noti_swipe_refresh;
 
 
     public NotificationFragment() {
@@ -80,66 +83,47 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
         client_mobile = client_property_id ="";
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
-        arrayList = new ArrayList<>();
-        context = getActivity();
-        /*pd = new ProgressDialog(context, R.style.CustomProgressDialog);
-        pd.setIndeterminateDrawable(context.getResources().getDrawable(R.drawable.progress_loader));
-        pd.setCancelable(true);
-        pd.setCanceledOnTouchOutside(true);
-        pd.getWindow().setGravity(Gravity.BOTTOM);*/
-        pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
-        editor = pref.edit();
-        parentLayout = getActivity().findViewById(R.id.menu_parent_relative);
-        unread = pref.getInt(AppConstants.NOTIFICATION_BADGES,0);
-        notificationItemModel = new ApiModel.NotificationChildModel();
-        editor.putInt(AppConstants.NOTIFICATION_BADGES,0).commit();
-        RecyclerView noti_recycle = view.findViewById(R.id.notification_recycle);
-        no_noti_linear = view.findViewById(R.id.no_notification_linear);
-        no_noti_linear.setVisibility(View.GONE);
-        edit_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
-        delete_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
-        add_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
-        edit_icon.setVisibility(View.GONE);
-        delete_icon.setVisibility(View.GONE);
-        add_icon.setVisibility(View.GONE);
-        toolbar_title = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
-        toolbar = getActivity().findViewById(R.id.inventory_toolbar);
-        toolbar.setVisibility(View.VISIBLE);
-        toolbar_title.setText("Notifications");
-        LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
-        verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
-        noti_recycle.setLayoutManager(verticalmanager);
-         notificationAdapter = new NotiAdapter(context,arrayList,noti_recycle,this);
-        noti_recycle.setAdapter(notificationAdapter);
-        startLoader();
-        populateNotification(from,size);
+        try {
+            arrayList = new ArrayList<>();
+            context = getActivity();
+            pref = getActivity().getSharedPreferences(AppConstants.PREF_NAME,0);
+            editor = pref.edit();
+            parentLayout = getActivity().findViewById(R.id.menu_parent_relative);
+            unread = pref.getInt(AppConstants.NOTIFICATION_BADGES,0);
+            notificationItemModel = new ApiModel.NotificationChildModel();
+            editor.putInt(AppConstants.NOTIFICATION_BADGES,0).commit();
+            noti_recycle= view.findViewById(R.id.notification_recycle);
+            no_noti_linear = view.findViewById(R.id.no_notification_linear);
+            no_noti_linear.setVisibility(View.GONE);
+            edit_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_edit);
+            delete_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_delete);
+            add_icon = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.toolbar_inventory_add);
+            edit_icon.setVisibility(View.GONE);
+            delete_icon.setVisibility(View.GONE);
+            add_icon.setVisibility(View.GONE);
+            toolbar_title = getActivity().findViewById(R.id.inventory_toolbar).findViewById(R.id.inventory_toolbar_title);
+            toolbar = getActivity().findViewById(R.id.inventory_toolbar);
+            toolbar.setVisibility(View.VISIBLE);
+            toolbar_title.setText("Notifications");
+            noti_swipe_refresh = view.findViewById(R.id.noti_swipe_refresh);
+            LinearLayoutManager verticalmanager = new LinearLayoutManager(context, 0, false);
+            verticalmanager.setOrientation(LinearLayoutManager.VERTICAL);
+            noti_recycle.setLayoutManager(verticalmanager);
+            noti_swipe_refresh.setColorSchemeResources(R.color.appColor);
+            loadData();
+            noti_swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    from = 0;
+                    arrayList.clear();
+                  loadData();
+                  noti_swipe_refresh.setRefreshing(false);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        notificationAdapter.setOnLoadMoreListener(new NotiAdapter.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                //add null , so the adapter will check view_type and show progress bar at bottom
-
-                        //   remove progress item
-                        //add items one by one
-
-                        //or you can add all at once but do not forget to call mAdapter.notifyDataSetChanged();
-                Handler handler = new Handler();
-
-                final Runnable r = new Runnable() {
-                    public void run() {
-                        if (!arrayList.contains(null)) {
-                            arrayList.add(null);
-                            notificationAdapter.notifyItemInserted(arrayList.size() - 1);
-                        }
-                        ++from;
-                        populateNotification(from,size);
-                    }
-                };
-
-                handler.post(r);
-
-            }
-        });
         return view;
     }
     private void populateNotification(final int i, final int size){
@@ -175,9 +159,6 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                 }else if(i == 0 && noti_list.size()==0){
                                     no_noti_linear.setVisibility(View.VISIBLE);
                                 }
-                           /* if(noti_list.size()<size){
-                                notificationAdapter.setLoaded();
-                            }*/
                             }
                         } else {
                             String responseString = null;
@@ -372,12 +353,10 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                 String message = jsonObject.optString("message");
                                 if (statusCode == 200 && message.equalsIgnoreCase("Updated Successfully")) {
                                     arrayList.get(position).setRead(true);
-                                        //arrayList.add(position,notificationChildModel);
                                     if(isDataSet) {
                                         notificationAdapter.notifyDataSetChanged();
                                     }
                                 }
-                                // referAdapter.notifyDataSetChanged();
                             } else {
                                 try {
                                     responseString = response.errorBody().string();
@@ -390,9 +369,6 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                     } else {
                                         Utils.setSnackBar(parentLayout,message);
                                     }
-                               /* if(pd.isShowing()) {
-                                    pd.dismiss();
-                                }*/
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -404,9 +380,6 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         stopLoader();
                         Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
-                    /*if(pd.isShowing()) {
-                        pd.dismiss();
-                    }*/
                     }
                 });
             }else{
@@ -558,8 +531,6 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.setContentView(R.layout.dialog_tc);
-            //dialog.setCanceledOnTouchOutside(false);
-            // dialog.setCancelable(false);
             final ImageView cross_btn = dialog.findViewById(R.id.tc_close_btn);
             final Button accept_btn = dialog.findViewById(R.id.tcDialog_accept);
             TextView commission_text = dialog.findViewById(R.id.tcDialog_commission);
@@ -629,5 +600,37 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
             Utils.LoaderUtils.dismissLoader();
          openTokenDialog(context);
         }
+    }
+    private void loadData(){
+        notificationAdapter = new NotiAdapter(context,arrayList,noti_recycle,this);
+        noti_recycle.setAdapter(notificationAdapter);
+        startLoader();
+        populateNotification(from,size);
+        notificationAdapter.setOnLoadMoreListener(new NotiAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                //add null , so the adapter will check view_type and show progress bar at bottom
+
+                //   remove progress item
+                //add items one by one
+
+                //or you can add all at once but do not forget to call mAdapter.notifyDataSetChanged();
+                Handler handler = new Handler();
+
+                final Runnable r = new Runnable() {
+                    public void run() {
+                        if (!arrayList.contains(null)) {
+                            arrayList.add(null);
+                            notificationAdapter.notifyItemInserted(arrayList.size() - 1);
+                        }
+                        ++from;
+                        populateNotification(from,size);
+                    }
+                };
+
+                handler.post(r);
+
+            }
+        });
     }
 }

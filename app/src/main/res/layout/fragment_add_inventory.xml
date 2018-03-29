@@ -31,7 +31,7 @@
         android:layout_marginTop="@dimen/aif_margin_top"
         android:textColorHint="@color/edit_hint_color"
         app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <EditText
             android:id="@+id/inventory_location"
@@ -54,7 +54,8 @@
             app:met_floatingLabelTextColor="@color/edit_hint_color"
             app:met_underlineColor="@color/edit_line"
             app:met_textColor="@color/edit_text_color"
-            app:met_floatingLabel="normal" />
+            app:met_floatingLabel="normal"
+            android:visibility="gone"/>
     <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
         android:id="@+id/inventory_spinner_proptype"
         android:layout_width="match_parent"

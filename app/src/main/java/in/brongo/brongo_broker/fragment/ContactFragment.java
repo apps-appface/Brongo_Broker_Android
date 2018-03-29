@@ -152,12 +152,6 @@ public class ContactFragment extends Fragment {
         boolean isWhatsappInstalled = whatsappInstalledOrNot("com.whatsapp");
         try {
             if (isWhatsappInstalled) {
-               /* Intent sendIntent = new Intent("android.intent.action.MAIN");
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.setPackage("com.whatsapp");
-                sendIntent.setType("text/plain");
-                sendIntent.putExtra("jid", "919845055841" + "@s.whatsapp.net");// here 91 is country code
-                startActivity(sendIntent);*/
                 Intent sendIntent = new Intent("android.intent.action.MAIN");
                 sendIntent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
                 sendIntent.putExtra("jid", PhoneNumberUtils.stripSeparators("919845055841") + "@s.whatsapp.net");//phone number without "+" prefix

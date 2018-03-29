@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "411769959951",
+    "firebase_url": "https://brongo-broker-198206.firebaseio.com",
+    "project_id": "brongo-broker-198206",
+    "storage_bucket": "brongo-broker-198206.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411769959951:android:2eb91afa894e6841",
+        "android_client_info": {
+          "package_name": "in.brongo.brongo_broker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "411769959951-sl54qfbcgkm57a0t5usrkm60ae2b2ebr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ_q6N3kIw4A9lwYTUBnp_pY81tOZV1KQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "104335395861",
+    "firebase_url": "https://brongo-broker.firebaseio.com",
+    "project_id": "brongo-broker",
+    "storage_bucket": "brongo-broker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104335395861:android:2eb91afa894e6841",
+        "android_client_info": {
+          "package_name": "in.brongo.brongo_broker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "104335395861-4g8bbu4ej6p01tv69qgfujqkkcvilav5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.brongo.brongo_broker",
+            "certificate_hash": "b273ee870f402bd9d80162fb82747bc59c636335"
+          }
+        },
+        {
+          "client_id": "104335395861-lkch3jnec25742kumnhu0le3l8jgogli.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7MJ6_3X-SBkRQjEMLSe72T1j35k7hEiY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "104335395861-lkch3jnec25742kumnhu0le3l8jgogli.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

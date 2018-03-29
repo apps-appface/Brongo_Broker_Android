@@ -41,7 +41,6 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
     private Bundle bundle;
     private TextView project_title;
     private LinearLayout parentLayout;
-    private String Url="";
     private SharedPreferences pref;
     private boolean isLoading = false;
     private Context context;
@@ -102,7 +101,6 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
                                     emailLink();
                                     break;
                             }
-                            /*Toast.makeText(MainActivity.this,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();*/
                             return true;
                         }
                     });

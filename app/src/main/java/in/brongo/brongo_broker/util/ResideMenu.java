@@ -113,12 +113,12 @@ public class ResideMenu extends FrameLayout {
             scrollViewLeftMenu = inflater.inflate(
                     R.layout.residemenu_custom_left_scrollview, this, false);
         scrollViewMenu = scrollViewLeftMenu;
-            layoutLeftMenu = (LinearLayout) scrollViewLeftMenu.findViewById(R.id.layout_left_menu);
-        menu_back = (ImageView) scrollViewMenu.findViewById(R.id.drawer_back);
-        menu_uname = (TextView)scrollViewMenu.findViewById(R.id.drawer_username);
-        RelativeLayout menu_relative = (RelativeLayout)scrollViewMenu.findViewById(R.id.menu_relative);
-        menu_rating = (TextView)scrollViewLeftMenu.findViewById(R.id.drawer_rating);
-        rating_linear = (LinearLayout)scrollViewLeftMenu.findViewById(R.id.drawer_rating_linear);
+            layoutLeftMenu = scrollViewLeftMenu.findViewById(R.id.layout_left_menu);
+        menu_back =  scrollViewMenu.findViewById(R.id.drawer_back);
+        menu_uname = scrollViewMenu.findViewById(R.id.drawer_username);
+        RelativeLayout menu_relative = scrollViewMenu.findViewById(R.id.menu_relative);
+        menu_rating = scrollViewLeftMenu.findViewById(R.id.drawer_rating);
+        rating_linear = scrollViewLeftMenu.findViewById(R.id.drawer_rating_linear);
         menu_back.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,19 +148,19 @@ public class ResideMenu extends FrameLayout {
                 closeMenu();
             }
         });
-        imageViewShadow = (ImageView) findViewById(R.id.iv_shadow);
-        imageViewBackground = (ImageView) findViewById(R.id.iv_background);
+        imageViewShadow = findViewById(R.id.iv_shadow);
+        imageViewBackground = findViewById(R.id.iv_background);
 
         RelativeLayout menuHolder = (RelativeLayout) findViewById(R.id.sv_menu_holder);
         menuHolder.addView(scrollViewLeftMenu);
     }
     public void setMenuProfile(String uname, String plan, String contact, String imageResources,float rating){
         String versionName = BuildConfig.VERSION_NAME;
-        TextView menu_uaddress = (TextView)scrollViewMenu.findViewById(R.id.drawer_uaddress);
-        TextView menu_uplan = (TextView)scrollViewMenu.findViewById(R.id.drawer_plan_text);
-        ImageView menu_uimage = (ImageView) scrollViewLeftMenu.findViewById(R.id.drawer_image);
-        RatingBar menu_ratingbar = (RatingBar)scrollViewLeftMenu.findViewById(R.id.drawer_ratingBar);
-        TextView menu_version = (TextView)scrollViewLeftMenu.findViewById(R.id.menu_version_text);
+        TextView menu_uaddress = scrollViewMenu.findViewById(R.id.drawer_uaddress);
+        TextView menu_uplan = scrollViewMenu.findViewById(R.id.drawer_plan_text);
+        ImageView menu_uimage =  scrollViewLeftMenu.findViewById(R.id.drawer_image);
+        RatingBar menu_ratingbar = scrollViewLeftMenu.findViewById(R.id.drawer_ratingBar);
+        TextView menu_version = scrollViewLeftMenu.findViewById(R.id.menu_version_text);
         menu_version.setText("Version "+ versionName+" ");
         menu_uname.setText(uname);
         menu_uaddress.setText(contact);
@@ -168,9 +168,6 @@ public class ResideMenu extends FrameLayout {
         menu_ratingbar.setRating(rating);
         String rating_string = String.format("%.1f",rating);
         menu_rating.setText(rating_string);
-          //  Glide.with(getContext()).load(imageResources).into(menu_uimage);
-       /* Glide.with(getContext()).load(imageResources)
-                .diskCacheStrategy(DiskCacheStrategy.ALL).transform(new CircleTransform(getContext())).into(menu_uimage);*/
         Glide.with(getContext())
                 .load(imageResources)
                 .apply(CustomApplicationClass.getRequestOption(true))
@@ -536,40 +533,6 @@ public class ResideMenu extends FrameLayout {
         return alphaAnimation;
     }
 
-    /**
-     * If there were some view you don't want reside menu
-     * to intercept their touch event, you could add it to
-     * ignored views.
-     *
-     * @param v
-     */
-    public void addIgnoredView(View v) {
-        ignoredViews.add(v);
-    }
-
-    /**
-     * Remove a view from ignored views;
-     *
-     * @param v
-     */
-    public void removeIgnoredView(View v) {
-        ignoredViews.remove(v);
-    }
-
-    /**
-     * Clear the ignored view list;
-     */
-    public void clearIgnoredViewList() {
-        ignoredViews.clear();
-    }
-
-    /**
-     * If the motion event was relative to the view
-     * which in ignored view list,return true;
-     *
-     * @param ev
-     * @return
-     */
     private boolean isInIgnoredView(MotionEvent ev) {
         Rect rect = new Rect();
         for (View v : ignoredViews) {

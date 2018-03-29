@@ -120,10 +120,6 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
             float rating = pref.getFloat(AppConstants.RATING, 0f);
             String rating_string = String.format("%.1f",rating);
             profile_ratingbar.setRating(rating);
-       /* Gson gson = new Gson();
-        ArrayList<ApiModel.ProfileObject> mSelectedList = gson.fromJson(pref.getString("ProfileList", ""),
-                new TypeToken<ArrayList<ApiModel.ProfileObject>>() {
-                }.getType());*/
             if(mSelectedList != null && mSelectedList.size() !=0) {
                 prof_email.setText(mSelectedList.get(0).getEmailId());
                 prof_micromarket.setText(mSelectedList.get(0).getMicro1MarketName());
@@ -145,7 +141,6 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
                 }
                 getTc(mSelectedList.get(0).getServices());
                 prof_real_estate.setText(real_estate);
-                // Glide.with(context).load(mSelectedList.get(0).getProfileImage().toString()).into(prof_image);
                 prof_close_deal_count.setText(mSelectedList.get(0).getClosedDeals() + "");
                 prof_inventory_count.setText(mSelectedList.get(0).getInventoryList() + "");
                 prof_open_deal_count.setText(mSelectedList.get(0).getOpenDeals() + "");

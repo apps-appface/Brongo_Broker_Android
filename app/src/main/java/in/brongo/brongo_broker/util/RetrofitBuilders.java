@@ -24,7 +24,7 @@ public class RetrofitBuilders {
     private static RetrofitBuilders retrofitBuilders;
 
     public static String getBaseUrl() {
-        return PRODUCTION_URL;
+        return DEVELOPMENT_URL;
     }
 
     public static RetrofitBuilders getInstance() {

@@ -2,6 +2,7 @@ package in.brongo.brongo_broker.services;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.applozic.mobicomkit.Applozic;
 import com.applozic.mobicomkit.api.account.register.RegisterUserClientService;
@@ -26,6 +27,7 @@ public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
         System.out.println("InstanceIDListenerService called");
         String tkn = FirebaseInstanceId.getInstance().getToken();
         Applozic.getInstance(this).setDeviceRegistrationId(tkn);
+        Log.i("Deice token",tkn);
         if (MobiComUserPreference.getInstance(this).isRegistered()) {
             try {
                 new RegisterUserClientService(this).updatePushNotificationId(tkn);

@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 
 import java.util.HashMap;
 
+import in.brongo.brongo_broker.BuildConfig;
 import in.brongo.brongo_broker.R;
 import in.brongo.brongo_broker.uiwidget.GifSplashView;
 import in.brongo.brongo_broker.util.AppConstants;
@@ -89,6 +90,9 @@ public class SplashActivity extends AppCompatActivity {
 
     private void startSplashScreen1() {
         try {
+            String versionName = BuildConfig.VERSION_NAME;
+            int versioncode = BuildConfig.VERSION_CODE;
+            Log.i("app","versionname = "+versionName+" versioncode = "+ versioncode);
             if (Build.VERSION.SDK_INT >= 23) {
                 if (isDeviceIdPermissionAllowed()) {
                     StartHomeActivity();
@@ -136,7 +140,10 @@ public class SplashActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+       /* Intent intent = new Intent(context, VerificationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -204,7 +211,7 @@ public class SplashActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                    Uri.fromParts("package", getPackageName(), null));
+                                    Uri.fromParts("package",getPackageName(), null));
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                             finish();

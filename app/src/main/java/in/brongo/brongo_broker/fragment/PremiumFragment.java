@@ -136,8 +136,6 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
                 pay_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Toast.makeText(context,"plan "+ finalI,Toast.LENGTH_SHORT).show();
-                       // MakePayment(position);
                     }
                 });
                 plans_linear.addView(layout2);

@@ -238,34 +238,4 @@ public class BuilderModel {
         int totalBrokers;
     }
 
-    public static class BuilderBroker{
-        String mobileNo;
-
-        public String getMobileNo() {
-            return mobileNo;
-        }
-
-        public void setMobileNo(String mobileNo) {
-            this.mobileNo = mobileNo;
-        }
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getConnectedTime() {
-            return connectedTime;
-        }
-
-        public void setConnectedTime(String connectedTime) {
-            this.connectedTime = connectedTime;
-        }
-
-        String firstName;
-        String connectedTime;
-    }
 }

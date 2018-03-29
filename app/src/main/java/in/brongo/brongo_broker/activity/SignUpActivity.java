@@ -27,6 +27,8 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -58,12 +60,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SignUpActivity extends AppCompatActivity implements NoInternetTryConnectListener {
+public class SignUpActivity extends AppCompatActivity implements NoInternetTryConnectListener,CompoundButton.OnCheckedChangeListener{
     private EditText fname_edit, lname_edit, email_edit, mobile_edit, city_edit, resi_line1_edit, resi_line2_edit, office_line1_edit, office_line2_edit, referredBy, comp_type_edit;
     private ApiModel.MicroMarketModel microMarketModel1, microMarketModel2, microMarketModel3;
     private String microMarket1,microMarket2,microMarket3;
     private Button register_btn, real_estate_resi_btn, real_estate_commer_btn;
     public static TextView addmore_text, sign_title,signUp_tc,docu_skip;
+    private CheckBox buy_checkbox,sell_checkbox,rent_checkbox,rentout_checkbox,any_checkbox;
     private BottomSheetDialog dialog;
     private TextInputLayout phone_signup_layout,email_signup_layout;
     ArrayList<SignUpModel.MarketObject> marketlist;
@@ -83,7 +86,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     private ArrayAdapter<String> adapter;
     private RecyclerView micro_recycle;
     private ArrayList<String> comp_type_list = new ArrayList<>(Arrays.asList("Individual", "Partnership Firm/ LLP", "Pvt Ltd", "Public Ltd Company", "Others (need to specify)"));
-    private ArrayList<String> real_estate_type_list;
+    private ArrayList<String> real_estate_type_list,deal_list;
     public static ArrayList<String> micromarketlist;
     private SharedPreferences.Editor editor;
 
@@ -105,6 +108,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             pref = getSharedPreferences(AppConstants.PREF_NAME, 0);
             poc_list = new ArrayList<>();
             marketlist = new ArrayList<>();
+            deal_list = new ArrayList<>();
             fetchMicromarket();
             marketIdList = new ArrayList<>();
             emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -123,6 +127,11 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context,
                     R.layout.spinner_text, comp_type_list);
             comp_type_spinner.setAdapter(dataAdapter);
+            buy_checkbox = findViewById(R.id.sign_check_buy);
+            sell_checkbox = findViewById(R.id.sign_check_sell);
+            rent_checkbox = findViewById(R.id.sign_check_rent);
+            rentout_checkbox = findViewById(R.id.sign_check_rentout);
+            any_checkbox = findViewById(R.id.sign_check_any);
             fname_edit = (EditText) findViewById(R.id.sign_fname);
             lname_edit = (EditText) findViewById(R.id.sign_lname);
             real_estate_type_list = new ArrayList<>();
@@ -154,10 +163,6 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             micro_recycle.setLayoutManager(horizontalLayoutManager);
             horizontalAdapter = new HorizontalAdapter(micromarketlist, context);
             micro_recycle.setAdapter(horizontalAdapter);
-      /*  pd = new ProgressDialog(this, R.style.CustomProgressDialog);
-        pd.setIndeterminateDrawable(this.getResources().getDrawable(R.drawable.progress_loader));
-        pd.setCancelable(true);
-        pd.setCanceledOnTouchOutside(false);*/
             comp_type_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -248,7 +253,6 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                             break;
                     }
                     micromarketlist.remove(micromarketlist.size()-1);
-                   // micromarketlist.clear();
                     horizontalAdapter.notifyDataSetChanged();
                     addmore_text.setVisibility(View.VISIBLE);
                     addmore_text.setText("+ADD "+(3-micromarketlist.size())+" MORE");
@@ -257,6 +261,11 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                     }
                 }
             });
+            buy_checkbox.setOnCheckedChangeListener(this);
+            sell_checkbox.setOnCheckedChangeListener(this);
+            rent_checkbox.setOnCheckedChangeListener(this);
+            rentout_checkbox.setOnCheckedChangeListener(this);
+            any_checkbox.setOnCheckedChangeListener(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -291,11 +300,6 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                 data_incomplete = 0;
             }
 
-
-                   /* microMarketModel1.setMicroMarketCity("Bengaluru ");
-                    microMarketModel1.setMicroMarketName("Marathahalli");
-                    microMarketModel1.setMicroMarketState("Karnataka");
-                    data_incomplete =0;*/
             signUpModel.setMicroMarket1(microMarket1);
             signUpModel.setMicroMarket2(microMarket2);
             signUpModel.setMicroMarket3(microMarket3);
@@ -551,8 +555,6 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             final Dialog dialog = new Dialog(context);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
-/*        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);*/
             dialog.setContentView(R.layout.market_dialog);
             dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
             dialog.setCancelable(false);
@@ -634,34 +636,6 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         super.onDestroy();
         Utils.LoaderUtils.dismissLoader();
     }
-    private void nonPocDialog(Context context){
-        try {
-            final Dialog dialog = new Dialog(context);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setContentView(R.layout.poc_live_dialog);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.setCancelable(false);
-            final ImageView cross_btn = (ImageView) dialog.findViewById(R.id.poc_dialog_close);
-            final Button got_it_btn = (Button)dialog.findViewById(R.id.poc_dialog_btn);
-            cross_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-            got_it_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                   onBackPressed();
-                }
-            });
-            dialog.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     private void foo() {
         try {
             SpannableString link = makeLinkSpan("Terms & Conditions", new View.OnClickListener() {
@@ -712,6 +686,22 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        try {
+            if(isChecked){
+                deal_list.add(buttonView.getText().toString());
+            }else{
+                if(deal_list.contains(buttonView.getText().toString())){
+                    deal_list.remove(buttonView.getText().toString());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private static class ClickableString extends ClickableSpan {
         private View.OnClickListener mListener;
         public ClickableString(View.OnClickListener listener) {
@@ -735,31 +725,6 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             startActivity(new Intent(SignUpActivity.this, DocumentUploadActivity.class));
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-    private void checkValue(){
-        String fname = fname_edit.getText().toString();
-        String lname = lname_edit.getText().toString();
-        String city = city_edit.getText().toString();
-        String referral_id = referredBy.getText().toString();
-        String res_line_one = resi_line1_edit.getText().toString();
-        String res_line_two = resi_line2_edit.getText().toString();
-        if(fname.isEmpty()){
-            Utils.setSnackBar(parentLayout,"First Name should not be empty");
-        }else if(lname.isEmpty()){
-            Utils.setSnackBar(parentLayout,"Last Name should not be empty");
-        }else if(city.isEmpty()){
-            Utils.setSnackBar(parentLayout,"City should not be empty");
-        }else if(mobile.isEmpty()){
-            Utils.setSnackBar(parentLayout,"Mobile number should not be empty");
-        }else if(res_line_one.isEmpty()){
-            Utils.setSnackBar(parentLayout,"Residential Address should not be empty");
-        }else if(res_line_two.isEmpty()){
-            Utils.setSnackBar(parentLayout,"Residential Address should not be empty");
-        }else if(email.isEmpty()){
-            Utils.setSnackBar(parentLayout,"Email should not be empty");
-        }else if(comp_type.isEmpty()){
-            Utils.setSnackBar(parentLayout,"Company type should not be empty");
         }
     }
 

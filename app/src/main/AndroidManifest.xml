@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="in.brongo.brongo_broker">
 
-
     <permission
         android:name="in.brongo.brongo_broker.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
@@ -36,39 +35,44 @@
     <permission
         android:name="in.brongo.brongo_broker.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <meta-data
         android:name="com.google.android.gms.version"
         android:value="@integer/google_play_services_version" />
+
     <application
         android:name=".util.CustomApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoACBar"
-        android:largeHeap="true"
         tools:replace="android:theme">
-
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <data
-                    android:scheme="brongobroker" />
+                <data android:scheme="brongobroker" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
-        <!--<meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
-        <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false" />-->
+        <!--
+        <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
+        <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false" />
+        -->
 
         <meta-data
             android:name="io.branch.sdk.BranchKey"
@@ -76,7 +80,6 @@
         <meta-data
             android:name="io.branch.sdk.BranchKey.test"
             android:value="key_test_lgEM7m0aewgoZd84Xa8QDocbBBl8KUAS" />
-
 
         <activity
             android:name=".activity.PushAlertActivity"
@@ -112,9 +115,11 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
+
         <service
             android:name=".services.MyNotificationListener"
-            android:exported="false">
+            android:exported="false"
+            >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -131,7 +136,8 @@
             android:exported="false" />
         <service
             android:name=".services.MusicService"
-            android:exported="false" />
+            android:exported="false"
+            />
 
         <activity
             android:name=".activity.VenueActivity"
@@ -168,7 +174,6 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-
         <!--
             <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAYB1vPc4cpn_FJv68eS_ZGe1UasBNwxLI" />
@@ -178,7 +183,6 @@
         For testing purpose use AIzaSyAYB1vPc4cpn_FJv68eS_ZGe1UasBNwxLI
         To disable the location sharing via map add this line ApplozicSetting.getInstance(context).disableLocationSharingViaMap(); in onSuccess of Applozic UserLoginTask
         -->
-
 
         <receiver android:name="com.applozic.mobicomkit.uiwidgets.notification.MTNotificationBroadcastReceiver">
             <intent-filter>
@@ -343,7 +347,7 @@
         <service
             android:name="com.applozic.mobicomkit.api.conversation.ConversationReadService"
             android:exported="false" />
-         <service
+        <service
             android:name="com.applozic.mobicomkit.api.notification.NotificationIntentService"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
@@ -387,8 +391,14 @@
         <activity
             android:name=".activity.ReferActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.BuilderProjectActivity" />
-        <activity android:name=".activity.MapActivity" />
-        <activity android:name=".activity.TermsConditionActivity"></activity>
+        <activity android:name=".activity.BuilderProjectActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MapActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.TermsConditionActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.VerificationActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
+
 </manifest>
