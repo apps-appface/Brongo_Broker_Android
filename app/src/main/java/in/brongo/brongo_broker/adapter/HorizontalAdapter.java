@@ -34,7 +34,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.My
         TextView micro_marketame;
         public MyViewHolder(View view) {
             super(view);
-            micro_marketame=(TextView) view.findViewById(R.id.hori_micromarket_name);
+            micro_marketame=view.findViewById(R.id.hori_micromarket_name);
         }
     }
 

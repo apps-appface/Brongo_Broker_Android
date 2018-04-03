@@ -40,11 +40,11 @@ public class HistoricalAdapter extends RecyclerView.Adapter<HistoricalAdapter.My
         FlowLayout his_flowlayout;
         public MyViewHolder(View view) {
             super(view);
-            his_flowlayout = (FlowLayout)view.findViewById(R.id.his_flow);
-            his_name=(TextView) view.findViewById(R.id.his_lead_name);
-            his_post_type=(TextView) view.findViewById(R.id.his_lead_post_type);
-            his_commission=(TextView) view.findViewById(R.id.his_deal_commission);
-            his_deal_id=(TextView) view.findViewById(R.id.his_deal_id);
+            his_flowlayout = view.findViewById(R.id.his_flow);
+            his_name= view.findViewById(R.id.his_lead_name);
+            his_post_type= view.findViewById(R.id.his_lead_post_type);
+            his_commission= view.findViewById(R.id.his_deal_commission);
+            his_deal_id= view.findViewById(R.id.his_deal_id);
         }
     }
 

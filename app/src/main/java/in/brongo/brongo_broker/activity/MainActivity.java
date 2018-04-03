@@ -817,11 +817,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             TextView drop_client_address = dialog.findViewById(R.id.client_address_drop);
             TextView drop_client_plan = dialog.findViewById(R.id.drop_plan);
             ImageView drop_client_image = dialog.findViewById(R.id.client_image_drop);
-            drop_client_name.setText(bundle1.getString("lead_name"));
-            drop_client_plan.setText(bundle1.getString("lead_plan"));
-            drop_client_address.setText(bundle1.getString("lead_address"));
+            drop_client_name.setText(bundle1.getString("lead_name",""));
+            drop_client_plan.setText(bundle1.getString("lead_plan",""));
+            drop_client_address.setText(bundle1.getString("lead_address",""));
             Glide.with(context)
-                    .load(bundle1.getString("lead_image"))
+                    .load(bundle1.getString("lead_image",""))
                     .apply(CustomApplicationClass.getRequestOption(true))
                     .into(drop_client_image);
             Button submit = dialog.findViewById(R.id.drop_Submit);
@@ -1254,11 +1254,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             final CheckBox rating_check3 = dialog.findViewById(R.id.rating_check3);
             final CheckBox rating_check4 = dialog.findViewById(R.id.rating_check4);
             final CheckBox rating_check5 = dialog.findViewById(R.id.rating_check5);
-            ratimg_client_name.setText(bundle.getString("lead_name"));
-            rating_client_plan.setText(bundle.getString("lead_plan"));
-            ratimg_client_address.setText(bundle.getString("lead_address"));
+            ratimg_client_name.setText(bundle.getString("lead_name",""));
+            rating_client_plan.setText(bundle.getString("lead_plan",""));
+            ratimg_client_address.setText(bundle.getString("lead_address",""));
             Glide.with(context)
-                    .load(bundle.getString("lead_image"))
+                    .load(bundle.getString("lead_image",""))
                     .apply(CustomApplicationClass.getRequestOption(true))
                     .into(rating_client_image);
             dialog_ratingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -1409,10 +1409,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 ApiModel.RatingModel ratingModel = new ApiModel.RatingModel();
                 ratingModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
-                ratingModel.setClientMobileNo(bundle.getString("lead_mobile"));
+                ratingModel.setClientMobileNo(bundle.getString("lead_mobile",""));
                 ratingModel.setRating(rating);
                 ratingModel.setReview(arrayList);
-                ratingModel.setPropertyId(bundle.getString("propertyId"));
+                ratingModel.setPropertyId(bundle.getString("propertyId",""));
                 String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
                 String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
                 RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());

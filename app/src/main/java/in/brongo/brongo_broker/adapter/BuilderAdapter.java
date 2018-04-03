@@ -80,42 +80,62 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
             holder.invent_builder_register.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClick.registerClient(position,builderObject);
+                    if(onClick != null) {
+                        onClick.registerClient(position, builderObject);
+                    }
                 }
             });
             holder.invent_builder_reject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClick.rejectProject(position,builderObject);
+                    if(onClick != null) {
+                        onClick.rejectProject(position, builderObject);
+                    }
                 }
             });
             holder.invent_builder_proceed.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClick.acceptTc(position,builderObject,true);
+                    if(onClick != null) {
+                        onClick.acceptTc(position, builderObject, true);
+                    }
                 }
             });
             holder.invent_builder_tc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClick.acceptTc(position,builderObject,false);
+                    if(onClick != null) {
+                    onClick.acceptTc(position, builderObject, false);
+                }
                 }
             });
             holder.builder_web_linear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onClick.proceedToWeb(position,builderObject);
+                    if(onClick != null) {
+                        onClick.proceedToWeb(position, builderObject);
+                    }
                 }
             });
-            int budget = (int) (Float.parseFloat(arrayList.get(position).getDimensionsOfBedRoom()) * (arrayList.get(position).getPricePerSQFT()));
-            String project_budget = Utils.numToWord(budget);
+            String project_budget = arrayList.get(position).getBudget() ;
             holder.builder_flowLayout.removeAllViews();
             addView(project_budget,holder.builder_flowLayout);
-            addView((arrayList.get(position).getNoOfBedRooms()+"BHK"),holder.builder_flowLayout);
             addView(arrayList.get(position).getLandArea()+" "+arrayList.get(position).getLandAreaUnits(),holder.builder_flowLayout);
             addView(arrayList.get(position).getProjectStatus(),holder.builder_flowLayout);
             addView(arrayList.get(position).getProjectType(),holder.builder_flowLayout);
-            addView(arrayList.get(position).getDimensionsOfBedRoom()+"",holder.builder_flowLayout);
+            if(arrayList.get(position).getBedRoomType() != null) {
+                String bedroomType = "";
+                ArrayList<String> bedlist = new ArrayList<>();
+                bedlist.addAll(arrayList.get(position).getBedRoomType());
+                for (int i = 0; i < bedlist.size(); i++) {
+                    if(i == bedlist.size()-1){
+                        bedroomType = bedroomType+bedlist.get(i);
+                    }else{
+                        bedroomType = bedlist.get(i)+",";
+                    }
+                }
+                addView(bedroomType,holder.builder_flowLayout);
+            }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -141,24 +161,24 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
 
         public EmployeeViewHolder(View itemView) {
             super(itemView);
-            builder_flowLayout = (FlowLayout)itemView.findViewById(R.id.builder_flowLayout);
-            invent_builder_name = (TextView) itemView.findViewById(R.id.invent_builder_project);
-            invent_builder_address = (TextView) itemView.findViewById(R.id.invent_builder_addresss);
-            invent_builder_commission = (TextView) itemView.findViewById(R.id.invent_builder_commission);;
-            invent_builder_image = (ImageView) itemView.findViewById(R.id.invent_builder_image);
-            invent_builder_tc = (RelativeLayout) itemView.findViewById(R.id.invent_builder_tc);
-            invent_TC_relative = (RelativeLayout)itemView.findViewById(R.id.invent_TC_relative);
-            invent_builder_register = (RelativeLayout) itemView.findViewById(R.id.invent_builder_register);
-            build_linear = (LinearLayout)itemView.findViewById(R.id.invent_builder_linear);
-            builder_web_linear = (LinearLayout)itemView.findViewById(R.id.builder_web_linear);
-            invent_builder_proceed = (Button) itemView.findViewById(R.id.invent_builder_proceed);
-            invent_builder_reject = (Button) itemView.findViewById(R.id.invent_builder_reject);
+            builder_flowLayout = itemView.findViewById(R.id.builder_flowLayout);
+            invent_builder_name = itemView.findViewById(R.id.invent_builder_project);
+            invent_builder_address =  itemView.findViewById(R.id.invent_builder_addresss);
+            invent_builder_commission = itemView.findViewById(R.id.invent_builder_commission);;
+            invent_builder_image = itemView.findViewById(R.id.invent_builder_image);
+            invent_builder_tc = itemView.findViewById(R.id.invent_builder_tc);
+            invent_TC_relative = itemView.findViewById(R.id.invent_TC_relative);
+            invent_builder_register =  itemView.findViewById(R.id.invent_builder_register);
+            build_linear = itemView.findViewById(R.id.invent_builder_linear);
+            builder_web_linear = itemView.findViewById(R.id.builder_web_linear);
+            invent_builder_proceed = itemView.findViewById(R.id.invent_builder_proceed);
+            invent_builder_reject = itemView.findViewById(R.id.invent_builder_reject);
         }
     }
 
 
     private void addView(String text, FlowLayout flowLayout) {
-        if(text != null) {
+        if(text != null && !text.equalsIgnoreCase("null")) {
             if (!text.isEmpty()) {
                 try {
                     View layout2 = LayoutInflater.from(context).inflate(R.layout.deal_child, flowLayout, false);

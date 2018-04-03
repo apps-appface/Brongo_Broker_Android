@@ -28,8 +28,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         View plan_view;
         public MyViewHolder(View view) {
             super(view);
-            conditon_text=(TextView) view.findViewById(R.id.plan_child_text);
-            plan_view =(View)view.findViewById(R.id.plan_child_view);
+            conditon_text=view.findViewById(R.id.plan_child_text);
+            plan_view =view.findViewById(R.id.plan_child_view);
         }
     }
     @Override

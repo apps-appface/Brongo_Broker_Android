@@ -55,8 +55,8 @@ public class ReferAdapter extends RecyclerView.Adapter<ReferAdapter.EmployeeView
 
         public EmployeeViewHolder(View itemView) {
             super(itemView);
-            broker_no = (TextView)itemView.findViewById(R.id.refer_broker_no);
-            broker_rate = (TextView)itemView.findViewById(R.id.refer_rate);
+            broker_no = itemView.findViewById(R.id.refer_broker_no);
+            broker_rate = itemView.findViewById(R.id.refer_rate);
         }
     }
 }

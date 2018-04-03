@@ -47,9 +47,9 @@ public class WalkPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.walkthrough_page, container, false);
-        TextView title = (TextView)itemView.findViewById(R.id.walk_title);
-        TextView subtitle = (TextView)itemView.findViewById(R.id.walk_sub_title);
-        ImageView imageView = (ImageView)itemView.findViewById(R.id.walk_image);
+        TextView title = itemView.findViewById(R.id.walk_title);
+        TextView subtitle = itemView.findViewById(R.id.walk_sub_title);
+        ImageView imageView = itemView.findViewById(R.id.walk_image);
         title.setText(arrayList.get(position).getTitle());
         subtitle.setText(arrayList.get(position).getSubTitle());
        // imageView.setImageResource(arrayList.get(position).getImageId());

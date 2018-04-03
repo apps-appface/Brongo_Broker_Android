@@ -145,14 +145,14 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
 
         public EmployeeViewHolder(View itemView) {
             super(itemView);
-            flowLayout = (FlowLayout)itemView.findViewById(R.id.invent_personal_flowlayout);
-            invent_child_clientName = (TextView) itemView.findViewById(R.id.invent_personal_name);
-            invent_child_client = (TextView) itemView.findViewById(R.id.invent_pesonal_postingtype);
-            invent_child_mobile = (TextView) itemView.findViewById(R.id.invent_pesonal_mobile);
-            prop_image = (ImageView) itemView.findViewById(R.id.invent_personal_image);
-            invent_child_editBtn = (LinearLayout) itemView.findViewById(R.id.edit_image);
-            invent_child_deleteBtn = (LinearLayout) itemView.findViewById(R.id.delete_image);
-            recycle_item_linear = (LinearLayout)itemView.findViewById(R.id.linear_item);
+            flowLayout = itemView.findViewById(R.id.invent_personal_flowlayout);
+            invent_child_clientName = itemView.findViewById(R.id.invent_personal_name);
+            invent_child_client = itemView.findViewById(R.id.invent_pesonal_postingtype);
+            invent_child_mobile = itemView.findViewById(R.id.invent_pesonal_mobile);
+            prop_image = itemView.findViewById(R.id.invent_personal_image);
+            invent_child_editBtn = itemView.findViewById(R.id.edit_image);
+            invent_child_deleteBtn = itemView.findViewById(R.id.delete_image);
+            recycle_item_linear = itemView.findViewById(R.id.linear_item);
         }
     }
 
@@ -180,8 +180,10 @@ public class InventoryPersonalAdapter extends RecyclerView.Adapter<InventoryPers
             delete_client_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    deleteInventoryListener.onDelete(object,position);
-                    dialog.dismiss();
+                    if(deleteInventoryListener != null) {
+                        deleteInventoryListener.onDelete(object, position);
+                        dialog.dismiss();
+                    }
                 }
             });
             dialog.show();

@@ -300,8 +300,12 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                                     if (message.equalsIgnoreCase("Broker Not Found")) {
                                         //phone_invalid.setVisibility(View.VISIBLE);
                                         startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-                                    } else if (statusCode == 412) {
+                                    } else if (statusCode == 412 && message.equalsIgnoreCase("Version Not Supported")) {
                                         AllUtils.updateDialog(context);
+                                    }else if (statusCode == 412 && message.equalsIgnoreCase("Documents Need To Be Upload Before Login Into Your Account")) {
+                                        startActivity(new Intent(LoginActivity.this, DocumentUploadActivity.class));
+                                    }else if (statusCode == 412 && message.equalsIgnoreCase("Code Of Conduct Need To Be Signed, To Verify Your Account.")) {
+                                        startActivity(new Intent(LoginActivity.this, VerificationActivity.class));
                                     } else {
                                         Utils.setSnackBar(parentLayout, message);
                                     }

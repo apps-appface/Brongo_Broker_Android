@@ -126,6 +126,7 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
             project_webview.getSettings().setGeolocationEnabled(true);
             project_webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
             project_webview.getSettings().setBuiltInZoomControls(true);
+            project_webview.getSettings().setDisplayZoomControls(false);
             project_webview.getSettings().setDomStorageEnabled(true);
             project_webview.getSettings().setLoadWithOverviewMode(true);
             project_webview.getSettings().setUseWideViewPort(true);

@@ -37,7 +37,7 @@ public class NotiAdapter extends RecyclerView.Adapter {
     private ArrayList<ApiModel.NotificationChildModel> arrayList;
     private LayoutInflater inflater;
     private RecyclerView recyclerView;
-    private RelativeLayout parentLinear;
+    private LinearLayout parentLinear;
     private NotiAdapter.CallListener callListener;
     private SharedPreferences pref;
     private int unread;
@@ -124,9 +124,8 @@ public class NotiAdapter extends RecyclerView.Adapter {
                     parentLinear.setBackgroundResource(R.color.notification_color);
                 }
                 if (arrayList.get(position).getAlertType().equalsIgnoreCase("BUILDER_POSTING")) {
-                    String budget = String.valueOf(arrayList.get(position).getBudgetRange());
-                    budget = Utils.stringToInt(budget);
-                    addView(arrayList.get(position).getProjectName(), ((NotificationViewHolder) holder).notification_flowlayout);
+                    String budget =arrayList.get(position).getBudgetRange();
+                   // addView(arrayList.get(position).getProjectName(), ((NotificationViewHolder) holder).notification_flowlayout);
                     addView(arrayList.get(position).getLocation(), ((NotificationViewHolder) holder).notification_flowlayout);
                     addView(arrayList.get(position).getProjectType(), ((NotificationViewHolder) holder).notification_flowlayout);
                     addView(arrayList.get(position).getProjectStatus(), ((NotificationViewHolder) holder).notification_flowlayout);
@@ -146,9 +145,9 @@ public class NotiAdapter extends RecyclerView.Adapter {
                 } else {
                     ((NotificationViewHolder) holder).call_btn.setVisibility(View.GONE);
                 }
-                String string1 = arrayList.get(position).getClientName() + ":" + arrayList.get(position).getMessage();
-                SpannableStringBuilder str = Utils.convertToSpannableString(string1, 0, arrayList.get(position).getClientName().length(), "black");
-                ((NotificationViewHolder) holder).content_text.setText(str);
+               /* String string1 = arrayList.get(position).getClientName() + ":" + arrayList.get(position).getMessage();
+                SpannableStringBuilder str = Utils.convertToSpannableString(string1, 0, arrayList.get(position).getClientName().length(), "black");*/
+                ((NotificationViewHolder) holder).content_text.setText(arrayList.get(position).getMessage());
                 ((NotificationViewHolder) holder).noti_time.setText(arrayList.get(position).getDays());
                 Glide.with(context)
                         .load(arrayList.get(position).getClientProfile().toString())
@@ -158,7 +157,9 @@ public class NotiAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onClick(View v) {
                         if (!arrayList.get(position).isRead()) {
-                            callListener.readBtnClick(arrayList.get(position), position, false);
+                            if(callListener != null) {
+                                callListener.readBtnClick(arrayList.get(position), position, false);
+                            }
                         }
                         ((NotificationViewHolder) holder).notification_flowlayout.setVisibility(View.VISIBLE);
                         ((NotificationViewHolder) holder).view_btn.setVisibility(View.GONE);
@@ -169,7 +170,9 @@ public class NotiAdapter extends RecyclerView.Adapter {
                 ((NotificationViewHolder) holder).proceed_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        callListener.proceedBtnClick(arrayList.get(position), position);
+                        if(callListener != null) {
+                            callListener.proceedBtnClick(arrayList.get(position), position);
+                        }
                     }
                 });
                 parentLinear.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +180,9 @@ public class NotiAdapter extends RecyclerView.Adapter {
                     public void onClick(View v) {
                         if (!arrayList.get(position).isRead()) {
                             if (!(arrayList.get(position).getAlertType().equalsIgnoreCase("BUILDER_POSTING") && arrayList.get(position).getStatus().equalsIgnoreCase(""))) {
-                                callListener.readBtnClick(arrayList.get(position), position, true);
+                                if(callListener != null) {
+                                    callListener.readBtnClick(arrayList.get(position), position, true);
+                                }
                             }
                         }
                     }
@@ -185,13 +190,17 @@ public class NotiAdapter extends RecyclerView.Adapter {
                 ((NotificationViewHolder) holder).reject_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        callListener.rejectBtnClick(arrayList.get(position), position);
+                        if(callListener != null) {
+                            callListener.rejectBtnClick(arrayList.get(position), position);
+                        }
                     }
                 });
                 ((NotificationViewHolder) holder).call_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        callListener.callBtnClick(arrayList.get(position).getMobileNo().toString(), arrayList.get(position).getPropertyId());
+                        if(callListener != null) {
+                            callListener.callBtnClick(arrayList.get(position).getMobileNo().toString(), arrayList.get(position).getPropertyId());
+                        }
                     }
                 });
 
@@ -218,22 +227,22 @@ public class NotiAdapter extends RecyclerView.Adapter {
         TextView content_text, noti_time, noti_id,builder_know_btn;
         Button view_btn,proceed_btn,reject_btn,call_btn;
         ImageView noti_image;
-        FlowLayout notification_flowlayout;
+        LinearLayout notification_flowlayout;
         LinearLayout noti_view_linear;
 
         public NotificationViewHolder(View v) {
             super(v);
-            content_text = (TextView) itemView.findViewById(R.id.notification_content);
-            noti_time = (TextView) itemView.findViewById(R.id.notification_time);
-            noti_image = (ImageView) itemView.findViewById(R.id.notification_image);
-            notification_flowlayout = (FlowLayout)itemView.findViewById(R.id.noti_flowlayout);
-            parentLinear = (RelativeLayout) itemView.findViewById(R.id.notification_parent_linear);
-            builder_know_btn = (TextView) itemView.findViewById(R.id.know_more);
-            view_btn = (Button) itemView.findViewById(R.id.notification_view);
-            proceed_btn = (Button) itemView.findViewById(R.id.notification_proceed);
-            reject_btn = (Button) itemView.findViewById(R.id.notification_reject);
-            call_btn = (Button) itemView.findViewById(R.id.notification_call);
-            noti_view_linear = (LinearLayout) itemView.findViewById(R.id.builder_view_linear);
+            content_text =  itemView.findViewById(R.id.notification_content);
+            noti_time = itemView.findViewById(R.id.notification_time);
+            noti_image = itemView.findViewById(R.id.notification_image);
+            notification_flowlayout = itemView.findViewById(R.id.noti_key_linear);
+            parentLinear = itemView.findViewById(R.id.notification_parent_linear);
+            builder_know_btn = itemView.findViewById(R.id.know_more);
+            view_btn = itemView.findViewById(R.id.notification_view);
+            proceed_btn = itemView.findViewById(R.id.notification_proceed);
+            reject_btn = itemView.findViewById(R.id.notification_reject);
+            call_btn = itemView.findViewById(R.id.notification_call);
+            noti_view_linear = itemView.findViewById(R.id.builder_view_linear);
         }
     }
 
@@ -242,7 +251,7 @@ public class NotiAdapter extends RecyclerView.Adapter {
 
         public ProgressViewHolder(View v) {
             super(v);
-            progressBar = (ProgressBar) v.findViewById(R.id.progressBar1);
+            progressBar =  v.findViewById(R.id.progressBar1);
         }
     }
     public void setOnLoadMoreListener(NotiAdapter.OnLoadMoreListener onLoadMoreListener) {
@@ -259,17 +268,16 @@ public class NotiAdapter extends RecyclerView.Adapter {
     }
 
 
-    private void addView(String text, FlowLayout flowLayout) {
+    private void addView(String text, LinearLayout flowLayout) {
         if(text != null) {
             if (!text.isEmpty()) {
                 try {
-                    View layout2 = LayoutInflater.from(context).inflate(R.layout.deal_child, flowLayout, false);
-                    TextView deal_textview = (TextView) layout2.findViewById(R.id.deal_text);
+                    View layout2 = LayoutInflater.from(context).inflate(R.layout.builder_item, flowLayout, false);
+                    TextView deal_textview = (TextView) layout2.findViewById(R.id.builder_item_text);
                     deal_textview.setText(text);
                     flowLayout.addView(layout2);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    String error = e.toString();
                 }
             }
         }

@@ -1,16 +1,21 @@
 package in.brongo.brongo_broker.fragment;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,6 +57,7 @@ import retrofit2.Response;
 public class NotificationFragment extends Fragment implements NotiAdapter.CallListener,NoInternetTryConnectListener,NoTokenTryListener,AllUtils.test {
     private ArrayList<ApiModel.NotificationChildModel> arrayList;
     private ImageView edit_icon,delete_icon,add_icon;
+    private static final int REQUEST_CALL_PERMISSIONS = 222;
     private SharedPreferences pref;
     private TextView toolbar_title;
     private Toolbar toolbar;
@@ -198,7 +204,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
 
     @Override
     public void callBtnClick(String phone,String propertyId) {
-        callClient(phone,propertyId);
+     call(phone,propertyId);
     }
 
     @Override
@@ -222,8 +228,6 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
 
     private void callClient(final String lead_mobile, final String propertyId) {
         try {
-            client_mobile = lead_mobile;
-            client_property_id = propertyId;
             if(Utils.isNetworkAvailable(context)) {
                 startLoader();
                 String client_no = lead_mobile;
@@ -632,5 +636,43 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
 
             }
         });
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CALL_PERMISSIONS: {
+                try {
+                    if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                        callClient(client_mobile,client_property_id);
+                    } else {
+                        Utils.setSnackBar(parentLayout, "Please allow permission from settings.");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return;
+            }
+        }
+    }
+    private void call(final String lead_mobile, final String propertyId){
+        client_mobile = lead_mobile;
+        client_property_id = propertyId;
+        try {
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.CALL_PHONE},
+                            REQUEST_CALL_PERMISSIONS);
+                } else {
+                    callClient(lead_mobile, propertyId);
+                }
+            }else{
+                callClient(lead_mobile, propertyId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

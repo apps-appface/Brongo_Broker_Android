@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View
+        android:layout_width="@dimen/deal_small"
+        android:layout_height="@dimen/deal_small"
+        android:background="@drawable/blue_bullet"
+        android:layout_marginLeft="@dimen/deal_small"
+        android:layout_marginTop="@dimen/deal_normal"
+        android:id="@+id/dot_image1"/>
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/builder_item_text"
+        android:textSize="@dimen/text_size_normal"
+        android:layout_toRightOf="@+id/dot_image1"
+        android:textColor="@color/blue"
+        android:text="jbjkhjkhih"
+        android:layout_marginLeft="@dimen/builder_small"
+        app:customFont="lato_regular.ttf"/>
+</RelativeLayout>

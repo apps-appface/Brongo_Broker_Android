@@ -73,10 +73,8 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
     private int status = 50;
     private int apiCode=0;
     private String lead_mobile,propertyId;
-    private static ArrayList<ApiModel.BuyAndRentModel> itemList = new ArrayList<>();
     private static ViewListener viewListener1;
     private int screenWidth,screenHeight,remaining=10;
-    private RelativeLayout relativeLayout;
     private ArrayList<String> arrayList,timeList,remaininglist;
     private SharedPreferences pref;
     private LinearLayout mLinearLayout,open_deal_comm_linear2,open_deal_comm_linear1;
@@ -178,7 +176,6 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         commission1 = lead_commission+"";
         sub_property_type = getArguments().getString("lead_sub_prop_type","").toUpperCase();
         ScrollView linearLayout = (ScrollView) inflater.inflate(R.layout.fragment_item1, container, false);
-        relativeLayout = linearLayout.findViewById(R.id.open_relative1);
         flowLayout = linearLayout.findViewById(R.id.main_deal_flowlayout);
         feedBackBtn = linearLayout.findViewById(R.id.feedBack_btn);
         mLinearLayout = linearLayout.findViewById(R.id.lead_status_linear);
@@ -233,13 +230,17 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
       open_deal_del_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewListener1.clickBtn(position,bundle);
+                if(viewListener1 != null && bundle != null ) {
+                    viewListener1.clickBtn(position, bundle);
+                }
             }
         });
       feedBackBtn.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              viewListener1.feedBackClick(position,bundle);
+              if(viewListener1 != null) {
+                  viewListener1.feedBackClick(position, bundle);
+              }
           }
       });
         matching_properties.setOnClickListener(new View.OnClickListener() {
@@ -342,7 +343,9 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                 if(position1 == arrayList.size()-1){
                                     if (!isClientRated) {
                                         //Utils.showAlert("","Please give feedback first !",context);
-                                        viewListener1.alert("Please give feedback first !");
+                                        if(viewListener1 != null) {
+                                            viewListener1.alert("Please give feedback first !");
+                                        }
                                     } else {
                                         feedBackBtn.setVisibility(View.GONE);
                                         statusChangedDialog(position1, arrayList.get(status), arrayList.get(status + 1));
@@ -351,7 +354,9 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                     statusChangedDialog(position1, arrayList.get(status), arrayList.get(status + 1));
                                 }
                             } else {
-                                viewListener1.alert("First select status '" + arrayList.get(status + 1) + "'");
+                                if(viewListener1 != null) {
+                                    viewListener1.alert("First select status '" + arrayList.get(status + 1) + "'");
+                                }
                             }
                         }
                     });
@@ -459,9 +464,13 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                     int statusCode = jsonObject.optInt("statusCode");
                                     if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                         new AllUtils().getTokenRefresh(context);
-                                        viewListener1.alert("please try again");
+                                        if(viewListener1 != null) {
+                                            viewListener1.alert("please try again");
+                                        }
                                     } else {
-                                        viewListener1.alert(message);
+                                        if(viewListener1 != null) {
+                                            viewListener1.alert(message);
+                                        }
                                     }
 
                                 } catch (IOException | JSONException e) {
@@ -536,8 +545,10 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                     String message = jsonObject.optString("message");
                                     int statusCode = jsonObject.optInt("statusCode");
                                     if (statusCode == 200 && message.equalsIgnoreCase("Lead Status Updated Successfully")) {
-                                       viewListener1.alert(message);
-                                       viewListener1.refreshData();
+                                        if(viewListener1 != null) {
+                                            viewListener1.alert(message);
+                                            viewListener1.refreshData();
+                                        }
                                     }
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
@@ -550,9 +561,13 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                                     int statusCode = jsonObject.optInt("statusCode");
                                     if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                         new AllUtils().getTokenRefresh(context);
-                                        viewListener1.alert("please try again");
+                                        if(viewListener1 != null) {
+                                            viewListener1.alert("please try again");
+                                        }
                                     } else {
-                                        viewListener1.alert(message);
+                                        if(viewListener1 != null) {
+                                            viewListener1.alert(message);
+                                        }
                                     }
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();

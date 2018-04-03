@@ -10,6 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <android.support.v7.widget.Toolbar
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -49,11 +50,23 @@
             android:text="Verification"
             android:textColor="@color/appColor"
             />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+           android:src="@drawable/ic_refresh"
+            android:id="@+id/verification_refresh_btn"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/bp_back_padding"
+            />
     </RelativeLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/verification_swipe">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:padding="@dimen/bp_ten_dp">
         <WebView
             android:layout_width="match_parent"
@@ -72,8 +85,8 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/padding_twenty"
             android:visibility="gone"/>
-
     </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>
 

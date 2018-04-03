@@ -96,7 +96,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 footerHolder.footerText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        footerListener.btnClick();
+                        if(footerListener != null) {
+                            footerListener.btnClick();
+                        }
                     }
                 });
             } else if (holder instanceof ItemViewHolder) {
@@ -138,16 +140,16 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public HeaderViewHolder(View view) {
             super(view);
-            count_one = (TextView) view.findViewById(R.id.one_star_count);
-            progress_one = (ProgressBar)view.findViewById(R.id.review_progress1);
-            count_two = (TextView) view.findViewById(R.id.two_star_count);
-            progress_two = (ProgressBar)view.findViewById(R.id.review_progress2);
-            count_three = (TextView) view.findViewById(R.id.three_star_count);
-            progress_three = (ProgressBar)view.findViewById(R.id.review_progress3);
-            count_four = (TextView) view.findViewById(R.id.four_star_count);
-            progress_four = (ProgressBar)view.findViewById(R.id.review_progress4);
-            count_five = (TextView) view.findViewById(R.id.five_star_count);
-            progress_five = (ProgressBar)view.findViewById(R.id.review_progress5);
+            count_one =  view.findViewById(R.id.one_star_count);
+            progress_one = view.findViewById(R.id.review_progress1);
+            count_two =  view.findViewById(R.id.two_star_count);
+            progress_two = view.findViewById(R.id.review_progress2);
+            count_three =  view.findViewById(R.id.three_star_count);
+            progress_three = view.findViewById(R.id.review_progress3);
+            count_four =  view.findViewById(R.id.four_star_count);
+            progress_four = view.findViewById(R.id.review_progress4);
+            count_five =  view.findViewById(R.id.five_star_count);
+            progress_five = view.findViewById(R.id.review_progress5);
         }
     }
 
@@ -156,7 +158,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public FooterViewHolder(View view) {
             super(view);
-            footerText = (TextView) view.findViewById(R.id.footer_text);
+            footerText =  view.findViewById(R.id.footer_text);
         }
     }
 
@@ -167,11 +169,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            review1 = (TextView) itemView.findViewById(R.id.review_review1);
-            comment = (TextView) itemView.findViewById(R.id.review_comment);
-            review_time = (TextView) itemView.findViewById(R.id.review_child_time);
-            flowLayout = (FlowLayout)itemView.findViewById(R.id.review_flowlayout);
-            review_ratingbar = (RatingBar)itemView.findViewById(R.id.review_child_ratingbar);
+            review1 =  itemView.findViewById(R.id.review_review1);
+            comment =  itemView.findViewById(R.id.review_comment);
+            review_time =  itemView.findViewById(R.id.review_child_time);
+            flowLayout = itemView.findViewById(R.id.review_flowlayout);
+            review_ratingbar = itemView.findViewById(R.id.review_child_ratingbar);
         }
     }
     public interface FooterListener{
@@ -185,12 +187,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             try {
                 final int position = i;
                 View layout2 = LayoutInflater.from(context).inflate(R.layout.review_text, flowlayout, false);
-                TextView review = (TextView)layout2.findViewById(R.id.review_text_review);
+                TextView review = layout2.findViewById(R.id.review_text_review);
                 review.setText(arrayList.get(i));
                 flowlayout.addView(layout2);
             } catch (Exception e) {
                 e.printStackTrace();
-                String error = e.toString();
             }
         }
     }

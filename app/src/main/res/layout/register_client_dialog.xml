@@ -87,6 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="CLIENT NAME"
+            android:includeFontPadding="false"
             android:inputType="textCapWords"
             android:textColor="@color/edit_text_color"
             app:backgroundTint="@color/black" />
@@ -95,6 +96,7 @@
         android:id="@+id/input_layout_client_mobile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="MOBILE NUMBER"
         android:layout_marginTop="@dimen/dialog_margin_normal"
         android:textColorHint="@color/edit_hint_color">
 
@@ -102,16 +104,24 @@
             android:id="@+id/client_mobile_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="MOBILE NUMBER"
             android:inputType="phone"
             android:maxLength="10"
             android:textColor="@color/edit_text_color"
-            app:backgroundTint="@color/black" />
+            app:backgroundTint="@color/black"
+            android:includeFontPadding="false"/>
     </android.support.design.widget.TextInputLayout>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mobile_register_check"
+            android:text="Visible to builder"
+            android:checked="true"
+            />
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_client_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="EMAIL ID"
         android:layout_marginTop="@dimen/dialog_margin_normal"
         android:textColorHint="@color/edit_hint_color">
 
@@ -119,13 +129,18 @@
             android:id="@+id/client_email_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="EMAIL ID"
             android:inputType="textEmailAddress"
             android:textColor="@color/edit_text_color"
-            app:backgroundTint="@color/black" />
+            app:backgroundTint="@color/black"
+            android:includeFontPadding="false"/>
     </android.support.design.widget.TextInputLayout>
-    </LinearLayout>
-        </ScrollView>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/email_register_check"
+            android:text="Visible to builder"
+            android:checked="true"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -155,5 +170,8 @@
                 android:layout_marginRight="@dimen/dialog_margin_normal"/>
 
         </LinearLayout>
+    </LinearLayout>
+        </ScrollView>
+
     </LinearLayout>
 </RelativeLayout>

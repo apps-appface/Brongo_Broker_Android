@@ -9,11 +9,15 @@
     android:gravity="top"
     android:background="@color/white"
 >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/notification_parent_linear">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:id="@+id/notification_parent_linear"
             android:padding="@dimen/builder_small"
             >
             <RelativeLayout
@@ -63,14 +67,12 @@
                 android:visibility="gone"
                 app:customFont="lato_regular.ttf"
                 />
-            <in.brongo.brongo_broker.uiwidget.FlowLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/noti_flowlayout"
-                app:flowDirection="leftToRight"
+                android:orientation="vertical"
+                android:id="@+id/noti_key_linear"
                 android:layout_marginTop="@dimen/builder_small"
-                app:elementSpacing="@dimen/element_spacing"
-                app:lineSpacing="@dimen/builder_small"
                 android:layout_alignLeft="@+id/know_more"
                 android:layout_below="@+id/know_more"
                 android:visibility="gone"
@@ -79,24 +81,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_alignLeft="@+id/noti_flowlayout"
-                android:layout_below="@+id/noti_flowlayout"
+                android:layout_alignLeft="@+id/noti_key_linear"
+                android:layout_below="@+id/noti_key_linear"
                 android:layout_marginTop="@dimen/builder_normal"
                 android:id="@+id/builder_view_linear"
-                android:visibility="gone">
+                android:visibility="visible">
                 <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/subplan_btn_height"
                     android:id="@+id/notification_reject"
                     android:textColor="@color/white"
                     android:background="@drawable/gray_dialog_btn"
                     android:layout_marginRight="@dimen/builder_normal"
                     android:text="Reject" />
                 <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/subplan_btn_height"
                     android:id="@+id/notification_proceed"
                     android:textColor="@color/white"
                     android:layout_marginLeft="@dimen/builder_normal"
@@ -104,9 +104,8 @@
                     android:text="Proceed"
                     android:visibility="gone"/>
                 <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/subplan_btn_height"
                     android:id="@+id/notification_view"
                     android:textColor="@color/white"
                     android:background="@drawable/dialog_button"
@@ -127,25 +126,24 @@
                 android:text="Call"
                 android:visibility="gone"
                 android:layout_below="@+id/builder_view_linear"/>
-
-
-            <in.brongo.brongo_broker.uiwidget.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/builder_small"
-                android:textSize="@dimen/text_size_vsmall"
-                android:textColor="#b3434343"
-                android:layout_alignLeft="@+id/notification_call"
-                android:layout_below="@+id/notification_call"
-                android:id="@+id/notification_time"
-                app:customFont="lato_regular.ttf"
-                />
         </RelativeLayout>
+    <in.brongo.brongo_broker.uiwidget.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/builder_small"
+        android:textSize="@dimen/text_size_vsmall"
+        android:textColor="#b3434343"
+       android:layout_gravity="right"
+        android:layout_marginRight="@dimen/builder_small"
+        android:layout_marginBottom="@dimen/builder_small"
+        android:id="@+id/notification_time"
+        app:customFont="lato_regular.ttf"
+        />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_small"
         android:layout_marginTop="@dimen/builder_small"
-        android:layout_below="@+id/notification_time"
         android:background="@color/round_empty_gray"/>
 </LinearLayout>

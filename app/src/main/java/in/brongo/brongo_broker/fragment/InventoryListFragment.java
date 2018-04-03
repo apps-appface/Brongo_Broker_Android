@@ -24,6 +24,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -81,6 +83,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
     private int taskcompleted =0;
     private int count = 0;
     boolean isVisible;
+    private boolean isMobileVisible,isEmailVisible;
     ArrayAdapter<String> clientAdapter;
     private String builderMessage="";
     private boolean shouldMessageShown = false;
@@ -508,12 +511,15 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
         }
     }
     private void builder_registerDialog(final BuilderModel.BuilderObject builderObject){
+      isMobileVisible=true;
+      isEmailVisible = true;
+        mobile = client = email="";
         try {
             isVisible = false;
             final Dialog dialog = new Dialog(context);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            dialog.getWindow().setDimAmount(0.5f);
+            //dialog.getWindow().setDimAmount(0.5f);
             dialog.setContentView(R.layout.register_client_dialog);
             dialog.getWindow().setLayout(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -525,6 +531,8 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
             final TextInputLayout email_layout  = dialog.findViewById(R.id.input_layout_client_email);
             final TextInputLayout mobile_layout  = dialog.findViewById(R.id.input_layout_client_mobile);
             final EditText client_mobile = dialog.findViewById(R.id.client_mobile_register);
+            final CheckBox email_checkbox = dialog.findViewById(R.id.email_register_check);
+            final CheckBox mobile_checkbox = dialog.findViewById(R.id.mobile_register_check);
             MaterialBetterSpinner client_spinner = dialog.findViewById(R.id.inventory_spinner_client1);
             Button register_btn = dialog.findViewById(R.id.client_register_register);
             Button register_cancel_btn = dialog.findViewById(R.id.client_register_cancel);
@@ -532,10 +540,14 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
             client_spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    mobile = client = email="";
-                    mobile = clientDetails_list.get(position).getMobileNo();
+                    //mobile = clientDetails_list.get(position).getMobileNo();
                     client = clientDetails_list.get(position).getFirstName();
-                    email = clientDetails_list.get(position).getEmailId();
+                    //email = clientDetails_list.get(position).getEmailId();
+                    client_name.setText(client);
+                    client_register_linear.setVisibility(View.GONE);
+                    manual_register.setVisibility(View.VISIBLE);
+                    clientAdd.setVisibility(View.GONE);
+
                 }
             });
             client_email.addTextChangedListener(new TextWatcher() {
@@ -593,40 +605,94 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                         mobile_layout.setErrorEnabled(false);
                     }else
                     {
-                        mobile = phone;
+                        mobile = "";
                         mobile_layout.setError("Invalid Mobile number");
                         mobile_layout.setErrorEnabled(true);
                     }
                 }
             });
-
+            email_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        isEmailVisible = true;
+                    }else{
+                        isEmailVisible = false;
+                        if(!isMobileVisible){
+                            mobile_checkbox.setChecked(true);
+                        }
+                    }
+                }
+            });
+            mobile_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        isMobileVisible = true;
+                    }else{
+                        isMobileVisible = false;
+                        if(!isEmailVisible){
+                            email_checkbox.setChecked(true);
+                        }
+                    }
+                }
+            });
             clientAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(!isVisible){
-                        isVisible=true;
-                        mobile = client = email="";
                         client_register_linear.setVisibility(View.GONE);
                         manual_register.setVisibility(View.VISIBLE);
                         clientAdd.setVisibility(View.GONE);
-                    }else{
-                        isVisible = false;
-                    }
+                        client_email.setText("");
+                        client_mobile.setText("");
+                        client_name.setText("");
                 }
             });
             register_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(!mobile.equalsIgnoreCase("")){
-                        if(mobile.length() == 10 && mobile.startsWith("6") || mobile.startsWith("7") || mobile.startsWith("8") || mobile.startsWith("9")){
-                            callRegisterApi(builderObject,mobile,client,email);
-                        }else{
-                            Utils.setSnackBar(parentLayout,"Invalid mobile Number");
+                    client = client_name.getText().toString();
+                        if ((!mobile.equalsIgnoreCase("") || (email.length() > 0))&& (client.length() > 0)) {
+                            if(mobile.length()>0 && email.length()>0) {
+                                if(!(!isEmailVisible && ! isMobileVisible)){
+                                    callRegisterApi(builderObject);
+                                    dialog.dismiss();
+
+                                }else{
+                                    Utils.setSnackBar(parentLayout, "Select atleast one checkbox");
+                                }
+                            }else{
+                            if (mobile.length() > 0) {
+                                    if (isEmailVisible) {
+                                        Utils.setSnackBar(parentLayout, "Email should not be empty");
+                                    } else {
+                                        if (isMobileVisible) {
+                                            callRegisterApi(builderObject);
+                                            dialog.dismiss();
+                                        } else {
+                                            Utils.setSnackBar(parentLayout, "Select mobile visibility checkbox");
+                                        }
+                                    }
+                            } else {
+                                if (isMobileVisible) {
+                                    Utils.setSnackBar(parentLayout, "Mobile should not be empty");
+                                } else {
+                                    if (isEmailVisible) {
+                                        callRegisterApi(builderObject);
+                                        dialog.dismiss();
+                                    } else {
+                                        Utils.setSnackBar(parentLayout, "Select email visibility checkbox");
+                                    }
+                                }
+                            }
                         }
-                    }else {
-                            Utils.setSnackBar(parentLayout, "Data should not be empty");
-                    }
-                    dialog.dismiss();
+                        } else {
+                            if (client.length() == 0) {
+                                Utils.setSnackBar(parentLayout, "Client Name should not be empty");
+                            } else {
+                                Utils.setSnackBar(parentLayout, "Either Mobile Number or Email is mandatory");
+                            }
+                        }
                 }
             });
             register_cancel_btn.setOnClickListener(new View.OnClickListener() {
@@ -641,17 +707,19 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
             e.printStackTrace();
         }
     }
-    private void callRegisterApi(final BuilderModel.BuilderObject builderObject, final String mobile_no, final String name, final String email) {
+    private void callRegisterApi(final BuilderModel.BuilderObject builderObject) {
         try {
             if (Utils.isNetworkAvailable(context)) {
-                Utils.LoaderUtils.showLoader(context);
                 ApiModel.BuilderAcceptModel builderRegisterModel = new ApiModel.BuilderAcceptModel();
                 builderRegisterModel.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
                 builderRegisterModel.setPropertyId(builderObject.getPropertyId());
                 builderRegisterModel.setEmailId(email);
-                builderRegisterModel.setMobileNo(mobile_no);
-                builderRegisterModel.setName(name);
+                builderRegisterModel.setMobileNo(mobile);
+                builderRegisterModel.setName(client);
                 builderRegisterModel.setBuilderId(builderObject.getUserId());
+                builderRegisterModel.setEmailVisibility(isEmailVisible);
+                builderRegisterModel.setMobileNoVisibility(isMobileVisible);
+                Utils.LoaderUtils.showLoader(context);
                 RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
                 String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
                 String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");

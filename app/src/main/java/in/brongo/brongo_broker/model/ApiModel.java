@@ -1561,11 +1561,11 @@ public class ApiModel {
             this.status = status;
         }
 
-        public long getBudgetRange() {
+        public String getBudgetRange() {
             return budgetRange;
         }
 
-        public void setBudgetRange(long budgetRange) {
+        public void setBudgetRange(String budgetRange) {
             this.budgetRange = budgetRange;
         }
 
@@ -1612,7 +1612,7 @@ public class ApiModel {
             isRead = read;
         }
 
-        long budgetRange;
+        String budgetRange;
         String projectType;
         String projectStatus;
         String planType;
@@ -2326,7 +2326,25 @@ public class ApiModel {
 
         public static class BuilderAcceptModel{
         String userId;
+        boolean mobileNoVisibility;
 
+            public boolean isMobileNoVisibility() {
+                return mobileNoVisibility;
+            }
+
+            public void setMobileNoVisibility(boolean mobileNoVisibility) {
+                this.mobileNoVisibility = mobileNoVisibility;
+            }
+
+            public boolean isEmailVisibility() {
+                return emailVisibility;
+            }
+
+            public void setEmailVisibility(boolean emailVisibility) {
+                this.emailVisibility = emailVisibility;
+            }
+
+            boolean emailVisibility;
             public String getUserId() {
                 return userId;
             }

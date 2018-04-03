@@ -44,7 +44,7 @@ public class RetrofitBuilders {
         OkHttpClient myOkhtppClient = getOkhttpResponse();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .client(myOkhtppClient)
+//                .client(myOkhtppClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         return retrofit.create(RetrofitAPIs.class);
@@ -82,7 +82,7 @@ public class RetrofitBuilders {
         OkHttpClient okhtppClient = getOkhttpAction();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .client(okhtppClient)
+                //.client(okhtppClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         return retrofit.create(RetrofitAPIs.class);

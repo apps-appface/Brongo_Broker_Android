@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +42,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import in.brongo.brongo_broker.R;
 import in.brongo.brongo_broker.adapter.HorizontalAdapter;
@@ -55,7 +53,6 @@ import in.brongo.brongo_broker.util.AppConstants;
 import in.brongo.brongo_broker.util.RetrofitAPIs;
 import in.brongo.brongo_broker.util.RetrofitBuilders;
 import in.brongo.brongo_broker.util.Utils;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -442,6 +439,8 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                                     String message = jsonObject.optString("message");
                                     if (message.equalsIgnoreCase("Broker Already Exist with this Mobile Number")) {
                                         phone_signup_layout.setError("Phone Number already Exists");
+                                    }else if(statusCode == 412) {
+                                        notRegistered(message);
                                     }else {
                                         Utils.setSnackBar(parentLayout, message);
                                     }
@@ -726,6 +725,34 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private void notRegistered(String message){
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
+        dialog.setContentView(R.layout.client_broker_dialog);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        TextView dialog_title = dialog.findViewById(R.id.poc_dialog_title);
+        ImageView dialog_cancel = dialog.findViewById(R.id.client_broker_dialog_close);
+        Button dialog_btn = dialog.findViewById(R.id.poc_dialog_btn);
+        dialog_title.setText(message);
+        dialog_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SignUpActivity.this, Menu_Activity.class);
+                i.putExtra("frgToLoad", "ContactFragment");
+                startActivity(i);
+                finish();
+                dialog.dismiss();
+            }
+        });
+        dialog_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
 }

@@ -4,10 +4,16 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.http.SslError;
 import android.os.Build;
+import android.support.v4.widget.ImageViewCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -21,16 +27,17 @@ import in.brongo.brongo_broker.util.AppConstants;
 import in.brongo.brongo_broker.util.Utils;
 
 public class VerificationActivity extends AppCompatActivity {
-    private ImageView verification_back;
+    private ImageView verification_back,refresh_btn;
     private WebView verification_webview;
     private Bundle bundle;
+    private SwipeRefreshLayout refresh_layout;
     private Button ok_btn;
     private TextView verification_title;
     private LinearLayout parentLayout;
     private SharedPreferences pref;
     private boolean isLoading = false;
     private Context context;
-    private String title;
+    private String title,currentUrl="";
     //private String weburl = "https://prod.brongo.in/verification/Brongo/#/step1";  // for production
     private String weburl = "http://18.221.178.146:8080/verification/Brongo/#/step1";  //for development
     @Override
@@ -52,16 +59,41 @@ public class VerificationActivity extends AppCompatActivity {
                 finish();
             }
         });
+        refresh_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verification_webview.reload();
+                if(!isLoading){
+                    Utils.LoaderUtils.showLoader(context);
+                    isLoading = true;
+                }
+            }
+        });
+        refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh_layout.setRefreshing(false);
+//                VerificationActivity.this.verification_webview.loadUrl(currentUrl);
+               verification_webview.reload();
+                if(!isLoading){
+                    Utils.LoaderUtils.showLoader(context);
+                    isLoading = true;
+                }
+            }
+        });
     }
     private void initialise(){
         try {
             context = this;
+            currentUrl = weburl;
             parentLayout = findViewById(R.id.verification_activity_linear);
             pref = getSharedPreferences(AppConstants.PREF_NAME,0);
+            refresh_layout = findViewById(R.id.verification_swipe);
             String broker_mobile = pref.getString(AppConstants.MOBILE_NUMBER,"");
             weburl = weburl+"?bmo="+broker_mobile;
             verification_title = findViewById(R.id.verification_title);
             verification_back = findViewById(R.id.toolbar_verification_back);
+            refresh_btn = findViewById(R.id.verification_refresh_btn);
             verification_webview = findViewById(R.id.verification_webview);
             verification_webview.setWebViewClient(new MyBrowser());
             verification_title.setText("Verification");
@@ -91,15 +123,35 @@ public class VerificationActivity extends AppCompatActivity {
             enableOkButton(request.getUrl().toString());
             return true;
         }
+        @Override
         public void onPageFinished(WebView view, String url) {
             try {
+//                refresh_btn.setVisibility(View.GONE);
                 if (isLoading){
                     Utils.LoaderUtils.dismissLoader();
                     isLoading = false;
                 }
+                currentUrl = url;
                 enableOkButton(url);
             }catch(Exception exception){
                 exception.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            if (isLoading){
+                Utils.LoaderUtils.dismissLoader();
+                isLoading = false;
+            }
+        }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            super.onReceivedSslError(view, handler, error);
+            if (isLoading){
+                Utils.LoaderUtils.dismissLoader();
+                isLoading = false;
             }
         }
     }
@@ -115,7 +167,7 @@ public class VerificationActivity extends AppCompatActivity {
             verification_webview.getSettings().setDomStorageEnabled(true);
             verification_webview.getSettings().setLoadWithOverviewMode(true);
             verification_webview.getSettings().setUseWideViewPort(true);
-            verification_webview.loadUrl(weburl);
+            verification_webview.loadUrl(currentUrl);
         } catch (Exception e) {
             e.printStackTrace();
         }

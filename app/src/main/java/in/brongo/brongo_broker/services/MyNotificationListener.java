@@ -64,6 +64,7 @@ public class MyNotificationListener extends FirebaseMessagingService {
 
         if (MobiComPushReceiver.isMobiComPushNotification(remoteMessage.getData())) {
             MobiComPushReceiver.processMessageAsync(this, remoteMessage.getData());
+            Log.i("NOTITYPE","chat_notification");
             return;
         } else {
             editor = pref.edit();
@@ -122,9 +123,6 @@ public class MyNotificationListener extends FirebaseMessagingService {
                         //createNotification();
                         break;
                     default:
-                        if (!isAppIsInBackground(context)) {
-                            backgroundNotification(remoteMessage);
-                        }
                         defaultNotification(remoteMessage);
                 }
             }

@@ -63,8 +63,8 @@ import in.brongo.brongo_broker.activity.VenueActivity;
 
             /***** Get each Model object from Arraylist ********/
             try {
-                TextView label   = (TextView)row.findViewById(R.id.spinner_header);
-                TextView sub     = (TextView)row.findViewById(R.id.spinner_child);
+                TextView label   = row.findViewById(R.id.spinner_header);
+                TextView sub     = row.findViewById(R.id.spinner_child);
                 // Set values for spinner each row
                 label.setText(data.get(position).toString());
                 sub.setText(countList.get(position)+" available");

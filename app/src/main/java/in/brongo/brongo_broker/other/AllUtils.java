@@ -250,7 +250,9 @@ public class AllUtils implements NoInternetTryConnectListener {
                                 Log.i("tokenis", newToken);
                                 pref.edit().putString(AppConstants.TOKEN_ACCESS, newToken).commit();
                                 Log.w("POSTMAN", " getTokenRefresh: newToken : " + newToken);
-                                interfaces.onSuccessRes(true);
+                                if(interfaces != null) {
+                                    interfaces.onSuccessRes(true);
+                                }
                             }
                         } else {
                             try {
@@ -260,11 +262,11 @@ public class AllUtils implements NoInternetTryConnectListener {
                                 if(statusCode == 412){
                                     updateDialog(context);
                                 }else {
-                                    interfaces.onSuccessRes(false);
+                                    if(interfaces != null) {
+                                        interfaces.onSuccessRes(false);
+                                    }
                                 }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (JSONException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
@@ -273,7 +275,9 @@ public class AllUtils implements NoInternetTryConnectListener {
                     @Override
                     public void onFailure(Call<TokenModel> call, Throwable t) {
                         String errormessage = t.getMessage().toString();
-                        interfaces.onSuccessRes(false);
+                        if(interfaces != null) {
+                            interfaces.onSuccessRes(false);
+                        }
                         //Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });

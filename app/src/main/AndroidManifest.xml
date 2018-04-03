@@ -42,15 +42,15 @@
 
     <application
         android:name=".util.CustomApplicationClass"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoACBar"
-        tools:replace="android:theme">
+        tools:replace="android:theme,android:allowBackup">
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
@@ -145,7 +145,7 @@
 
         <meta-data
             android:name="com.applozic.application.key"
-            android:value="32379970215f70dcb6a6e150693b60026" /> <!-- Applozic Application Key -->
+            android:value="@string/applozic_key_dev"/> <!-- Applozic Application Key -->
         <meta-data
             android:name="com.applozic.mobicomkit.notification.smallIcon"
             android:resource="@drawable/logo" /> <!-- Launcher white Icon -->

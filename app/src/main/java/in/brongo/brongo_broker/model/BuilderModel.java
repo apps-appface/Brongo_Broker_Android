@@ -57,6 +57,33 @@ public class BuilderModel {
         String dimensionsOfBedRoom;
         String projectStatus;
         String availableStatus;
+        ArrayList<String> bedRoomType;
+
+        public ArrayList<String> getBedRoomType() {
+            return bedRoomType;
+        }
+
+        public void setBedRoomType(ArrayList<String> bedRoomType) {
+            this.bedRoomType = bedRoomType;
+        }
+
+        public String getBudget() {
+            return budget;
+        }
+
+        public void setBudget(String budget) {
+            this.budget = budget;
+        }
+
+        public int getLandArea() {
+            return landArea;
+        }
+
+        public void setLandArea(int landArea) {
+            this.landArea = landArea;
+        }
+
+        String budget;
 
         public String getBuilderId() {
             return builderId;
@@ -215,15 +242,6 @@ public class BuilderModel {
         }
         String status;
         String propertyId;
-
-        public float getLandArea() {
-            return landArea;
-        }
-
-        public void setLandArea(float landArea) {
-            this.landArea = landArea;
-        }
-
         public float getPricePerSQFT() {
             return pricePerSQFT;
         }
@@ -232,7 +250,7 @@ public class BuilderModel {
             this.pricePerSQFT = pricePerSQFT;
         }
 
-        float landArea;
+        int landArea;
         int noOfBedRooms;
         float pricePerSQFT;
         int totalBrokers;

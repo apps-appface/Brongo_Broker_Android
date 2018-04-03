@@ -15,45 +15,45 @@
         android:paddingRight="@dimen/dialog_margin_layout"
         android:paddingTop="@dimen/dialog_margin_large"
         android:paddingBottom="@dimen/dialog_margin_layout"
-        android:background="@drawable/edit_border">
+        android:background="@drawable/edit_border">@dimen/dialog_margin_sixty
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="@dimen/dialog_margin_sixty"
+                android:layout_height="@dimen/dialog_margin_sixty"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/logo_colored"/>
         <ImageView
             android:layout_width="@dimen/dialog_margin_sixty"
             android:layout_height="@dimen/dialog_margin_sixty"
             android:padding="@dimen/dialog_margin_large"
             android:src="@drawable/ic_remove"
-            android:id="@+id/poc_dialog_close"
-            android:layout_gravity="right"
+            android:id="@+id/client_broker_dialog_close"
+            android:layout_alignParentRight="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
+        </RelativeLayout>
         <in.brongo.brongo_broker.uiwidget.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#c0ffffff"
-            android:textSize="@dimen/text_size_large"
+            android:textSize="@dimen/text_size_big"
             android:textColor="#88288f"
             android:layout_marginTop="@dimen/dialog_margin_large"
             android:gravity="center"
+            android:id="@+id/poc_dialog_title"
             android:layout_gravity="center_horizontal"
             android:text="Thank you for choosing
 Brongo"
             app:customFont="lato_bold.ttf"
             />
-        <in.brongo.brongo_broker.uiwidget.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:shadowColor="#c0ffffff"
-            android:layout_marginTop="@dimen/dialog_margin_large"
-            android:textSize="@dimen/text_size_normal"
-            android:textColor="#6e6e6e"
-            android:gravity="center_horizontal"
-            android:text="We are not live in this location. We will inform you once we are live"
-            app:customFont="lato_regular.ttf"
-            />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ok Got it!"
+            android:text="Contact Brongo"
             android:paddingLeft="@dimen/btn_padding"
             android:paddingRight="@dimen/btn_padding"
             android:id="@+id/poc_dialog_btn"

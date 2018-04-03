@@ -63,9 +63,9 @@ public class ReferMoreAdapter extends RecyclerView.Adapter<ReferMoreAdapter.Empl
 
         public EmployeeViewHolder(View itemView) {
             super(itemView);
-            refree_name = (TextView) itemView.findViewById(R.id.refree_name);
-            refree_phone = (TextView) itemView.findViewById(R.id.refree_phone);
-            refree_image = (ImageView) itemView.findViewById(R.id.refer_more_image);
+            refree_name =  itemView.findViewById(R.id.refree_name);
+            refree_phone =  itemView.findViewById(R.id.refree_phone);
+            refree_image =  itemView.findViewById(R.id.refer_more_image);
         }
     }
 }

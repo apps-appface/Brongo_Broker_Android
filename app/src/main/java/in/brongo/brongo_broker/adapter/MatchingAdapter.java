@@ -113,8 +113,6 @@ public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
             addView(arrayList.get(position).getLandArea(),holder.builder_flowLayout);
             addView(arrayList.get(position).getPropertyStatus(),holder.builder_flowLayout);
             addView(arrayList.get(position).getSubPropertyType(),holder.builder_flowLayout);
-           // addView(arrayList.get(position).getPropertyType(),holder.builder_flowLayout);
-           // addView(arrayList.get(position).getDimensionsOfBedRoom()+" Sqft",holder.builder_flowLayout);
         }
     } catch (Exception e) {
         e.printStackTrace();
@@ -184,7 +182,7 @@ private class PersonalViewHolder extends RecyclerView.ViewHolder {
         return viewtype;
     }
     private void addView(String text, FlowLayout flowLayout) {
-        if(text != null) {
+        if(text != null && (!text.equalsIgnoreCase("null"))) {
             if (!text.isEmpty()) {
                 try {
                     View layout2 = LayoutInflater.from(context).inflate(R.layout.deal_child, flowLayout, false);

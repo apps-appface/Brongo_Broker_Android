@@ -51,7 +51,7 @@ public class SubmenuAdapter extends RecyclerView.Adapter<SubmenuAdapter.Employee
         Button title;
         public EmployeeViewHolder(View itemView) {
             super(itemView);
-            title = (Button) itemView.findViewById(R.id.legal_item_btn);
+            title =  itemView.findViewById(R.id.legal_item_btn);
 
         }
     }
