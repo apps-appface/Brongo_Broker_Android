@@ -287,5 +287,6 @@
     <dimen name="subplan_margin_small">5dp</dimen>
     <dimen name="subplan_margin_normal">10dp</dimen>
     <dimen name="subplan_btn_height">30dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
 
 </resources>
