@@ -38,18 +38,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#c0ffffff"
-            android:shadowDx="6.123233995736766e-17"
-            android:shadowDy="1"
-
             android:textSize="@dimen/dialog_title_size"
             android:textColor="#88288f"
             android:gravity="center_horizontal"
             android:text="Terms &amp; Conditions"
             app:customFont="lato_bold.ttf"
             />
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          android:gravity="center">
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="300dp">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
 
             <in.brongo.brongo_broker.uiwidget.CustomTextView
                 android:id="@+id/bid_accepted_text"
@@ -57,22 +60,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dialog_margin_large"
                 android:shadowColor="#c0ffffff"
-                android:text="@string/builder_tc"
                 android:textColor="#6e6e6e"
                 android:textSize="@dimen/text_size_normal"
 
                 app:customFont="lato_regular.ttf" />
         </ScrollView>
-        <in.brongo.brongo_broker.uiwidget.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_margin_large"
-            android:textSize="@dimen/text_size_small"
-            android:textColor="#88288f"
-            android:gravity="center_horizontal"
-            android:id="@+id/tcDialog_commission"
-            app:customFont="lato_bold.ttf"
-            />
+          <in.brongo.brongo_broker.uiwidget.CustomTextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/dialog_margin_large"
+              android:textSize="@dimen/text_size_small"
+              android:textColor="#88288f"
+              android:gravity="center_horizontal"
+              android:id="@+id/tcDialog_commission"
+              app:customFont="lato_bold.ttf"
+              />
+      </LinearLayout>
     </LinearLayout>
         <Button
             android:layout_width="wrap_content"

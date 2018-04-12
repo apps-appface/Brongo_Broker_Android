@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ededed"
-    tools:context=".brongo_broker.fragment.SupportFragment">
+    tools:context="in.brongo.brongo_broker.fragment.SupportFragment">
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/support_recycle"
-        android:layout_marginTop="@dimen/supf_margin_normal"></android.support.v7.widget.RecyclerView>
+        android:layout_marginTop="@dimen/supf_margin_normal"/>
 
 </FrameLayout>

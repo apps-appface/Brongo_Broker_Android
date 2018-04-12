@@ -85,8 +85,6 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
     boolean isVisible;
     private boolean isMobileVisible,isEmailVisible;
     ArrayAdapter<String> clientAdapter;
-    private String builderMessage="";
-    private boolean shouldMessageShown = false;
     private Context context;
     public InventoryListFragment() {
         // Required empty public constructor
@@ -118,8 +116,8 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
             builder_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(shouldMessageShown) {
-                        Utils.setSnackBar(parentLayout, builderMessage);
+                    if(builder_list.size() == 0) {
+                        fetchBuilderList();
                     }
                     inventory_add.setVisibility(View.GONE);
                     personal_btn.setBackgroundResource(R.drawable.button_change);
@@ -181,6 +179,11 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
             inventory_toolbar_delete.setVisibility(View.GONE);
             inventory_toolbar_edit.setVisibility(View.GONE);
             toolbar_title.setText("Inventory List");
+            int count = pref.getInt(AppConstants.BUILDER_INVENTORY,0);
+            if (count>0){
+                builder_count.setText(count+"");
+                builder_count.setVisibility(View.VISIBLE);
+            }
             fetchList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -198,7 +201,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                 call.enqueue(new Callback<ApiModel.InventoryModel>() {
                     @Override
                     public void onResponse(Call<ApiModel.InventoryModel> call, Response<ApiModel.InventoryModel> response) {
-                        fetchBuilderList();
+                        Utils.LoaderUtils.dismissLoader();
                         if (response != null) {
                             if (response.isSuccessful()) {
                                 ApiModel.InventoryModel inventoryModel = response.body();
@@ -222,7 +225,6 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                         apicode = 100;
                                         openTokenDialog(context);
                                     }else {
-                                        Utils.LoaderUtils.dismissLoader();
                                         Utils.setSnackBar(parentLayout, message);
                                     }
                                 } catch (IOException | JSONException e) {
@@ -235,8 +237,14 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
 
                     @Override
                     public void onFailure(Call<ApiModel.InventoryModel> call, Throwable t) {
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
                         Utils.LoaderUtils.dismissLoader();
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            apicode = 100;
+                            openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
+
                     }
                 });
             }else{
@@ -251,6 +259,9 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
     private void fetchBuilderList(){
         try {
             if(Utils.isNetworkAvailable(context)) {
+                if(!getActivity().isFinishing()){
+                    Utils.LoaderUtils.showLoader(context);
+                }
                 RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
                 String deviceId = pref.getString(AppConstants.DEVICE_ID, "");
                 String tokenaccess = pref.getString(AppConstants.TOKEN_ACCESS, "");
@@ -271,7 +282,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                         builder_list.clear();
                                         builder_list.addAll(builderList);
                                         inventory_builderAdapter.notifyDataSetChanged();
-                                        count= Integer.parseInt(message);
+                                       /* count= Integer.parseInt(message);
                                         if (count>0){
                                             builder_count.setText(count+"");
                                             builder_count.setVisibility(View.VISIBLE);
@@ -279,7 +290,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                             builder_count.setVisibility(View.GONE);
                                             builder_btn.setBackgroundResource(R.drawable.button_change);
                                             builder_btn.setTextColor(context.getResources().getColor(R.color.appColor));
-                                        }
+                                        }*/
                                     }
                                 }
                                 fetchConnectedClient();
@@ -290,12 +301,11 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                     JSONObject jsonObject = new JSONObject(responseString);
                                     int statusCode = jsonObject.optInt("statusCode");
                                     String message = jsonObject.optString("message");
-                                    builderMessage = message;
                                     if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                         apicode = 200;
                                         openTokenDialog(context);
                                     } else {
-                                        shouldMessageShown = true;
+                                        Utils.setSnackBar(parentLayout, message);
                                     }
                                 } catch (IOException | JSONException e) {
                                     e.printStackTrace();
@@ -307,8 +317,13 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
 
                     @Override
                     public void onFailure(Call<BuilderModel.BuilderDetailsModel> call, Throwable t) {
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
                         Utils.LoaderUtils.dismissLoader();
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            apicode = 200;
+                            openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{
@@ -351,6 +366,10 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
             dialog.setContentView(R.layout.dialog_tc);
             final ImageView cross_btn = dialog.findViewById(R.id.tc_close_btn);
             final Button accept_btn = dialog.findViewById(R.id.tcDialog_accept);
+            TextView tc_text = dialog.findViewById(R.id.bid_accepted_text);
+            if(builderObject.getChannelPAgree() != null) {
+                tc_text.setText(builderObject.getChannelPAgree().toString());
+            }
             TextView commission_text = dialog.findViewById(R.id.tcDialog_commission);
             commission_text.setText(builderObject.getCommission()+"% Commission");
             cross_btn.setOnClickListener(new View.OnClickListener() {
@@ -442,7 +461,12 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{
@@ -474,7 +498,7 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                 ApiModel.ResponseModel responseModel = response.body();
                                 int statusCode = responseModel.getStatusCode();
                                 String message = responseModel.getMessage();
-                                if (statusCode == 200 && message.equalsIgnoreCase("Builder And Broker Connection Is Established")) {
+                                if (statusCode == 200) {
                                     fetchBuilderList();
                                     Utils.setSnackBar(parentLayout,message);
                                 }
@@ -500,7 +524,12 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                     @Override
                     public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{
@@ -759,7 +788,12 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                     @Override
                     public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{
@@ -842,7 +876,6 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                                     JSONObject jsonObject = new JSONObject(responseString);
                                     int statusCode = jsonObject.optInt("statusCode");
                                     String message = jsonObject.optString("message");
-                                    builderMessage = message;
                                     if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
                                         apicode = 300;
                                         openTokenDialog(context);
@@ -859,8 +892,13 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
 
                     @Override
                     public void onFailure(Call<ClientDetailsModel.ConnectedClientModel> call, Throwable t) {
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
                         Utils.LoaderUtils.dismissLoader();
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                           apicode = 300;
+                           openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{
@@ -925,7 +963,12 @@ public class InventoryListFragment extends Fragment implements NoInternetTryConn
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{

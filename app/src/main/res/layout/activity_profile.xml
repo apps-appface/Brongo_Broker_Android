@@ -646,7 +646,7 @@ Certificate"
 
                     <Button
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/subplan_btn_height"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="end"
                         android:paddingRight="@dimen/pa_margin_normal"
@@ -756,7 +756,7 @@ Certificate"
                     />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/subplan_btn_height"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="end"
                     android:paddingRight="@dimen/pa_margin_normal"

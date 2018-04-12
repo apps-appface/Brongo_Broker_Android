@@ -1,13 +1,23 @@
 package in.brongo.brongo_broker.activity;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.DownloadListener;
+import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -16,11 +26,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import in.brongo.brongo_broker.R;
 import in.brongo.brongo_broker.model.ApiModel;
@@ -43,8 +56,12 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
     private LinearLayout parentLayout;
     private SharedPreferences pref;
     private boolean isLoading = false;
+  private int REQUEST_READABLE_AND_WRITABLE_PERMISSIONS = 111;
     private Context context;
+    private List<String> listPermissionsNeeded;
+    private DownloadManager downloadManager;
     private String title,prop_id,user_id,weburl = "";
+    private String downloadurl = "";
 
 
     @Override
@@ -59,6 +76,7 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
             user_id= getIntent().getExtras().getString("user_id");
             weburl = getIntent().getExtras().getString("url");
         }
+        downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         setContentView(R.layout.activity_builder_project);
         initialise();
 
@@ -111,7 +129,7 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
             project_back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finish();
+                   onBackPressed();
                 }
             });
         } catch (Exception e) {
@@ -150,14 +168,30 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
         @SuppressWarnings("deprecation")
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
+            if(url.contains(".pdf") || url.contains(".jpg") || url.contains(".png")){
+                /*String googleDocs = "https://docs.google.com/viewer?url=";
+                view.loadUrl(googleDocs + url);*/
+            downloadurl = url;
+            checkpermission();
+
+            }else {
+                view.loadUrl(url);
+            }
             return true;
         }
 
         @TargetApi(Build.VERSION_CODES.N)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            view.loadUrl(request.getUrl().toString());
+            String url = request.getUrl().toString();
+            if(url.contains(".pdf") || url.contains(".jpg") || url.contains(".png")){
+               /* String googleDocs = "https://docs.google.com/viewer?url=";
+                view.loadUrl(googleDocs + url);*/
+                downloadurl = url;
+                checkpermission();
+            }else {
+                view.loadUrl(url);
+            }
             return true;
         }
         public void onPageFinished(WebView view, String url) {
@@ -229,7 +263,13 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
                     @Override
                     public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.showToast(context, t.getMessage().toString(),"Failure" );
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            if(!isFinishing()) {
+                                openTokenDialog(context);
+                            }
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{
@@ -268,4 +308,92 @@ public class BuilderProjectActivity extends Activity implements NoInternetTryCon
             }
         }
     }
-}
+
+    @Override
+    public void onBackPressed() {
+        if (project_webview.canGoBack()) {
+            project_webview.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void downloadFile(String url){
+        Uri downloadUri = Uri.parse(url);
+        String fileName=url.substring(url.lastIndexOf("/")+1);
+        DownloadManager.Request request = new DownloadManager.Request(downloadUri);
+        request.setNotificationVisibility(request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDescription("Downloading a file");
+        long id = downloadManager.enqueue(request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |DownloadManager.Request.NETWORK_MOBILE) .setAllowedOverRoaming(false)
+                .setTitle(fileName).setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,fileName));
+    }
+    private boolean checkReadableAndWritablePermission() {
+        int permissionStorage = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int permissionWritableExternal = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        listPermissionsNeeded = new ArrayList<>();
+        if (permissionStorage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+        if (permissionWritableExternal != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        return listPermissionsNeeded.isEmpty();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestReadableAndWritablePermission() {
+        requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_READABLE_AND_WRITABLE_PERMISSIONS);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+
+        if (requestCode == REQUEST_READABLE_AND_WRITABLE_PERMISSIONS) {
+            if (permissions.length > 1) {
+                if (grantResults.length > 0) {
+                    boolean ReadablePermission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean WritablePermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    if (ReadablePermission && WritablePermission) {
+                        downloadFile(downloadurl);
+                    } else {
+                        if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) && !shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                           if(!isFinishing()){
+                               Utils.permissionDialog(context);
+                           }
+                        } else {
+                            Utils.setSnackBar(parentLayout, "Permission Denied");
+                        }
+                    }
+                }
+            } else {
+                if (permissions.length > 0) {
+                    if (grantResults.length > 0) {
+                        boolean permission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                        if (permission) {
+                            downloadFile(downloadurl);
+                        } else {
+                            if (!shouldShowRequestPermissionRationale(permissions[0])) {
+                                if(!isFinishing()){
+                                    Utils.permissionDialog(context);
+                                }
+                            } else {
+                                Utils.setSnackBar(parentLayout, "Permission Denied");
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+    private void checkpermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkReadableAndWritablePermission()) {
+                downloadFile(downloadurl);
+            } else {
+                requestReadableAndWritablePermission();
+            }
+        } else {
+            downloadFile(downloadurl);
+        }
+    }
+    }

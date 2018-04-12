@@ -362,7 +362,7 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
         try {
             final Dialog dialog = new Dialog(PushAlertActivity.this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.walkthrough_back);
             dialog.setContentView(R.layout.reject_popup);
             Window window = dialog.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
@@ -497,8 +497,13 @@ public class PushAlertActivity extends Activity implements NoInternetTryConnectL
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.setSnackBar(parentLayout, t.getMessage().toString());
-                        goToMainPage();
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            apicode = 200;
+                            openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                            goToMainPage();
+                        }
                     }
                 });
             } else {

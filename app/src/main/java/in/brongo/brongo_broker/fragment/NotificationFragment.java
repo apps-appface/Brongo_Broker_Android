@@ -35,6 +35,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import in.brongo.brongo_broker.R;
 import in.brongo.brongo_broker.adapter.NotiAdapter;
@@ -58,6 +59,8 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
     private ArrayList<ApiModel.NotificationChildModel> arrayList;
     private ImageView edit_icon,delete_icon,add_icon;
     private static final int REQUEST_CALL_PERMISSIONS = 222;
+    private List<String> listPermissionsNeeded;
+    private static final int REQUEST_READABLE_AND_WRITABLE_PERMISSIONS = 111;
     private SharedPreferences pref;
     private TextView toolbar_title;
     private Toolbar toolbar;
@@ -193,7 +196,12 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                         notificationAdapter.notifyItemRemoved(arrayList.size());
                     }
                     stopLoader();
-                    Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                    if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                        apiCode = 100;
+                        openTokenDialog(context);
+                    }else {
+                        Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                    }
                 }
             });
         }else{
@@ -284,7 +292,12 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         stopLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{
@@ -383,7 +396,12 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         stopLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{
@@ -418,7 +436,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                 ApiModel.ResponseModel responseModel = response.body();
                                 int statusCode = responseModel.getStatusCode();
                                 String message = responseModel.getMessage();
-                                if (statusCode == 200 && message.equalsIgnoreCase("Builder And Broker Connection Is Established")) {
+                                if (statusCode == 200) {
                                     arrayList.get(position).setStatus("accept");
                                     notificationAdapter.notifyDataSetChanged();
                                     Utils.setSnackBar(parentLayout,message);
@@ -445,7 +463,12 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                     @Override
                     public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                         stopLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{
@@ -517,7 +540,12 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         stopLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{
@@ -537,6 +565,10 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
             dialog.setContentView(R.layout.dialog_tc);
             final ImageView cross_btn = dialog.findViewById(R.id.tc_close_btn);
             final Button accept_btn = dialog.findViewById(R.id.tcDialog_accept);
+            TextView tc_text = dialog.findViewById(R.id.bid_accepted_text);
+            if(notificationChildModel.getChannelPAgree() != null) {
+                tc_text.setText(notificationChildModel.getChannelPAgree().toString());
+            }
             TextView commission_text = dialog.findViewById(R.id.tcDialog_commission);
             if(arrayList.get(position).getCommission() != null) {
                 commission_text.setText(notificationChildModel.getCommission() + "% Commission");
@@ -642,7 +674,7 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                                            @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_CALL_PERMISSIONS: {
+            case REQUEST_CALL_PERMISSIONS:
                 try {
                     if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                         callClient(client_mobile,client_property_id);
@@ -652,8 +684,44 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return;
-            }
+                break;
+            case REQUEST_READABLE_AND_WRITABLE_PERMISSIONS:
+                try {
+                    if (permissions.length > 1) {
+                        if (grantResults.length > 0) {
+                            boolean ReadablePermission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                            boolean WritablePermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                            if (ReadablePermission && WritablePermission) {
+                                //selectImageAlert();
+                            } else {
+                                if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) || !shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                    Utils.permissionDialog(context);
+                                } else {
+                                    Utils.setSnackBar(parentLayout, "Permission Denied");
+                                }
+                            }
+                        }
+                    } else {
+                        if (permissions.length > 0) {
+                            if (grantResults.length > 0) {
+                                boolean permission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                                if (permission) {
+                                   // selectImageAlert();
+                                } else {
+                                    if (!shouldShowRequestPermissionRationale(permissions[0])) {
+                                        Utils.permissionDialog(context);
+                                    } else {
+                                        Utils.setSnackBar(parentLayout, "Permission Denied");
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
         }
     }
     private void call(final String lead_mobile, final String propertyId){
@@ -671,6 +739,28 @@ public class NotificationFragment extends Fragment implements NotiAdapter.CallLi
             }else{
                 callClient(lead_mobile, propertyId);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private boolean checkCameraAndWritablePermission() {
+        int permissionReadableExternal = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int permissionWritableExternal = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        listPermissionsNeeded = new ArrayList<>();
+
+        if (permissionReadableExternal != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+        if (permissionWritableExternal != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        return listPermissionsNeeded.isEmpty();
+    }
+
+    private void requestCameraAndWritablePermission() {
+        try {
+            requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_READABLE_AND_WRITABLE_PERMISSIONS);
         } catch (Exception e) {
             e.printStackTrace();
         }

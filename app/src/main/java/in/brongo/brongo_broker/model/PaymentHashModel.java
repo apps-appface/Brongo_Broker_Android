@@ -24,6 +24,38 @@ public class PaymentHashModel {
     private String propertyId;
     @SerializedName("paymentMode")
     private String paymentMode;
+    @SerializedName("userType")
+    private String userType;
+    @SerializedName("isDevelopment")
+    private int isDevelopment;
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public int getIsDevelopment() {
+        return isDevelopment;
+    }
+
+    public void setIsDevelopment(int isDevelopment) {
+        this.isDevelopment = isDevelopment;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    @SerializedName("paymentId")
+
+    private String paymentId;
 
     public String getAmount() {
         return amount;
@@ -219,6 +251,15 @@ public class PaymentHashModel {
         public float amountToSub;
         public float offers;
         public String name;
+        public String subId;
+
+        public String getSubId() {
+            return subId;
+        }
+
+        public void setSubId(String subId) {
+            this.subId = subId;
+        }
 
         public int getDuration() {
             return duration;

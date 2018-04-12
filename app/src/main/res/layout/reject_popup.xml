@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/drawer_background"
+    android:background="@drawable/walkthrough_back"
     android:padding="@dimen/dialog_margin_large">
     <in.brongo.brongo_broker.uiwidget.CustomTextView
         android:layout_width="match_parent"

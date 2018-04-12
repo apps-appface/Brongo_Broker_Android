@@ -483,7 +483,14 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            if(viewListener1 != null) {
+                                viewListener1.alert("please try again");
+                            }
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             } else {
@@ -579,7 +586,14 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            if(viewListener1 != null) {
+                                viewListener1.alert("please try again");
+                            }
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{

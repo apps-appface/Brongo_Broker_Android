@@ -18,7 +18,7 @@ public class RetrofitBuilders {
 
     private static String SERVER_IP = "https://dev.brongo.in/Brongo/";
     private static String DEVELOPMENT_URL = "http://18.221.178.146:8080/Brongo/";
-    private static String LOCAL_IP = "http://192.168.1.42:8080/Brongo/";
+    private static String LOCAL_IP = "http://192.168.1.16:8080/Brongo/";
     public static final String MAP_ROOT_URL = "https://maps.googleapis.com";
     private static String PRODUCTION_URL = "https://prod.brongo.in/Brongo/";
     private static RetrofitBuilders retrofitBuilders;
@@ -44,7 +44,7 @@ public class RetrofitBuilders {
         OkHttpClient myOkhtppClient = getOkhttpResponse();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-//                .client(myOkhtppClient)
+                .client(myOkhtppClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         return retrofit.create(RetrofitAPIs.class);
@@ -82,7 +82,7 @@ public class RetrofitBuilders {
         OkHttpClient okhtppClient = getOkhttpAction();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                //.client(okhtppClient)
+                .client(okhtppClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         return retrofit.create(RetrofitAPIs.class);

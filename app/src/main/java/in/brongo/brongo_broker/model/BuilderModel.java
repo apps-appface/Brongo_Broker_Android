@@ -41,6 +41,15 @@ public class BuilderModel {
        String _id;
         String userId;
         String url;
+        String channelPAgree;
+
+        public String getChannelPAgree() {
+            return channelPAgree;
+        }
+
+        public void setChannelPAgree(String channelPAgree) {
+            this.channelPAgree = channelPAgree;
+        }
 
         public String getUrl() {
             return url;

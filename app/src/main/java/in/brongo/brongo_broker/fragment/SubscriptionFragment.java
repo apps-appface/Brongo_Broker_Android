@@ -213,8 +213,13 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
 
                     @Override
                     public void onFailure(Call<ApiModel.SubscriptionModel> call, Throwable t) {
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
                         Utils.LoaderUtils.dismissLoader();
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            apicode =100;
+                            openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{
@@ -484,8 +489,13 @@ public class SubscriptionFragment extends Fragment implements NoInternetTryConne
 
                     @Override
                     public void onFailure(Call<PaymentHashModel.CurrentPlanModel> call, Throwable t) {
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
                         Utils.LoaderUtils.dismissLoader();
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            apicode = 200;
+                            openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{

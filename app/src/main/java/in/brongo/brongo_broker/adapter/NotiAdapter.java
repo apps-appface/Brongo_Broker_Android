@@ -131,6 +131,19 @@ public class NotiAdapter extends RecyclerView.Adapter {
                     addView(arrayList.get(position).getProjectStatus(), ((NotificationViewHolder) holder).notification_flowlayout);
                     addView((arrayList.get(position).getCommission() + "% Commission"), ((NotificationViewHolder) holder).notification_flowlayout);
                     addView(budget, ((NotificationViewHolder) holder).notification_flowlayout);
+                    if(arrayList.get(position).getBedRoomType() != null) {
+                        String bedroomType = "";
+                        ArrayList<String> bedlist = new ArrayList<>();
+                        bedlist.addAll(arrayList.get(position).getBedRoomType());
+                        for (int i = 0; i < bedlist.size(); i++) {
+                            if(i == bedlist.size()-1){
+                                bedroomType = bedroomType+bedlist.get(i);
+                            }else{
+                                bedroomType = bedlist.get(i)+",";
+                            }
+                        }
+                        addView(bedroomType, ((NotificationViewHolder) holder).notification_flowlayout);
+                    }
                     if (arrayList.get(position).getStatus().isEmpty()) {
                         ((NotificationViewHolder) holder).noti_view_linear.setVisibility(View.VISIBLE);
                     } else {

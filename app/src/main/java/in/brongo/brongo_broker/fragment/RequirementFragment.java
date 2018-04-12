@@ -175,8 +175,12 @@ public class RequirementFragment extends Fragment implements NoInternetTryConnec
 
                     @Override
                     public void onFailure(Call<ClientDetailsModel.DealModel> call, Throwable t) {
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
                         Utils.LoaderUtils.dismissLoader();
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                           openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{

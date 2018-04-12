@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
     private BroadcastReceiver broadcastReceiver;
     private Toolbar otp_toolbar;
     private LinearLayout goto_register, linear_otp, linear_resend_otp, parentLayout;
-    private TextView resend_otp, register_text, otp_mobile_text, title_text, otp_timer, phone_invalid, otp_invalid, docu_skip;
+    private TextView resend_otp, register_text, otp_mobile_text, title_text, otp_timer, otp_invalid, docu_skip;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private RelativeLayout relative_login;
@@ -159,7 +159,6 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
             register_text = findViewById(R.id.register_text);
             linear_resend_otp = findViewById(R.id.linear_resend_otp);
             otp_timer = findViewById(R.id.login_toolbar).findViewById(R.id.other_toolbar_otp_timer);
-            phone_invalid = findViewById(R.id.invalid_phone);
             otp_invalid = findViewById(R.id.invalid_otp);
             otp_edit3 = findViewById(R.id.otp_edit3);
             otp_edit4 = findViewById(R.id.otp_edit4);
@@ -360,12 +359,6 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                                     String message = jsonObject.optString("message");
                                     if (statusCode == 200 && message.equalsIgnoreCase("OTP Verified Successfully")) {
                                         Utils.setSnackBar(parentLayout, message);
-                                  /*  JSONArray data = jsonObject.getJSONArray("data");
-                                    JSONObject broker = data.getJSONObject(0);
-                                    String brokerImage =  broker.optString("brokerImage");
-                                    editor.putString(AppConstants.USER_PIC,brokerImage);
-                                    editor.commit();
-                                    chatlogin(brokerImage);*/
                                         editor.putBoolean(AppConstants.LOGIN_STATUS, true);
                                         editor.commit();
                                         //new RefreshTokenCall(context,0);
@@ -418,7 +411,6 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    phone_invalid.setVisibility(View.GONE);
                     if (s.length() == 10) {
                         Utils.hideKeyboard(getApplicationContext(), login_phone_edit);
                     }

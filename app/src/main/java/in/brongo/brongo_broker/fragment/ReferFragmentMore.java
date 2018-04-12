@@ -301,7 +301,11 @@ public class ReferFragmentMore extends Fragment implements NoInternetTryConnectL
                     @Override
                     public void onFailure(Call<ApiModel.ReferralData> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                           openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     /*if(pd.isShowing()) {
                         pd.dismiss();
                     }*/

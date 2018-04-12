@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setUpMenu() {
         try {
-            resideMenu.setBackgroundResource(R.drawable.drawer_background);
+            resideMenu.setBackgroundResource(R.drawable.walkthrough_back);
             String firstName = pref.getString(AppConstants.FIRST_NAME, "");
             String lastName = pref.getString(AppConstants.LAST_NAME, "");
             String mobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
@@ -338,6 +338,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     editor.putInt(AppConstants.NO_OF_CLIENT_RATED, homeProfileModel.getData().get(0).getNoOfClientsRated());
                                     editor.putString(AppConstants.PLAN_TYPE, homeProfileModel.getData().get(0).getPlanType());
                                     editor.putFloat(AppConstants.COMMISSION, (float) homeProfileModel.getData().get(0).getcCommission());
+                                    editor.putInt(AppConstants.BUILDER_INVENTORY, homeProfileModel.getData().get(0).getBuilderInventory());
                                     editor.putString(AppConstants.REFERRAL_ID, homeProfileModel.getData().get(0).getReferralId());
                                     editor.putString(AppConstants.IMAGE_BASE_URL, homeProfileModel.getData().get(0).getImageBaseurl());
                                     editor.putInt(AppConstants.REVIEW_COUNT, homeProfileModel.getData().get(0).getNoOfClientsRated());
@@ -376,7 +377,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onFailure(Call<ApiModel.HomeProfileModel> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
                         isLoader = false;
-                        Utils.showToast(context, t.getMessage().toString(), "Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                           apicode = 100 ;
+                           openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             } else {
@@ -454,7 +460,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
                         isLoader = false;
-                        Utils.showToast(context, t.getMessage().toString(), "Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             } else {
@@ -523,9 +534,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Utils.showToast(context, t.getMessage().toString(), "Failure");
                         Utils.LoaderUtils.dismissLoader();
                         isLoader = false;
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             } else {
@@ -606,7 +622,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                                 ArrayList<ApiModel.BuyAndRentModel> buyAndRentList1 = openDealModels.getData().get(0).getBuyAndRent();
                                 ArrayList<ApiModel.BuyAndRentModel> sellAndRentList1 = openDealModels.getData().get(0).getSellAndRentOut();
-
                                 if (buyAndRentList1.size() == 0 && sellAndRentList1.size() == 0) {
                                     no_deal_linear.setVisibility(View.VISIBLE);
                                     deal_linear.setVisibility(View.GONE);
@@ -663,9 +678,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onFailure(Call<ApiModel.OpenDealModels> call, Throwable t) {
-                        Utils.showToast(context, t.getMessage().toString(), "Failure");
                         Utils.LoaderUtils.dismissLoader();
                         isLoader = false;
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                          apicode = 200;
+                          openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             } else {
@@ -790,7 +810,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
                         isLoader = false;
-                        Utils.showToast(context, t.getMessage().toString(), "Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             } else {
@@ -806,7 +831,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             final Dialog dialog = new Dialog(MainActivity.this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.walkthrough_back);
             dialog.setContentView(R.layout.dialog_drop_lead);
             dialog.getWindow().setLayout(WindowManager.LayoutParams.FILL_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -1239,7 +1264,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             final ArrayList<String> rent_list2 = new ArrayList<String>(Arrays.asList("Treated me profession", "clear about Requirement", "Always on time", "Always reachable", "organised"));
             final Dialog dialog = new Dialog(context);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.walkthrough_back);
             dialog.setContentView(R.layout.dialog_client_rating);
             dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
             ImageView rating_client_image = dialog.findViewById(R.id.client_image_rating);
@@ -1471,7 +1496,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
                         isLoader = false;
-                        Utils.showToast(context, t.getMessage().toString(), "Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             } else {

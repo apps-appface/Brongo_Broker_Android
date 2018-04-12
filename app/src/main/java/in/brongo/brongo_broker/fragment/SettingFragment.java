@@ -244,7 +244,11 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                     public void onFailure(Call<ApiModel.SettingPlanModel> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
                         isLoader = false;
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                           openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{
@@ -316,7 +320,12 @@ public class SettingFragment extends Fragment implements NoInternetTryConnectLis
                     public void onFailure(Call<ApiModel.SettingPlanModel> call, Throwable t) {
                         isUpdateRequired = false;
                         setView();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                         Utils.LoaderUtils.dismissLoader();
                         isLoader = false;
                     }

@@ -115,9 +115,7 @@
             </LinearLayout>
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="@dimen/btn_padding"
-                android:paddingLeft="@dimen/btn_padding"
+                android:layout_height="@dimen/subplan_btn_height"
                 android:id="@+id/notification_call"
                 android:textColor="@color/white"
                 android:background="@drawable/dialog_button"

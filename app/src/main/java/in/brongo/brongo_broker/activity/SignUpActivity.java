@@ -553,7 +553,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             isDialogOpen = true;
             final Dialog dialog = new Dialog(context);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.walkthrough_back);
             dialog.setContentView(R.layout.market_dialog);
             dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
             dialog.setCancelable(false);
@@ -729,7 +729,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
     private void notRegistered(String message){
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.walkthrough_back);
         dialog.setContentView(R.layout.client_broker_dialog);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         TextView dialog_title = dialog.findViewById(R.id.poc_dialog_title);

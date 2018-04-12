@@ -233,18 +233,6 @@
                     android:textColor="@color/edit_text_color"
                     android:textSize="@dimen/text_size_normal" />
             </android.support.design.widget.TextInputLayout>
-            <in.brongo.brongo_broker.uiwidget.CustomTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/invalid_phone"
-                android:shadowColor="#73000000"
-                android:textSize="@dimen/text_size_vsmall"
-                android:textColor="#ed1c24"
-                android:text="Not a registered number, register as a new broker."
-                android:layout_below="@+id/input_layout_phone"
-                android:visibility="gone"
-                app:customFont="lato_regular.ttf"/>
-
         </RelativeLayout>
         <CheckBox
             android:id="@+id/loginCheck"

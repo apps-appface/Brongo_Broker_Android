@@ -187,7 +187,12 @@ public class SupportFragment extends Fragment implements NoInternetTryConnectLis
                     @Override
                     public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             } else {

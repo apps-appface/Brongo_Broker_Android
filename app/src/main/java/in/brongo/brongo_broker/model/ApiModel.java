@@ -643,6 +643,15 @@ public class ApiModel {
         String brokerImage;
         String lastName;
         String trumpCard;
+        int builderInventory;
+
+        public int getBuilderInventory() {
+            return builderInventory;
+        }
+
+        public void setBuilderInventory(int builderInventory) {
+            this.builderInventory = builderInventory;
+        }
 
         public String getTrumpCard() {
             return trumpCard;
@@ -869,7 +878,6 @@ public class ApiModel {
     public static class BuyAndRentModel {
         String clientName;
         String clientMobileNo;
-        String meetingLocation;
         String dateOfVisit;
         String timeOfVisit;
         String microMarketName;
@@ -891,13 +899,6 @@ public class ApiModel {
             this.microMarketName = microMarketName;
         }
 
-        public String getMeetingLocation() {
-            return meetingLocation;
-        }
-
-        public void setMeetingLocation(String meetingLocation) {
-            this.meetingLocation = meetingLocation;
-        }
 
         public String getDateOfVisit() {
             return dateOfVisit;
@@ -1483,6 +1484,15 @@ public class ApiModel {
         String clientProfile;
         String userId;
         String builderName;
+        ArrayList<String> bedRoomType;
+
+        public ArrayList<String> getBedRoomType() {
+            return bedRoomType;
+        }
+
+        public void setBedRoomType(ArrayList<String> bedRoomType) {
+            this.bedRoomType = bedRoomType;
+        }
 
         public String getPropertyId() {
             return propertyId;
@@ -1521,6 +1531,15 @@ public class ApiModel {
 
         String dealId;
         String projectName;
+        String channelPAgree;
+
+        public String getChannelPAgree() {
+            return channelPAgree;
+        }
+
+        public void setChannelPAgree(String channelPAgree) {
+            this.channelPAgree = channelPAgree;
+        }
         String location;
         String mobileNo;
         String status;

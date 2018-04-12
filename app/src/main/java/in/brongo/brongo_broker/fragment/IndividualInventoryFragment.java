@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import in.brongo.brongo_broker.R;
 import in.brongo.brongo_broker.activity.MainActivity;
 import in.brongo.brongo_broker.model.ApiModel;
+import in.brongo.brongo_broker.other.AllUtils;
 import in.brongo.brongo_broker.other.NoInternetTryConnectListener;
 import in.brongo.brongo_broker.uiwidget.FlowLayout;
 import in.brongo.brongo_broker.uiwidget.TouchImageView;
@@ -306,7 +307,8 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
                                     String message = jsonObject.optString("message");
                                     int statusCode = jsonObject.optInt("statusCode");
                                     if (statusCode == 417 && message.equalsIgnoreCase("Invalid Access Token")) {
-                                        deleteInventory();
+                                        new AllUtils().getTokenRefresh(context);
+                                        Utils.setSnackBar(parentLayout,"Please try again");
                                     } else {
                                         Utils.setSnackBar(parentLayout, message);
                                     }
@@ -319,7 +321,12 @@ public class IndividualInventoryFragment extends Fragment implements NoInternetT
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            new AllUtils().getTokenRefresh(context);
+                            Utils.setSnackBar(parentLayout,"Please try again");
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                         Utils.LoaderUtils.dismissLoader();
                     }
                 });

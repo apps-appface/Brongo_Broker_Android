@@ -53,6 +53,7 @@
             android:layout_centerVertical="true"
             android:background="@drawable/text_circular"
             android:textColor="@color/white"
+            android:textSize="@dimen/text_extra_small"
             android:visibility="gone"/>
     </RelativeLayout>
     <FrameLayout

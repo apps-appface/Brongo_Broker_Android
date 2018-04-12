@@ -320,7 +320,13 @@ public class ReminderActivity extends AppCompatActivity implements OnMapReadyCal
                             public void onFailure(Call<ApiModel.ResponseModel> call, Throwable t) {
                                 shouldRefresh = false;
                                 Utils.LoaderUtils.dismissLoader();
-                                Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                                if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                                   if(!isFinishing()){
+                                       openTokenDialog(context);
+                                   }
+                                }else {
+                                    Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                                }
                             }
                         });
                     } else {

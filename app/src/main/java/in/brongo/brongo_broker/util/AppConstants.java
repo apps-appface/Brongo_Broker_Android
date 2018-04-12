@@ -33,7 +33,7 @@ public class AppConstants {
     public static final String NOTIFICATION_COUNT = "NOTIFICATION_COUNT";
    public static final String BUILDER_NOTI = "BUILDER_NOTI";
     public static final String OFFER_NOTI = "OFFER_NOTI";
-    public static final String NOTI_SOUND = "NOTI_SOUND";
+    public static final String BUILDER_INVENTORY = "BUILDER_INVENTORY";
     public static final String REFERRAL_ID = "REFERRAL_ID";
     public static final String LOGIN_REMEMBER = "LOGIN_REMEMBER";
     public static final String REFERREDBY = "REFERREDBY";

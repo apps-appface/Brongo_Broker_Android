@@ -118,7 +118,7 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
     private String[] inventory_bhklist = {"1 BHK", "2 BHK", "3 BHK", "4 BHK", "4 BHK+"};
     private String[] subpropList = {""};
     TextInputLayout textInputLayout;
-    private String[] resi_prop_type_list = {"Apartment/Flat", "Villa", "PG/Hostel", "Independent House/Pent House"};
+    private String[] resi_prop_type_list = {"Apartment/Flat", "Villa", "PG/Hostel", "Independent House/Pent House","Row House"};
     private String[] comm_prop_type_list = {"Office Space", "Showroom/Retail space", "Food & Beverage", "Any"};
     private String[] inventory_propstatuslist = {"Ready to move-in(new)", "Ready to move-in(old construction)", "Under Construction", "Pre Launch"};
 
@@ -617,9 +617,13 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
 
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            String error = t.getLocalizedMessage();
                             Utils.LoaderUtils.dismissLoader();
-                            Utils.showToast(context, t.getMessage().toString(), "Failure");
+                            if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                                apiCode = 100;
+                              openTokenDialog(context);
+                            }else {
+                                Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                            }
                         }
                     });
                 } else {
@@ -900,7 +904,12 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
                     @Override
                     public void onFailure(Call<SignUpModel.MarketModel> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            apiCode = 200;
+                            openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             } else {
@@ -1115,14 +1124,14 @@ public class AddInventoryFragment extends Fragment implements NoInternetTryConne
             adapter = new ArrayAdapter<String>(context, R.layout.spinner_text,pocnewlist);
             final Dialog dialog = new Dialog(context);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.drawer_background);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.walkthrough_back);
             dialog.setContentView(R.layout.market_dialog);
             dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
-            ListView listView = (ListView)dialog.findViewById(R.id.market_list_view);
-            EditText search_market = (EditText)dialog.findViewById(R.id.inputSearch);
-            Button cancel_btn = (Button)dialog.findViewById(R.id.market_dialog_cancel);
+            ListView listView = dialog.findViewById(R.id.market_list_view);
+            EditText search_market = dialog.findViewById(R.id.inputSearch);
+            Button cancel_btn = dialog.findViewById(R.id.market_dialog_cancel);
             cancel_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

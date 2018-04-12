@@ -186,7 +186,11 @@ public class ReviewFragment extends Fragment implements ReviewAdapter.FooterList
                     @Override
                     public void onFailure(Call<ApiModel.ReviewModel> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{

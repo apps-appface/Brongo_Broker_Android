@@ -71,7 +71,7 @@ public class BuilderAdapter extends RecyclerView.Adapter<BuilderAdapter.Employee
             holder.invent_builder_address.setText(arrayList.get(position).getSubLocation());
             holder.invent_builder_commission.setText(arrayList.get(position).getCommission()+"% Commission");
             String imageUrl = "";
-            if(arrayList.get(position).getImageFiles().size()>0) {
+            if(arrayList.get(position).getImageFiles() != null && arrayList.get(position).getImageFiles().size()>0) {
                 Glide.with(context).load(arrayList.get(position).getImageFiles().get(0)).apply(CustomApplicationClass.getPropertyImage(true)).into(holder.invent_builder_image);
             }else{
                 Glide.with(context).load("").apply(CustomApplicationClass.getPropertyImage(true)).into(holder.invent_builder_image);

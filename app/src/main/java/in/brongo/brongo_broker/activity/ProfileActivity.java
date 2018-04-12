@@ -228,6 +228,8 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
                                     if (profilelist.size() != 0) {
                                         editor.putString(AppConstants.USER_PIC, profilelist.get(0).getProfileImage().toString());
                                         editor.putString(AppConstants.REFERRAL_ID, profilelist.get(0).getReferralId());
+                                        editor.putString(AppConstants.EMAIL_ID,profilelist.get(0).getEmailId());
+                                        editor.commit();
                                         mSelectedList.addAll(profilelist);
                                         setView();
                                     }
@@ -254,7 +256,11 @@ public class ProfileActivity extends AppCompatActivity implements NoInternetTryC
                     @Override
                     public void onFailure(Call<ApiModel.ProfileModel> call, Throwable t) {
                         Utils.LoaderUtils.dismissLoader();
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                          openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     }
                 });
             }else{

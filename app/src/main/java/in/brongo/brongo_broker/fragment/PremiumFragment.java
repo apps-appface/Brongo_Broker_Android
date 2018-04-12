@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,7 +108,7 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
             e.printStackTrace();
         }
     }
-    private void addPlans(ArrayList<PaymentHashModel.SubPlanObject> arrayList){
+    private void addPlans(final ArrayList<PaymentHashModel.SubPlanObject> arrayList){
         for (int i = 0; i < arrayList.size(); i++) {
             try {
                 String actualRate = AllUtils.changeNumberFormat(arrayList.get(i).getAmountToSub());
@@ -136,6 +137,7 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
                 pay_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        MakePayment(arrayList.get(finalI).getSubId());
                     }
                 });
                 plans_linear.addView(layout2);
@@ -145,25 +147,38 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
             }
         }
     }
-    public void MakePayment(final int i) {
+    public void MakePayment(final String subId) {
         if (Utils.isNetworkAvailable(context)) {
             final String baseUrl = "https://devapi.brongo.in/QuickBroker/broker";
             String headerDeviceId = Utils.getDeviceId(context);
             String headerPlatform = "android";
-            String headerToken = pref.getString("token", "");
+            String headerToken = pref.getString(AppConstants.TOKEN_ACCESS, "");
             final String userMobileNo = pref.getString(AppConstants.MOBILE_NUMBER, "");
             final String firstName = pref.getString(AppConstants.FIRST_NAME, "");
             final String email = pref.getString(AppConstants.EMAIL_ID, "");
-
-            String postingType = "", propertyId = "", brokerNo = "";
             PaymentHashModel paymentHashModel = new PaymentHashModel();
-            paymentHashModel.setAmount("1");
+            paymentHashModel.setAmount("1.00");
             paymentHashModel.setFirstname(firstName);
-            paymentHashModel.setProductInfo("subscription");
+            paymentHashModel.setProductInfo("Brongo_Broker");
             paymentHashModel.setEmail(email);
             paymentHashModel.setMobileNo(userMobileNo);
-            paymentHashModel.setPropertyId(propertyId);
-            paymentHashModel.setPaymentMode("Development");
+            //paymentHashModel.setPropertyId(propertyId);
+            paymentHashModel.setPaymentMode("SUBSCRIPTION");
+            paymentHashModel.setIsDevelopment(1);
+            paymentHashModel.setUserType("BROKER");
+            paymentHashModel.setPaymentId(subId);
+
+           /* PaymentHashModel paymentHashModel = new PaymentHashModel();
+            paymentHashModel.setAmount("1");
+            paymentHashModel.setFirstname(firstName);
+            paymentHashModel.setProductInfo("Brongo_Client");
+            paymentHashModel.setEmail(email);
+            paymentHashModel.setMobileNo(userMobileNo);
+            paymentHashModel.setPaymentId(propertyId);
+            paymentHashModel.setBrokerMobileNo(brokerNo);
+            paymentHashModel.setPaymentMode("DEAL");
+//           paymentHashModel.setIsDevelopment(1);
+            paymentHashModel.setUserType("CLIENT");*/
 
             Utils.LoaderUtils.showLoader(context);
             RetrofitAPIs apiInstance = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
@@ -178,24 +193,23 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
 
                         PaymentParams paymentParams = new PaymentParams();
                         paymentParams.setKey("gtKFFx");                  //DEVELOPMENT
-                        //paymentParams.setKey("FHOPnO");               //PRODUCTION
+                       // paymentParams.setKey("FHOPnO");               //PRODUCTION
                         paymentParams.setTxnId(data.get(0).getTxnid());
-
-                        paymentParams.setAmount("1");
-                        paymentParams.setProductInfo("subscription");
+                        paymentParams.setAmount("1.00");
+                        paymentParams.setProductInfo("Brongo_Broker");
+                        //paymentParams.setProductInfo("subscription");    //PRODUCTION
                         paymentParams.setFirstName(firstName);
                         //paymentParams.setVpa(data.get(0).getVapsHash());
                         paymentParams.setEmail(email);
                         paymentParams.setUdf1("");
-                        paymentParams.setUdf2("");
-                        paymentParams.setUdf3("");
-                        paymentParams.setUdf4("");
+                        paymentParams.setUdf2(subId);
+                        paymentParams.setUdf3("SUBSCRIPTION");
+                        paymentParams.setUdf4("BROKER");
                         paymentParams.setUdf5("");
                         paymentParams.setPhone(userMobileNo);
 
-                        paymentParams.setSurl(baseUrl + "/paymentStatus");
-                        paymentParams.setFurl(baseUrl + "/paymentStatus");
-
+                        paymentParams.setSurl(RetrofitBuilders.getBaseUrl() + "broker/paymentStatus");
+                        paymentParams.setFurl(RetrofitBuilders.getBaseUrl() + "broker/paymentStatus");
                         PayuHashes payuHashes = new PayuHashes();
                         payuHashes.setPaymentHash(data.get(0).getSha512());
                         payuHashes.setVasForMobileSdkHash(data.get(0).getVapsHash());                       //
@@ -204,11 +218,20 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
 
 
                         paymentParams.setHash(payuHashes.getPaymentHash());
-                        paymentParams.setUserCredentials(userMobileNo + ":Brongo_Client");
+                        paymentParams.setUserCredentials(userMobileNo + ":Brongo_Broker");
 
                         PayuConfig payuConfig = new PayuConfig();
-                        payuConfig.setEnvironment(PayuConstants.MOBILE_STAGING_ENV);
-                        //payuConfig.setEnvironment(PayuConstants.PRODUCTION_ENV);
+ //                     payuConfig.setEnvironment(PayuConstants.MOBILE_STAGING_ENV);
+                       // payuConfig.setEnvironment(PayuConstants.PRODUCTION_ENV);
+                        payuConfig.setEnvironment(PayuConstants.STAGING_ENV);
+
+
+                        Log.i("pay_key",
+                                paymentParams.getKey() + "|" + paymentParams.getTxnId() + "|"
+                                        + String.format("%.2f", Double.parseDouble(paymentParams.getAmount())) + "|"
+                                        + paymentParams.getProductInfo() + "|" + paymentParams.getFirstName() + "|" + paymentParams.getEmail()
+                                        + "|" + paymentParams.getUdf1() + "|" + paymentParams.getUdf2() + "|" + paymentParams.getUdf3() + "|"
+                                        + paymentParams.getUdf4() + "|" + paymentParams.getUdf5() + "||||||" + "");
 
                         Intent intent = new Intent(getActivity(), PayUBaseActivity.class);
                         intent.putExtra(PayuConstants.PAYU_CONFIG, payuConfig);
@@ -242,38 +265,43 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PayuConstants.PAYU_REQUEST_CODE) {
-            if (data != null) {
+        try {
+            Utils.LoaderUtils.dismissLoader();
+            if (requestCode == PayuConstants.PAYU_REQUEST_CODE) {
+                if (data != null) {
 
-                /**
-                 * Here, data.getStringExtra("payu_response") ---> Implicit response sent by PayU
-                 * data.getStringExtra("result") ---> Response received from merchant's Surl/Furl
-                 *
-                 * PayU sends the same response to merchant server and in app. In response check the value of key "status"
-                 * for identifying status of transaction. There are two possible status like, success or failure
-                 * */
-                try {
-                    String result = new JSONObject(data.getStringExtra("payu_response")).optString("status");
-                    if (result != null) {
-                        switch (result) {
-                            case "success":
-                                AllUtils.PaymentSuccessDialog(context);
-                                break;
-                            case "failure":
-                                AllUtils.PaymentFailedDialog(context, this);
-                                break;
+                    /**
+                     * Here, data.getStringExtra("payu_response") ---> Implicit response sent by PayU
+                     * data.getStringExtra("result") ---> Response received from merchant's Surl/Furl
+                     *
+                     * PayU sends the same response to merchant server and in app. In response check the value of key "status"
+                     * for identifying status of transaction. There are two possible status like, success or failure
+                     * */
+                    try {
+                        String result = new JSONObject(data.getStringExtra("payu_response")).optString("status");
+                        if (result != null) {
+                            switch (result) {
+                                case "success":
+                                    AllUtils.PaymentSuccessDialog(context);
+                                    break;
+                                case "failure":
+                                    AllUtils.PaymentFailedDialog(context, this);
+                                    break;
+                            }
                         }
+                    } catch (JSONException e) {
+                        AllUtils.PaymentErrorDialog(context, this);
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    AllUtils.PaymentErrorDialog(context, this);
-                    e.printStackTrace();
-                }
 
+                } else {
+                    AllUtils.PaymentErrorDialog(context, this);
+                }
             } else {
                 AllUtils.PaymentErrorDialog(context, this);
             }
-        } else {
-            AllUtils.PaymentErrorDialog(context, this);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -347,8 +375,12 @@ public class PremiumFragment extends Fragment implements NoInternetTryConnectLis
 
                     @Override
                     public void onFailure(Call<PaymentHashModel.CurrentPlanModel> call, Throwable t) {
-                        Utils.showToast(context, t.getLocalizedMessage().toString(),"Failure");
                         Utils.LoaderUtils.dismissLoader();
+                        if (t.getMessage().equals("Too many follow-up requests: 21")) {
+                            openTokenDialog(context);
+                        }else {
+                            Utils.showToast(context, t.getLocalizedMessage().toString(), "Failure");
+                        }
                     /*if(pd.isShowing()) {
                         pd.dismiss();
                     }*/
