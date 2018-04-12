@@ -73,7 +73,7 @@ public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
             PersonalViewHolder holder = (PersonalViewHolder) viewHolder;
             holder.invent_tag.setVisibility(View.VISIBLE);
             String budget = arrayList.get(position).getBudget() + "";
-            budget = Utils.stringToInt(budget);
+           // budget = Utils.stringToInt(budget);
             String image = arrayList.get(position).getPropertyImage1();
             Glide.with(context)
                     .load(arrayList.get(position).getPropertyImage1())

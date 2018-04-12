@@ -99,6 +99,7 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
     private void fetchList() {
         try {
             if(Utils.isNetworkAvailable(context)) {
+                Utils.LoaderUtils.showLoader(context);
             RetrofitAPIs retrofitAPIs = RetrofitBuilders.getInstance().getAPIService(RetrofitBuilders.getBaseUrl());
             ApiModel.InventoryPersoanlList inventoryPersoanlList = new ApiModel.InventoryPersoanlList();
             inventoryPersoanlList.setBrokerMobileNo(pref.getString(AppConstants.MOBILE_NUMBER, ""));
@@ -114,6 +115,7 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
             call.enqueue(new Callback<ApiModel.MatchingResponseModel>() {
                 @Override
                 public void onResponse(Call<ApiModel.MatchingResponseModel> call, Response<ApiModel.MatchingResponseModel> response) {
+                    Utils.LoaderUtils.dismissLoader();
                     if (response != null) {
                         if (response.isSuccessful()) {
                             ApiModel.MatchingResponseModel matchingResponseModel = response.body();
@@ -148,6 +150,7 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
 
                 @Override
                 public void onFailure(Call<ApiModel.MatchingResponseModel> call, Throwable t) {
+                    Utils.LoaderUtils.dismissLoader();
                     if (t.getMessage().equals("Too many follow-up requests: 21")) {
                         openTokenDialog(context);
                     } else {

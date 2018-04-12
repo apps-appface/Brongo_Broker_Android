@@ -367,6 +367,15 @@ public class SignUpModel {
         boolean clientVisibility;
         boolean trending;
         boolean active;
+        boolean freeSub;
+
+        public boolean isFreeSub() {
+            return freeSub;
+        }
+
+        public void setFreeSub(boolean freeSub) {
+            this.freeSub = freeSub;
+        }
     }
     public static class VenueModel{
         String message;

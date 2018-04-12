@@ -38,10 +38,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="#c0ffffff"
-            android:textSize="@dimen/dialog_title_size"
+            android:textSize="@dimen/text_size_large"
             android:textColor="#88288f"
             android:gravity="center_horizontal"
-            android:text="Terms &amp; Conditions"
+            android:text="Channel Partner Agreement Terms"
             app:customFont="lato_bold.ttf"
             />
       <LinearLayout
