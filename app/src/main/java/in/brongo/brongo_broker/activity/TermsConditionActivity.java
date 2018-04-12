@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.view.View;
@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.ScrollBar;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 
 import in.brongo.brongo_broker.R;
@@ -44,16 +43,16 @@ public class TermsConditionActivity extends AppCompatActivity implements OnPageC
         try {
         parentLayout = findViewById(R.id.tc_parent_linear);
         PDFView pdfView = findViewById(R.id.start_pdfView);
-        ScrollBar scrollBar = findViewById(R.id.start_pdf_scrollBar);
-        pdfView.setScrollBar(scrollBar);
+//        ScrollBar scrollBar = findViewById(R.id.start_pdf_scrollBar);
+//        pdfView.setScrollBar(scrollBar);
         if(activityName.equalsIgnoreCase("signup") || activityName.equalsIgnoreCase("refer")){
             accept_btn.setVisibility(View.GONE);
         }
             pdfView.fromAsset("tc_brokers.pdf")
                     .defaultPage(1)
                     .onPageChange(this)
-                    .swipeVertical(true)
-                    .showMinimap(false)
+//                    .swipeVertical(true)
+//                    .showMinimap(false)
                     .load();
 
 

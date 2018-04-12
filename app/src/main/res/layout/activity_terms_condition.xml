@@ -41,16 +41,8 @@
     <com.github.barteksc.pdfviewer.PDFView
         android:id="@+id/start_pdfView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_toLeftOf="@+id/start_pdf_scrollBar"/>
+        android:layout_height="match_parent"/>
 
-    <com.github.barteksc.pdfviewer.ScrollBar
-        android:id="@+id/start_pdf_scrollBar"
-        android:layout_width="@dimen/tc_btn_padding"
-        android:layout_height="match_parent"
-        app:sb_handlerColor="@color/appColor"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
