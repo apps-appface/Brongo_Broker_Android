@@ -102,4 +102,26 @@
         <item name="android:windowExitAnimation">@anim/slide_right</item>
     </style>
 
+    <style name="DialogThemeAutoStart" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+    <style name="BrongoButton" parent="@android:style/Widget.Button.Small">
+        <item name="android:background">@drawable/dialog_button</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingLeft">33dp</item>
+        <item name="android:paddingRight">33dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
 </resources>

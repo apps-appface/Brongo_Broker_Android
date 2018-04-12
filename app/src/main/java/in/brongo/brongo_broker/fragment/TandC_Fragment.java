@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.ScrollBar;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 
 import in.brongo.brongo_broker.R;
@@ -60,8 +59,8 @@ public class TandC_Fragment extends Fragment implements OnPageChangeListener {
             toolbar_title.setText("Terms & Conditions");
             String[] TermsList = context.getResources().getStringArray(R.array.tc_array);
             pdfView = view.findViewById(R.id.pdfView);
-            ScrollBar scrollBar = view.findViewById(R.id.pdf_scrollBar);
-            pdfView.setScrollBar(scrollBar);
+//            ScrollBar scrollBar = view.findViewById(R.id.pdf_scrollBar);
+//            pdfView.setScrollBar(scrollBar);
             setView();
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
@@ -75,8 +74,8 @@ public class TandC_Fragment extends Fragment implements OnPageChangeListener {
                 pdfView.fromAsset("tc_brokers.pdf")
                         .defaultPage(1)
                         .onPageChange(this)
-                        .swipeVertical(true)
-                        .showMinimap(false)
+//                        .swipeVertical(true)
+//                        .showMinimap(false)
                         .load();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -86,8 +85,8 @@ public class TandC_Fragment extends Fragment implements OnPageChangeListener {
                 pdfView.fromAsset("privacy_policy.pdf")
                         .defaultPage(1)
                         .onPageChange(this)
-                        .swipeVertical(true)
-                        .showMinimap(false)
+//                        .swipeVertical(true)
+//                        .showMinimap(false)
                         .load();
             } catch (Exception e) {
                 e.printStackTrace();

@@ -1,6 +1,7 @@
 package in.brongo.brongo_broker.activity;
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -183,5 +186,30 @@ public class VerificationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+    }
+    private void onBoardingDialog(String message){
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.walkthrough_back);
+        dialog.setContentView(R.layout.client_broker_dialog);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        TextView dialog_title = dialog.findViewById(R.id.poc_dialog_title);
+        ImageView dialog_cancel = dialog.findViewById(R.id.client_broker_dialog_close);
+        Button dialog_btn = dialog.findViewById(R.id.poc_dialog_btn);
+        dialog_btn.setText("OK");
+        dialog_title.setText(message);
+        dialog_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

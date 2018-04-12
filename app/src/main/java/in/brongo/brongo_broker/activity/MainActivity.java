@@ -62,6 +62,7 @@ import java.util.TimerTask;
 import in.brongo.brongo_broker.R;
 import in.brongo.brongo_broker.adapter.CarouselPagerAdapter;
 import in.brongo.brongo_broker.adapter.MainAdapter;
+import in.brongo.brongo_broker.auto_start.AutoStart;
 import in.brongo.brongo_broker.fragment.ItemFragment;
 import in.brongo.brongo_broker.model.ApiModel;
 import in.brongo.brongo_broker.other.AllUtils;
@@ -136,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        new AutoStart(MainActivity.this).showAutoStartDialog();
 
     }
 
