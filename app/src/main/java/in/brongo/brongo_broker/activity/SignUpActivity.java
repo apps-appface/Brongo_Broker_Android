@@ -723,7 +723,10 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             Intent serviceIntent = new Intent(context, RegistrationIntentService.class);
             serviceIntent.putExtra("key", 200);
             startService(serviceIntent);
-            startActivity(new Intent(SignUpActivity.this, DocumentUploadActivity.class));
+            Intent intent = new Intent(SignUpActivity.this, DocumentUploadActivity.class);
+            intent.putExtra("onBoardMessage","");
+            intent.putExtra("isPaymentRequired",false);
+            startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
         }

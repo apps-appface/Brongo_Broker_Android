@@ -37,6 +37,7 @@ private LayoutInflater inflater;
 private static final int TYPE_PERSONAL = 0;
 private static final int TYPE_BUILDER = 1;
 private ProgressDialog pd;
+private String invenType;
 private FragmentManager fragmentManager;
 private SharedPreferences pref;
 

@@ -47,6 +47,9 @@ public class VerificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
+        if (getIntent().getExtras() != null) {
+            bundle = getIntent().getBundleExtra("onboardData");
+        }
         initialise();
         verification_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,7 +183,17 @@ public class VerificationActivity extends AppCompatActivity {
        // String finalUrl = "https://prod.brongo.in/verification/Brongo/#/step4"; // for produc
         String finalUrl = "http://18.221.178.146:8080/verification/Brongo/#/step4";  //for dev
         if(current_url.equalsIgnoreCase(finalUrl)){
-            ok_btn.setVisibility(View.VISIBLE);
+            if(bundle != null){
+                String message = bundle.getString("onBoardMessage","");
+                boolean isPaymentNeeded = bundle.getBoolean("isPaymentRequired",false);
+                if(isPaymentNeeded){
+                    onBoardingDialog(message);
+                }else{
+                    ok_btn.setVisibility(View.VISIBLE);
+                }
+            }else {
+                ok_btn.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -202,6 +215,8 @@ public class VerificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                startActivity(new Intent(VerificationActivity.this,LoginActivity.class));
+                finish();
             }
         });
         dialog_cancel.setOnClickListener(new View.OnClickListener() {

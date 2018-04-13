@@ -87,6 +87,7 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private String compressedImagePath;
+    private Bundle bundle = new Bundle();
     private List<String> listPermissionsNeeded;
     public static final int REQUEST_CAMERA_AND_WRITABLE_PERMISSIONS = 111;
 
@@ -94,6 +95,9 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_document_upload);
+        if (getIntent().getExtras() != null) {
+            bundle = getIntent().getExtras();
+        }
         initialise();
         setListener();
         setTextWatcher();
@@ -435,6 +439,8 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                                             if (statusCode == 200 && message.equalsIgnoreCase("Broker Documents Successfully Uploaded")) {
                                                 Utils.setSnackBar(parentLayout, message);
                                                 //startActivity(new Intent(DocumentUploadActivity.this, VenueActivity.class));
+                                                Intent intent = new Intent(DocumentUploadActivity.this,VenueActivity.class);
+                                                intent.putExtra("onboardData",bundle);
                                                 startActivity(new Intent(DocumentUploadActivity.this, VerificationActivity.class));
                                                 finish();
                                             }

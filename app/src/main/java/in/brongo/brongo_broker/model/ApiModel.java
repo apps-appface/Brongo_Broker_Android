@@ -1099,6 +1099,25 @@ public class ApiModel {
 
         String propertyType;
         int matchedProperty;
+        int matchedPer;
+        int matchedBui;
+
+        public int getMatchedPer() {
+            return matchedPer;
+        }
+
+        public void setMatchedPer(int matchedPer) {
+            this.matchedPer = matchedPer;
+        }
+
+        public int getMatchedBui() {
+            return matchedBui;
+        }
+
+        public void setMatchedBui(int matchedBui) {
+            this.matchedBui = matchedBui;
+        }
+
         Double commission;
     }
 

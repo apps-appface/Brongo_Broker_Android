@@ -46,7 +46,7 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
     private RelativeLayout parentLayout;
     private ArrayList<ApiModel.MatchingModel> arraylist = new ArrayList<>();
     private SharedPreferences pref;
-    private String posting_type, brokerMobile, propertyType, subPropertyType, microMarketName,prop_id;
+    private String posting_type, brokerMobile, propertyType, subPropertyType, microMarketName,prop_id,invenType;
 
     public MatchingPropertyFragment() {
         // Required empty public constructor
@@ -60,6 +60,7 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
             subPropertyType = getArguments().getString("lead_sub_prop_type","");
             prop_id = getArguments().getString("propertyId","");
             microMarketName = getArguments().getString("lead_address","");
+            invenType =getArguments().getString("invenType","");
         }
     }
 
@@ -123,8 +124,16 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
                             String message = matchingResponseModel.getMessage();
                             if (statusCode == 200 && message.equalsIgnoreCase("")) {
                                 ArrayList<ApiModel.MatchingModel> matchList = matchingResponseModel.getData();
+                                arraylist.clear();
                                 if (matchList.size() != 0) {
-                                    arraylist.addAll(matchList);
+                                    for(int i = 0;i<matchList.size();i++){
+                                        if((matchList.get(i).getType().equalsIgnoreCase("personal")) && (invenType.equalsIgnoreCase("personal"))){
+                                            arraylist.add(matchList.get(i));
+                                        }else if((matchList.get(i).getType().equalsIgnoreCase("builder")) && (invenType.equalsIgnoreCase("builder"))){
+                                            arraylist.add(matchList.get(i));
+                                        }
+                                    }
+                                    //arraylist.addAll(matchList);
                                     matchingAdapter.notifyDataSetChanged();
                                 }
                             }

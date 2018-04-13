@@ -95,6 +95,8 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         b.putFloat(SCALE, scale);
         b.putString("propertyId",arrayList.get(position).getPropertyId());
         b.putInt("lead_matched",arrayList.get(position).getMatchedProperty());
+        b.putInt("personal_matched",arrayList.get(position).getMatchedPer());
+        b.putInt("builder_matched",arrayList.get(position).getMatchedBui());
         b.putString("lead_name",arrayList.get(position).getClientName());
         b.putFloat("lead_rating",arrayList.get(position).getRating());
         b.putString("lead_plan",arrayList.get(position).getPlanType());
@@ -166,6 +168,8 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         String lead_plan = getArguments().getString("lead_plan","");
         String lead_image = getArguments().getString("lead_image","");
         int lead_matched = getArguments().getInt("lead_matched",0);
+        int personal_matched = getArguments().getInt("personal_matched",0);
+        int builder_matched = getArguments().getInt("builder_matched",0);
         final String  lead_prop_type = getArguments().getString("lead_prop_type","");
         prop_type = getArguments().getString("lead_prop_type","").toUpperCase();
         final String lead_posting_type = getArguments().getString("lead_posting_type","");
@@ -181,6 +185,7 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
         mLinearLayout = linearLayout.findViewById(R.id.lead_status_linear);
         addLayout(arrayList);
         TextView matching_properties = linearLayout.findViewById(R.id.text_matching_properties);
+        TextView matching_properties2 = linearLayout.findViewById(R.id.text_matching_properties2);
         TextView open_deal_name = linearLayout.findViewById(R.id.opendeal_client_name);
         TextView open_deal_commission = linearLayout.findViewById(R.id.open_deal_commission);
         TextView open_deal_clienttype = linearLayout.findViewById(R.id.open_deal_client_type);
@@ -207,7 +212,8 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
                 .load(lead_image)
                 .apply(CustomApplicationClass.getRequestOption(true))
                 .into(open_deal_client_image);
-        matching_properties.setText(lead_matched + " matching properties");
+        matching_properties.setText(personal_matched + " Personal matching");
+        matching_properties2.setText(builder_matched + " Builder matching");
         setCommissionText(lead_posting_type.toUpperCase());
         open_deal_id.setText("DEAL ID : "+propertyId);
         open_deal_name.setText(lead_name);
@@ -248,8 +254,19 @@ public class ItemFragment extends Fragment implements NoInternetTryConnectListen
             public void onClick(View v) {
                 Intent intent = new Intent(context, Menu_Activity.class);
                bundle.putString("frgToLoad","MatchingPropertyFragment");
+                bundle.putString("invenType","personal");
                 intent.putExtras(bundle);
                startActivity(intent);
+            }
+        });
+        matching_properties2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Menu_Activity.class);
+                bundle.putString("frgToLoad","MatchingPropertyFragment");
+                bundle.putString("invenType","builder");
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
         open_deal_chat_btn.setOnClickListener(new View.OnClickListener() {
