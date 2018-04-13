@@ -196,7 +196,7 @@ public class ResideMenu extends FrameLayout {
         boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
         boolean hasHomeKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
         if (!hasBackKey || !hasHomeKey) {//there's a navigation bar
-//            bottomPadding += getNavigationBarHeight();
+            bottomPadding += getNavigationBarHeight();
         }
 
         this.setPadding(viewActivity.getPaddingLeft() + insets.left,

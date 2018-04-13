@@ -47,7 +47,7 @@ received. Very few people have a perfect rating. So don’t despair if your aver
 I. ACCEPTANCE OF TERMS OF USE AND OTHER POLICIES  \n
 a. All references to “you” or “your” as applicable, means the person that accesses, uses, and/or participates in the Platform (as defined below) by offering services in the capacity of a broker (“Broker”).  If you use the Platform on behalf of a business, you represent and warrant that you have the authority to bind that business. Your acceptance of the Terms of Use will be deemed an acceptance by the business you represent and “you” and “your” herein shall refer to the business.  \n
 b. Terms of Use. These terms of use (the “Terms of Use”) govern your use of our website www.brongo.in (the “Website”) and our Brongo application for mobile and handheld devices (the “App”). The Website and the App are jointly referred to as the “Platform”. The Platform is currently owned and operated by Turnip Technologies Private Limited (“Turnip”), a company incorporated under the Companies Act, 2013 and having its registered office at No. 203, 4th Cross, 3rd Block, HRBR Layout, Bangalore – 560 043, Karnataka, India. </string>
-<string name="applozic_key_prod">32379970215f70dcb6a6e150693b60026</string>
+    <string name="applozic_key_prod">32379970215f70dcb6a6e150693b60026</string>
     <string name="applozic_key_dev">brongo1ef8fd6eda7d86d86a5a94e9e682647e5</string>
     <string name="autoStartPermission">To receive notifications and deal alerts in real-time, please ensure to enable auto start option on your device.</string>
 </resources>

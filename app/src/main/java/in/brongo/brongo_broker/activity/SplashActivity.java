@@ -140,10 +140,10 @@ public class SplashActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-       /* Intent intent = new Intent(context, VerificationActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+       /* Intent intent = new Intent(context, PdfNotificationActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        finish();*/
+//        finish();*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

@@ -417,6 +417,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                         if (response != null) {
                             String responseString = null;
                             if (response.isSuccessful()) {
+                                boolean isEligible = true;
                                 try {
                                     ApiModel.SignUpResponseModel signUpResponseModel = response.body();
                                     int statusCode = signUpResponseModel.getStatusCode();
@@ -424,11 +425,11 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
                                     if (statusCode == 200) {
                                         ArrayList<ApiModel.SignupObject> list = signUpResponseModel.getData();
                                         if(list.size()>0) {
-                                            boolean isEligible = signUpResponseModel.getData().get(0).isEligible();
+                                            isEligible = signUpResponseModel.getData().get(0).isEligible();
                                             pref.edit().putBoolean(AppConstants.ISELIGIBLE, isEligible).commit();
                                         }
                                             Utils.setSnackBar(parentLayout, message);
-                                        nextPage();
+                                        nextPage(isEligible,message);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -714,7 +715,7 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
         }
     }
 
-    private void nextPage(){
+    private void nextPage(boolean isEligible,String message){
         try {
             editor.remove(AppConstants.REFERREDBY);
             editor.putString(AppConstants.MOBILE_NUMBER, mobile);
@@ -724,8 +725,8 @@ public class SignUpActivity extends AppCompatActivity implements NoInternetTryCo
             serviceIntent.putExtra("key", 200);
             startService(serviceIntent);
             Intent intent = new Intent(SignUpActivity.this, DocumentUploadActivity.class);
-            intent.putExtra("onBoardMessage","");
-            intent.putExtra("isPaymentRequired",false);
+            intent.putExtra("onBoardMessage",message);
+            intent.putExtra("isPaymentRequired",!isEligible);
             startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();

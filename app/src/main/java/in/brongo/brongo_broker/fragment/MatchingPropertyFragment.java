@@ -26,12 +26,16 @@ import in.brongo.brongo_broker.other.AllUtils;
 import in.brongo.brongo_broker.other.NoInternetTryConnectListener;
 import in.brongo.brongo_broker.other.NoTokenTryListener;
 import in.brongo.brongo_broker.util.AppConstants;
+import in.brongo.brongo_broker.util.RecyclerItemClickListener;
 import in.brongo.brongo_broker.util.RetrofitAPIs;
 import in.brongo.brongo_broker.util.RetrofitBuilders;
 import in.brongo.brongo_broker.util.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static in.brongo.brongo_broker.util.AppConstants.FRAGMENT_TAGS.INVENTORY_LIST;
+import static in.brongo.brongo_broker.util.AppConstants.FRAGMENT_TAGS.LEGAL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -94,6 +98,13 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
         toolbar_title.setText("Matching Properties");
         pref = context.getSharedPreferences(AppConstants.PREF_NAME, 0);
         fetchList();
+        matching_recycle.addOnItemTouchListener(new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                InventoryListFragment inventoryListFragment = new InventoryListFragment();
+                Utils.replaceFragment(getFragmentManager(),inventoryListFragment,R.id.inventory_frag_container,INVENTORY_LIST);
+            }
+        }));
         // pd.show();
     }
 
@@ -126,14 +137,14 @@ public class MatchingPropertyFragment extends Fragment implements NoInternetTryC
                                 ArrayList<ApiModel.MatchingModel> matchList = matchingResponseModel.getData();
                                 arraylist.clear();
                                 if (matchList.size() != 0) {
-                                    for(int i = 0;i<matchList.size();i++){
+                                   /* for(int i = 0;i<matchList.size();i++){
                                         if((matchList.get(i).getType().equalsIgnoreCase("personal")) && (invenType.equalsIgnoreCase("personal"))){
                                             arraylist.add(matchList.get(i));
                                         }else if((matchList.get(i).getType().equalsIgnoreCase("builder")) && (invenType.equalsIgnoreCase("builder"))){
                                             arraylist.add(matchList.get(i));
                                         }
-                                    }
-                                    //arraylist.addAll(matchList);
+                                    }*/
+                                    arraylist.addAll(matchList);
                                     matchingAdapter.notifyDataSetChanged();
                                 }
                             }

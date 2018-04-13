@@ -67,15 +67,22 @@ public class CustomApplicationClass extends Application {
         return requestOptions1;
     }
 
-    public static RequestOptions getRequestOptionSized(int width, int height) {
-        if (requestOptions == null) {
-            requestOptions = new RequestOptions();
-            requestOptions.placeholder(R.drawable.placeholder1);
-            requestOptions.error(R.drawable.placeholder1);
-            requestOptions.skipMemoryCache(true);
-            requestOptions.timeout(120000);
-            requestOptions.diskCacheStrategy(DiskCacheStrategy.NONE);
-            requestOptions.override(width, height);
+    public static RequestOptions getRequestOptionSized(boolean showCached) {
+        if (requestOptions1 == null) {
+            if (showCached) {
+                requestOptions1 = new RequestOptions();
+                requestOptions1.placeholder(R.drawable.no_image);
+                requestOptions1.error(R.drawable.no_image);
+                requestOptions1.diskCacheStrategy(DiskCacheStrategy.ALL);
+                requestOptions1.timeout(120000);
+            } else {
+                requestOptions1 = new RequestOptions();
+                requestOptions1.placeholder(R.drawable.no_image);
+                requestOptions1.error(R.drawable.no_image);
+                requestOptions1.skipMemoryCache(true);
+                requestOptions1.timeout(120000);
+                requestOptions1.diskCacheStrategy(DiskCacheStrategy.NONE);
+            }
         }
         return requestOptions;
     }

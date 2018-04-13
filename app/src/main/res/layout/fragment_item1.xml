@@ -34,24 +34,10 @@
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/hof_margin_large"
                 android:paddingTop="@dimen/hof_margin_normal">
-
-                <in.brongo.brongo_broker.uiwidget.CustomTextView
-                    android:id="@+id/text_matching_properties"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/hof_margin_normal"
-                    android:background="@drawable/match_prop_back"
-                    android:gravity="center_horizontal"
-                    android:padding="@dimen/hof_margin_small"
-                    android:shadowColor="#73000000"
-                    android:textColor="#000000"
-                    android:textSize="@dimen/text_size_small"
-                    app:customFont="lato_bold.ttf" />
                 <in.brongo.brongo_broker.uiwidget.CustomTextView
                     android:id="@+id/text_matching_properties2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/hof_margin_normal"
                     android:layout_marginLeft="@dimen/hof_margin_normal"
                     android:background="@drawable/match_prop_back"
                     android:gravity="center_horizontal"
@@ -61,6 +47,21 @@
                     android:textSize="@dimen/text_size_small"
                     app:customFont="lato_bold.ttf"
                     android:visibility="visible"/>
+
+                <in.brongo.brongo_broker.uiwidget.CustomTextView
+                    android:id="@+id/text_matching_properties"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/hof_margin_normal"
+                    android:background="@drawable/match_prop_back"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/hof_margin_normal"
+                    android:padding="@dimen/hof_margin_small"
+                    android:shadowColor="#73000000"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/text_size_small"
+                    app:customFont="lato_bold.ttf" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

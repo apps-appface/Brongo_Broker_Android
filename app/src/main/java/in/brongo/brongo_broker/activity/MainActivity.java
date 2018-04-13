@@ -932,6 +932,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 isLoader = true;
                             }
                             populateArrayList1();
+                        }else if (noti_type.equalsIgnoreCase("PDF_ATTACHMENT")) {
+                            Intent intent1 = new Intent(context,PdfNotificationActivity.class);
+                            intent1.putExtras(intent.getExtras());
+                            startActivity(intent1);
+
                         } else if (noti_type.equalsIgnoreCase("LEADS_UPDATE") || noti_type.equalsIgnoreCase("DROP_DEAL") || noti_type.equalsIgnoreCase("ASSIGN_NEW_BROKER")) {
                             if (!isLoader) {
                                 Utils.LoaderUtils.showLoader(context);
@@ -1076,6 +1081,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (noti_type != null) {
                     if (noti_type.equalsIgnoreCase("CLIENT_ACCEPT")) {
                         Utils.bidAcceptedDialog(message1, context);
+                    }else if (noti_type.equalsIgnoreCase("PDF_ATTACHMENT")) {
+                        Intent intent1 = new Intent(context,PdfNotificationActivity.class);
+                        intent1.putExtras(intent.getExtras());
+                        startActivity(intent1);
                     }
                 }
                 if (intent.getBooleanExtra("shouldShowDialog", false)) {

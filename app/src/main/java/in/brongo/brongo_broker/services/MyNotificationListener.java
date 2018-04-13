@@ -28,6 +28,7 @@ import java.util.Random;
 import in.brongo.brongo_broker.R;
 import in.brongo.brongo_broker.activity.MainActivity;
 import in.brongo.brongo_broker.activity.Menu_Activity;
+import in.brongo.brongo_broker.activity.PdfNotificationActivity;
 import in.brongo.brongo_broker.activity.PushAlertActivity;
 import in.brongo.brongo_broker.model.ClientDetailsModel;
 import in.brongo.brongo_broker.util.AppConstants;
@@ -122,6 +123,10 @@ public class MyNotificationListener extends FirebaseMessagingService {
                         defaultNotification(remoteMessage);
                         //createNotification();
                         break;
+                    case "PDF_ATTACHMENT":
+                       backgroundNotification(remoteMessage);
+                        foregroundNotification(remoteMessage);
+                        break;
                     default:
                         defaultNotification(remoteMessage);
                 }
@@ -164,6 +169,7 @@ public class MyNotificationListener extends FirebaseMessagingService {
         //put whatever data you want to send, if any
         intent.putExtra("message", remoteMessage.getData().get("message"));
         intent.putExtra("NotiType", remoteMessage.getData().get("NotiType"));
+        intent.putExtra("url", remoteMessage.getData().get("image"));
         //send broadcast
         context.sendBroadcast(intent);
     }

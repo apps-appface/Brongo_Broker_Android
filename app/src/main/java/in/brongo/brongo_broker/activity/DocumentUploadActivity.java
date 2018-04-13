@@ -439,9 +439,11 @@ public class DocumentUploadActivity extends AppCompatActivity implements View.On
                                             if (statusCode == 200 && message.equalsIgnoreCase("Broker Documents Successfully Uploaded")) {
                                                 Utils.setSnackBar(parentLayout, message);
                                                 //startActivity(new Intent(DocumentUploadActivity.this, VenueActivity.class));
-                                                Intent intent = new Intent(DocumentUploadActivity.this,VenueActivity.class);
-                                                intent.putExtra("onboardData",bundle);
-                                                startActivity(new Intent(DocumentUploadActivity.this, VerificationActivity.class));
+                                                Intent intent = new Intent(DocumentUploadActivity.this,VerificationActivity.class);
+                                                if(bundle != null) {
+                                                    intent.putExtras(bundle);
+                                                }
+                                                startActivity(intent);
                                                 finish();
                                             }
                                         } catch (JSONException | IOException e) {

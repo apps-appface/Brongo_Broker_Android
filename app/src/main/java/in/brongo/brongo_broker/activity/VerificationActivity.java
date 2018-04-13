@@ -33,7 +33,6 @@ public class VerificationActivity extends AppCompatActivity {
     private ImageView verification_back,refresh_btn;
     private WebView verification_webview;
     private Bundle bundle;
-    private SwipeRefreshLayout refresh_layout;
     private Button ok_btn;
     private TextView verification_title;
     private LinearLayout parentLayout;
@@ -48,7 +47,7 @@ public class VerificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
         if (getIntent().getExtras() != null) {
-            bundle = getIntent().getBundleExtra("onboardData");
+            bundle = getIntent().getExtras();
         }
         initialise();
         verification_back.setOnClickListener(new View.OnClickListener() {
@@ -75,18 +74,7 @@ public class VerificationActivity extends AppCompatActivity {
                 }
             }
         });
-        refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refresh_layout.setRefreshing(false);
-//                VerificationActivity.this.verification_webview.loadUrl(currentUrl);
-               verification_webview.reload();
-                if(!isLoading){
-                    Utils.LoaderUtils.showLoader(context);
-                    isLoading = true;
-                }
-            }
-        });
+
     }
     private void initialise(){
         try {
@@ -94,7 +82,6 @@ public class VerificationActivity extends AppCompatActivity {
             currentUrl = weburl;
             parentLayout = findViewById(R.id.verification_activity_linear);
             pref = getSharedPreferences(AppConstants.PREF_NAME,0);
-            refresh_layout = findViewById(R.id.verification_swipe);
             String broker_mobile = pref.getString(AppConstants.MOBILE_NUMBER,"");
             weburl = weburl+"?bmo="+broker_mobile;
             verification_title = findViewById(R.id.verification_title);

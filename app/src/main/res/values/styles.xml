@@ -14,6 +14,7 @@
         <item name="android:navigationBarColor">@color/black</item>
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
     </style>
+
     <style name="MyTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/appColor</item>
         <item name="colorPrimaryDark">@color/appColor</item>
@@ -28,9 +29,11 @@
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>-->
         <!-- <item name="android:windowFullscreen">true</item>-->
     </style>
+
     <style name="AppTheme.NoACBar" parent="MyTheme">
         <item name="android:textSize">@dimen/text_size_normal</item>
     </style>
+
     <style name="MyDialogTheme" parent="android:Theme.Holo.Dialog">
         <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -44,6 +47,7 @@
         <item name="android:windowEnterAnimation">@anim/dialog_in</item>
         <item name="android:windowExitAnimation">@anim/dialog_in</item>
     </style>
+
     <style name="CustomAlertDialogStyle">
         <item name="android:bottomBright">@android:color/transparent</item>
         <item name="android:bottomDark">@android:color/transparent</item>
@@ -66,13 +70,13 @@
         <item name="android:background">@color/white</item>
     </style>-->
     <style name="CustomProgressDialog" parent="android:Theme.Holo.Dialog">
-    <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>
-    <item name="android:windowBackground">@android:color/transparent</item>
-    <item name="android:textColorPrimary">#FFFFFF</item>
-    <item name="android:backgroundDimEnabled">true</item>
-    <item name="android:textColor">#fffbfd</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:textSize">20dp</item>
+        <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:textColor">#fffbfd</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20dp</item>
     </style>
 
     <style name="ApplozicTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -88,15 +92,18 @@
 
         <item name="windowActionModeOverlay">true</item>
     </style>
-    <style name="SeekBarColor"
-        parent="Widget.AppCompat.SeekBar">
+
+    <style name="SeekBarColor" parent="Widget.AppCompat.SeekBar">
         <item name="colorAccent">@color/seekbar_color</item>
     </style>
+
     <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/edit_hint_color</item>
         <item name="android:textSize">@dimen/text_size_normal</item>
     </style>
-    <style parent="@android:style/Widget" name="Widget.GifView"/>
+
+    <style name="Widget.GifView" parent="@android:style/Widget" />
+
     <style name="DialogTheme">
         <item name="android:windowEnterAnimation">@anim/slide_left</item>
         <item name="android:windowExitAnimation">@anim/slide_right</item>
@@ -122,6 +129,13 @@
         <item name="android:paddingTop">15dp</item>
         <item name="android:paddingBottom">15dp</item>
         <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="MyAppCompatDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsFloating">true</item>
     </style>
 
 </resources>

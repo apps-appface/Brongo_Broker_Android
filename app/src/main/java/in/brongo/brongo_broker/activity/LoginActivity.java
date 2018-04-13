@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.applozic.mobicomkit.api.account.user.UserLoginTask;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -293,18 +294,36 @@ public class LoginActivity extends AppCompatActivity implements NoInternetTryCon
                             } else {
                                 try {
                                     String responseString = response.errorBody().string();
+                                    String onBoardMessage="";
+                                    boolean isEligible = true;
                                     JSONObject jsonObject = new JSONObject(responseString);
                                     String message = jsonObject.optString("message");
                                     int statusCode = jsonObject.optInt("statusCode");
+                                    JSONArray dataArray = jsonObject.getJSONArray("data");
+                                    if(dataArray.length() > 0) {
+                                        JSONObject jsonObject1 = (JSONObject) dataArray.get(0);
+                                        if (jsonObject1 != null) {
+                                            onBoardMessage = jsonObject1.optString("message");
+                                            isEligible = jsonObject1.optBoolean("isEligible");
+                                        }
+                                    }
                                     if (message.equalsIgnoreCase("Broker Not Found")) {
                                         //phone_invalid.setVisibility(View.VISIBLE);
                                         startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
                                     } else if (statusCode == 412 && message.equalsIgnoreCase("Version Not Supported")) {
                                         AllUtils.updateDialog(context);
                                     }else if (statusCode == 412 && message.equalsIgnoreCase("Documents Need To Be Upload Before Login Into Your Account")) {
-                                        startActivity(new Intent(LoginActivity.this, DocumentUploadActivity.class));
+                                        Intent intent = new Intent(LoginActivity.this, DocumentUploadActivity.class);
+                                        intent.putExtra("onBoardMessage",onBoardMessage);
+                                        intent.putExtra("isPaymentRequired",!isEligible);
+                                        startActivity(intent);
                                     }else if (statusCode == 412 && message.equalsIgnoreCase("Code Of Conduct Need To Be Signed, To Verify Your Account.")) {
-                                        startActivity(new Intent(LoginActivity.this, VerificationActivity.class));
+                                        Intent intent = new Intent(LoginActivity.this, VerificationActivity.class);
+                                        intent.putExtra("onBoardMessage",onBoardMessage);
+                                        intent.putExtra("isPaymentRequired",!isEligible);
+                                        startActivity(intent);
+                                    } else if (statusCode == 412 ) {
+                                        Utils.setSnackBar(parentLayout, message);
                                     } else {
                                         Utils.setSnackBar(parentLayout, message);
                                     }

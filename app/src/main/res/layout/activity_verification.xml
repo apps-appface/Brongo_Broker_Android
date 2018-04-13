@@ -60,10 +60,6 @@
             android:layout_marginRight="@dimen/bp_back_padding"
             />
     </RelativeLayout>
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/verification_swipe">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -86,7 +82,6 @@
             android:layout_marginBottom="@dimen/padding_twenty"
             android:visibility="gone"/>
     </RelativeLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>
 
